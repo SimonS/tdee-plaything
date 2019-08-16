@@ -7,7 +7,13 @@
   "author": "Simon Scarfe",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "test": "jest --coverage"
+  },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
 }
