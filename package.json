@@ -1,0 +1,13 @@
+{
+  "name": "unnamed-tdee-app",
+  "version": "0.0.1",
+  "description": "Currently using a spreadsheet found on reddit, I'd like to evolve that into a useful set of tools. Maybe taking that data away from Google.",
+  "main": "index.js",
+  "repository": "https://github.com/simons/unnamed-tdee-app",
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
