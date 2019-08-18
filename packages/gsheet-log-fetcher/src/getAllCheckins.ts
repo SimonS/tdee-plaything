@@ -1,12 +1,12 @@
 import fetch from "node-fetch";
 
-interface checkin {
+interface ICheckIn {
   date: Date;
   weight?: number;
   calories?: number;
 }
 
-interface gsheetEntry {
+interface IGSheetEntry {
   gs$cell: {
     $t: string;
     row: string;
@@ -42,8 +42,8 @@ const parseStartDate = (dateStr: string): Date => {
   );
 };
 
-const entriesToCheckins = (entries: Array<gsheetEntry>): Array<checkin> => {
-  const enumeratedEntries = entries.map((entry: gsheetEntry) =>
+const entriesToCheckins = (entries: Array<IGSheetEntry>): Array<ICheckIn> => {
+  const enumeratedEntries = entries.map((entry: IGSheetEntry) =>
     Object.assign(entry, {
       content: entry.gs$cell.$t,
       row: parseInt(entry.gs$cell.row, 10),
@@ -72,13 +72,13 @@ const entriesToCheckins = (entries: Array<gsheetEntry>): Array<checkin> => {
       let week = (oddRow ? entry.row - 1 : entry.row) / 2;
 
       checkinDate.setDate(startDate.getDate() + entry.col + week * 7);
-      let currentCheckin: checkin = { date: checkinDate };
+      let currentCheckin: ICheckIn = { date: checkinDate };
 
       currentCheckin[oddRow ? "calories" : "weight"] = Number(entry.content);
       return currentCheckin;
     })
     .sort((a, b) => a.date.valueOf() - b.date.valueOf())
-    .reduce((acc: Array<checkin>, currentCheckin: checkin) => {
+    .reduce((acc: Array<ICheckIn>, currentCheckin: ICheckIn) => {
       const previousCheckin = acc.filter(entry => {
         return entry.date.valueOf() === currentCheckin.date.valueOf();
       });
@@ -97,7 +97,7 @@ const entriesToCheckins = (entries: Array<gsheetEntry>): Array<checkin> => {
     }, []);
 };
 
-export const getAllCheckins = async (id: string): Promise<Array<checkin>> => {
+export const getAllCheckins = async (id: string): Promise<Array<ICheckIn>> => {
   if (id.length === 0) {
     throw new Error("invalid ID");
   }
