@@ -30,9 +30,9 @@ enum Month {
 }
 
 const parseStartDate = (dateStr: string): Date => {
-  const [_, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(dateStr) as Array<
-    string
-  >;
+  const [_, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(
+    dateStr
+  ) as string[];
 
   return new Date(
     parseInt(year, 10) + 2000,
@@ -42,7 +42,7 @@ const parseStartDate = (dateStr: string): Date => {
   );
 };
 
-const entriesToCheckins = (entries: Array<IGSheetEntry>): Array<ICheckIn> => {
+const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
   const enumeratedEntries = entries.map((entry: IGSheetEntry) =>
     Object.assign(entry, {
       content: entry.gs$cell.$t,
@@ -78,7 +78,7 @@ const entriesToCheckins = (entries: Array<IGSheetEntry>): Array<ICheckIn> => {
       return currentCheckin;
     })
     .sort((a, b) => a.date.valueOf() - b.date.valueOf())
-    .reduce((acc: Array<ICheckIn>, currentCheckin: ICheckIn) => {
+    .reduce((acc: ICheckIn[], currentCheckin: ICheckIn) => {
       const previousCheckin = acc.filter(entry => {
         return entry.date.valueOf() === currentCheckin.date.valueOf();
       });
@@ -97,7 +97,7 @@ const entriesToCheckins = (entries: Array<IGSheetEntry>): Array<ICheckIn> => {
     }, []);
 };
 
-export const getAllCheckins = async (id: string): Promise<Array<ICheckIn>> => {
+export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
   if (id.length === 0) {
     throw new Error("invalid ID");
   }
