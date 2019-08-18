@@ -29,6 +29,13 @@ enum Month {
   Dec
 }
 
+const STARTDATE_LOCATION = {
+  row: 3,
+  col: 6
+};
+
+/** Google Spreadsheet's old API stores dates like '20-Apr-19'. So that's where
+ * this abomination comes from. It will break at the end of the century. */
 const parseStartDate = (dateStr: string): Date => {
   const [_, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(
     dateStr
@@ -43,57 +50,62 @@ const parseStartDate = (dateStr: string): Date => {
 };
 
 const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
-  const enumeratedEntries = entries.map((entry: IGSheetEntry) =>
-    Object.assign(entry, {
-      content: entry.gs$cell.$t,
-      row: parseInt(entry.gs$cell.row, 10),
-      col: parseInt(entry.gs$cell.col, 10)
-    })
-  );
+  const getRow = (entry: IGSheetEntry) => parseInt(entry.gs$cell.row, 10);
+  const getCol = (entry: IGSheetEntry) => parseInt(entry.gs$cell.col, 10);
+  const getContent = (entry: IGSheetEntry) => entry.gs$cell.$t;
+
   const startDate: Date = parseStartDate(
-    enumeratedEntries.filter(entry => entry.row === 3 && entry.col === 6)[0]
-      .content
+    getContent(
+      entries.filter(
+        entry =>
+          getRow(entry) === STARTDATE_LOCATION.row &&
+          getCol(entry) === STARTDATE_LOCATION.col
+      )[0]
+    )
   );
 
-  const onlyActualEntries = enumeratedEntries
-    .filter(entry => entry.row > 11 && entry.col > 3 && entry.col < 11)
+  const inputtedEntries = entries
+    .filter(
+      entry => getRow(entry) > 11 && getCol(entry) > 3 && getCol(entry) < 11
+    )
     .map(entry => {
+      const row = getRow(entry);
+      const col = getCol(entry);
       return {
-        content: entry.content,
-        row: entry.row - 12,
-        col: entry.col - 4
+        content: getContent(entry),
+        row: row - 12,
+        col: col - 4
       };
     });
 
-  return onlyActualEntries
+  return inputtedEntries
     .map(entry => {
       let checkinDate = new Date(startDate);
-      const oddRow = entry.row % 2;
-      let week = (oddRow ? entry.row - 1 : entry.row) / 2;
+      let week = (entry.row % 2 ? entry.row - 1 : entry.row) / 2;
 
       checkinDate.setDate(startDate.getDate() + entry.col + week * 7);
       let currentCheckin: ICheckIn = { date: checkinDate };
 
-      currentCheckin[oddRow ? "calories" : "weight"] = Number(entry.content);
+      currentCheckin[entry.row % 2 ? "calories" : "weight"] = Number(
+        entry.content
+      );
+
       return currentCheckin;
     })
-    .sort((a, b) => a.date.valueOf() - b.date.valueOf())
     .reduce((acc: ICheckIn[], currentCheckin: ICheckIn) => {
       const previousCheckin = acc.filter(entry => {
         return entry.date.valueOf() === currentCheckin.date.valueOf();
       });
-      const firstCheckin: boolean = previousCheckin.length === 0;
 
-      if (firstCheckin) {
+      if (previousCheckin.length === 0) {
         return [...acc, currentCheckin];
       }
 
-      return acc.map(entry => {
-        if (currentCheckin.date.valueOf() === entry.date.valueOf()) {
-          return { ...entry, ...currentCheckin };
-        }
-        return entry;
-      });
+      return acc.map(entry =>
+        currentCheckin.date.valueOf() === entry.date.valueOf()
+          ? { ...entry, ...currentCheckin }
+          : entry
+      );
     }, []);
 };
 
@@ -103,7 +115,6 @@ export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
   }
 
   const url = `https://spreadsheets.google.com/feeds/cells/${id}/1/public/values?alt=json`;
-
   const fullResponse = await fetch(url).then(res => res.json());
 
   return entriesToCheckins(fullResponse.feed.entry);
