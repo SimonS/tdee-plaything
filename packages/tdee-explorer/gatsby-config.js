@@ -3,5 +3,5 @@ module.exports = {
     name: `Hello Typescript World!`,
     tagline: `Gatsby + SASS + Typescript = 💪`,
   },
-  plugins: [`gatsby-plugin-sass`, `gatsby-plugin-typescript`],
-}
+  plugins: [`gatsby-plugin-sass`, `gatsby-plugin-typescript`, `my-own-plugin`],
+};
