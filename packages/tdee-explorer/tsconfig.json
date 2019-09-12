@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["es2015"],
-    "strict": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "paths": {
-      "@tdee/*": ["../packages/*"]
-    }
+  "extends": "../../tsconfig.base.json",
+  "rootDir": "src",
+  "outDir": "dist",
+  "baseUrl": "src",
+  "paths": {
+    "@tdee/*": ["../packages/*"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+
+  "references": [
+    {
+      "path": "../gsheet-log-fetcher"
+    }
+  ]
 }
