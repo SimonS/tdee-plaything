@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-starter-hello-world",
+  "name": "@tdee/tdee-explorer",
   "private": true,
   "description": "A simplified bare-bones starter for Gatsby",
   "version": "0.1.0",
@@ -13,6 +13,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \""
   },
   "dependencies": {
+    "@tdee/gsheet-log-fetcher": "0.0.1",
     "gatsby": "^2.15.7",
     "gatsby-plugin-sass": "^2.1.13",
     "gatsby-plugin-typescript": "^2.1.6",
