@@ -5,7 +5,10 @@
     "lib": ["es2015"],
     "strict": true,
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@tdee/*": ["../packages/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
