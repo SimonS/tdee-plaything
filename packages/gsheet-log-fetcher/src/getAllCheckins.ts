@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-interface ICheckIn {
+export interface ICheckIn {
   date: Date;
   weight?: number;
   calories?: number;
