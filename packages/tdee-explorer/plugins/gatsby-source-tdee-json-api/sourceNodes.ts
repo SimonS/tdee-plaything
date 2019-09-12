@@ -1,4 +1,8 @@
-import { SourceNodesArgs, PluginOptions, NodeInput } from "gatsby";
+import { SourceNodesArgs, NodeInput } from "gatsby";
+import {
+  getAllCheckins,
+  ICheckIn,
+} from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 
 export const sourceNodes = async ({
   actions,
@@ -7,26 +11,26 @@ export const sourceNodes = async ({
 }: SourceNodesArgs) => {
   const { createNode } = actions;
 
-  const myData = {
-    key: 123,
-    foo: `The foo field of my node`,
-    bar: `Baz`,
-  };
+  const checkins: ICheckIn[] = await getAllCheckins(
+    "***REMOVED***"
+  );
 
-  const nodeContent = JSON.stringify(myData);
+  checkins.forEach((checkIn: ICheckIn) => {
+    const strCheckIn = JSON.stringify(checkIn);
 
-  const nodeMeta = {
-    id: createNodeId(`my-data-${myData.key}`),
-    parent: undefined,
-    children: [],
-    internal: {
-      type: `CheckIn`,
-      mediaType: `text/html`,
-      content: nodeContent,
-      contentDigest: createContentDigest(myData),
-    },
-  };
+    const nodeMeta = {
+      id: createNodeId(`checkIn-${checkIn.date}`),
+      parent: undefined,
+      children: [],
+      internal: {
+        type: `CheckIn`,
+        mediaType: `text/html`,
+        content: strCheckIn,
+        contentDigest: createContentDigest(checkIn),
+      },
+    };
 
-  const node: NodeInput = Object.assign({}, myData, nodeMeta);
-  createNode(node);
+    const node: NodeInput = Object.assign({}, checkIn, nodeMeta);
+    createNode(node);
+  });
 };
