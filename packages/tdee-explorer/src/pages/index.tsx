@@ -1,8 +1,9 @@
 import React from "react";
 import { graphql } from "gatsby";
 import TDEEGraph from "../components/tdee-graph";
+import { ICheckIn } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 
-interface CheckInQuery {
+interface ICheckInQuery {
   data: {
     allCheckIn: {
       nodes: {
@@ -26,10 +27,13 @@ export const query = graphql`
   }
 `;
 
-const IndexPage = ({ data }: CheckInQuery) => (
+const asCheckIns = (checkInNodes): ICheckIn[] =>
+  checkInNodes.map(d => ({ ...d, date: new Date(d.date) }));
+
+const IndexPage = ({ data }: ICheckInQuery) => (
   <div style={{ margin: `3rem auto`, maxWidth: 600 }}>
     <h1>Weight Over Time:</h1>
-    <TDEEGraph checkIns={data.allCheckIn.nodes} />
+    <TDEEGraph checkIns={asCheckIns(data.allCheckIn.nodes)} />
   </div>
 );
 
