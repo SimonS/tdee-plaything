@@ -32,7 +32,6 @@ const asCheckIns = (checkInNodes): ICheckIn[] =>
 
 const IndexPage = ({ data }: ICheckInQuery) => (
   <div style={{ margin: `3rem auto`, maxWidth: 600 }}>
-    <h1>Weight Over Time:</h1>
     <TDEEGraph checkIns={asCheckIns(data.allCheckIn.nodes)} />
   </div>
 );
