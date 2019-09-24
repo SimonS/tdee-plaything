@@ -43,7 +43,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
 
   return (
     <svg width={width} height={height}>
-      <path fill="none" stroke="blue" strokeWidth="3" d={line(preppedData)} />
+      <path
+        fill="none"
+        stroke="#0292B7"
+        strokeWidth="3"
+        d={line(preppedData)}
+      />
     </svg>
   );
 };
