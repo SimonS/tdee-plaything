@@ -19,19 +19,21 @@ interface ITDEEProps {
 }
 
 const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
+  const margins = { top: 5, bottom: 20, left: 20, right: 5 };
+
   const preppedData: ICheckin[] = checkIns
     .filter(d => d.weight)
     .map(d => ({ ...d, date: new Date(d.date) }));
 
   const xScale = d3
     .scaleTime()
-    .range([0, width])
+    .range([margins.left, width - margins.right])
     .domain(d3.extent(preppedData, d => d.date));
 
   const yScale = d3
     .scaleLinear()
     .domain(d3.extent(preppedData, d => d.weight))
-    .range([height, 0]);
+    .range([height - margins.bottom, margins.top]);
 
   var line = d3
     .line<ICheckin>()
