@@ -1,42 +1,30 @@
 import React from "react";
 import * as d3 from "d3";
+import { ICheckIn } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 
 const width = 800;
 const height = 400;
 
-interface ICheckin {
-  date: Date;
-  weight: number;
-  calories: number;
-}
-
 interface ITDEEProps {
-  checkIns: {
-    date: string;
-    weight: number;
-    calories: number;
-  }[];
+  checkIns: ICheckIn[];
 }
 
 const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
   const margins = { top: 5, bottom: 20, left: 20, right: 5 };
-
-  const preppedData: ICheckin[] = checkIns
-    .filter(d => d.weight)
-    .map(d => ({ ...d, date: new Date(d.date) }));
+  const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
 
   const xScale = d3
     .scaleTime()
     .range([margins.left, width - margins.right])
-    .domain(d3.extent(preppedData, d => d.date));
+    .domain(d3.extent(weightCheckins, d => d.date));
 
   const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(preppedData, d => d.weight))
+    .domain(d3.extent(weightCheckins, d => d.weight))
     .range([height - margins.bottom, margins.top]);
 
   var line = d3
-    .line<ICheckin>()
+    .line<ICheckIn>()
     .x(d => xScale(d.date))
     .y(d => yScale(d.weight))
     .curve(d3.curveMonotoneX);
@@ -47,7 +35,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
         fill="none"
         stroke="#0292B7"
         strokeWidth="3"
-        d={line(preppedData)}
+        d={line(weightCheckins)}
       />
     </svg>
   );
