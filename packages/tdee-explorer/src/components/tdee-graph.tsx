@@ -1,8 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
-import { Line } from "d3";
 
-const width = 400;
+const width = 800;
 const height = 400;
 
 interface ICheckin {
@@ -13,32 +12,36 @@ interface ICheckin {
 
 interface ITDEEProps {
   checkIns: {
-    date: Date;
+    date: string;
     weight: number;
     calories: number;
   }[];
 }
 
 const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
-  // prep data
+  const preppedData: ICheckin[] = checkIns
+    .filter(d => d.weight)
+    .map(d => ({ ...d, date: new Date(d.date) }));
+
   const xScale = d3
     .scaleTime()
     .range([0, width])
-    .domain(d3.extent(checkIns, d => d.date));
+    .domain(d3.extent(preppedData, d => d.date));
 
   const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(checkIns, d => d.weight))
+    .domain(d3.extent(preppedData, d => d.weight))
     .range([height, 0]);
 
-  //   var line = d3.line<ICheckin>().x(d => d.date);
-  // .curve(d3.curveMonotoneX);
+  var line = d3
+    .line<ICheckin>()
+    .x(d => xScale(d.date))
+    .y(d => yScale(d.weight))
+    .curve(d3.curveMonotoneX);
 
   return (
     <svg width={width} height={height}>
-      {checkIns.map((d, i) => (
-        <rect />
-      ))}
+      <path fill="none" stroke="blue" strokeWidth="3" d={line(preppedData)} />
     </svg>
   );
 };
