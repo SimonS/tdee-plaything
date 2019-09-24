@@ -6,7 +6,7 @@ interface CheckInQuery {
   data: {
     allCheckIn: {
       nodes: {
-        date: Date;
+        date: string;
         weight: number;
         calories: number;
       }[];
@@ -28,13 +28,8 @@ export const query = graphql`
 
 const IndexPage = ({ data }: CheckInQuery) => (
   <div style={{ margin: `3rem auto`, maxWidth: 600 }}>
-    <h1>My Weight and Calorie Consumption Over Time:</h1>
+    <h1>Weight Over Time:</h1>
     <TDEEGraph checkIns={data.allCheckIn.nodes} />
-    <>
-      {data.allCheckIn.nodes.map(node => (
-        <pre>{JSON.stringify(node, null, 2)}</pre>
-      ))}
-    </>
   </div>
 );
 
