@@ -24,7 +24,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
     .domain(d3.extent(weightCheckins, d => d.weight))
     .range([height - margins.bottom, margins.top]);
 
-  const [min, max] = d3.extent(calorieCheckins, d => d.calories);
   const calorieScale = d3
     .scaleLinear()
     .domain([0, 6000])
