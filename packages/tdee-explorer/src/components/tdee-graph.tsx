@@ -26,7 +26,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
 
   const calorieScale = d3
     .scaleLinear()
-    .domain([0, 6000])
+    .domain([0, 8000])
     .range([height - margins.bottom, margins.top]);
 
   var weightLine = d3
@@ -45,15 +45,15 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
     <svg width={width} height={height}>
       <path
         fill="none"
-        stroke="#0292B7"
+        stroke="#01b781"
         strokeWidth="3"
-        d={weightLine(weightCheckins)}
+        d={calorieLine(calorieCheckins)}
       />
       <path
         fill="none"
-        stroke="red"
+        stroke="#0292B7"
         strokeWidth="3"
-        d={calorieLine(calorieCheckins)}
+        d={weightLine(weightCheckins)}
       />
     </svg>
   );
