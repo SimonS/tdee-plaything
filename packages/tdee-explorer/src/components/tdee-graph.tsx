@@ -17,16 +17,17 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
   const xScale = d3
     .scaleTime()
     .range([margins.left, width - margins.right])
-    .domain(d3.extent(weightCheckins, d => d.date));
+    .domain(d3.extent(checkIns, d => d.date));
 
   const weightScale = d3
     .scaleLinear()
     .domain(d3.extent(weightCheckins, d => d.weight))
     .range([height - margins.bottom, margins.top]);
 
+  const [min, max] = d3.extent(calorieCheckins, d => d.calories);
   const calorieScale = d3
     .scaleLinear()
-    .domain(d3.extent(weightCheckins, d => d.calories))
+    .domain([0, 6000])
     .range([height - margins.bottom, margins.top]);
 
   var weightLine = d3
