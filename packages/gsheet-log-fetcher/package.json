@@ -1,6 +1,6 @@
 {
   "name": "@tdee/gsheet-log-fetcher",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "fetches data from a published google spreadsheet representing weight and calorie logs",
   "main": "index.js",
   "author": "Simon Scarfe",
