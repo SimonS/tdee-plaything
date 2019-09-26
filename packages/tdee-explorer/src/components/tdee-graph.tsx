@@ -13,11 +13,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   width,
   height,
 }) => {
-  const margins = { top: 5, bottom: 20, left: 20, right: 5 };
+  const margins = { top: 5, bottom: 20, left: 20, right: 40 };
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
   const xRef = useRef();
   const weightRef = useRef();
+  const calorieRef = useRef();
 
   const xScale = d3
     .scaleTime()
@@ -48,10 +49,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const xAxis = d3.axisBottom(xScale);
   const weightAxis = d3.axisLeft(weightScale);
+  const calorieAxis = d3.axisRight(calorieScale);
 
   useEffect(() => {
     d3.select(xRef.current).call(xAxis);
     d3.select(weightRef.current).call(weightAxis);
+    d3.select(calorieRef.current).call(calorieAxis);
   });
 
   return (
@@ -70,6 +73,10 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       />
       <g ref={xRef} transform={`translate(0, ${height - margins.bottom})`} />
       <g ref={weightRef} transform={`translate(${margins.left}, 0)`} />
+      <g
+        ref={calorieRef}
+        transform={`translate(${width - margins.right}, 0)`}
+      />
     </svg>
   );
 };
