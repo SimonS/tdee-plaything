@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { ICheckIn } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 
@@ -16,6 +16,8 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   const margins = { top: 5, bottom: 20, left: 20, right: 5 };
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
+  const xRef = useRef();
+  const weightRef = useRef();
 
   const xScale = d3
     .scaleTime()
@@ -44,6 +46,14 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     .y(d => calorieScale(d.calories))
     .curve(d3.curveMonotoneX);
 
+  const xAxis = d3.axisBottom(xScale);
+  const weightAxis = d3.axisLeft(weightScale);
+
+  useEffect(() => {
+    d3.select(xRef.current).call(xAxis);
+    d3.select(weightRef.current).call(weightAxis);
+  });
+
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
       <path
@@ -58,6 +68,8 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         strokeWidth="3"
         d={weightLine(weightCheckins)}
       />
+      <g ref={xRef} />
+      <g ref={weightRef} />
     </svg>
   );
 };
