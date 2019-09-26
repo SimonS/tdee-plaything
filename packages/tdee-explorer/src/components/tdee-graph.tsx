@@ -2,14 +2,17 @@ import React from "react";
 import * as d3 from "d3";
 import { ICheckIn } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 
-const width = 800;
-const height = 400;
-
 interface ITDEEProps {
   checkIns: ICheckIn[];
+  width: number;
+  height: number;
 }
 
-const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
+const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
+  checkIns,
+  width,
+  height,
+}) => {
   const margins = { top: 5, bottom: 20, left: 20, right: 5 };
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
@@ -42,10 +45,10 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({ checkIns }) => {
     .curve(d3.curveMonotoneX);
 
   return (
-    <svg width={width} height={height}>
+    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
       <path
         fill="none"
-        stroke="#01b781"
+        stroke="#1AC8DB"
         strokeWidth="3"
         d={calorieLine(calorieCheckins)}
       />
