@@ -28,9 +28,7 @@ export const query = graphql`
 `;
 
 const asCheckIns = (checkInNodes): ICheckIn[] =>
-  checkInNodes
-    .map(d => ({ ...d, date: new Date(d.date) }))
-    .sort((a, b) => a.date < b.date); // TODO: move this to the fetcher library
+  checkInNodes.map(d => ({ ...d, date: new Date(d.date) }));
 
 const IndexPage = ({ data }: ICheckInQuery) => (
   <div style={{ margin: `3rem auto`, maxWidth: 600 }}>

@@ -78,7 +78,7 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
       };
     });
 
-  return inputtedEntries
+  let typedEntries = inputtedEntries
     .map(entry => {
       let checkinDate = new Date(startDate);
       let week = (entry.row % 2 ? entry.row - 1 : entry.row) / 2;
@@ -107,6 +107,10 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
           : entry
       );
     }, []);
+
+  typedEntries.sort((a, b) => a.date.valueOf() - b.date.valueOf());
+
+  return typedEntries;
 };
 
 export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
