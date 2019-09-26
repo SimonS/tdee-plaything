@@ -48,7 +48,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
       <path
         fill="none"
-        stroke="#01b781"
+        stroke="#1AC8DB"
         strokeWidth="3"
         d={calorieLine(calorieCheckins)}
       />
