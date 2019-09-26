@@ -32,13 +32,13 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     .domain([0, 8000])
     .range([height - margins.bottom, margins.top]);
 
-  var weightLine = d3
+  const weightLine = d3
     .line<ICheckIn>()
     .x(d => xScale(d.date))
     .y(d => weightScale(d.weight))
     .curve(d3.curveMonotoneX);
 
-  var calorieLine = d3
+  const calorieLine = d3
     .line<ICheckIn>()
     .x(d => xScale(d.date))
     .y(d => calorieScale(d.calories))
