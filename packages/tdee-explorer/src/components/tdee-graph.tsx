@@ -68,8 +68,8 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         strokeWidth="3"
         d={weightLine(weightCheckins)}
       />
-      <g ref={xRef} />
-      <g ref={weightRef} />
+      <g ref={xRef} transform={`translate(0, ${height - margins.bottom})`} />
+      <g ref={weightRef} transform={`translate(${margins.left}, 0)`} />
     </svg>
   );
 };
