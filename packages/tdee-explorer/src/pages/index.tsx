@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import TDEEGraph from "../components/tdee-graph";
-import { ICheckIn } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
+import { ICheckIn } from "@tdee/types/src/checkins";
 
 interface ICheckInQuery {
   data: {
