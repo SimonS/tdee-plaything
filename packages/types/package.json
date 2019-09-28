@@ -1,0 +1,16 @@
+{
+  "name": "@tdee/types",
+  "version": "0.0.1",
+  "description": "Shared types across all packages",
+  "main": "index.js",
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {}
+}
