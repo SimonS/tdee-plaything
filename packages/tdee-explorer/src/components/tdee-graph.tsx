@@ -1,6 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
-import { ICheckIn } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
+import { ICheckIn } from "@tdee/types/src/checkins";
 import Axis from "./axis";
 
 interface ITDEEProps {

@@ -1,10 +1,5 @@
 import fetch from "node-fetch";
-
-export interface ICheckIn {
-  date: Date;
-  weight?: number;
-  calories?: number;
-}
+import { ICheckIn } from "@tdee/types/src/checkins";
 
 interface IGSheetEntry {
   gs$cell: {
