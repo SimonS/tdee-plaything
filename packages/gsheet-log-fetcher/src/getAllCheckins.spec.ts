@@ -2,7 +2,6 @@ jest.mock("node-fetch");
 import fetch from "node-fetch";
 import { realData } from "../__FIXTURES__/realData";
 import { getAllCheckins } from "./getAllCheckins";
-import { log } from "xstate/lib/actions";
 
 const { Response } = jest.requireActual("node-fetch");
 let allCheckins;
