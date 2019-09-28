@@ -1,8 +1,8 @@
 import { SourceNodesArgs, NodeInput } from "gatsby";
 import {
   getAllCheckins,
-  ICheckIn,
 } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
+import { ICheckIn } from "@tdee/types/src/checkins";
 
 export const sourceNodes = async ({
   actions,
