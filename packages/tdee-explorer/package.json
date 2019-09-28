@@ -13,7 +13,8 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \""
   },
   "dependencies": {
-    "@tdee/gsheet-log-fetcher": "^0.0.2",
+    "@tdee/gsheet-log-fetcher": "0.0.2",
+    "@tdee/types": "0.0.1",
     "d3": "^5.12.0",
     "gatsby": "^2.15.7",
     "gatsby-plugin-sass": "^2.1.13",
