@@ -1,6 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
 import { ICheckIn } from "@tdee/types/src/checkins";
+import setDefaultCalories from "@tdee/gsheet-log-fetcher/src/setDefaultCalories";
 import Axis from "./axis";
 
 interface ITDEEProps {
@@ -17,6 +18,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   const margins = { top: 5, bottom: 20, left: 20, right: 40 };
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
+  const impliedCalorieCheckins: ICheckIn[] = setDefaultCalories(checkIns, 5000);
 
   const xScale = d3
     .scaleTime()
@@ -30,7 +32,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const calorieScale = d3
     .scaleLinear()
-    .domain([0, 8000])
+    .domain([0, 6000])
     .range([height - margins.bottom, margins.top]);
 
   const weightLine = d3
@@ -51,7 +53,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         fill="none"
         stroke="#1AC8DB"
         strokeWidth="3"
-        d={calorieLine(calorieCheckins)}
+        d={calorieLine(impliedCalorieCheckins)}
       />
       <path
         fill="none"
