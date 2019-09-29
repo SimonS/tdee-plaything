@@ -10,13 +10,14 @@
     "compile": "tsc"
   },
   "devDependencies": {
+    "@tdee/types": "0.0.1",
     "@types/jest": "^24.0.17",
     "@types/node": "^12.7.2",
     "@types/node-fetch": "^2.5.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3",
-    "@tdee/types": "0.0.1"
+    "tslint": "^5.20.0",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "node-fetch": "^2.6.0"
