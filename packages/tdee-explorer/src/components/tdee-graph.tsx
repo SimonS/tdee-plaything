@@ -1,7 +1,8 @@
 import React from "react";
 import * as d3 from "d3";
-import { ICheckIn } from "@tdee/types/src/checkins";
+import { ICheckIn, IComputedCheckIn } from "@tdee/types/src/checkins";
 import setDefaultCalories from "@tdee/gsheet-log-fetcher/src/setDefaultCalories";
+import calculateRollingAverage from "@tdee/gsheet-log-fetcher/src/calculateRollingAverage";
 import Axis from "./axis";
 import Path from "./path";
 
@@ -20,7 +21,10 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
-  const impliedCalorieCheckins: ICheckIn[] = setDefaultCalories(checkIns, 5000);
+  const processedCheckIns: IComputedCheckIn[] = calculateRollingAverage(
+    setDefaultCalories(checkIns, 5000),
+    7
+  );
 
   const xScale = d3
     .scaleTime()
@@ -43,6 +47,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     .y(d => weightScale(d.weight))
     .curve(d3.curveMonotoneX);
 
+  const rollingWeightLine = d3
+    .line<IComputedCheckIn>()
+    .x(d => xScale(d.date))
+    .y(d => weightScale(d.averageWeight))
+    .curve(d3.curveMonotoneX);
+
   const calorieLine = d3
     .line<ICheckIn>()
     .x(d => xScale(d.date))
@@ -53,7 +63,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const paths = [
     {
-      line: calorieLine(impliedCalorieCheckins),
+      line: calorieLine(processedCheckIns),
       color: "#1AC8DB",
       text: "Calories + defaults",
       initiallyHidden: true,
@@ -67,6 +77,11 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       line: weightLine(weightCheckins),
       color: "#0292B7",
       text: "Weight (KG)",
+    },
+    {
+      line: rollingWeightLine(processedCheckIns),
+      color: "red",
+      text: "Average Weight (KG)",
     },
   ];
 
