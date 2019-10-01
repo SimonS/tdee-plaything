@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { ICheckIn } from "@tdee/types/src/checkins";
 import setDefaultCalories from "@tdee/gsheet-log-fetcher/src/setDefaultCalories";
 import Axis from "./axis";
+import Path from "./path";
 
 interface ITDEEProps {
   checkIns: ICheckIn[];
@@ -49,18 +50,8 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
-      <path
-        fill="none"
-        stroke="#1AC8DB"
-        strokeWidth="3"
-        d={calorieLine(impliedCalorieCheckins)}
-      />
-      <path
-        fill="none"
-        stroke="#0292B7"
-        strokeWidth="3"
-        d={weightLine(weightCheckins)}
-      />
+      <Path line={calorieLine(impliedCalorieCheckins)} color="#1AC8DB" />
+      <Path line={weightLine(weightCheckins)} color="#0292B7" />
       <Axis
         orientation="bottom"
         margin={height - margins.bottom}
