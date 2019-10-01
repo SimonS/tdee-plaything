@@ -16,7 +16,11 @@ const calculateRollingAverage = (checkIns: ICheckIn[], windowSize?: number) =>
 
       return [
         ...acc,
-        { ...curr, averageWeight: sum / calculationWindow.length }
+        {
+          ...curr,
+          averageWeight:
+            sum / calculationWindow.filter(checkIn => checkIn.weight).length
+        }
       ];
     },
     []

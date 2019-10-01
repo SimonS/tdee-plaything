@@ -81,7 +81,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     {
       line: rollingWeightLine(processedCheckIns),
       color: "red",
-      text: "Average Weight (KG)",
+      text: "Ave Weight (KG)",
     },
   ];
 
@@ -89,6 +89,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
       {paths.map((path, i) => (
         <Path
+          key={`path-${i}`}
           line={path.line}
           color={path.color}
           legend={{ x: legendX, y: i * 30 + 3, text: path.text }}
