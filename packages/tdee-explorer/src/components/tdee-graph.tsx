@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as d3 from "d3";
 import { ICheckIn, IComputedCheckIn } from "@tdee/types/src/checkins";
 import setDefaultCalories from "@tdee/gsheet-log-fetcher/src/setDefaultCalories";
@@ -18,12 +18,13 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   height,
 }) => {
   const margins = { top: 5, bottom: 20, left: 20, right: 200 };
+  const [averageOver, setAverage] = useState(7);
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
   const processedCheckIns: IComputedCheckIn[] = calculateRollingAverage(
     setDefaultCalories(checkIns, 5000),
-    7
+    averageOver
   );
 
   const xScale = d3
@@ -64,24 +65,24 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   const paths = [
     {
       line: calorieLine(processedCheckIns),
-      color: "#1AC8DB",
+      color: "#AB7700",
       text: "Calories + defaults",
       initiallyHidden: true,
     },
     {
       line: calorieLine(calorieCheckins),
-      color: "#1AC8DB",
+      color: "#FFB100",
       text: "Calories",
     },
     {
       line: weightLine(weightCheckins),
       color: "#0292B7",
-      text: "Weight (KG)",
+      text: "Weight (Kg)",
     },
     {
       line: rollingWeightLine(processedCheckIns),
-      color: "red",
-      text: "Ave Weight (KG)",
+      color: "#DC1900",
+      text: `Avg over ${averageOver} days`,
     },
   ];
 
@@ -108,6 +109,18 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         margin={width - margins.right}
         scale={calorieScale}
       />
+      <foreignObject x={legendX - 3} y={120} width={250} height={150}>
+        <form>
+          <input
+            type="range"
+            min="3"
+            max="28"
+            value={averageOver}
+            onChange={e => setAverage(parseInt(e.target.value, 10))}
+          />
+          <label style={{ display: "block" }}></label>
+        </form>
+      </foreignObject>
     </svg>
   );
 };
