@@ -16,7 +16,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   width,
   height,
 }) => {
-  const margins = { top: 5, bottom: 20, left: 20, right: 40 };
+  const margins = { top: 5, bottom: 20, left: 20, right: 200 };
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
   const impliedCalorieCheckins: ICheckIn[] = setDefaultCalories(checkIns, 5000);
@@ -48,10 +48,25 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     .y(d => calorieScale(d.calories))
     .curve(d3.curveMonotoneX);
 
+  const legendX = width - margins.right + 50;
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
-      <Path line={calorieLine(impliedCalorieCheckins)} color="#1AC8DB" />
-      <Path line={weightLine(weightCheckins)} color="#0292B7" />
+      <Path
+        line={calorieLine(impliedCalorieCheckins)}
+        color="#1AC8DB"
+        legend={{ x: legendX, y: 3, text: "Calories + defaults" }}
+        initiallyHidden
+      />
+      <Path
+        line={calorieLine(calorieCheckins)}
+        color="#1AC8DB"
+        legend={{ x: legendX, y: 33, text: "Calories" }}
+      />
+      <Path
+        line={weightLine(weightCheckins)}
+        color="#0292B7"
+        legend={{ x: legendX, y: 63, text: "Weight" }}
+      />
       <Axis
         orientation="bottom"
         margin={height - margins.bottom}
