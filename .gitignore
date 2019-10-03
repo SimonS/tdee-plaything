@@ -4,3 +4,4 @@ dist
 .DS_Store
 .env.development
 .env.test
+.vscode
