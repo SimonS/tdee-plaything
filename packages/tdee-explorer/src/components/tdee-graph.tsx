@@ -115,7 +115,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
             type="range"
             min="3"
             max="28"
-            value={averageOver}
+            defaultValue={averageOver.toString()}
             onChange={e => setAverage(parseInt(e.target.value, 10))}
           />
           <label style={{ display: "block" }}></label>
