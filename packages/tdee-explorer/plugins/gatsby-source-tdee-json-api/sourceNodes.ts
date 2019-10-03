@@ -1,7 +1,5 @@
 import { SourceNodesArgs, NodeInput } from "gatsby";
-import {
-  getAllCheckins,
-} from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
+import { getAllCheckins } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 import { ICheckIn } from "@tdee/types/src/checkins";
 
 export const sourceNodes = async ({
@@ -11,9 +9,21 @@ export const sourceNodes = async ({
 }: SourceNodesArgs) => {
   const { createNode } = actions;
 
-  const checkins: ICheckIn[] = await getAllCheckins(
-    "***REMOVED***"
-  );
+  let activeEnv =
+    process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
+
+  require("dotenv").config({
+    path: `.env.${activeEnv}`,
+  });
+
+  const spreadsheetID: string = process.env.SPREADSHEET_ID || "";
+
+  if (spreadsheetID === "")
+    throw new Error(
+      "no spreadsheet ID found, add it to your environment variables or locally to '.env.development'"
+    );
+
+  const checkins: ICheckIn[] = await getAllCheckins(spreadsheetID);
 
   checkins.forEach((checkIn: ICheckIn) => {
     const strCheckIn = JSON.stringify(checkIn);
