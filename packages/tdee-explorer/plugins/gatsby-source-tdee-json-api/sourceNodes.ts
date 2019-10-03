@@ -2,7 +2,7 @@ import { SourceNodesArgs, NodeInput } from "gatsby";
 import { getAllCheckins } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
 import { ICheckIn } from "@tdee/types/src/checkins";
 
-const getSpreadsheetID = () => {
+export const getSpreadsheetID = () => {
   const activeEnv =
     process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
 
