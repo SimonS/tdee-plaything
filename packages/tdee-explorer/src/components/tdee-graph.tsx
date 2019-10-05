@@ -19,7 +19,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   height,
 }) => {
   const margins = { top: 5, bottom: 20, left: 20, right: 200 };
-  const [averageOver, setAverage] = useState(7);
+  const [averageOver, setAverage] = useState(21);
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
