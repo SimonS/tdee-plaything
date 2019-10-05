@@ -6,4 +6,5 @@ export interface ICheckIn {
 
 export interface IComputedCheckIn extends ICheckIn {
   averageWeight?: number;
+  BMI?: number;
 }
