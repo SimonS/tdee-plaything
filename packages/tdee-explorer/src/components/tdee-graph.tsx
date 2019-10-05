@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { ICheckIn, IComputedCheckIn } from "@tdee/types/src/checkins";
 import setDefaultCalories from "@tdee/gsheet-log-fetcher/src/setDefaultCalories";
 import calculateRollingAverage from "@tdee/gsheet-log-fetcher/src/calculateRollingAverage";
+import calculateBMI from "@tdee/gsheet-log-fetcher/src/calculateBMI";
 import Axis from "./axis";
 import Path from "./path";
 
@@ -22,10 +23,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
-  const processedCheckIns: IComputedCheckIn[] = calculateRollingAverage(
-    setDefaultCalories(checkIns, 5000),
-    averageOver
-  );
+
+  /* it occurs to me that we will likely have to split this into datasets as 
+     we add more "computed checkins" and need to filter per-line: */
+  const processedCheckIns: IComputedCheckIn[] = calculateBMI(
+    calculateRollingAverage(setDefaultCalories(checkIns, 5000), averageOver)
+  ).filter(d => d.BMI);
 
   const xScale = d3
     .scaleTime()
@@ -40,6 +43,11 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   const calorieScale = d3
     .scaleLinear()
     .domain([0, 6000])
+    .range([height - margins.bottom, margins.top]);
+
+  const BMIScale = d3
+    .scaleLinear()
+    .domain([15, 35])
     .range([height - margins.bottom, margins.top]);
 
   const weightLine = d3
@@ -60,6 +68,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     .y(d => calorieScale(d.calories))
     .curve(d3.curveMonotoneX);
 
+  const BMILine = d3
+    .line<IComputedCheckIn>()
+    .x(d => xScale(d.date))
+    .y(d => BMIScale(d.BMI))
+    .curve(d3.curveMonotoneX);
+
   const legendX = width - margins.right + 50;
 
   const paths = [
@@ -78,6 +92,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       line: weightLine(weightCheckins),
       color: "#0292B7",
       text: "Weight (Kg)",
+    },
+    {
+      line: BMILine(processedCheckIns),
+      color: "#000",
+      text: `checked in BMI`,
+      initiallyHidden: true,
     },
     {
       line: rollingWeightLine(processedCheckIns),
@@ -109,7 +129,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         margin={width - margins.right}
         scale={calorieScale}
       />
-      <foreignObject x={legendX - 3} y={120} width={250} height={150}>
+      <foreignObject x={legendX - 3} y={150} width={250} height={150}>
         <form>
           <input
             type="range"
