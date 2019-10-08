@@ -20,6 +20,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 }) => {
   const margins = { top: 5, bottom: 20, left: 20, right: 200 };
   const [averageOver, setAverage] = useState(21);
+  const [lineX, setLineX] = useState({ visible: false, x: 0 });
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
@@ -109,6 +110,22 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
+      <rect
+        width={width}
+        height={height}
+        fill="transparent"
+        onMouseMove={e => {
+          const target = e.target as HTMLElement;
+          const x = e.clientX - (target.getBoundingClientRect() as DOMRect).x;
+          setLineX({
+            visible: x > margins.left && x < width - margins.right,
+            x,
+          });
+        }}
+        onMouseOut={e => {
+          setLineX({ visible: false, x: 0 });
+        }}
+      />
       {paths.map((path, i) => (
         <Path
           key={`path-${i}`}
@@ -118,7 +135,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           initiallyHidden={path.initiallyHidden || false}
         />
       ))}
-
       <Axis
         orientation="bottom"
         margin={height - margins.bottom}
@@ -142,6 +158,13 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           <label style={{ display: "block" }}></label>
         </form>
       </foreignObject>
+      <path
+        stroke="black"
+        strokeWidth="1px"
+        opacity={lineX.visible ? 1 : 0}
+        d={`M${lineX.x},${height} ${lineX.x},0`}
+        pointerEvents="none"
+      />
     </svg>
   );
 };

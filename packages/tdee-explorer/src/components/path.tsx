@@ -31,6 +31,7 @@ const Path: React.FunctionComponent<{
         stroke={isVisible ? color : "none"}
         strokeWidth="3"
         d={line}
+        pointerEvents="none"
       />
     </>
   );
