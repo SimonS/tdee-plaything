@@ -20,7 +20,9 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 }) => {
   const margins = { top: 5, bottom: 20, left: 20, right: 200 };
   const [averageOver, setAverage] = useState(21);
-  const [lineX, setLineX] = useState({ visible: false, x: 0 });
+  const [activeDate, setActiveDate] = useState(
+    checkIns[Math.floor(checkIns.length / 2)].date
+  );
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
@@ -107,6 +109,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       text: `Avg over ${averageOver} days`,
     },
   ];
+  // let date = xScale.invert(lineX.x);
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
@@ -117,13 +120,13 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         onMouseMove={e => {
           const target = e.target as HTMLElement;
           const x = e.clientX - (target.getBoundingClientRect() as DOMRect).x;
-          setLineX({
-            visible: x > margins.left && x < width - margins.right,
-            x,
-          });
+          // setLineX({
+          //   visible: x > margins.left && x < width - margins.right,
+          //   x,
+          // });
         }}
         onMouseOut={e => {
-          setLineX({ visible: false, x: 0 });
+          // setLineX({ visible: false, x: 120 });
         }}
       />
       {paths.map((path, i) => (
@@ -158,13 +161,35 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           <label style={{ display: "block" }}></label>
         </form>
       </foreignObject>
-      <path
-        stroke="black"
-        strokeWidth="1px"
-        opacity={lineX.visible ? 1 : 0}
-        d={`M${lineX.x},${height} ${lineX.x},0`}
-        pointerEvents="none"
-      />
+      <g>
+        <path
+          stroke="black"
+          strokeWidth="1px"
+          // opacity={lineX.visible ? 1 : 0}
+          d={`M${xScale(activeDate)},${height} ${xScale(activeDate)},0`}
+          pointerEvents="none"
+        />
+        <circle
+          r={7}
+          fill="none"
+          // stroke-width="1px"
+          // stroke="red"
+          cx={xScale(activeDate)}
+          cy={50}
+        />
+      </g>
+      <foreignObject x={legendX - 3} y={250} width={250} height={150}>
+        <form>
+          <input
+            type="range"
+            min="0"
+            max={checkIns.length}
+            defaultValue={Math.floor(checkIns.length / 2).toString()}
+            onChange={e => setActiveDate(checkIns[e.target.value].date)}
+          />
+          <label style={{ display: "block" }}></label>
+        </form>
+      </foreignObject>
     </svg>
   );
 };
