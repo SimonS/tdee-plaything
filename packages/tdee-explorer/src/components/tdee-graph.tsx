@@ -18,7 +18,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   width,
   height,
 }) => {
-  const margins = { top: 5, bottom: 20, left: 20, right: 200 };
+  const margins = { top: 5, bottom: 40, left: 20, right: 200 };
   const [averageOver, setAverage] = useState(21);
   const [activeDate, setActiveDate] = useState(
     checkIns[Math.floor(checkIns.length / 2)].date
@@ -111,7 +111,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       text: `Avg over ${averageOver} days`,
     },
   ];
-  // let date = xScale.invert(lineX.x);
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
@@ -151,7 +150,9 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         <path
           stroke="black"
           strokeWidth="1px"
-          d={`M${xScale(activeDate)},${height} ${xScale(activeDate)},0`}
+          d={`M${xScale(activeDate)},${height - margins.bottom} ${xScale(
+            activeDate
+          )},0`}
           pointerEvents="none"
         />
         <circle
@@ -166,19 +167,23 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           )}
         />
       </g>
-      <foreignObject x={legendX - 3} y={250} width={250} height={150}>
+      <foreignObject
+        x={margins.left}
+        y={height - margins.bottom + 20}
+        width={width - margins.right - 20}
+        height={150}
+      >
         <form>
           <input
             type="range"
             min="0"
             max={checkIns.length - 1}
-            defaultValue={Math.floor(checkIns.length / 2).toString()}
-            onChange={e => {
-              setActiveDate(checkIns[e.target.value].date);
-              processedCheckIns.filter(checkIn => checkIn.date === activeDate);
-            }}
+            defaultValue={Math.floor(processedCheckIns.length / 2).toString()}
+            onChange={e =>
+              setActiveDate(processedCheckIns[e.target.value].date)
+            }
+            style={{ width: `${width - margins.right - margins.left - 2}px` }}
           />
-          <label style={{ display: "block" }}></label>
         </form>
       </foreignObject>
     </svg>
