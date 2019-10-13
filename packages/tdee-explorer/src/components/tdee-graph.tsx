@@ -31,7 +31,9 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
      we add more "computed checkins" and need to filter per-line: */
   const processedCheckIns: IComputedCheckIn[] = calculateBMI(
     calculateRollingAverage(setDefaultCalories(checkIns, 5000), averageOver)
-  ).filter(d => d.BMI);
+  );
+
+  const BMICheckIns = processedCheckIns.filter(d => d.BMI);
 
   const xScale = d3
     .scaleTime()
@@ -98,7 +100,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       text: "Weight (Kg)",
     },
     {
-      line: BMILine(processedCheckIns),
+      line: BMILine(BMICheckIns),
       color: "#000",
       text: `checked in BMI`,
       initiallyHidden: true,
@@ -113,22 +115,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
-      <rect
-        width={width}
-        height={height}
-        fill="transparent"
-        onMouseMove={e => {
-          const target = e.target as HTMLElement;
-          const x = e.clientX - (target.getBoundingClientRect() as DOMRect).x;
-          // setLineX({
-          //   visible: x > margins.left && x < width - margins.right,
-          //   x,
-          // });
-        }}
-        onMouseOut={e => {
-          // setLineX({ visible: false, x: 120 });
-        }}
-      />
       {paths.map((path, i) => (
         <Path
           key={`path-${i}`}
@@ -165,17 +151,19 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         <path
           stroke="black"
           strokeWidth="1px"
-          // opacity={lineX.visible ? 1 : 0}
           d={`M${xScale(activeDate)},${height} ${xScale(activeDate)},0`}
           pointerEvents="none"
         />
         <circle
           r={7}
           fill="none"
-          // stroke-width="1px"
-          // stroke="red"
+          stroke="red"
+          strokeWidth={2}
           cx={xScale(activeDate)}
-          cy={50}
+          cy={weightScale(
+            processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+              .averageWeight
+          )}
         />
       </g>
       <foreignObject x={legendX - 3} y={250} width={250} height={150}>
@@ -183,9 +171,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           <input
             type="range"
             min="0"
-            max={checkIns.length}
+            max={checkIns.length - 1}
             defaultValue={Math.floor(checkIns.length / 2).toString()}
-            onChange={e => setActiveDate(checkIns[e.target.value].date)}
+            onChange={e => {
+              setActiveDate(checkIns[e.target.value].date);
+              processedCheckIns.filter(checkIn => checkIn.date === activeDate);
+            }}
           />
           <label style={{ display: "block" }}></label>
         </form>
