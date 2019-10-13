@@ -5,11 +5,18 @@ const Path: React.FunctionComponent<{
   color: string;
   legend: { x: number; y: number; text: string };
   initiallyHidden?: Boolean;
-}> = ({ line, color, legend, initiallyHidden = false }) => {
+  activeDate?: Date;
+  selected?: {
+    date: Date;
+    value: number;
+    yPosition: number;
+    xPosition: number;
+  };
+}> = ({ line, color, legend, initiallyHidden = false, selected = null }) => {
   const [isVisible, setVisible] = useState(!initiallyHidden);
   const padding = 30;
   const size = 20;
-
+  console.log(selected && selected.value);
   return (
     <>
       <rect
@@ -33,6 +40,16 @@ const Path: React.FunctionComponent<{
         d={line}
         pointerEvents="none"
       />
+      {selected && (
+        <circle
+          r={7}
+          fill="none"
+          stroke={isVisible ? color : "none"}
+          strokeWidth={2}
+          cx={selected.xPosition}
+          cy={selected.yPosition}
+        />
+      )}
     </>
   );
 };

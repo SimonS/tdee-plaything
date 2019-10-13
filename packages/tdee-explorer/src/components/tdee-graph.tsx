@@ -88,27 +88,95 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       color: "#AB7700",
       text: "Calories + defaults",
       initiallyHidden: true,
+      activeValue: processedCheckIns.filter(
+        checkIn => checkIn.date === activeDate && checkIn.calories
+      ).length
+        ? processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+            .calories
+        : null,
+      yPosition: calorieScale(
+        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+          .calories
+      ),
+      xPosition: xScale(activeDate),
     },
     {
       line: calorieLine(calorieCheckins),
       color: "#FFB100",
       text: "Calories",
+      activeValue:
+        calorieCheckins.filter(
+          checkIn => checkIn.date === activeDate && checkIn.calories
+        ).length &&
+        calorieCheckins.filter(checkIn => checkIn.date === activeDate)[0]
+          .calories, // TODO: THIS IS UGLY AS SIN. MAYBE WE SHOULD BE INVERTING THESE X VALUES TO FIND THE Y???
+      yPosition:
+        calorieCheckins.filter(
+          checkIn => checkIn.date === activeDate && checkIn.calories
+        ).length &&
+        calorieScale(
+          calorieCheckins.filter(checkIn => checkIn.date === activeDate)[0]
+            .calories
+        ),
+      xPosition: xScale(activeDate),
     },
     {
       line: weightLine(weightCheckins),
       color: "#0292B7",
       text: "Weight (Kg)",
+      activeValue:
+        weightCheckins.filter(
+          checkIn => checkIn.date === activeDate && checkIn.weight
+        ).length &&
+        weightCheckins.filter(checkIn => checkIn.date === activeDate)[0].weight,
+      yPosition:
+        weightCheckins.filter(
+          checkIn => checkIn.date === activeDate && checkIn.weight
+        ).length &&
+        weightScale(
+          weightCheckins.filter(checkIn => checkIn.date === activeDate)[0]
+            .weight
+        ),
+      xPosition: xScale(activeDate),
     },
     {
       line: BMILine(BMICheckIns),
       color: "#000",
       text: `checked in BMI`,
       initiallyHidden: true,
+      activeValue:
+        BMICheckIns.filter(
+          checkIn => checkIn.date === activeDate && checkIn.BMI
+        ).length &&
+        BMICheckIns.filter(checkIn => checkIn.date === activeDate)[0].BMI,
+      yPosition:
+        BMICheckIns.filter(
+          checkIn => checkIn.date === activeDate && checkIn.BMI
+        ).length &&
+        BMIScale(
+          BMICheckIns.filter(checkIn => checkIn.date === activeDate)[0].BMI
+        ),
+      xPosition: xScale(activeDate),
     },
     {
       line: rollingWeightLine(processedCheckIns),
       color: "#DC1900",
       text: `Avg over ${averageOver} days`,
+      activeValue:
+        processedCheckIns.filter(
+          checkIn => checkIn.date === activeDate && checkIn.averageWeight
+        ).length &&
+        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+          .averageWeight,
+      yPosition:
+        processedCheckIns.filter(
+          checkIn => checkIn.date === activeDate && checkIn.averageWeight
+        ).length &&
+        weightScale(
+          processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+            .averageWeight
+        ),
+      xPosition: xScale(activeDate),
     },
   ];
 
@@ -121,6 +189,16 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           color={path.color}
           legend={{ x: legendX, y: i * 30 + 3, text: path.text }}
           initiallyHidden={path.initiallyHidden || false}
+          selected={
+            path.activeValue
+              ? {
+                  date: activeDate,
+                  value: path.activeValue,
+                  yPosition: path.yPosition,
+                  xPosition: path.xPosition,
+                }
+              : null
+          }
         />
       ))}
       <Axis
@@ -154,17 +232,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
             activeDate
           )},0`}
           pointerEvents="none"
-        />
-        <circle
-          r={7}
-          fill="none"
-          stroke="red"
-          strokeWidth={2}
-          cx={xScale(activeDate)}
-          cy={weightScale(
-            processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-              .averageWeight
-          )}
         />
       </g>
       <foreignObject
