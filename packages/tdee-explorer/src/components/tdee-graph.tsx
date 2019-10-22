@@ -88,12 +88,12 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       color: "#AB7700",
       text: "Calories + defaults",
       initiallyHidden: true,
-      activeValue: processedCheckIns.filter(
-        checkIn => checkIn.date === activeDate && checkIn.calories
-      ).length
-        ? processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-            .calories
-        : null,
+      activeValue:
+        processedCheckIns.filter(
+          checkIn => checkIn.date === activeDate && checkIn.calories
+        ).length &&
+        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+          .calories,
       yPosition: calorieScale(
         processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
           .calories
@@ -108,16 +108,18 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         calorieCheckins.filter(
           checkIn => checkIn.date === activeDate && checkIn.calories
         ).length &&
-        calorieCheckins.filter(checkIn => checkIn.date === activeDate)[0]
-          .calories, // TODO: THIS IS UGLY AS SIN. MAYBE WE SHOULD BE INVERTING THESE X VALUES TO FIND THE Y???
+        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+          .calories,
       yPosition:
-        calorieCheckins.filter(
+        (calorieCheckins.filter(
           checkIn => checkIn.date === activeDate && checkIn.calories
         ).length &&
-        calorieScale(
-          calorieCheckins.filter(checkIn => checkIn.date === activeDate)[0]
-            .calories
-        ),
+          calorieScale(
+            calorieCheckins.filter(
+              checkIn => checkIn.date === activeDate && checkIn.calories
+            )[0].calories
+          )) ||
+        null,
       xPosition: xScale(activeDate),
     },
     {
