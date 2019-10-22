@@ -16,7 +16,7 @@ const Path: React.FunctionComponent<{
   const [isVisible, setVisible] = useState(!initiallyHidden);
   const padding = 30;
   const size = 20;
-  console.log(selected && selected.value);
+
   return (
     <>
       <rect
