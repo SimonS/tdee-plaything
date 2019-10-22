@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const Path: React.FunctionComponent<{
   line: string;
@@ -16,6 +16,7 @@ const Path: React.FunctionComponent<{
   const [isVisible, setVisible] = useState(!initiallyHidden);
   const padding = 30;
   const size = 20;
+  const labelRef = useRef(null);
 
   return (
     <>
@@ -40,15 +41,34 @@ const Path: React.FunctionComponent<{
         d={line}
         pointerEvents="none"
       />
-      {selected && (
-        <circle
-          r={7}
-          fill="none"
-          stroke={isVisible ? color : "none"}
-          strokeWidth={2}
-          cx={selected.xPosition}
-          cy={selected.yPosition}
-        />
+      {selected && selected.value && isVisible && (
+        <g
+          transform={`translate(${selected.xPosition}, ${selected.yPosition})`}
+        >
+          <circle
+            r={7}
+            fill="none"
+            stroke={isVisible ? color : "none"}
+            strokeWidth={2}
+          />
+
+          <rect
+            width={
+              labelRef.current !== null ? labelRef.current.getBBox().width : 0
+            }
+            height={
+              labelRef.current !== null ? labelRef.current.getBBox().height : 0
+            }
+            y="-8"
+            x="10"
+            stroke={color}
+            strokeWidth={2}
+            fill={color}
+          ></rect>
+          <text y="6" x="10" ref={labelRef} color="#fff">
+            {selected.value}
+          </text>
+        </g>
       )}
     </>
   );
