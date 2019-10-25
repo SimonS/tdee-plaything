@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const Path: React.FunctionComponent<{
   line: string;
@@ -14,9 +14,16 @@ const Path: React.FunctionComponent<{
   };
 }> = ({ line, color, legend, initiallyHidden = false, selected = null }) => {
   const [isVisible, setVisible] = useState(!initiallyHidden);
+  const [width, setWidth] = useState(0);
   const padding = 30;
   const size = 20;
   const labelRef = useRef(null);
+
+  useEffect(() => {
+    if (labelRef.current !== null) {
+      setWidth(labelRef.current.getBBox().width);
+    }
+  }, [width])
 
   return (
     <>
@@ -53,12 +60,8 @@ const Path: React.FunctionComponent<{
           />
 
           <rect
-            width={
-              labelRef.current !== null ? labelRef.current.getBBox().width : 0
-            }
-            height={
-              labelRef.current !== null ? labelRef.current.getBBox().height : 0
-            }
+            width={width}
+            height={16}
             y="-8"
             x="10"
             stroke={color}
