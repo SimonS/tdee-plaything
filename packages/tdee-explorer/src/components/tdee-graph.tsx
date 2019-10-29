@@ -82,7 +82,17 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const legendX = width - margins.right + 50;
 
-  const paths = [
+  interface IPathGenerator {
+    line: string;
+    color: string;
+    text: string;
+    initiallyHidden?: boolean;
+    dataSource: IComputedCheckIn[];
+    yScale: d3.ScaleLinear<number, number>;
+    attribute: string;
+  }
+
+  const paths: IPathGenerator[] = [
     {
       line: calorieLine(processedCheckIns),
       color: "#AB7700",
@@ -139,7 +149,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         )[0][attribute]
       : null;
 
-  const hydratePath = (path, idx) => {
+  const hydratePath = (path: IPathGenerator, idx: number) => {
     const activeValue = getActiveValue(
       path.dataSource,
       activeDate,
