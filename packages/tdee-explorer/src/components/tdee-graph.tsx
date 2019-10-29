@@ -18,8 +18,11 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   width,
   height,
 }) => {
-  const margins = { top: 5, bottom: 20, left: 20, right: 200 };
+  const margins = { top: 5, bottom: 40, left: 20, right: 260 };
   const [averageOver, setAverage] = useState(21);
+  const [activeDate, setActiveDate] = useState(
+    checkIns[Math.floor(checkIns.length / 2)].date
+  );
 
   const weightCheckins: ICheckIn[] = checkIns.filter(d => d.weight);
   const calorieCheckins: ICheckIn[] = checkIns.filter(d => d.calories);
@@ -28,7 +31,9 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
      we add more "computed checkins" and need to filter per-line: */
   const processedCheckIns: IComputedCheckIn[] = calculateBMI(
     calculateRollingAverage(setDefaultCalories(checkIns, 5000), averageOver)
-  ).filter(d => d.BMI);
+  );
+
+  const BMICheckIns = processedCheckIns.filter(d => d.BMI);
 
   const xScale = d3
     .scaleTime()
@@ -77,48 +82,102 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
 
   const legendX = width - margins.right + 50;
 
-  const paths = [
+  interface IPathGenerator {
+    line: string;
+    color: string;
+    text: string;
+    initiallyHidden?: boolean;
+    dataSource: IComputedCheckIn[];
+    yScale: d3.ScaleLinear<number, number>;
+    attribute: string;
+  }
+
+  const paths: IPathGenerator[] = [
     {
       line: calorieLine(processedCheckIns),
       color: "#AB7700",
-      text: "Calories + defaults",
+      text: "Computed Calories",
       initiallyHidden: true,
+      dataSource: processedCheckIns,
+      yScale: calorieScale,
+      attribute: "calories",
     },
     {
       line: calorieLine(calorieCheckins),
       color: "#FFB100",
       text: "Calories",
+      dataSource: calorieCheckins,
+      yScale: calorieScale,
+      attribute: "calories",
     },
     {
       line: weightLine(weightCheckins),
       color: "#0292B7",
       text: "Weight (Kg)",
+      dataSource: weightCheckins,
+      yScale: weightScale,
+      attribute: "weight",
     },
     {
-      line: BMILine(processedCheckIns),
+      line: BMILine(BMICheckIns),
       color: "#000",
       text: `checked in BMI`,
       initiallyHidden: true,
+      dataSource: BMICheckIns,
+      yScale: BMIScale,
+      attribute: "BMI",
     },
     {
       line: rollingWeightLine(processedCheckIns),
       color: "#DC1900",
       text: `Avg over ${averageOver} days`,
+      dataSource: processedCheckIns,
+      yScale: weightScale,
+      attribute: "averageWeight",
     },
   ];
 
+  const getActiveValue = (
+    dataSource: IComputedCheckIn[],
+    date: Date,
+    attribute: string
+  ) =>
+    dataSource.filter(checkIn => checkIn.date === date && checkIn[attribute])
+      .length
+      ? dataSource.filter(
+          checkIn => checkIn.date === date && checkIn[attribute]
+        )[0][attribute]
+      : null;
+
+  const hydratePath = (path: IPathGenerator, idx: number) => {
+    const activeValue = getActiveValue(
+      path.dataSource,
+      activeDate,
+      path.attribute
+    );
+
+    return (
+      <Path
+        key={`path-${idx}`}
+        line={path.line}
+        color={path.color}
+        legend={{ x: legendX, y: idx * 30 + 3, text: path.text }}
+        initiallyHidden={path.initiallyHidden || false}
+        selected={
+          activeValue && {
+            date: activeValue,
+            value: parseFloat(activeValue.toFixed(2)),
+            yPosition: path.yScale(activeValue),
+            xPosition: xScale(activeDate),
+          }
+        }
+      />
+    );
+  };
+
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
-      {paths.map((path, i) => (
-        <Path
-          key={`path-${i}`}
-          line={path.line}
-          color={path.color}
-          legend={{ x: legendX, y: i * 30 + 3, text: path.text }}
-          initiallyHidden={path.initiallyHidden || false}
-        />
-      ))}
-
+      {paths.map(hydratePath)}
       <Axis
         orientation="bottom"
         margin={height - margins.bottom}
@@ -140,6 +199,33 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
             onChange={e => setAverage(parseInt(e.target.value, 10))}
           />
           <label style={{ display: "block" }}></label>
+        </form>
+      </foreignObject>
+      <path
+        stroke="black"
+        strokeWidth="1px"
+        d={`M${xScale(activeDate)},${height - margins.bottom} ${xScale(
+          activeDate
+        )},0`}
+        pointerEvents="none"
+      />
+      <foreignObject
+        x={margins.left}
+        y={height - margins.bottom + 20}
+        width={width - margins.right - 20}
+        height={150}
+      >
+        <form>
+          <input
+            type="range"
+            min="0"
+            max={checkIns.length - 1}
+            defaultValue={Math.floor(processedCheckIns.length / 2).toString()}
+            onChange={e =>
+              setActiveDate(processedCheckIns[e.target.value].date)
+            }
+            style={{ width: `${width - margins.right - margins.left - 2}px` }}
+          />
         </form>
       </foreignObject>
     </svg>
