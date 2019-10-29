@@ -191,16 +191,14 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           <label style={{ display: "block" }}></label>
         </form>
       </foreignObject>
-      <g>
-        <path
-          stroke="black"
-          strokeWidth="1px"
-          d={`M${xScale(activeDate)},${height - margins.bottom} ${xScale(
-            activeDate
-          )},0`}
-          pointerEvents="none"
-        />
-      </g>
+      <path
+        stroke="black"
+        strokeWidth="1px"
+        d={`M${xScale(activeDate)},${height - margins.bottom} ${xScale(
+          activeDate
+        )},0`}
+        pointerEvents="none"
+      />
       <foreignObject
         x={margins.left}
         y={height - margins.bottom + 20}
