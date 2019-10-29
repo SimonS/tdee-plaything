@@ -23,7 +23,7 @@ const Path: React.FunctionComponent<{
     if (labelRef.current !== null) {
       setWidth(labelRef.current.getBBox().width);
     }
-  }, [width])
+  }, [width]);
 
   return (
     <>
@@ -40,6 +40,7 @@ const Path: React.FunctionComponent<{
       />
       <text x={legend.x + padding} y={legend.y + size * 0.75} fill={color}>
         {legend.text}
+        {selected && ` - ${selected.value}`}
       </text>
       <path
         fill="none"
@@ -49,29 +50,14 @@ const Path: React.FunctionComponent<{
         pointerEvents="none"
       />
       {selected && selected.value && isVisible && (
-        <g
-          transform={`translate(${selected.xPosition}, ${selected.yPosition})`}
-        >
-          <circle
-            r={7}
-            fill="none"
-            stroke={isVisible ? color : "none"}
-            strokeWidth={2}
-          />
-
-          <rect
-            width={width}
-            height={16}
-            y="-8"
-            x="10"
-            stroke={color}
-            strokeWidth={2}
-            fill={color}
-          ></rect>
-          <text y="6" x="10" ref={labelRef} color="#fff">
-            {selected.value}
-          </text>
-        </g>
+        <circle
+          r={7}
+          fill="none"
+          stroke={isVisible ? color : "none"}
+          strokeWidth={2}
+          cx={selected.xPosition}
+          cy={selected.yPosition}
+        />
       )}
     </>
   );
