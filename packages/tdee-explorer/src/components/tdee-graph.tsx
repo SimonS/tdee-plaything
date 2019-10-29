@@ -88,119 +88,86 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       color: "#AB7700",
       text: "Computed Calories",
       initiallyHidden: true,
-      activeValue:
-        processedCheckIns.filter(
-          checkIn =>
-            checkIn.date === activeDate && checkIn.calories !== undefined
-        ).length &&
-        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-          .calories,
-      yPosition: calorieScale(
-        processedCheckIns.filter(checkIn => checkIn.date === activeDate)
-          .length &&
-          processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-            .calories
-      ),
+      dataSource: processedCheckIns,
+      yScale: calorieScale,
+      attribute: "calories",
     },
     {
       line: calorieLine(calorieCheckins),
       color: "#FFB100",
       text: "Calories",
-      activeValue:
-        calorieCheckins.filter(
-          checkIn => checkIn.date === activeDate && checkIn.calories
-        ).length &&
-        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-          .calories,
-      yPosition:
-        (calorieCheckins.filter(
-          checkIn => checkIn.date === activeDate && checkIn.calories
-        ).length &&
-          calorieScale(
-            calorieCheckins.filter(
-              checkIn => checkIn.date === activeDate && checkIn.calories
-            )[0].calories
-          )) ||
-        null,
+      dataSource: calorieCheckins,
+      yScale: calorieScale,
+      attribute: "calories",
     },
     {
       line: weightLine(weightCheckins),
       color: "#0292B7",
       text: "Weight (Kg)",
-      activeValue:
-        weightCheckins.filter(
-          checkIn => checkIn.date === activeDate && checkIn.weight
-        ).length &&
-        weightCheckins.filter(checkIn => checkIn.date === activeDate)[0].weight,
-      yPosition:
-        weightCheckins.filter(
-          checkIn => checkIn.date === activeDate && checkIn.weight
-        ).length &&
-        weightScale(
-          weightCheckins.filter(checkIn => checkIn.date === activeDate)[0]
-            .weight
-        ),
+      dataSource: weightCheckins,
+      yScale: weightScale,
+      attribute: "weight",
     },
     {
       line: BMILine(BMICheckIns),
       color: "#000",
       text: `checked in BMI`,
       initiallyHidden: true,
-      activeValue:
-        BMICheckIns.filter(
-          checkIn => checkIn.date === activeDate && checkIn.BMI
-        ).length &&
-        BMICheckIns.filter(checkIn => checkIn.date === activeDate)[0].BMI,
-      yPosition:
-        BMICheckIns.filter(
-          checkIn => checkIn.date === activeDate && checkIn.BMI
-        ).length &&
-        BMIScale(
-          BMICheckIns.filter(checkIn => checkIn.date === activeDate)[0].BMI
-        ),
+      dataSource: BMICheckIns,
+      yScale: BMIScale,
+      attribute: "BMI",
     },
     {
       line: rollingWeightLine(processedCheckIns),
       color: "#DC1900",
       text: `Avg over ${averageOver} days`,
-      activeValue:
-        processedCheckIns.filter(
-          checkIn => checkIn.date === activeDate && checkIn.averageWeight
-        ).length &&
-        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-          .averageWeight,
-      yPosition:
-        processedCheckIns.filter(
-          checkIn => checkIn.date === activeDate && checkIn.averageWeight
-        ).length &&
-        weightScale(
-          processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-            .averageWeight
-        ),
+      dataSource: processedCheckIns,
+      yScale: weightScale,
+      attribute: "averageWeight",
     },
   ];
 
+  const getActiveValue = (
+    dataSource: IComputedCheckIn[],
+    date: Date,
+    attribute: string
+  ) =>
+    dataSource.filter(checkIn => checkIn.date === date && checkIn[attribute])
+      .length
+      ? dataSource.filter(
+          checkIn => checkIn.date === date && checkIn[attribute]
+        )[0][attribute]
+      : null;
+
+  const hydratePath = (path, idx) => {
+    const activeValue = getActiveValue(
+      path.dataSource,
+      activeDate,
+      path.attribute
+    );
+
+    return (
+      <Path
+        key={`path-${idx}`}
+        line={path.line}
+        color={path.color}
+        legend={{ x: legendX, y: idx * 30 + 3, text: path.text }}
+        initiallyHidden={path.initiallyHidden || false}
+        selected={
+          activeValue && {
+            date: activeValue,
+            value: parseFloat(activeValue.toFixed(2)),
+            yPosition: path.yScale(activeValue),
+            xPosition: xScale(activeDate),
+          }
+        }
+      />
+    );
+  };
+
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
-      {paths.map((path, i) => (
-        <Path
-          key={`path-${i}`}
-          line={path.line}
-          color={path.color}
-          legend={{ x: legendX, y: i * 30 + 3, text: path.text }}
-          initiallyHidden={path.initiallyHidden || false}
-          selected={
-            path.activeValue
-              ? {
-                  date: activeDate,
-                  value: parseFloat(path.activeValue.toFixed(2)),
-                  yPosition: path.yPosition,
-                  xPosition: xScale(activeDate),
-                }
-              : null
-          }
-        />
-      ))}
+      {paths.map(hydratePath)}
       <Axis
         orientation="bottom"
         margin={height - margins.bottom}
