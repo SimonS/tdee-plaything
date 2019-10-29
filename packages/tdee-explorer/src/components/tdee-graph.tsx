@@ -91,9 +91,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       activeValue:
         processedCheckIns.filter(
           checkIn =>
-            checkIn.date === activeDate &&
-            checkIn.calories !== undefined &&
-            checkIn.calories
+            checkIn.date === activeDate && checkIn.calories !== undefined
         ).length &&
         processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
           .calories,
@@ -103,7 +101,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
             .calories
       ),
-      xPosition: xScale(activeDate),
     },
     {
       line: calorieLine(calorieCheckins),
@@ -125,7 +122,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
             )[0].calories
           )) ||
         null,
-      xPosition: xScale(activeDate),
     },
     {
       line: weightLine(weightCheckins),
@@ -144,7 +140,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           weightCheckins.filter(checkIn => checkIn.date === activeDate)[0]
             .weight
         ),
-      xPosition: xScale(activeDate),
     },
     {
       line: BMILine(BMICheckIns),
@@ -163,7 +158,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         BMIScale(
           BMICheckIns.filter(checkIn => checkIn.date === activeDate)[0].BMI
         ),
-      xPosition: xScale(activeDate),
     },
     {
       line: rollingWeightLine(processedCheckIns),
@@ -183,7 +177,6 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
           processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
             .averageWeight
         ),
-      xPosition: xScale(activeDate),
     },
   ];
 
@@ -202,7 +195,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
                   date: activeDate,
                   value: parseFloat(path.activeValue.toFixed(2)),
                   yPosition: path.yPosition,
-                  xPosition: path.xPosition,
+                  xPosition: xScale(activeDate),
                 }
               : null
           }
