@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 
 const Path: React.FunctionComponent<{
   line: string;
@@ -14,16 +14,8 @@ const Path: React.FunctionComponent<{
   };
 }> = ({ line, color, legend, initiallyHidden = false, selected = null }) => {
   const [isVisible, setVisible] = useState(!initiallyHidden);
-  const [width, setWidth] = useState(0);
   const padding = 30;
   const size = 20;
-  const labelRef = useRef(null);
-
-  useEffect(() => {
-    if (labelRef.current !== null) {
-      setWidth(labelRef.current.getBBox().width);
-    }
-  }, [width]);
 
   return (
     <>
