@@ -86,17 +86,22 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     {
       line: calorieLine(processedCheckIns),
       color: "#AB7700",
-      text: "Calories + defaults",
+      text: "Computed Calories",
       initiallyHidden: true,
       activeValue:
         processedCheckIns.filter(
-          checkIn => checkIn.date === activeDate && checkIn.calories
+          checkIn =>
+            checkIn.date === activeDate &&
+            checkIn.calories !== undefined &&
+            checkIn.calories
         ).length &&
         processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
           .calories,
       yPosition: calorieScale(
-        processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
-          .calories
+        processedCheckIns.filter(checkIn => checkIn.date === activeDate)
+          .length &&
+          processedCheckIns.filter(checkIn => checkIn.date === activeDate)[0]
+            .calories
       ),
       xPosition: xScale(activeDate),
     },
