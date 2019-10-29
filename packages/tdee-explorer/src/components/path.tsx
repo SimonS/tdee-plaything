@@ -32,7 +32,7 @@ const Path: React.FunctionComponent<{
       />
       <text x={legend.x + padding} y={legend.y + size * 0.75} fill={color}>
         {legend.text}
-        {selected && ` - ${selected.value}`}
+        {selected && isVisible && ` - ${selected.value}`}
       </text>
       <path
         fill="none"
