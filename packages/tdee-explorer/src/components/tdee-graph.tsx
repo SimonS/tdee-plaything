@@ -18,7 +18,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   width,
   height,
 }) => {
-  const margins = { top: 5, bottom: 40, left: 20, right: 200 };
+  const margins = { top: 5, bottom: 40, left: 20, right: 260 };
   const [averageOver, setAverage] = useState(21);
   const [activeDate, setActiveDate] = useState(
     checkIns[Math.floor(checkIns.length / 2)].date
@@ -200,7 +200,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
             path.activeValue
               ? {
                   date: activeDate,
-                  value: path.activeValue,
+                  value: parseFloat(path.activeValue.toFixed(2)),
                   yPosition: path.yPosition,
                   xPosition: path.xPosition,
                 }
