@@ -162,7 +162,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
       <Path
         key={`path-${idx}`}
         line={path.line}
-        color={path.color}
+        color={d3.schemeCategory10[idx]}
         threshold={path.threshold}
         legend={{ x: legendX, y: idx * 30 + 3, text: path.text }}
         initiallyHidden={path.initiallyHidden || false}
