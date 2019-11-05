@@ -85,6 +85,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
   interface IPathGenerator {
     line: string;
     color: string;
+    threshold?: number;
     text: string;
     initiallyHidden?: boolean;
     dataSource: IComputedCheckIn[];
@@ -121,6 +122,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
     {
       line: BMILine(BMICheckIns),
       color: "#000",
+      threshold: BMIScale(24.99) / height,
       text: `checked in BMI`,
       initiallyHidden: true,
       dataSource: BMICheckIns,
@@ -161,6 +163,7 @@ const TDEEGraph: React.FunctionComponent<ITDEEProps> = ({
         key={`path-${idx}`}
         line={path.line}
         color={path.color}
+        threshold={path.threshold}
         legend={{ x: legendX, y: idx * 30 + 3, text: path.text }}
         initiallyHidden={path.initiallyHidden || false}
         selected={
