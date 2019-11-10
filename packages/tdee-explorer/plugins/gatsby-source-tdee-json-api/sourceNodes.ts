@@ -1,7 +1,7 @@
 import { SourceNodesArgs, NodeInput } from 'gatsby';
 import getAllCheckins from '@tdee/gsheet-log-fetcher/src/getAllCheckins';
 import { CheckIn } from '@tdee/types/src/checkins';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 export const getSpreadsheetID = (): string => {
   const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development';
