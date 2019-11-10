@@ -1,7 +1,7 @@
 module.exports = {
   extends: ["airbnb", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "prettier"],
+  plugins: ["@typescript-eslint", "prettier", "jest"],
   settings: {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -21,5 +21,8 @@ module.exports = {
       { devDependencies: ["**/test.tsx", "**/test.ts"] }
     ],
     "@typescript-eslint/indent": [2, 2]
+  },
+  env: {
+    "jest/globals": true
   }
 };
