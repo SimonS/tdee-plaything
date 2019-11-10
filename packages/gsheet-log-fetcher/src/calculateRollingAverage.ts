@@ -8,7 +8,7 @@ const calculateRollingAverage = (checkIns: CheckIn[], windowSize?: number) => ch
     ];
 
     const sum = calculationWindow.reduce<number>(
-      (acc, currentCheckIn) => acc + (currentCheckIn.weight ? currentCheckIn.weight : 0),
+      (total, currentCheckIn) => total + (currentCheckIn.weight ? currentCheckIn.weight : 0),
       0,
     );
 

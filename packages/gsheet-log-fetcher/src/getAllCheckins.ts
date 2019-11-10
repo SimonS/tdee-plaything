@@ -87,7 +87,8 @@ const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
       return currentCheckin;
     })
     .reduce((acc: CheckIn[], currentCheckin: CheckIn) => {
-      const previousCheckin = acc.filter((entry) => entry.date.valueOf() === currentCheckin.date.valueOf());
+      const previousCheckin = acc
+        .filter((entry) => entry.date.valueOf() === currentCheckin.date.valueOf());
 
       if (previousCheckin.length === 0) {
         return [...acc, currentCheckin];
