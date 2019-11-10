@@ -1,13 +1,19 @@
 module.exports = {
-  extends: ["airbnb", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "prettier", "jest"],
+  extends: [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint",
+  ],
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: "module"
+  },
   settings: {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
-    "import/resolver": {
-      typescript: {}
+    react: {
+      version: "16.11"
     }
   },
   rules: {
@@ -15,12 +21,7 @@ module.exports = {
     "react/jsx-filename-extension": [
       2,
       { extensions: [".js", ".jsx", ".ts", ".tsx"] }
-    ],
-    "import/no-extraneous-dependencies": [
-      2,
-      { devDependencies: ["**/test.tsx", "**/test.ts"] }
-    ],
-    "@typescript-eslint/indent": [2, 2]
+    ]
   },
   env: {
     "jest/globals": true

@@ -1,3 +1,3 @@
-require('ts-node').register({ files: true });
+require("ts-node").register({ files: true });
 
-exports.sourceNodes = require('./sourceNodes').sourceNodes;
+exports.sourceNodes = require("./sourceNodes").sourceNodes;

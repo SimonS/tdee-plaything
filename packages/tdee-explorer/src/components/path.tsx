@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Path: React.FunctionComponent<{
   line: string;
@@ -32,7 +32,7 @@ const Path: React.FunctionComponent<{
         y={legend.y}
         width={size}
         height={size}
-        fill={isVisible ? color : 'transparent'}
+        fill={isVisible ? color : "transparent"}
         stroke={color}
         onClick={(): void => {
           setVisible(!isVisible);
@@ -57,11 +57,10 @@ const Path: React.FunctionComponent<{
           <stop stopColor="green" offset={1} />
         </linearGradient>
       )}
-      {isVisible
-      && (
+      {isVisible && (
         <path
           fill="none"
-          stroke={threshold ? 'url(#grad)' : color}
+          stroke={threshold ? "url(#grad)" : color}
           strokeWidth="2"
           d={line}
           pointerEvents="none"
@@ -71,7 +70,7 @@ const Path: React.FunctionComponent<{
         <circle
           r={7}
           fill="none"
-          stroke={isVisible ? color : 'none'}
+          stroke={isVisible ? color : "none"}
           strokeWidth={2}
           cx={selected.xPosition}
           cy={selected.yPosition}

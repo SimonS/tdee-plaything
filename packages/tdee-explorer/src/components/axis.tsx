@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import * as d3 from 'd3';
+import React, { useEffect, useRef } from "react";
+import * as d3 from "d3";
 
 interface AxisProps {
-  orientation: 'bottom' | 'left' | 'right';
+  orientation: "bottom" | "left" | "right";
   margin: number;
   scale: d3.AxisScale<d3.AxisDomain>;
 }
@@ -17,14 +17,14 @@ const Axis: React.FunctionComponent<AxisProps> = ({
   let translation = `${margin}, 0`;
 
   switch (orientation) {
-    case 'bottom':
+    case "bottom":
       axis = d3.axisBottom(scale);
       translation = `0, ${margin}`;
       break;
-    case 'left':
+    case "left":
       axis = d3.axisLeft(scale);
       break;
-    case 'right':
+    case "right":
       axis = d3.axisRight(scale);
       break;
     default:
