@@ -27,6 +27,8 @@ const Axis: React.FunctionComponent<AxisProps> = ({
     case 'right':
       axis = d3.axisRight(scale);
       break;
+    default:
+      break;
   }
 
   useEffect(() => {

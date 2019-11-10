@@ -34,7 +34,7 @@ const Path: React.FunctionComponent<{
         height={size}
         fill={isVisible ? color : 'transparent'}
         stroke={color}
-        onClick={() => {
+        onClick={(): void => {
           setVisible(!isVisible);
         }}
       />

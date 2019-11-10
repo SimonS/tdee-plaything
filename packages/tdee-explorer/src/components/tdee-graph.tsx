@@ -145,14 +145,14 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
     dataSource: ComputedCheckIn[],
     date: Date,
     attribute: string,
-  ) => (dataSource.filter((checkIn) => checkIn.date === date && checkIn[attribute])
-    .length
-    ? dataSource.filter(
+  ): number | null => (dataSource
+    .filter((checkIn) => checkIn.date === date && checkIn[attribute])
+    .length ? dataSource.filter(
       (checkIn) => checkIn.date === date && checkIn[attribute],
     )[0][attribute]
     : null);
 
-  const hydratePath = (path: PathGenerator, idx: number) => {
+  const hydratePath = (path: PathGenerator, idx: number): JSX.Element => {
     const activeValue = getActiveValue(
       path.dataSource,
       activeDate,
@@ -207,14 +207,17 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
       />
       <foreignObject x={legendX - 3} y={150} width={250} height={150}>
         <form>
-          <input
-            type="range"
-            min="3"
-            max="28"
-            defaultValue={averageOver.toString()}
-            onChange={(e) => setAverage(parseInt(e.target.value, 10))}
-          />
-          <label style={{ display: 'block' }} />
+
+          <label style={{ display: 'block' }} htmlFor="averageOver">
+            <input
+              type="range"
+              min="3"
+              max="28"
+              defaultValue={averageOver.toString()}
+              onChange={(e): void => setAverage(parseInt(e.target.value, 10))}
+              name="averageOver"
+            />
+          </label>
         </form>
       </foreignObject>
       <path

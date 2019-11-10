@@ -1,4 +1,4 @@
-export const realData = {
+const realData = {
   feed: {
     entry: [
       {
@@ -8975,3 +8975,5 @@ export const realData = {
     ],
   },
 };
+
+export default realData;
