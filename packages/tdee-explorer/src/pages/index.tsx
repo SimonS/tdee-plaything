@@ -1,9 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { ICheckIn } from '@tdee/types/src/checkins';
+import { CheckIn } from '@tdee/types/src/checkins';
 import TDEEGraph from '../components/tdee-graph';
 
-interface ICheckInQuery {
+interface CheckInQuery {
   data: {
     allCheckIn: {
       nodes: {
@@ -27,9 +27,10 @@ export const query = graphql`
   }
 `;
 
-const asCheckIns = (checkInNodes): ICheckIn[] => checkInNodes.map((d) => ({ ...d, date: new Date(d.date) }));
+const asCheckIns = (checkInNodes): CheckIn[] => checkInNodes
+  .map((d) => ({ ...d, date: new Date(d.date) }));
 
-const IndexPage = ({ data }: ICheckInQuery) => (
+const IndexPage = ({ data }: CheckInQuery) => (
   <div style={{ margin: '3rem auto', maxWidth: 800 }}>
     <TDEEGraph
       height={400}

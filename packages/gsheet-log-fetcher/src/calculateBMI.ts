@@ -1,6 +1,6 @@
-import { IComputedCheckIn } from '@tdee/types/src/checkins';
+import { ComputedCheckIn } from '@tdee/types/src/checkins';
 
-const calculateBMI = (checkIns: IComputedCheckIn[]) => checkIns.map((checkIn) => (checkIn.weight
+const calculateBMI = (checkIns: ComputedCheckIn[]) => checkIns.map((checkIn) => (checkIn.weight
   ? {
     ...checkIn,
     BMI: parseFloat((checkIn.weight / (1.75 * 1.75)).toFixed(2)),

@@ -1,6 +1,6 @@
 import { SourceNodesArgs, NodeInput } from 'gatsby';
 import { getAllCheckins } from '@tdee/gsheet-log-fetcher/src/getAllCheckins';
-import { ICheckIn } from '@tdee/types/src/checkins';
+import { CheckIn } from '@tdee/types/src/checkins';
 
 export const getSpreadsheetID = () => {
   const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development';
@@ -27,9 +27,9 @@ export const sourceNodes = async ({
 }: SourceNodesArgs) => {
   const { createNode } = actions;
 
-  const checkins: ICheckIn[] = await getAllCheckins(getSpreadsheetID());
+  const checkins: CheckIn[] = await getAllCheckins(getSpreadsheetID());
 
-  checkins.forEach((checkIn: ICheckIn) => {
+  checkins.forEach((checkIn: CheckIn) => {
     const strCheckIn = JSON.stringify(checkIn);
 
     const nodeMeta = {

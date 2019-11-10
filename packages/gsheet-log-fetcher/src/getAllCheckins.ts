@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
-import { ICheckIn } from '@tdee/types/src/checkins';
+import { CheckIn } from '@tdee/types/src/checkins';
 
-interface IGSheetEntry {
+interface GSheetEntry {
   gs$cell: {
     $t: string;
     row: string;
@@ -44,10 +44,10 @@ const parseStartDate = (dateStr: string): Date => {
   );
 };
 
-const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
-  const getRow = (entry: IGSheetEntry) => parseInt(entry.gs$cell.row, 10);
-  const getCol = (entry: IGSheetEntry) => parseInt(entry.gs$cell.col, 10);
-  const getContent = (entry: IGSheetEntry) => entry.gs$cell.$t;
+const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
+  const getRow = (entry: GSheetEntry) => parseInt(entry.gs$cell.row, 10);
+  const getCol = (entry: GSheetEntry) => parseInt(entry.gs$cell.col, 10);
+  const getContent = (entry: GSheetEntry) => entry.gs$cell.$t;
 
   const startDate: Date = parseStartDate(
     getContent(
@@ -78,7 +78,7 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
       const week = (entry.row % 2 ? entry.row - 1 : entry.row) / 2;
 
       checkinDate.setDate(startDate.getDate() + entry.col + week * 7);
-      const currentCheckin: ICheckIn = { date: checkinDate };
+      const currentCheckin: CheckIn = { date: checkinDate };
 
       currentCheckin[entry.row % 2 ? 'calories' : 'weight'] = Number(
         entry.content,
@@ -86,7 +86,7 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
 
       return currentCheckin;
     })
-    .reduce((acc: ICheckIn[], currentCheckin: ICheckIn) => {
+    .reduce((acc: CheckIn[], currentCheckin: CheckIn) => {
       const previousCheckin = acc.filter((entry) => entry.date.valueOf() === currentCheckin.date.valueOf());
 
       if (previousCheckin.length === 0) {
@@ -103,7 +103,7 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
   return typedEntries;
 };
 
-export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
+const getAllCheckins = async (id: string): Promise<CheckIn[]> => {
   if (id.length === 0) {
     throw new Error('invalid ID');
   }
@@ -113,3 +113,5 @@ export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
 
   return entriesToCheckins(fullResponse.feed.entry);
 };
+
+export default getAllCheckins;
