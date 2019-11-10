@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const Path: React.FunctionComponent<{
   line: string;
   color: string;
   threshold?: number;
   legend: { x: number; y: number; text: string };
-  initiallyHidden?: Boolean;
+  initiallyHidden?: boolean;
   activeDate?: Date;
   selected?: {
     date: Date;
@@ -32,7 +32,7 @@ const Path: React.FunctionComponent<{
         y={legend.y}
         width={size}
         height={size}
-        fill={isVisible ? color : "transparent"}
+        fill={isVisible ? color : 'transparent'}
         stroke={color}
         onClick={() => {
           setVisible(!isVisible);
@@ -59,7 +59,7 @@ const Path: React.FunctionComponent<{
       )}
       <path
         fill="none"
-        stroke={isVisible ? (threshold ? "url(#grad)" : color) : "none"}
+        stroke={isVisible ? (threshold ? 'url(#grad)' : color) : 'none'}
         strokeWidth="2"
         d={line}
         pointerEvents="none"
@@ -68,7 +68,7 @@ const Path: React.FunctionComponent<{
         <circle
           r={7}
           fill="none"
-          stroke={isVisible ? color : "none"}
+          stroke={isVisible ? color : 'none'}
           strokeWidth={2}
           cx={selected.xPosition}
           cy={selected.yPosition}

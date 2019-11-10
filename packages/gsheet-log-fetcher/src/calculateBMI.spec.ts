@@ -1,14 +1,14 @@
-import calculateBMI from "./calculateBMI";
+import calculateBMI from './calculateBMI';
 
 const checkIns = [
   {
     date: new Date(0),
-    weight: 100
-  }
+    weight: 100,
+  },
 ];
 
-test("BMI is kg/m2, assuming default height of 1.75, calculate happy path", () => {
+test('BMI is kg/m2, assuming default height of 1.75, calculate happy path', () => {
   expect(calculateBMI(checkIns)[0]).toMatchObject({
-    BMI: 32.65
+    BMI: 32.65,
   });
 });
