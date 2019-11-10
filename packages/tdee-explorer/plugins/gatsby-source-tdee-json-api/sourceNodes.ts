@@ -1,11 +1,12 @@
 import { SourceNodesArgs, NodeInput } from 'gatsby';
-import { getAllCheckins } from '@tdee/gsheet-log-fetcher/src/getAllCheckins';
+import getAllCheckins from '@tdee/gsheet-log-fetcher/src/getAllCheckins';
 import { CheckIn } from '@tdee/types/src/checkins';
+import dotenv from 'dotenv';
 
-export const getSpreadsheetID = () => {
+export const getSpreadsheetID = (): string => {
   const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development';
 
-  require('dotenv').config({
+  dotenv.config({
     path: `.env.${activeEnv}`,
   });
 
@@ -24,7 +25,7 @@ export const sourceNodes = async ({
   actions,
   createNodeId,
   createContentDigest,
-}: SourceNodesArgs) => {
+}: SourceNodesArgs): Promise<void> => {
   const { createNode } = actions;
 
   const checkins: CheckIn[] = await getAllCheckins(getSpreadsheetID());

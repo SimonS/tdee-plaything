@@ -57,13 +57,16 @@ const Path: React.FunctionComponent<{
           <stop stopColor="green" offset={1} />
         </linearGradient>
       )}
-      <path
-        fill="none"
-        stroke={isVisible ? (threshold ? 'url(#grad)' : color) : 'none'}
-        strokeWidth="2"
-        d={line}
-        pointerEvents="none"
-      />
+      {isVisible
+      && (
+        <path
+          fill="none"
+          stroke={threshold ? 'url(#grad)' : color}
+          strokeWidth="2"
+          d={line}
+          pointerEvents="none"
+        />
+      )}
       {selected && selected.value && isVisible && (
         <circle
           r={7}

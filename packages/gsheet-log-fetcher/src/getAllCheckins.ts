@@ -32,7 +32,7 @@ const STARTDATE_LOCATION = {
 /** Google Spreadsheet's old API stores dates like '20-Apr-19'. So that's where
  * this abomination comes from. It will break at the end of the century. */
 const parseStartDate = (dateStr: string): Date => {
-  const [_, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(
+  const [, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(
     dateStr,
   ) as string[];
 
@@ -45,9 +45,9 @@ const parseStartDate = (dateStr: string): Date => {
 };
 
 const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
-  const getRow = (entry: GSheetEntry) => parseInt(entry.gs$cell.row, 10);
-  const getCol = (entry: GSheetEntry) => parseInt(entry.gs$cell.col, 10);
-  const getContent = (entry: GSheetEntry) => entry.gs$cell.$t;
+  const getRow = (entry: GSheetEntry): number => parseInt(entry.gs$cell.row, 10);
+  const getCol = (entry: GSheetEntry): number => parseInt(entry.gs$cell.col, 10);
+  const getContent = (entry: GSheetEntry): string => entry.gs$cell.$t;
 
   const startDate: Date = parseStartDate(
     getContent(

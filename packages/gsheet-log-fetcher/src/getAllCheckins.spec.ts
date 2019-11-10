@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import { realData } from '../__FIXTURES__/realData';
-import { getAllCheckins } from './getAllCheckins';
+import realData from '../__FIXTURES__/realData';
+import getAllCheckins from './getAllCheckins';
 
 jest.mock('node-fetch');
 
@@ -8,6 +8,7 @@ const { Response } = jest.requireActual('node-fetch');
 let allCheckins;
 
 beforeAll(async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (fetch as any).mockReturnValue(
     Promise.resolve(new Response(JSON.stringify(realData))),
   );

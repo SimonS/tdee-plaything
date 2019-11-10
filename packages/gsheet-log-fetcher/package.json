@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@tdee/types": "0.0.1",
+    "@tdee/tdee-explorer": "0.2.0",
     "node-fetch": "^2.6.0"
   }
 }

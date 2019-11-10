@@ -1,6 +1,7 @@
 import { CheckIn, ComputedCheckIn } from '@tdee/types/src/checkins';
 
-const calculateRollingAverage = (checkIns: CheckIn[], windowSize?: number) => checkIns.reduce<ComputedCheckIn[]>(
+// eslint-disable-next-line max-len
+const calculateRollingAverage = (checkIns: CheckIn[], windowSize?: number): ComputedCheckIn[] => checkIns.reduce<ComputedCheckIn[]>(
   (acc: ComputedCheckIn[], curr: CheckIn, i) => {
     const calculationWindow = [
       ...acc.slice(windowSize ? Math.max(0, i - windowSize + 1) : 0),
