@@ -8,8 +8,7 @@ const { Response } = jest.requireActual('node-fetch');
 let allCheckins;
 
 beforeAll(async () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (fetch as any).mockReturnValue(
+  (fetch as jest.MockedFunction<typeof fetch>).mockReturnValue(
     Promise.resolve(new Response(JSON.stringify(realData))),
   );
   allCheckins = await getAllCheckins('foo');
