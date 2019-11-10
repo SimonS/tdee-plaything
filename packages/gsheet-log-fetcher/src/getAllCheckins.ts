@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { ICheckIn } from "@tdee/types/src/checkins";
+import { CheckIn } from "@tdee/types/src/checkins";
 
-interface IGSheetEntry {
+interface GSheetEntry {
   gs$cell: {
     $t: string;
     row: string;
@@ -32,9 +32,7 @@ const STARTDATE_LOCATION = {
 /** Google Spreadsheet's old API stores dates like '20-Apr-19'. So that's where
  * this abomination comes from. It will break at the end of the century. */
 const parseStartDate = (dateStr: string): Date => {
-  const [_, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(
-    dateStr
-  ) as string[];
+  const [, day, monthStr, year] = /(\d+)-(\w+)-(\d+)/.exec(dateStr) as string[];
 
   return new Date(
     parseInt(year, 10) + 2000,
@@ -44,10 +42,12 @@ const parseStartDate = (dateStr: string): Date => {
   );
 };
 
-const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
-  const getRow = (entry: IGSheetEntry) => parseInt(entry.gs$cell.row, 10);
-  const getCol = (entry: IGSheetEntry) => parseInt(entry.gs$cell.col, 10);
-  const getContent = (entry: IGSheetEntry) => entry.gs$cell.$t;
+const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
+  const getRow = (entry: GSheetEntry): number =>
+    parseInt(entry.gs$cell.row, 10);
+  const getCol = (entry: GSheetEntry): number =>
+    parseInt(entry.gs$cell.col, 10);
+  const getContent = (entry: GSheetEntry): string => entry.gs$cell.$t;
 
   const startDate: Date = parseStartDate(
     getContent(
@@ -73,13 +73,13 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
       };
     });
 
-  let typedEntries = inputtedEntries
+  const typedEntries = inputtedEntries
     .map(entry => {
-      let checkinDate = new Date(startDate);
-      let week = (entry.row % 2 ? entry.row - 1 : entry.row) / 2;
+      const checkinDate = new Date(startDate);
+      const week = (entry.row % 2 ? entry.row - 1 : entry.row) / 2;
 
       checkinDate.setDate(startDate.getDate() + entry.col + week * 7);
-      let currentCheckin: ICheckIn = { date: checkinDate };
+      const currentCheckin: CheckIn = { date: checkinDate };
 
       currentCheckin[entry.row % 2 ? "calories" : "weight"] = Number(
         entry.content
@@ -87,10 +87,10 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
 
       return currentCheckin;
     })
-    .reduce((acc: ICheckIn[], currentCheckin: ICheckIn) => {
-      const previousCheckin = acc.filter(entry => {
-        return entry.date.valueOf() === currentCheckin.date.valueOf();
-      });
+    .reduce((acc: CheckIn[], currentCheckin: CheckIn) => {
+      const previousCheckin = acc.filter(
+        entry => entry.date.valueOf() === currentCheckin.date.valueOf()
+      );
 
       if (previousCheckin.length === 0) {
         return [...acc, currentCheckin];
@@ -108,7 +108,7 @@ const entriesToCheckins = (entries: IGSheetEntry[]): ICheckIn[] => {
   return typedEntries;
 };
 
-export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
+const getAllCheckins = async (id: string): Promise<CheckIn[]> => {
   if (id.length === 0) {
     throw new Error("invalid ID");
   }
@@ -118,3 +118,5 @@ export const getAllCheckins = async (id: string): Promise<ICheckIn[]> => {
 
   return entriesToCheckins(fullResponse.feed.entry);
 };
+
+export default getAllCheckins;

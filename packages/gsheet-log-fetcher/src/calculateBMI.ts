@@ -1,6 +1,6 @@
-import { IComputedCheckIn } from "@tdee/types/src/checkins";
+import { ComputedCheckIn } from "@tdee/types/src/checkins";
 
-const calculateBMI = (checkIns: IComputedCheckIn[]) =>
+const calculateBMI = (checkIns: ComputedCheckIn[]): ComputedCheckIn[] =>
   checkIns.map(checkIn =>
     checkIn.weight
       ? {

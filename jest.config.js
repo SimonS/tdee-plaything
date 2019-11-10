@@ -1,4 +1,6 @@
 module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
   roots: ["./packages"],
   transform: {
     "^.+\\.tsx?$": "ts-jest"

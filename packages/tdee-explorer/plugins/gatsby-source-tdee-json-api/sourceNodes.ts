@@ -1,12 +1,13 @@
 import { SourceNodesArgs, NodeInput } from "gatsby";
-import { getAllCheckins } from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
-import { ICheckIn } from "@tdee/types/src/checkins";
+import getAllCheckins from "@tdee/gsheet-log-fetcher/src/getAllCheckins";
+import { CheckIn } from "@tdee/types/src/checkins";
+import * as dotenv from "dotenv";
 
-export const getSpreadsheetID = () => {
+export const getSpreadsheetID = (): string => {
   const activeEnv =
     process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
 
-  require("dotenv").config({
+  dotenv.config({
     path: `.env.${activeEnv}`,
   });
 
@@ -25,12 +26,12 @@ export const sourceNodes = async ({
   actions,
   createNodeId,
   createContentDigest,
-}: SourceNodesArgs) => {
+}: SourceNodesArgs): Promise<void> => {
   const { createNode } = actions;
 
-  const checkins: ICheckIn[] = await getAllCheckins(getSpreadsheetID());
+  const checkins: CheckIn[] = await getAllCheckins(getSpreadsheetID());
 
-  checkins.forEach((checkIn: ICheckIn) => {
+  checkins.forEach((checkIn: CheckIn) => {
     const strCheckIn = JSON.stringify(checkIn);
 
     const nodeMeta = {
@@ -38,14 +39,14 @@ export const sourceNodes = async ({
       parent: undefined,
       children: [],
       internal: {
-        type: `CheckIn`,
-        mediaType: `text/html`,
+        type: "CheckIn",
+        mediaType: "text/html",
         content: strCheckIn,
         contentDigest: createContentDigest(checkIn),
       },
     };
 
-    const node: NodeInput = Object.assign({}, checkIn, nodeMeta);
+    const node: NodeInput = { ...checkIn, ...nodeMeta };
     createNode(node);
   });
 };

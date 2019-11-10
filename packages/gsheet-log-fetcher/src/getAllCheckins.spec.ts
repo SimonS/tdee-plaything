@@ -1,13 +1,14 @@
-jest.mock("node-fetch");
 import fetch from "node-fetch";
-import { realData } from "../__FIXTURES__/realData";
-import { getAllCheckins } from "./getAllCheckins";
+import realData from "../__FIXTURES__/realData";
+import getAllCheckins from "./getAllCheckins";
+
+jest.mock("node-fetch");
 
 const { Response } = jest.requireActual("node-fetch");
 let allCheckins;
 
 beforeAll(async () => {
-  (fetch as any).mockReturnValue(
+  (fetch as jest.MockedFunction<typeof fetch>).mockReturnValue(
     Promise.resolve(new Response(JSON.stringify(realData)))
   );
   allCheckins = await getAllCheckins("foo");
@@ -48,5 +49,7 @@ test("further checkins consolidate weight and calories", () => {
 });
 
 test("checkins should be sorted by date", () => {
-  expect(allCheckins[20]).toMatchObject({ date: new Date('2019-05-19T01:00:00.000Z') })
-})
+  expect(allCheckins[20]).toMatchObject({
+    date: new Date("2019-05-19T01:00:00.000Z")
+  });
+});

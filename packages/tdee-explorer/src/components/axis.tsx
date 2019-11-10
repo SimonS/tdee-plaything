@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-interface IAxisProps {
+interface AxisProps {
   orientation: "bottom" | "left" | "right";
   margin: number;
   scale: d3.AxisScale<d3.AxisDomain>;
 }
 
-const Axis: React.FunctionComponent<IAxisProps> = ({
+const Axis: React.FunctionComponent<AxisProps> = ({
   orientation,
   margin,
   scale,
@@ -26,6 +26,8 @@ const Axis: React.FunctionComponent<IAxisProps> = ({
       break;
     case "right":
       axis = d3.axisRight(scale);
+      break;
+    default:
       break;
   }
 
