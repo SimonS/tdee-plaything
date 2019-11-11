@@ -28,7 +28,7 @@ const Axis: React.FunctionComponent<AxisProps> = ({
       axis = d3.axisRight(scale);
       break;
     default:
-      break;
+      throw new Error(`Unexpected orientation - "${orientation}"`);
   }
 
   useEffect(() => {
