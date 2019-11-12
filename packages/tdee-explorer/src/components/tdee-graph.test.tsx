@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import TDEEGraph from "../../components/tdee-graph";
+import TDEEGraph from "./tdee-graph";
 
 describe("<TDEEGraph />", () => {
   test("should display the graph", async () => {
