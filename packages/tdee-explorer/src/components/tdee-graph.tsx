@@ -26,7 +26,9 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
   };
   const [averageOver, setAverage] = useState(21);
   const [activeDate, setActiveDate] = useState(
-    checkIns[Math.floor(checkIns.length / 2)].date
+    checkIns.length
+      ? checkIns[Math.floor(checkIns.length / 2)].date
+      : new Date()
   );
 
   const weightCheckins: CheckIn[] = checkIns.filter(d => d.weight);

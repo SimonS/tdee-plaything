@@ -12,6 +12,9 @@
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \""
   },
+  "jest": {
+    "preset": "jest-preset-gatsby/typescript"
+  },
   "dependencies": {
     "@tdee/gsheet-log-fetcher": "0.0.2",
     "@tdee/types": "0.0.1",
@@ -26,9 +29,15 @@
     "typescript": "^3.7.2"
   },
   "devDependencies": {
+    "@testing-library/react": "^9.3.2",
     "@types/d3": "^5.7.2",
+    "@types/jest": "^24.0.22",
     "@types/node-sass": "^4.11.0",
-    "prettier": "^1.19.1"
+    "@types/react-test-renderer": "^16.9.1",
+    "jest": "^24.9.0",
+    "jest-preset-gatsby": "^1.0.15",
+    "prettier": "^1.19.1",
+    "react-test-renderer": "^16.11.0"
   },
   "repository": {
     "type": "git",
