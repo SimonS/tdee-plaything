@@ -16,6 +16,16 @@
     "preset": "jest-preset-gatsby/typescript",
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setupTests.ts"
+    ],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
     ]
   },
   "dependencies": {
