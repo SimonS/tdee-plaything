@@ -198,7 +198,11 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
   };
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMinYMin meet"
+      data-testid="wrapper-svg"
+    >
       <title>Weightloss Statistics</title>
       {paths.map(hydratePath)}
       <Axis
