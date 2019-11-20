@@ -226,6 +226,7 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
               defaultValue={averageOver.toString()}
               onChange={(e): void => setAverage(parseInt(e.target.value, 10))}
               name="averageOver"
+              data-testid="averageSlider"
             />
           </label>
         </form>
