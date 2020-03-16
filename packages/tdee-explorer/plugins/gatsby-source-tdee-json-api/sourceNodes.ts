@@ -15,7 +15,7 @@ export const getSpreadsheetID = (): string => {
 
   if (spreadsheetID === "") {
     throw new Error(
-      "no spreadsheet ID found, add it to your environment variables or locally to '.env.development'"
+      `no spreadsheet ID found, add it to your environment variables or locally to '.env.${activeEnv}'`
     );
   }
 
