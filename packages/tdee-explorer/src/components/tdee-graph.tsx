@@ -29,8 +29,8 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
     checkIns[Math.floor(checkIns.length / 2)].date
   );
 
-  const weightCheckins: CheckIn[] = checkIns.filter(d => d.weight);
-  const calorieCheckins: CheckIn[] = checkIns.filter(d => d.calories);
+  const weightCheckins: CheckIn[] = checkIns.filter((d) => d.weight);
+  const calorieCheckins: CheckIn[] = checkIns.filter((d) => d.calories);
 
   /* it occurs to me that we will likely have to split this into datasets as
      we add more "computed checkins" and need to filter per-line: */
@@ -38,14 +38,14 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
     calculateRollingAverage(setDefaultCalories(checkIns, 5000), averageOver)
   );
 
-  const BMICheckIns = processedCheckIns.filter(d => d.BMI);
+  const BMICheckIns = processedCheckIns.filter((d) => d.BMI);
 
   const xScale = d3
     .scaleTime()
     .range([margins.left, width - margins.right])
-    .domain(d3.extent(checkIns, d => d.date));
+    .domain(d3.extent(checkIns, (d) => d.date));
 
-  const [min, max] = d3.extent(weightCheckins, d => d.weight);
+  const [min, max] = d3.extent(weightCheckins, (d) => d.weight);
   const weightScale = d3
     .scaleLinear()
     .domain([Math.floor(min) - 0.5, Math.ceil(max) + 0.5])
@@ -63,26 +63,26 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
 
   const weightLine = d3
     .line<CheckIn>()
-    .x(d => xScale(d.date))
-    .y(d => weightScale(d.weight))
+    .x((d) => xScale(d.date))
+    .y((d) => weightScale(d.weight))
     .curve(d3.curveMonotoneX);
 
   const rollingWeightLine = d3
     .line<ComputedCheckIn>()
-    .x(d => xScale(d.date))
-    .y(d => weightScale(d.averageWeight))
+    .x((d) => xScale(d.date))
+    .y((d) => weightScale(d.averageWeight))
     .curve(d3.curveMonotoneX);
 
   const calorieLine = d3
     .line<CheckIn>()
-    .x(d => xScale(d.date))
-    .y(d => calorieScale(d.calories))
+    .x((d) => xScale(d.date))
+    .y((d) => calorieScale(d.calories))
     .curve(d3.curveMonotoneX);
 
   const BMILine = d3
     .line<ComputedCheckIn>()
-    .x(d => xScale(d.date))
-    .y(d => BMIScale(d.BMI))
+    .x((d) => xScale(d.date))
+    .y((d) => BMIScale(d.BMI))
     .curve(d3.curveMonotoneX);
 
   const legendX = width - margins.right + 50;
@@ -149,10 +149,10 @@ const TDEEGraph: React.FunctionComponent<TDEEProps> = ({
     date: Date,
     attribute: string
   ): number | null =>
-    dataSource.filter(checkIn => checkIn.date === date && checkIn[attribute])
+    dataSource.filter((checkIn) => checkIn.date === date && checkIn[attribute])
       .length
       ? dataSource.filter(
-          checkIn => checkIn.date === date && checkIn[attribute]
+          (checkIn) => checkIn.date === date && checkIn[attribute]
         )[0][attribute]
       : null;
 

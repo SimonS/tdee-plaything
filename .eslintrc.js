@@ -9,21 +9,21 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: "module"
+    sourceType: "module",
   },
   settings: {
     react: {
-      version: "16.11"
-    }
+      version: "16.11",
+    },
   },
   rules: {
     "react/prop-types": [0],
     "react/jsx-filename-extension": [
       2,
-      { extensions: [".js", ".jsx", ".ts", ".tsx"] }
-    ]
+      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+    ],
   },
   env: {
-    "jest/globals": true
-  }
+    "jest/globals": true,
+  },
 };

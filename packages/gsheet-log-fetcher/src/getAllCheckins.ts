@@ -21,12 +21,12 @@ enum Month {
   Sep,
   Oct,
   Nov,
-  Dec
+  Dec,
 }
 
 const STARTDATE_LOCATION = {
   row: 3,
-  col: 6
+  col: 6,
 };
 
 /** Google Spreadsheet's old API stores dates like '20-Apr-19'. So that's where
@@ -52,7 +52,7 @@ const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
   const startDate: Date = parseStartDate(
     getContent(
       entries.filter(
-        entry =>
+        (entry) =>
           getRow(entry) === STARTDATE_LOCATION.row &&
           getCol(entry) === STARTDATE_LOCATION.col
       )[0]
@@ -61,20 +61,20 @@ const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
 
   const inputtedEntries = entries
     .filter(
-      entry => getRow(entry) > 11 && getCol(entry) > 3 && getCol(entry) < 11
+      (entry) => getRow(entry) > 11 && getCol(entry) > 3 && getCol(entry) < 11
     )
-    .map(entry => {
+    .map((entry) => {
       const row = getRow(entry);
       const col = getCol(entry);
       return {
         content: getContent(entry),
         row: row - 12,
-        col: col - 4
+        col: col - 4,
       };
     });
 
   const typedEntries = inputtedEntries
-    .map(entry => {
+    .map((entry) => {
       const checkinDate = new Date(startDate);
       const week = (entry.row % 2 ? entry.row - 1 : entry.row) / 2;
 
@@ -89,14 +89,14 @@ const entriesToCheckins = (entries: GSheetEntry[]): CheckIn[] => {
     })
     .reduce((acc: CheckIn[], currentCheckin: CheckIn) => {
       const previousCheckin = acc.filter(
-        entry => entry.date.valueOf() === currentCheckin.date.valueOf()
+        (entry) => entry.date.valueOf() === currentCheckin.date.valueOf()
       );
 
       if (previousCheckin.length === 0) {
         return [...acc, currentCheckin];
       }
 
-      return acc.map(entry =>
+      return acc.map((entry) =>
         currentCheckin.date.valueOf() === entry.date.valueOf()
           ? { ...entry, ...currentCheckin }
           : entry
@@ -114,7 +114,7 @@ const getAllCheckins = async (id: string): Promise<CheckIn[]> => {
   }
 
   const url = `https://spreadsheets.google.com/feeds/cells/${id}/1/public/values?alt=json`;
-  const fullResponse = await fetch(url).then(res => res.json());
+  const fullResponse = await fetch(url).then((res) => res.json());
 
   return entriesToCheckins(fullResponse.feed.entry);
 };
