@@ -8,7 +8,7 @@ const calculateRollingAverage = (
     (acc: ComputedCheckIn[], curr: CheckIn, i) => {
       const calculationWindow = [
         ...acc.slice(windowSize ? Math.max(0, i - windowSize + 1) : 0),
-        curr
+        curr,
       ];
 
       const sum = calculationWindow.reduce<number>(
@@ -22,8 +22,8 @@ const calculateRollingAverage = (
         {
           ...curr,
           averageWeight:
-            sum / calculationWindow.filter(checkIn => checkIn.weight).length
-        }
+            sum / calculationWindow.filter((checkIn) => checkIn.weight).length,
+        },
       ];
     },
     []

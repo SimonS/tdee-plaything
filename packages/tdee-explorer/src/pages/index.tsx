@@ -28,7 +28,7 @@ export const query = graphql`
 `;
 
 const asCheckIns = (checkInNodes): CheckIn[] =>
-  checkInNodes.map(d => ({ ...d, date: new Date(d.date) }));
+  checkInNodes.map((d) => ({ ...d, date: new Date(d.date) }));
 
 const IndexPage = ({ data }: CheckInQuery): JSX.Element => (
   <div style={{ margin: "3rem auto", maxWidth: 800 }}>
