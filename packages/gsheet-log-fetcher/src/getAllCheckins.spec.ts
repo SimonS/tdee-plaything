@@ -20,19 +20,19 @@ test("throws an error when no id provided", () => {
 
 test("first checkin has correct implicit date", () => {
   expect(allCheckins[0]).toMatchObject({
-    date: new Date(2019, 3, 29, 2)
+    date: new Date(2019, 3, 29, 2),
   });
 });
 
 test("further checkins in that week have correct calculated date", () => {
   expect(allCheckins[2]).toMatchObject({
-    date: new Date(2019, 4, 1, 2)
+    date: new Date(2019, 4, 1, 2),
   });
 });
 
 test("further checkins in next week have correct calculated date", () => {
   expect(allCheckins[8]).toMatchObject({
-    date: new Date(2019, 4, 7, 2)
+    date: new Date(2019, 4, 7, 2),
   });
 });
 
@@ -50,6 +50,6 @@ test("further checkins consolidate weight and calories", () => {
 
 test("checkins should be sorted by date", () => {
   expect(allCheckins[20]).toMatchObject({
-    date: new Date("2019-05-19T01:00:00.000Z")
+    date: new Date("2019-05-19T01:00:00.000Z"),
   });
 });
