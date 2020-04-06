@@ -1,0 +1,23 @@
+{
+  "name": "@tdee/bin-day-fetcher",
+  "version": "0.0.1",
+  "description": "fetches data from Rochdale council about upcoming bin days",
+  "main": "index.js",
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.7",
+    "@types/node-fetch": "^2.5.3",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  }
+}
