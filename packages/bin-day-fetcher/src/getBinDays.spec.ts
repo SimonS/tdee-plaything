@@ -15,6 +15,10 @@ describe("calls correct API endpoints", () => {
     mockFetchWith([]);
   });
 
+  afterEach(() => {
+    (fetch as jest.MockedFunction<typeof fetch>).mockClear();
+  });
+
   test("uses correct API endpoint root", async () => {
     const expectedRoot = new RegExp(
       `^http://applications.rochdale.gov.uk/RefuseCollectionCalendar/Home/CollectionDates`
