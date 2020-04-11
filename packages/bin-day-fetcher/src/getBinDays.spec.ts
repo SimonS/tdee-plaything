@@ -4,21 +4,12 @@ import getBinDays from "./getBinDays";
 jest.mock("node-fetch");
 const { Response } = jest.requireActual("node-fetch");
 
-interface RawJSONInstance {
-  ID?: string;
-  PostCode?: string;
-  EvenNumber?: boolean;
-  CollectionTypeID?: string;
+interface BinDayAPIResponse {
   CollectionType: string;
   StartDate: string;
-  DayOfWeek?: number;
-  RepeatCycle?: number;
-  ActualDate?: string;
-  FullAddress?: string | null;
-  UPRN?: number;
 }
 
-const mockFetchWith = (payload: RawJSONInstance[]): void => {
+const mockFetchWith = (payload: BinDayAPIResponse[]): void => {
   (fetch as jest.MockedFunction<typeof fetch>).mockReturnValue(
     Promise.resolve(new Response(JSON.stringify(payload)))
   );

@@ -5,18 +5,9 @@ interface BinDay {
   date: Date;
 }
 
-interface RawJSONInstance {
-  ID?: string;
-  PostCode?: string;
-  EvenNumber?: boolean;
-  CollectionTypeID?: string;
+interface BinDayAPIResponse {
   CollectionType: string;
   StartDate: string;
-  DayOfWeek?: number;
-  RepeatCycle?: number;
-  ActualDate: string;
-  FullAddress?: string | null;
-  UPRN?: number;
 }
 
 const getBinDays = async (date?: Date): Promise<BinDay[]> => {
@@ -30,7 +21,7 @@ const getBinDays = async (date?: Date): Promise<BinDay[]> => {
 
   return await fetch(`${apiRoot}?UPRN=${UPRN}&selectedDate=${formattedDate}`)
     .then(res => res.json())
-    .then((binDays: RawJSONInstance[]) =>
+    .then((binDays: BinDayAPIResponse[]) =>
       binDays.map(binDay => {
         const dateStamp = parseInt(
           binDay.StartDate.replace(/\/Date\((\d+)\)\//, "$1"),
