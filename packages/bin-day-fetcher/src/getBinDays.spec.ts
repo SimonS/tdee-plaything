@@ -1,13 +1,13 @@
 import fetch from "node-fetch";
-import getBinDays from "./getBinDays";
+import {
+  BinType,
+  BinDayAPIResponse,
+  getBinDays,
+  getNextBinDay
+} from "./getBinDays";
 
 jest.mock("node-fetch");
 const { Response } = jest.requireActual("node-fetch");
-
-interface BinDayAPIResponse {
-  CollectionType: string;
-  StartDate: string;
-}
 
 const mockFetchWith = (payload: BinDayAPIResponse[]): void => {
   (fetch as jest.MockedFunction<typeof fetch>).mockReturnValue(
@@ -67,20 +67,157 @@ describe("calls correct API endpoints", () => {
       expect.stringContaining(`selectedDate=${expectedDateString}`)
     );
   });
+});
 
-  describe("coerces to correct datatypes", () => {
-    test("returns correct date", async () => {
-      const nextDateShouldBe = 1585634400000;
-      mockFetchWith([
-        {
-          CollectionType: "Waste-MIX",
-          StartDate: `/Date(${nextDateShouldBe})/`
-        }
-      ]);
+describe("coerces to correct datatypes", () => {
+  test("returns correct date", async () => {
+    const nextDateShouldBe = 1585634400000;
+    mockFetchWith([
+      {
+        CollectionType: "Waste-MIX",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
 
-      const [nextBinDay] = await getBinDays(new Date(nextDateShouldBe));
+    const [nextBinDay] = await getBinDays(new Date(nextDateShouldBe));
 
-      expect(nextBinDay.date).toEqual(new Date(nextDateShouldBe));
+    expect(nextBinDay.date).toEqual(new Date(nextDateShouldBe));
+  });
+
+  test("waste collection types coerce to General Waste", async () => {
+    const nextDateShouldBe = 1585634400000;
+    mockFetchWith([
+      {
+        CollectionType: "Waste-RES",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      },
+      {
+        CollectionType: "Waste-WASTE",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      },
+      {
+        CollectionType: "Waste-CONTAINER",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
+
+    const [collectionOne, collectionTwo, collectionThree] = await getBinDays(
+      new Date(nextDateShouldBe)
+    );
+
+    expect(collectionOne.bin).toEqual(BinType.GENERAL);
+    expect(collectionTwo.bin).toEqual(BinType.GENERAL);
+    expect(collectionThree.bin).toEqual(BinType.GENERAL);
+  });
+
+  test("Plastic collection types coerce to Plastic", async () => {
+    const nextDateShouldBe = 1585634400000;
+    mockFetchWith([
+      {
+        CollectionType: "Waste-MIX",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      },
+      {
+        CollectionType: "Waste-GLASS",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
+
+    const [collectionOne, collectionTwo] = await getBinDays(
+      new Date(nextDateShouldBe)
+    );
+
+    expect(collectionOne.bin).toEqual(BinType.PLASTIC);
+    expect(collectionTwo.bin).toEqual(BinType.PLASTIC);
+  });
+
+  test("Paper collection types coerce to Paper", async () => {
+    const nextDateShouldBe = 1585634400000;
+    mockFetchWith([
+      {
+        CollectionType: "Waste-PC",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      },
+      {
+        CollectionType: "Waste-PAPER",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
+
+    const [collectionOne, collectionTwo] = await getBinDays(
+      new Date(nextDateShouldBe)
+    );
+
+    expect(collectionOne.bin).toEqual(BinType.PAPER);
+    expect(collectionTwo.bin).toEqual(BinType.PAPER);
+  });
+
+  test("Other types default to Food and Garden", async () => {
+    const nextDateShouldBe = 1585634400000;
+    mockFetchWith([
+      {
+        CollectionType: "Waste-GF",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      },
+      {
+        CollectionType: "Waste-GardenStuffsButThisCouldBeCalledAnythingTBH",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
+
+    const [collectionOne, collectionTwo] = await getBinDays(
+      new Date(nextDateShouldBe)
+    );
+
+    expect(collectionOne.bin).toEqual(BinType.FOOD);
+    expect(collectionTwo.bin).toEqual(BinType.FOOD);
+  });
+});
+
+describe("getNextBinDay", () => {
+  test("handles single bin types", async () => {
+    const nextDateShouldBe = 1585634400000;
+    const aLaterDate = 1587448800000;
+
+    const date = new Date(nextDateShouldBe);
+
+    mockFetchWith([
+      {
+        CollectionType: "Waste-MIX",
+        StartDate: `/Date(${aLaterDate})/`
+      },
+      {
+        CollectionType: "Waste-MIX",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
+
+    const nextBinDay = await getNextBinDay(date);
+
+    expect(nextBinDay).toMatchObject({ date: date, bins: [BinType.PLASTIC] });
+  });
+
+  test("groups bin types correctly", async () => {
+    const nextDateShouldBe = 1585634400000;
+
+    const date = new Date(nextDateShouldBe);
+
+    mockFetchWith([
+      {
+        CollectionType: "Waste-GF",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      },
+      {
+        CollectionType: "Waste-MIX",
+        StartDate: `/Date(${nextDateShouldBe})/`
+      }
+    ]);
+
+    const nextBinDay = await getNextBinDay(date);
+
+    expect(nextBinDay).toMatchObject({
+      date: date,
+      bins: [BinType.FOOD, BinType.PLASTIC]
     });
   });
 });
