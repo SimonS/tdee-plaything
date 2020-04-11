@@ -4,7 +4,21 @@ import getBinDays from "./getBinDays";
 jest.mock("node-fetch");
 const { Response } = jest.requireActual("node-fetch");
 
-const mockFetchWith = (payload: []): void => {
+interface RawJSONInstance {
+  ID?: string;
+  PostCode?: string;
+  EvenNumber?: boolean;
+  CollectionTypeID?: string;
+  CollectionType: string;
+  StartDate: string;
+  DayOfWeek?: number;
+  RepeatCycle?: number;
+  ActualDate?: string;
+  FullAddress?: string | null;
+  UPRN?: number;
+}
+
+const mockFetchWith = (payload: RawJSONInstance[]): void => {
   (fetch as jest.MockedFunction<typeof fetch>).mockReturnValue(
     Promise.resolve(new Response(JSON.stringify(payload)))
   );
@@ -61,5 +75,21 @@ describe("calls correct API endpoints", () => {
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining(`selectedDate=${expectedDateString}`)
     );
+  });
+
+  describe("coerces to correct datatypes", () => {
+    test("returns correct date", async () => {
+      const nextDateShouldBe = 1585634400000;
+      mockFetchWith([
+        {
+          CollectionType: "Waste-MIX",
+          StartDate: `/Date(${nextDateShouldBe})/`
+        }
+      ]);
+
+      const [nextBinDay] = await getBinDays(new Date(nextDateShouldBe));
+
+      expect(nextBinDay.date).toEqual(new Date(nextDateShouldBe));
+    });
   });
 });
