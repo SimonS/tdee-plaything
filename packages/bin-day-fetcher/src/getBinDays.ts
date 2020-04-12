@@ -8,7 +8,7 @@ export enum BinType {
   PLASTIC = "Plastic and Glass"
 }
 
-interface BinDay {
+export interface BinDay {
   date: Date;
   bin: BinType;
 }
