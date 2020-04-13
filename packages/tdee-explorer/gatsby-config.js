@@ -7,5 +7,6 @@ module.exports = {
     "gatsby-plugin-sass",
     "gatsby-plugin-typescript",
     "gatsby-source-tdee-json-api",
+    "gatsby-source-bin-day-api",
   ],
 };

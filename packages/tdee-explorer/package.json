@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@tdee/gsheet-log-fetcher": "0.0.2",
+    "@tdee/bin-day-fetcher": "0.0.1",
     "@tdee/types": "0.0.1",
     "d3": "^5.12.0",
     "gatsby": "^2.17.10",

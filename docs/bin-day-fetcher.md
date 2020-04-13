@@ -20,3 +20,22 @@ Reverse engineering what's there reveals a bit of a mess, mostly cos it's .net a
         .then(console.log)
 
 Which gives you ALL of the bin days since `selectedDate=`. Which should be enough to give me pretty much everything I wanted to do above.
+
+## Update: April 12, 2020
+
+As of today, we are now publishing bin day data to graphql. Querying /\_\_graphql with
+
+```
+query BinDaysByDate {
+  allBinDay {
+    group(field: date) {
+      fieldValue
+      nodes {
+        bin
+      }
+    }
+  }
+}
+```
+
+should retrieve all bin days grouped by date.
