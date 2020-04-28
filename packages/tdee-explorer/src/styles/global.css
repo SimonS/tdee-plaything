@@ -7,7 +7,7 @@
   --s4: calc(var(--s3) * var(--ratio));
   --s5: calc(var(--s4) * var(--ratio));
 
-  --measure: 60ch;
+  --measure: 80ch;
 }
 
 * {
