@@ -14,6 +14,9 @@ module.exports = {
   transformIgnorePatterns: ["node_modules/(?!(gatsby)/)"],
   globals: {
     __PATH_PREFIX__: "",
+    "ts-jest": {
+      tsConfigFile: "tsconfig.json",
+    },
   },
   testURL: "http://localhost",
   setupFiles: ["<rootDir>/loadershim.js"],
