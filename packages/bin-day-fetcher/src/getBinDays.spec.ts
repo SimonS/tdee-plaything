@@ -3,7 +3,7 @@ import {
   BinType,
   BinDayAPIResponse,
   getBinDays,
-  getNextBinDay
+  getNextBinDay,
 } from "./getBinDays";
 
 jest.mock("node-fetch");
@@ -75,8 +75,8 @@ describe("coerces to correct datatypes", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-MIX",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const [nextBinDay] = await getBinDays(new Date(nextDateShouldBe));
@@ -89,16 +89,16 @@ describe("coerces to correct datatypes", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-RES",
-        StartDate: `/Date(${nextDateShouldBe})/`
+        StartDate: `/Date(${nextDateShouldBe})/`,
       },
       {
         CollectionType: "Waste-WASTE",
-        StartDate: `/Date(${nextDateShouldBe})/`
+        StartDate: `/Date(${nextDateShouldBe})/`,
       },
       {
         CollectionType: "Waste-CONTAINER",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const [collectionOne, collectionTwo, collectionThree] = await getBinDays(
@@ -115,12 +115,12 @@ describe("coerces to correct datatypes", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-MIX",
-        StartDate: `/Date(${nextDateShouldBe})/`
+        StartDate: `/Date(${nextDateShouldBe})/`,
       },
       {
         CollectionType: "Waste-GLASS",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const [collectionOne, collectionTwo] = await getBinDays(
@@ -136,12 +136,12 @@ describe("coerces to correct datatypes", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-PC",
-        StartDate: `/Date(${nextDateShouldBe})/`
+        StartDate: `/Date(${nextDateShouldBe})/`,
       },
       {
         CollectionType: "Waste-PAPER",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const [collectionOne, collectionTwo] = await getBinDays(
@@ -157,12 +157,12 @@ describe("coerces to correct datatypes", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-GF",
-        StartDate: `/Date(${nextDateShouldBe})/`
+        StartDate: `/Date(${nextDateShouldBe})/`,
       },
       {
         CollectionType: "Waste-GardenStuffsButThisCouldBeCalledAnythingTBH",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const [collectionOne, collectionTwo] = await getBinDays(
@@ -184,12 +184,12 @@ describe("getNextBinDay", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-MIX",
-        StartDate: `/Date(${aLaterDate})/`
+        StartDate: `/Date(${aLaterDate})/`,
       },
       {
         CollectionType: "Waste-MIX",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const nextBinDay = await getNextBinDay(date);
@@ -205,19 +205,19 @@ describe("getNextBinDay", () => {
     mockFetchWith([
       {
         CollectionType: "Waste-GF",
-        StartDate: `/Date(${nextDateShouldBe})/`
+        StartDate: `/Date(${nextDateShouldBe})/`,
       },
       {
         CollectionType: "Waste-MIX",
-        StartDate: `/Date(${nextDateShouldBe})/`
-      }
+        StartDate: `/Date(${nextDateShouldBe})/`,
+      },
     ]);
 
     const nextBinDay = await getNextBinDay(date);
 
     expect(nextBinDay).toMatchObject({
       date: date,
-      bins: [BinType.FOOD, BinType.PLASTIC]
+      bins: [BinType.FOOD, BinType.PLASTIC],
     });
   });
 });
