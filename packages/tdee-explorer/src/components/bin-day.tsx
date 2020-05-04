@@ -1,6 +1,7 @@
 import React from "react";
 import { useStaticQuery, graphql } from "gatsby";
 import { BinType } from "@tdee/bin-day-fetcher/src/getBinDays";
+import Bin from "./bin";
 
 interface BinDayInfo {
   date: Date;
@@ -33,12 +34,10 @@ const BinDay = (): JSX.Element => {
   );
   return (
     <>
-      <h2>Next Bin Day: {new Date(data.date).toLocaleDateString()}</h2>
-      <ul>
-        {data.bins.map((bin, i) => (
-          <li key={i}>{bin}</li>
-        ))}
-      </ul>
+      {/* <h2>Next Bin Day: {new Date(data.date).toLocaleDateString()}</h2> */}
+      {data.bins.map((bin, i) => (
+        <Bin bin={bin} key={`bin-${i}`} />
+      ))}
     </>
   );
 };
