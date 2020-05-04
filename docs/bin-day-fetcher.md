@@ -39,3 +39,15 @@ query BinDaysByDate {
 ```
 
 should retrieve all bin days grouped by date.
+
+## Update: May 4th 2020
+
+Eesh, this is slow work, isn't it? :D As of today, we now have two little icons on the main index page. They may not stay there in that form. It's likely that I'll start forming some sort of dashboard of sorts here. Rome in a day and all that.
+
+To keep everything timely, it all runs from a netlify webhook, hit by an IFTTT recipe which fires at 9am each day. That's probably more than it needs (every Sunday would be enough), but I like both the redundancy and that this likely scales to more daily-checkins than just that.
+
+## Credit
+
+There is now a little icon on the main site to remind me what bin day it is this week. It uses a Creative Commons licensed icon:
+
+“[Dustbin](https://thenounproject.com/search/?q=wheelie%20bin&i=1413990)” by Wuppdidu, from the Noun Project
