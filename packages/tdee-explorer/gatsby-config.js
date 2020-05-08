@@ -18,5 +18,13 @@ module.exports = {
         ],
       },
     },
+    {
+      resolve: "gatsby-source-graphql",
+      options: {
+        typeName: "WPGraphQL",
+        fieldName: "bdt",
+        url: "https://breakfastdinnertea.co.uk/graphql",
+      },
+    },
   ],
 };

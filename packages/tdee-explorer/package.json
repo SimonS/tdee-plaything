@@ -25,6 +25,7 @@
     "gatsby-plugin-prefetch-google-fonts": "^1.4.3",
     "gatsby-plugin-sass": "^2.1.20",
     "gatsby-plugin-typescript": "^2.1.15",
+    "gatsby-source-graphql": "^2.5.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.0.0",
     "node-sass": "^4.13.0",
