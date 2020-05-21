@@ -40,7 +40,7 @@ const FilmsPage = ({ data }): JSX.Element => (
             </time>
           </dd>
           <dt>Rated</dt>
-          <dd>{film.watchOf.rating}</dd>
+          <dd>{film.watchOf.rating}/5</dd>
         </dl>
         {film.watchOf.review && (
           <a href={film.watchOf.url}>
