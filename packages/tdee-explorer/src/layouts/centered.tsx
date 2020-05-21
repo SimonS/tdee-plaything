@@ -1,8 +1,13 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import layoutStyles from "./centered.module.css";
 
-const Layout = ({ children, className }): JSX.Element => (
+type CenteredProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+const Centered = ({ children, className }: CenteredProps): JSX.Element => (
   <div className={`${className} ${layoutStyles.centered}`}>{children}</div>
 );
 
-export default Layout;
+export default Centered;

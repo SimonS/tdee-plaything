@@ -3,7 +3,7 @@ import layoutStyles from "./stack.module.css";
 
 type StackProps = { as?: string; className?: string; children: ReactNode };
 
-const stack = ({
+const Stack = ({
   as = "div",
   className,
   children,
@@ -13,4 +13,4 @@ const stack = ({
   return <Tag className={`${layoutStyles.stack} ${className}`}>{children}</Tag>;
 };
 
-export default stack;
+export default Stack;
