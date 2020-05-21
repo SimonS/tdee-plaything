@@ -1,7 +1,11 @@
 import React from "react";
-import layoutStyles from "./sidebar.module.css";
+import * as layoutStyles from "./sidebar.module.css";
 
-const sidebar = ({ children }): JSX.Element => (
+const Sidebar = ({
+  children,
+}: {
+  children: React.ReactElement[];
+}): JSX.Element => (
   <div className={layoutStyles.sidebar}>
     <div>
       {children.map((child, i) => (
@@ -11,4 +15,4 @@ const sidebar = ({ children }): JSX.Element => (
   </div>
 );
 
-export default sidebar;
+export default Sidebar;

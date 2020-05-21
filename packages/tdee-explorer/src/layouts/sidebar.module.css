@@ -3,7 +3,7 @@
 }
 
 .sidebar > * {
-  --space: var(--s2);
+  --space: var(--s5);
 
   display: flex;
   flex-wrap: wrap;

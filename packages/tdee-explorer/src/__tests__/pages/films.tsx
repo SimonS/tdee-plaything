@@ -1,0 +1,76 @@
+import React from "react";
+import renderer from "react-test-renderer";
+import { render } from "@testing-library/react";
+
+import FilmsPage, { FilmWatch, GraphQLFilmQuery } from "../../pages/films";
+
+describe("Films", () => {
+  const filmWithReview = {
+    date: "2020-05-20T22:18:04",
+    watchOf: {
+      name: "FILM",
+      rating: 4,
+      review: "REVIEW",
+      url: "https://example.com/user/film/film/",
+    },
+  };
+
+  const simpleWatch = {
+    date: "2020-05-10T21:17:00",
+    watchOf: {
+      name: "A FILM I JUST WATCHED",
+      rating: 3.5,
+      review: null,
+      url: "https://example.com/user/film/a-film-i-just-watched/",
+    },
+  };
+
+  const makeFilmResponse = (watches: FilmWatch[]): GraphQLFilmQuery => ({
+    data: {
+      bdt: {
+        posts: {
+          nodes: [...watches],
+        },
+      },
+    },
+  });
+
+  it("displays the film name", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+    const { queryByText } = render(<FilmsPage data={data} />);
+
+    expect(queryByText("A FILM I JUST WATCHED")).toBeTruthy();
+  });
+
+  it("renders the date in a human readable form", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+    const { getByText } = render(<FilmsPage data={data} />);
+
+    expect(getByText("Viewed").nextElementSibling?.textContent).toEqual(
+      "Sun May 10 2020"
+    );
+  });
+
+  it("renders a rating out of 5", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+    const { getByText } = render(<FilmsPage data={data} />);
+
+    expect(getByText("Rated").nextElementSibling?.textContent).toEqual("3.5/5");
+  });
+
+  it("links to letterboxd review when present", () => {
+    const { data } = makeFilmResponse([filmWithReview]);
+
+    const { getByText } = render(<FilmsPage data={data} />);
+    expect(getByText(/on Letterboxd/).getAttribute("href")).toEqual(
+      "https://example.com/user/film/film/"
+    );
+  });
+
+  it("omits a review link if there is no review", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+
+    const { queryByText } = render(<FilmsPage data={data} />);
+    expect(queryByText(/on Letterboxd/)).toBeNull();
+  });
+});
