@@ -1,7 +1,11 @@
 import React, { ReactNode } from "react";
 import * as layoutStyles from "./stack.module.css";
 
-type StackProps = { as?: string; className?: string; children: ReactNode };
+interface StackProps {
+  as?: keyof JSX.IntrinsicElements;
+  className?: string;
+  children: ReactNode;
+}
 
 const Stack = ({
   as = "div",
