@@ -43,7 +43,7 @@ h2 {
 
 h1 {
   font-size: var(--s5);
-  text-align: right;
+  line-height: 1;
 }
 
 h2 {
