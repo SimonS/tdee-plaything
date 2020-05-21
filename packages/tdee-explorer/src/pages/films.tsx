@@ -23,11 +23,31 @@ export const query = graphql`
   }
 `;
 
-const FilmsPage = ({ data }): JSX.Element => (
+interface FilmWatch {
+  date: string;
+  watchOf: {
+    name: string;
+    rating?: number;
+    review?: string | null;
+    url?: string;
+  };
+}
+
+interface GraphQLFilmQuery {
+  data: {
+    bdt: {
+      posts: {
+        nodes: FilmWatch[];
+      };
+    };
+  };
+}
+
+const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
   <Layout>
     <h1>Films</h1>
 
-    {data.bdt.posts.nodes.map((film, i) => (
+    {data.bdt.posts.nodes.map((film, i: number) => (
       <Stack as="article" className="kind-watch h-entry" key={`film-${i}`}>
         <header>
           <h2>{film.watchOf.name}</h2>

@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Films renders correctly 1`] = `
+<div
+  className="layout undefined"
+>
+  <div>
+    <div>
+      <div>
+        <div
+          className="logo"
+        >
+          BreakfastDinnerTea
+        </div>
+      </div>
+      <div>
+        <main
+          className="undefined undefined"
+        >
+          <h1>
+            Films
+          </h1>
+          <article
+            className="undefined kind-watch h-entry"
+          >
+            <header>
+              <h2>
+                21 Jump Street (2012)
+              </h2>
+            </header>
+            <dl>
+              <dt>
+                Viewed
+              </dt>
+              <dd>
+                <time
+                  className="dt-published"
+                  dateTime="2020-05-20T22:18:04"
+                >
+                  Wed May 20 2020
+                </time>
+              </dd>
+              <dt>
+                Rated
+              </dt>
+              <dd>
+                4
+                /5
+              </dd>
+            </dl>
+            <a
+              href="https://letterboxd.com/simonscarfe/film/21-jump-street/"
+            >
+              I wrote some thoughts on Letterboxd
+            </a>
+          </article>
+          <article
+            className="undefined kind-watch h-entry"
+          >
+            <header>
+              <h2>
+                Thunder Road (2018)
+              </h2>
+            </header>
+            <dl>
+              <dt>
+                Viewed
+              </dt>
+              <dd>
+                <time
+                  className="dt-published"
+                  dateTime="2020-05-10T21:17:00"
+                >
+                  Sun May 10 2020
+                </time>
+              </dd>
+              <dt>
+                Rated
+              </dt>
+              <dd>
+                3.5
+                /5
+              </dd>
+            </dl>
+          </article>
+          <footer>
+            <span
+              className="footer-item"
+            >
+              <a
+                href="http://creativecommons.org/licenses/by-sa/3.0/"
+                rel="license"
+              >
+                <img
+                  alt="This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"
+                  src="https://i.creativecommons.org/l/by-sa/3.0/80x15.png"
+                />
+              </a>
+            </span>
+            <span
+              className="footer-item"
+            >
+              © Simon Scarfe 2007-2020
+            </span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
+`;

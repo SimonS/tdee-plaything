@@ -1,11 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Centered from "./centered";
 import Sidebar from "./sidebar";
 import Stack from "./stack";
 
 import "../styles/global.css";
 
-const Layout = ({ children }): JSX.Element => (
+const Layout = ({ children }: { children: ReactNode }): JSX.Element => (
   <Centered className="layout">
     <Sidebar>
       <div className="logo">BreakfastDinnerTea</div>
