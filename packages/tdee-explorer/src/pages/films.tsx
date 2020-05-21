@@ -23,7 +23,7 @@ export const query = graphql`
   }
 `;
 
-interface FilmWatch {
+export interface FilmWatch {
   date: string;
   watchOf: {
     name: string;
@@ -33,7 +33,7 @@ interface FilmWatch {
   };
 }
 
-interface GraphQLFilmQuery {
+export interface GraphQLFilmQuery {
   data: {
     bdt: {
       posts: {
