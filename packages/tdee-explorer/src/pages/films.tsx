@@ -43,9 +43,7 @@ const FilmsPage = ({ data }): JSX.Element => (
           <dd>{film.watchOf.rating}/5</dd>
         </dl>
         {film.watchOf.review && (
-          <a href={film.watchOf.url}>
-            I wrote some thoughts on it on Letterboxd
-          </a>
+          <a href={film.watchOf.url}>I wrote some thoughts on Letterboxd</a>
         )}
       </Stack>
     ))}

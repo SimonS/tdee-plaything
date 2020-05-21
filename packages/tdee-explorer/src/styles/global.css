@@ -26,8 +26,8 @@
   padding: 0;
 }
 
-.layout {
-  margin-top: var(--s2);
+body {
+  padding: var(--s2);
 }
 
 .logo {
@@ -39,6 +39,14 @@
                         I just like the way the type falls. */
   overflow-wrap: break-word;
   padding-bottom: var(--s1);
+}
+
+a {
+  color: #b81007;
+}
+
+a:visited {
+  color: #345693;
 }
 
 h1,
@@ -83,7 +91,6 @@ footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: var(--s1);
   margin-top: var(--s3);
   padding-top: var(--s-1);
   text-align: right;
