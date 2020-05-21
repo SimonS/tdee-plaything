@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import layoutStyles from "./centered.module.css";
+import * as layoutStyles from "./centered.module.css";
 
 type CenteredProps = {
   children: ReactNode;

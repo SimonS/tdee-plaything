@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import layoutStyles from "./stack.module.css";
+import * as layoutStyles from "./stack.module.css";
 
 type StackProps = { as?: string; className?: string; children: ReactNode };
 
