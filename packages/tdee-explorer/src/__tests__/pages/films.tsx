@@ -11,21 +11,19 @@ describe("Films", () => {
             {
               date: "2020-05-20T22:18:04",
               watchOf: {
-                name: "21 Jump Street (2012)",
+                name: "FILM",
                 rating: 4,
-                review:
-                  "Way better than I was expecting. Funny and self-aware.",
-                url: "https://letterboxd.com/simonscarfe/film/21-jump-street/",
+                review: "REVIEW",
+                url: "https://example.com/simonscarfe/film/21-jump-street/",
               },
             },
             {
               date: "2020-05-10T21:17:00",
               watchOf: {
-                name: "Thunder Road (2018)",
+                name: "A FILM I JUST WATCHED",
                 rating: 3.5,
                 review: null,
-                url:
-                  "https://letterboxd.com/simonscarfe/film/thunder-road-2018/",
+                url: "https://example.com/simonscarfe/film/thunder-road-2018/",
               },
             },
           ],
