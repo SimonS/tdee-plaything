@@ -5,40 +5,13 @@ import { render } from "@testing-library/react";
 import FilmsPage, { FilmWatch, GraphQLFilmQuery } from "../../pages/films";
 
 describe("Films", () => {
-  const data = {
-    bdt: {
-      posts: {
-        nodes: [
-          {
-            date: "2020-05-20T22:18:04",
-            watchOf: {
-              name: "FILM",
-              rating: 4,
-              review: "REVIEW",
-              url: "https://example.com/simonscarfe/film/21-jump-street/",
-            },
-          },
-          {
-            date: "2020-05-10T21:17:00",
-            watchOf: {
-              name: "A FILM I JUST WATCHED",
-              rating: 3.5,
-              review: null,
-              url: "https://example.com/simonscarfe/film/thunder-road-2018/",
-            },
-          },
-        ],
-      },
-    },
-  };
-
   const filmWithReview = {
     date: "2020-05-20T22:18:04",
     watchOf: {
       name: "FILM",
       rating: 4,
       review: "REVIEW",
-      url: "https://example.com/simonscarfe/film/21-jump-street/",
+      url: "https://example.com/user/film/film/",
     },
   };
 
@@ -48,7 +21,7 @@ describe("Films", () => {
       name: "A FILM I JUST WATCHED",
       rating: 3.5,
       review: null,
-      url: "https://example.com/simonscarfe/film/thunder-road-2018/",
+      url: "https://example.com/user/film/a-film-i-just-watched/",
     },
   };
 
@@ -62,23 +35,42 @@ describe("Films", () => {
     },
   });
 
-  it("renders correctly", () => {
-    const { data } = makeFilmResponse([filmWithReview, simpleWatch]);
-    const tree = renderer.create(<FilmsPage data={data} />).toJSON();
-    expect(tree).toMatchSnapshot();
+  it("displays the film name", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+    const { queryByText } = render(<FilmsPage data={data} />);
+
+    expect(queryByText("A FILM I JUST WATCHED")).toBeTruthy();
   });
 
-  it("displays a review link if there is a review", () => {
+  it("renders the date in a human readable form", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+    const { getByText } = render(<FilmsPage data={data} />);
+
+    expect(getByText("Viewed").nextElementSibling?.textContent).toEqual(
+      "Sun May 10 2020"
+    );
+  });
+
+  it("renders a rating out of 5", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+    const { getByText } = render(<FilmsPage data={data} />);
+
+    expect(getByText("Rated").nextElementSibling?.textContent).toEqual("3.5/5");
+  });
+
+  it("links to letterboxd review when present", () => {
     const { data } = makeFilmResponse([filmWithReview]);
 
-    const { queryByText } = render(<FilmsPage data={data} />);
-    expect(queryByText("I wrote some thoughts on Letterboxd")).toBeTruthy();
+    const { getByText } = render(<FilmsPage data={data} />);
+    expect(getByText(/on Letterboxd/).getAttribute("href")).toEqual(
+      "https://example.com/user/film/film/"
+    );
   });
 
   it("omits a review link if there is no review", () => {
     const { data } = makeFilmResponse([simpleWatch]);
 
     const { queryByText } = render(<FilmsPage data={data} />);
-    expect(queryByText("I wrote some thoughts on Letterboxd")).toBeNull();
+    expect(queryByText(/on Letterboxd/)).toBeNull();
   });
 });
