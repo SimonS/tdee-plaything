@@ -33,11 +33,12 @@
 .logo {
   border-bottom: 4px #dfcc4c solid;
   font-family: Actor;
-  font-size: 32px;
+  font-size: var(--s3);
   line-height: 1;
-  max-width: 138px;
+  max-width: 8.4rem; /* Yes, this is hacky as fuck (and probably brittle), 
+                        I just like the way the type falls. */
   overflow-wrap: break-word;
-  padding-bottom: 20px;
+  padding-bottom: var(--s1);
 }
 
 h1,
@@ -75,4 +76,19 @@ dt {
 
 dd {
   margin: 0;
+}
+
+footer {
+  border-top: 4px #dfcc4c solid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: var(--s1);
+  margin-top: var(--s3);
+  padding-top: var(--s-1);
+  text-align: right;
+}
+
+footer * {
+  font-size: var(--s-1);
 }
