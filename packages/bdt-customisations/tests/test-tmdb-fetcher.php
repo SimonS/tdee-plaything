@@ -4,8 +4,8 @@ namespace bdt;
 require dirname(dirname(__FILE__)) . '/lib/tmdb-fetcher.php';
 
 // Things to test:
-// [ ] retrieve film happy path
-// [ ] handles 404
+// [x] retrieve film happy path
+// [ ] handles 404 / missing info
 // [ ] somehow cache using the WordPress transient API
 
 function wp_remote_get($query)
@@ -40,6 +40,12 @@ class TMDBFetcherTest extends \WP_UnitTestCase
         // runtime, poster, original language
         $result = fetchMovieMetaData("Titanic", 1997);
 
-        $this->assertEquals(array('runtime' => 194), $result);
+        $this->assertEquals(
+            array(
+            'runtime' => 194,
+            'original_language' => 'en',
+            'image' => 'https://image.tmdb.org/t/p/w154/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg'),
+            $result
+        );
     }
 }
