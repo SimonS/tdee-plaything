@@ -1,0 +1,71 @@
+{
+  "page": 1,
+  "total_results": 4,
+  "total_pages": 1,
+  "results": [
+    {
+      "popularity": 34.539,
+      "vote_count": 16940,
+      "video": false,
+      "poster_path": "/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+      "id": 597,
+      "adult": false,
+      "backdrop_path": "/6VmFqApQRyZZzmiGOQq2C92jyvH.jpg",
+      "original_language": "en",
+      "original_title": "Titanic",
+      "genre_ids": [18, 10749],
+      "title": "Titanic",
+      "vote_average": 7.8,
+      "overview": "101-year-old Rose DeWitt Bukater tells the story of her life aboard the Titanic, 84 years later. A young Rose boards the ship with her mother and fiancé. Meanwhile, Jack Dawson and Fabrizio De Rossi win third-class tickets aboard the ship. Rose tells the whole story from Titanic's departure through to its death—on its first and last voyage—on April 15, 1912.",
+      "release_date": "1997-11-18"
+    },
+    {
+      "popularity": 3.317,
+      "vote_count": 14,
+      "video": false,
+      "poster_path": "/1piPVRdPrkIwlNGsrtv3GVrPaqr.jpg",
+      "id": 115872,
+      "adult": false,
+      "backdrop_path": null,
+      "original_language": "fr",
+      "original_title": "La femme de chambre du Titanic",
+      "genre_ids": [18, 10749],
+      "title": "The Chambermaid on the Titanic",
+      "vote_average": 6,
+      "overview": "Horty, a French foundry worker, wins a contest and is sent to see the sailing of the Titanic. In England, Marie, saying she is a chambermaid on the Titanic and cannot get a room, asks to share his room. They do, chastely; when he awakens, she is gone, but he sees her at the sailing and gets a photo of her. When he returns home, he suspects that his wife Zoe has been sleeping with Simeon, the foundry owner. Horty goes to the bar, where his friends get him drunk and he starts telling an erotic fantasy of what happened with him and Marie, drawing a larger audience each night.",
+      "release_date": "1997-10-10"
+    },
+    {
+      "popularity": 1.209,
+      "vote_count": 3,
+      "video": false,
+      "poster_path": null,
+      "id": 185082,
+      "adult": false,
+      "backdrop_path": null,
+      "original_language": "en",
+      "original_title": "Titanic: Untold Stories",
+      "genre_ids": [99, 36],
+      "title": "Titanic: Untold Stories",
+      "vote_average": 4.5,
+      "overview": "The gripping personal accounts of the people and the tragedy.  In never-before-seen footage, we journey with historian Charles Haas, as he descends into the depths of the North Atlantic and guides us on a tour of the RMS Titanic.  While recounting tales of triumph and struggle, we see among the many sites the doors where all passengers would have entered, peer through the porthole of a first class cabin, see the davits where the too few lifeboats hung and pause by the mail room where the postal workers heroically died.  This unique footage coupled with letters, old stills, artifacts and new recreations tells the amazing human stories of this famous ship as never before.",
+      "release_date": "1997-01-01"
+    },
+    {
+      "popularity": 1.341,
+      "vote_count": 0,
+      "video": false,
+      "poster_path": null,
+      "id": 157775,
+      "adult": false,
+      "backdrop_path": null,
+      "original_language": "en",
+      "original_title": "Titanic: Anatomy of a Disaster",
+      "genre_ids": [99, 36],
+      "title": "Titanic: Anatomy of a Disaster",
+      "vote_average": 0,
+      "overview": "\"Titanic - Anatomy of a Disaster\" is an original Discovery Channel production that looks into not only the history but the mystery surrounding the sinking of Britain's most luxurious passenger liner.  This investigation, narrated by Martin Sheen, shows a research and recovery expedition that uses science to piece together the final hours of the Titanic: Discovery Channel has assembled a unique investigative team of oceanologists, marine engineers, archaeologists, microbiologists, metallurgists, engineers, writers, historians and movie makers to uncover the truth about one of history's greatest disasters.",
+      "release_date": "1997-01-07"
+    }
+  ]
+}
