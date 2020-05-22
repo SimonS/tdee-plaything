@@ -13,7 +13,7 @@ class TMDBFetcherTest extends \WP_UnitTestCase
 {
     public function test_remote_get()
     {
-        $result = fetchMovie("Fight Club");
+        $result = fetchMovieMetaData("Fight Club");
 
         $this->assertEquals($result, 1);
     }
