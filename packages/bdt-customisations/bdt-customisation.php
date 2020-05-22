@@ -43,6 +43,10 @@ function register_watchof_type()
                 'type' => 'String',
                 'description' => __('The URL of thing we have watched', 'bdt'),
             ],
+            'year' => [
+                'type' => 'Integer',
+                'description' => __('The year the film of TV show was released', 'bdt'),
+            ],
         ],
     ]);
 }
@@ -83,8 +87,9 @@ add_action('graphql_register_types', function () {
                         }
                         $watchOfObject["url"] = $props["url"][0];
 
-                        preg_match('/A (\x{2605}*\x{00BD}?) (?:review of|diary entry for) (.*)/u', $props['name'][0], $splitTitle);
+                        preg_match('/A (\x{2605}*\x{00BD}?) (?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
                         $watchOfObject["name"] = $splitTitle[2];
+                        $watchOfObject["year"] = $splitTitle[3];
                         $watchOfObject["rating"] = rating_to_float($splitTitle[1]);
                     }
                     return !empty($watchOfObject) ? $watchOfObject : null;
