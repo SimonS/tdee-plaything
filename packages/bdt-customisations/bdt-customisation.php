@@ -10,6 +10,10 @@
  * License: MIT
  */
 
+use function bdt\fetchMovieMetaData;
+
+require dirname(__FILE__) . '/lib/tmdb-fetcher.php';
+
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
     if ('kind' === $taxonomy) {
         $args['show_in_graphql'] = true;
@@ -46,6 +50,33 @@ function register_watchof_type()
             'year' => [
                 'type' => 'Integer',
                 'description' => __('The year the film of TV show was released', 'bdt'),
+            ],
+            'meta' => [
+                'type' => 'FilmMeta',
+                'description' => __('Metadata around a film, retrieved from TMDB', 'bdt'),
+            ]
+        ],
+    ]);
+}
+
+add_action('graphql_register_types', 'register_film_meta_type');
+
+function register_film_meta_type()
+{
+    register_graphql_object_type('FilmMeta', [
+        'description' => __("Metadata around a film", 'bdt'),
+        'fields' => [
+            'runtime' => [
+                'type' => 'Integer',
+                'description' => __('Film length in minutes', 'bdt'),
+            ],
+            'original_language' => [
+                'type' => 'String',
+                'description' => __('Language it was filmed in iso-...', 'bdt'),
+            ],
+            'image' => [
+                'type' => 'String',
+                'description' => __('a link to the poster image', 'bdt'),
             ],
         ],
     ]);
@@ -91,6 +122,8 @@ add_action('graphql_register_types', function () {
                         $watchOfObject["name"] = $splitTitle[2];
                         $watchOfObject["year"] = $splitTitle[3];
                         $watchOfObject["rating"] = rating_to_float($splitTitle[1]);
+
+                        $watchOfObject["meta"] = fetchMovieMetaData($watchOfObject["name"], $watchOfObject["year"]);
                     }
                     return !empty($watchOfObject) ? $watchOfObject : null;
                 },
