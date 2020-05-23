@@ -3,7 +3,6 @@ namespace bdt;
 
 require dirname(dirname(__FILE__)) . '/lib/tmdb-fetcher.php';
 
-
 function wp_remote_get($query)
 {
     preg_match(
