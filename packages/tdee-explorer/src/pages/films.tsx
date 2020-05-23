@@ -16,6 +16,9 @@ export const query = graphql`
             rating
             review
             url
+            meta {
+              image
+            }
           }
         }
       }
@@ -30,6 +33,9 @@ export interface FilmWatch {
     rating?: number;
     review?: string | null;
     url?: string;
+    meta?: {
+      image?: string;
+    };
   };
 }
 
@@ -65,6 +71,10 @@ const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
         {film.watchOf.review && (
           <a href={film.watchOf.url}>I wrote some thoughts on Letterboxd</a>
         )}
+        <img
+          src={film.watchOf.meta?.image}
+          alt={`Poster for '${film.watchOf.name}'`}
+        />
       </Stack>
     ))}
   </Layout>
