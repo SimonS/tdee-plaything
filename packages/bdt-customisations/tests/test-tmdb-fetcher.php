@@ -36,8 +36,6 @@ class TMDBFetcherTest extends \WP_UnitTestCase
 {
     public function test_retrieves_basic_meta_fields()
     {
-
-        // runtime, poster, original language
         $result = fetchMovieMetaData("Titanic", 1997);
 
         $this->assertEquals(
@@ -45,6 +43,16 @@ class TMDBFetcherTest extends \WP_UnitTestCase
             'runtime' => 194,
             'original_language' => 'en',
             'image' => 'https://image.tmdb.org/t/p/w154/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg'),
+            $result
+        );
+    }
+
+    public function test_deals_with_no_results()
+    {
+        $result = fetchMovieMetaData("fdssfdsf", 1982);
+
+        $this->assertEquals(
+            array(),
             $result
         );
     }
