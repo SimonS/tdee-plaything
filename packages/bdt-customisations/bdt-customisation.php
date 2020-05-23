@@ -2,9 +2,9 @@
 
 /**
  * Plugin Name: BDT Customisations
- * Plugin URI: https://github.com/simons/bdt-customisations
- * Description: Little self-rolled plugin to customise my rubbish blog in a non-themey way
- * Version: 1.0.0
+ * Plugin URI: https://github.com/simons/tdee-plaything
+ * Description: Little self-rolled plugin to customise my rubbish blog in a non-themey way, requires a TMDB_API_KEY defined in wp-config
+ * Version: 1.1.0
  * Author: Simon Scarfe
  * Author URI: https://breakfastdinnertea.co.uk
  * License: MIT
