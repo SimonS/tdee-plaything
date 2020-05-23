@@ -57,7 +57,7 @@ class TMDBFetcherTest extends \WP_UnitTestCase
         );
     }
 
-    public function test_caches_transient_api()
+    public function test_initially_reads_from_transient_api()
     {
         $bladeRunnerMeta = array(
             'runtime' => 194,
