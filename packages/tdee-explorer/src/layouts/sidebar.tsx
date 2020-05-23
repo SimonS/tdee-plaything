@@ -16,7 +16,11 @@ const Sidebar = ({
 }): JSX.Element => {
   const Tag = as;
   return (
-    <Tag className={`${layoutStyles.sidebar} ${side}`}>
+    <Tag
+      className={`${layoutStyles.sidebar} ${
+        side === "left" ? layoutStyles.left : layoutStyles.right
+      }`}
+    >
       <div>
         {children.map((child, i) => (
           <div
