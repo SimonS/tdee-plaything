@@ -14,6 +14,7 @@ export const query = graphql`
           date
           watchOf {
             name
+            year
             rating
             review
             url
@@ -31,6 +32,7 @@ export interface FilmWatch {
   date: string;
   watchOf: {
     name: string;
+    year: number;
     rating?: number;
     review?: string | null;
     url?: string;
@@ -58,7 +60,9 @@ const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
       <Sidebar as="article" key={`film-${i}`} side="right" sideWidth="154px">
         <Stack className="kind-watch h-entry">
           <header>
-            <h2>{film.watchOf.name}</h2>
+            <h2>
+              {film.watchOf.name} ({film.watchOf.year})
+            </h2>
           </header>
           <dl>
             <dt>Viewed</dt>

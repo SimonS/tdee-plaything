@@ -8,6 +8,7 @@ describe("Films", () => {
     date: "2020-05-20T22:18:04",
     watchOf: {
       name: "FILM",
+      year: 2002,
       rating: 4,
       review: "REVIEW",
       url: "https://example.com/user/film/film/",
@@ -18,6 +19,7 @@ describe("Films", () => {
     date: "2020-05-10T21:17:00",
     watchOf: {
       name: "A FILM I JUST WATCHED",
+      year: 2001,
       rating: 3.5,
       review: null,
       url: "https://example.com/user/film/a-film-i-just-watched/",
@@ -41,7 +43,7 @@ describe("Films", () => {
     const { data } = makeFilmResponse([simpleWatch]);
     const { queryByText } = render(<FilmsPage data={data} />);
 
-    expect(queryByText("A FILM I JUST WATCHED")).toBeTruthy();
+    expect(queryByText(/A FILM I JUST WATCHED/)).toBeTruthy();
   });
 
   it("renders the date in a human readable form", () => {
@@ -83,5 +85,13 @@ describe("Films", () => {
     expect(
       getByAltText("Poster for 'A FILM I JUST WATCHED'").getAttribute("src")
     ).toEqual("foo.jpg");
+  });
+
+  it("displays release year next to title", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+
+    const { queryByText } = render(<FilmsPage data={data} />);
+
+    expect(queryByText(/A FILM I JUST WATCHED/)).toContainHTML("(2001)");
   });
 });
