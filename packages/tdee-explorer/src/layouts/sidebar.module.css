@@ -15,7 +15,8 @@
   flex-grow: 1;
 }
 
-.sidebar > * > :last-child {
+.sidebar.left > * > :last-child,
+.sidebar.right > * > :first-child {
   flex-basis: 0;
   flex-grow: 999;
   min-width: calc(50% - var(--space));

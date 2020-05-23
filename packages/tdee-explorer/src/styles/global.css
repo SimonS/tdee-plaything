@@ -41,6 +41,10 @@ body {
   padding-bottom: var(--s1);
 }
 
+img {
+  width: 100%;
+}
+
 a {
   color: #b81007;
 }

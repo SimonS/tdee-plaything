@@ -1,18 +1,38 @@
 import React from "react";
 import * as layoutStyles from "./sidebar.module.css";
 
+type Side = "left" | "right";
+
 const Sidebar = ({
   children,
+  side = "left",
+  sideWidth,
+  as = "div",
 }: {
   children: React.ReactElement[];
-}): JSX.Element => (
-  <div className={layoutStyles.sidebar}>
-    <div>
-      {children.map((child, i) => (
-        <div key={`sidebar-item-${i}`}>{child}</div>
-      ))}
-    </div>
-  </div>
-);
+  side?: Side;
+  sideWidth?: string;
+  as: keyof JSX.IntrinsicElements;
+}): JSX.Element => {
+  const Tag = as;
+  return (
+    <Tag className={`${layoutStyles.sidebar} ${side}`}>
+      <div>
+        {children.map((child, i) => (
+          <div
+            key={`sidebar-item-${i}`}
+            style={
+              sideWidth && ((side === "left" && i === 0) || i === 1)
+                ? { maxWidth: sideWidth }
+                : undefined
+            }
+          >
+            {child}
+          </div>
+        ))}
+      </div>
+    </Tag>
+  );
+};
 
 export default Sidebar;
