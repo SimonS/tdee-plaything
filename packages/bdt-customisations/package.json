@@ -1,0 +1,24 @@
+{
+  "name": "bdt-customisations",
+  "version": "1.0.0",
+  "description": "little self-rolled WP plugin to customise my rubbish blog in a non-themey way",
+  "main": "bdt-customisation.php",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "phpunit",
+    "build": "zip -r build/bdt-customisations.zip lib index.php bdt-customisation.php LICENSE README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SimonS/tdee-plaything.git"
+  },
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SimonS/tdee-plaything/issues"
+  },
+  "homepage": "https://github.com/SimonS/tdee-plaything#readme"
+}

@@ -1,5 +1,4 @@
 import React from "react";
-import renderer from "react-test-renderer";
 import { render } from "@testing-library/react";
 
 import FilmsPage, { FilmWatch, GraphQLFilmQuery } from "../../pages/films";
@@ -22,6 +21,9 @@ describe("Films", () => {
       rating: 3.5,
       review: null,
       url: "https://example.com/user/film/a-film-i-just-watched/",
+      meta: {
+        image: "foo.jpg",
+      },
     },
   };
 
@@ -72,5 +74,14 @@ describe("Films", () => {
 
     const { queryByText } = render(<FilmsPage data={data} />);
     expect(queryByText(/on Letterboxd/)).toBeNull();
+  });
+
+  it("displays a poster image when present", () => {
+    const { data } = makeFilmResponse([simpleWatch]);
+
+    const { getByAltText } = render(<FilmsPage data={data} />);
+    expect(
+      getByAltText("Poster for 'A FILM I JUST WATCHED'").getAttribute("src")
+    ).toEqual("foo.jpg");
   });
 });

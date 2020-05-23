@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../layouts/layout";
 
+import Sidebar from "../layouts/sidebar";
 import Stack from "../layouts/stack";
 
 import { graphql } from "gatsby";
@@ -16,6 +17,9 @@ export const query = graphql`
             rating
             review
             url
+            meta {
+              image
+            }
           }
         }
       }
@@ -30,6 +34,9 @@ export interface FilmWatch {
     rating?: number;
     review?: string | null;
     url?: string;
+    meta?: {
+      image?: string;
+    };
   };
 }
 
@@ -48,24 +55,31 @@ const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
     <h1>Films</h1>
 
     {data.bdt.posts.nodes.map((film, i: number) => (
-      <Stack as="article" className="kind-watch h-entry" key={`film-${i}`}>
-        <header>
-          <h2>{film.watchOf.name}</h2>
-        </header>
-        <dl>
-          <dt>Viewed</dt>
-          <dd>
-            <time className="dt-published" dateTime={film.date}>
-              {new Date(film.date).toDateString()}
-            </time>
-          </dd>
-          <dt>Rated</dt>
-          <dd>{film.watchOf.rating}/5</dd>
-        </dl>
-        {film.watchOf.review && (
-          <a href={film.watchOf.url}>I wrote some thoughts on Letterboxd</a>
-        )}
-      </Stack>
+      <Sidebar as="article" key={`film-${i}`} side="right" sideWidth="154px">
+        <Stack className="kind-watch h-entry">
+          <header>
+            <h2>{film.watchOf.name}</h2>
+          </header>
+          <dl>
+            <dt>Viewed</dt>
+            <dd>
+              <time className="dt-published" dateTime={film.date}>
+                {new Date(film.date).toDateString()}
+              </time>
+            </dd>
+            <dt>Rated</dt>
+            <dd>{film.watchOf.rating}/5</dd>
+          </dl>
+          {film.watchOf.review && (
+            <a href={film.watchOf.url}>I wrote some thoughts on Letterboxd</a>
+          )}
+        </Stack>
+        <img
+          src={film.watchOf.meta?.image}
+          alt={`Poster for '${film.watchOf.name}'`}
+          className="poster-image"
+        />
+      </Sidebar>
     ))}
   </Layout>
 );
