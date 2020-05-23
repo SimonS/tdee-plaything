@@ -56,4 +56,20 @@ class TMDBFetcherTest extends \WP_UnitTestCase
             $result
         );
     }
+
+    public function test_caches_transient_api()
+    {
+        $bladeRunnerMeta = array(
+            'runtime' => 194,
+            'original_language' => 'en',
+            'image' => 'https://image.tmdb.org/t/p/w154/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg');
+
+        set_transient('bdt_meta_blade-runner_1982', $bladeRunnerMeta, 12 * HOUR_IN_SECONDS);
+        $result = fetchMovieMetaData("blade runner", 1982);
+
+        $this->assertEquals(
+            $bladeRunnerMeta,
+            $result
+        );
+    }
 }
