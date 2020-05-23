@@ -5,7 +5,7 @@ require dirname(dirname(__FILE__)) . '/lib/tmdb-fetcher.php';
 
 // Things to test:
 // [x] retrieve film happy path
-// [ ] handles 404 / missing info
+// [x] missing info
 // [ ] somehow cache using the WordPress transient API
 
 function wp_remote_get($query)
