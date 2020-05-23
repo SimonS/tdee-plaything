@@ -1,0 +1,23 @@
+{
+  "page": 1,
+  "total_results": 1,
+  "total_pages": 1,
+  "results": [
+    {
+      "popularity": 21.774,
+      "vote_count": 6252,
+      "video": false,
+      "poster_path": "/s2xcqSFfT6F7ZXHxowjxfG0yisT.jpg",
+      "id": 578,
+      "adult": false,
+      "backdrop_path": "/k9YEtw9b0OBHgiqTQgZESdiqXeS.jpg",
+      "original_language": "en",
+      "original_title": "Jaws",
+      "genre_ids": [12, 27, 53],
+      "title": "Jaws",
+      "vote_average": 7.6,
+      "overview": "When an insatiable great white shark terrorizes the townspeople of Amity Island, the police chief, an oceanographer and a grizzled shark hunter seek to destroy the blood-thirsty beast.",
+      "release_date": "1975-06-18"
+    }
+  ]
+}

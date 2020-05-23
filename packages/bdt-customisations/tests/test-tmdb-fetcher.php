@@ -3,10 +3,6 @@ namespace bdt;
 
 require dirname(dirname(__FILE__)) . '/lib/tmdb-fetcher.php';
 
-// Things to test:
-// [x] retrieve film happy path
-// [x] missing info
-// [ ] somehow cache using the WordPress transient API
 
 function wp_remote_get($query)
 {
@@ -64,11 +60,26 @@ class TMDBFetcherTest extends \WP_UnitTestCase
             'original_language' => 'en',
             'image' => 'https://image.tmdb.org/t/p/w154/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg');
 
-        set_transient('bdt_meta_blade-runner_1982', $bladeRunnerMeta, 12 * HOUR_IN_SECONDS);
+        set_transient('bdt_meta_blade-runner_1982', $bladeRunnerMeta, YEAR_IN_SECONDS);
         $result = fetchMovieMetaData("blade runner", 1982);
 
         $this->assertEquals(
             $bladeRunnerMeta,
+            $result
+        );
+    }
+
+    public function test_caches_using_transient_api()
+    {
+        fetchMovieMetaData("Jaws", 1975);
+        $result = get_transient('bdt_meta_jaws_1975');
+
+        $this->assertEquals(
+            array(
+                'runtime' => 124,
+                'original_language' => 'en',
+                'image' => 'https://image.tmdb.org/t/p/w154/s2xcqSFfT6F7ZXHxowjxfG0yisT.jpg'
+            ),
             $result
         );
     }
