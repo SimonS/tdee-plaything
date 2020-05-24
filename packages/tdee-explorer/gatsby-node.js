@@ -14,50 +14,11 @@
 // data layer is bootstrapped to let plugins create pages from data.
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
+  const pageInfosCollector = require("./src/utils/pageInfosCollector").default;
 
-  let pageInfos = [];
-
-  let result = await graphql(
-    `
-      query PaginatedFilmsQuery($first: Int, $after: String) {
-        bdt {
-          posts(where: { tag: "film" }, after: $after, first: $first) {
-            pageInfo {
-              hasNextPage
-              hasPreviousPage
-              startCursor
-              endCursor
-            }
-          }
-        }
-      }
-    `,
-    { first: 26, after: "" }
-  );
-
-  pageInfos = [...pageInfos, { ...result.data.bdt.posts.pageInfo }];
-  while (result.data.bdt.posts.pageInfo.hasNextPage) {
-    result = await graphql(
-      `
-        query PaginatedFilmsQuery($first: Int, $after: String) {
-          bdt {
-            posts(where: { tag: "film" }, after: $after, first: $first) {
-              pageInfo {
-                hasNextPage
-                hasPreviousPage
-                startCursor
-                endCursor
-              }
-            }
-          }
-        }
-      `,
-      { first: 26, after: result.data.bdt.posts.pageInfo.endCursor }
-    );
-    pageInfos = [...pageInfos, { ...result.data.bdt.posts.pageInfo }];
-  }
+  const pageInfos = await pageInfosCollector(10, graphql);
   console.log(pageInfos);
-  // Handle errors
+
   if (result.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     return;
