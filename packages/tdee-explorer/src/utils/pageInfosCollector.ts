@@ -14,6 +14,11 @@ type GraphQLParams = {
   after: string;
 };
 
+// For static publishing, we need to have a fair understanding of what the
+// cursor links will be pre-runtime. This helper function cycles through ahead
+// of time to amass what each page will look like. I expect we could do
+// everything more efficiently all at once, but I quite like the separation of
+// concerns.
 const pageInfosCollector = async (
   perPage: number,
   graphql: (query: string, params: GraphQLParams) => Promise<GraphQLResult>
@@ -33,14 +38,14 @@ const pageInfosCollector = async (
     }
   `;
 
-  let result = await graphql(queryString, { first: perPage, after: "" });
+  const getNextPage = async (after = ""): Promise<GraphQLResult> =>
+    await graphql(queryString, { first: perPage, after: after });
+
+  let result = await getNextPage();
   let pageInfos = [{ ...result.data.bdt.posts.pageInfo }];
 
   while (result.data.bdt.posts.pageInfo.hasNextPage) {
-    result = await graphql(queryString, {
-      first: perPage,
-      after: result.data.bdt.posts.pageInfo.endCursor,
-    });
+    result = await getNextPage(result.data.bdt.posts.pageInfo.endCursor);
     pageInfos = [...pageInfos, { ...result.data.bdt.posts.pageInfo }];
   }
 
