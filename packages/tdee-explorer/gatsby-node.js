@@ -12,25 +12,28 @@
 
 // Implement the Gatsby API “createPages”. This is called once the
 // data layer is bootstrapped to let plugins create pages from data.
-exports.createPages = async ({ graphql, actions, reporter }) => {
+exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const pageInfosCollector = require("./src/utils/pageInfosCollector").default;
+  const filmsPerPage = 10;
 
-  const pageInfos = await pageInfosCollector(10, graphql);
-  console.log(pageInfos);
+  const pageInfos = await pageInfosCollector(filmsPerPage, graphql);
 
-  // Create pages for each markdown file.
-  //   const blogPostTemplate = path.resolve(`src/templates/blog-post.js`);
-  //   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-  //     const path = node.frontmatter.path;
-  //     createPage({
-  //       path,
-  //       component: blogPostTemplate,
-  //       // In your blog post template's graphql query, you can use pagePath
-  //       // as a GraphQL variable to query for data from the markdown file.
-  //       context: {
-  //         pagePath: path,
-  //       },
-  //     });
-  //   });
+  // Create pages for each page of films.
+  const path = require("path");
+  const filmPageTemplate = path.resolve(`src/pages/films.tsx`);
+  pageInfos.forEach((pageInfo, i) => {
+    const path = `/films/page/${i + 1}`;
+    createPage({
+      path,
+      component: filmPageTemplate,
+      context: {
+        pagePath: path,
+        pageInfo: pageInfo,
+        pageNumber: i + 1,
+        from: pageInfo.after,
+        first: filmsPerPage,
+      },
+    });
+  });
 };

@@ -7,9 +7,9 @@ import Stack from "../layouts/stack";
 import { graphql } from "gatsby";
 
 export const query = graphql`
-  query FilmsQuery {
+  query FilmsQuery($from: String, $first: Int) {
     bdt {
-      posts(where: { tag: "film" }) {
+      posts(where: { tag: "film" }, after: $from, first: $first) {
         nodes {
           date
           watchOf {

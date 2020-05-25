@@ -24,11 +24,11 @@ describe("pageInfosCollector", () => {
       jest.fn(async () => returned)
     );
 
-    expect(result).toEqual([{ ...singlePageInfo }]);
+    expect(result).toEqual([{ ...singlePageInfo, after: "" }]);
   });
 
   it("iterates over multiple pages of queries", async () => {
-    const expectedResults = [
+    const pageInfos = [
       {
         hasNextPage: true,
         hasPreviousPage: false,
@@ -55,7 +55,7 @@ describe("pageInfosCollector", () => {
         data: {
           bdt: {
             posts: {
-              pageInfo: { ...expectedResults[0] },
+              pageInfo: { ...pageInfos[0] },
             },
           },
         },
@@ -64,7 +64,7 @@ describe("pageInfosCollector", () => {
         data: {
           bdt: {
             posts: {
-              pageInfo: { ...expectedResults[1] },
+              pageInfo: { ...pageInfos[1] },
             },
           },
         },
@@ -73,7 +73,7 @@ describe("pageInfosCollector", () => {
         data: {
           bdt: {
             posts: {
-              pageInfo: { ...expectedResults[2] },
+              pageInfo: { ...pageInfos[2] },
             },
           },
         },
@@ -81,6 +81,10 @@ describe("pageInfosCollector", () => {
 
     const result = await pageInfosCollector(10, mockedGraphQL);
 
-    expect(result).toEqual([...expectedResults]);
+    expect(result).toEqual([
+      ...pageInfos.map((pageInfo, i) => {
+        return { ...pageInfo, after: i > 0 ? pageInfos[i - 1].endCursor : "" };
+      }),
+    ]);
   });
 });

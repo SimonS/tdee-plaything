@@ -3,6 +3,7 @@ type PageInfo = {
   hasPreviousPage: boolean;
   startCursor: string;
   endCursor: string;
+  after?: string;
 };
 
 type GraphQLResult = {
@@ -42,11 +43,18 @@ const pageInfosCollector = async (
     await graphql(queryString, { first: perPage, after: after });
 
   let result = await getNextPage();
-  let pageInfos = [{ ...result.data.bdt.posts.pageInfo }];
+  let pageInfos: PageInfo[] = [
+    { ...result.data.bdt.posts.pageInfo, after: "" },
+  ];
 
   while (result.data.bdt.posts.pageInfo.hasNextPage) {
+    const after = pageInfos[pageInfos.length - 1].endCursor;
+
     result = await getNextPage(result.data.bdt.posts.pageInfo.endCursor);
-    pageInfos = [...pageInfos, { ...result.data.bdt.posts.pageInfo }];
+    pageInfos = [
+      ...pageInfos,
+      { ...result.data.bdt.posts.pageInfo, after: after },
+    ];
   }
 
   return pageInfos;
