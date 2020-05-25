@@ -19,11 +19,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const pageInfos = await pageInfosCollector(10, graphql);
   console.log(pageInfos);
 
-  if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`);
-    return;
-  }
-
   // Create pages for each markdown file.
   //   const blogPostTemplate = path.resolve(`src/templates/blog-post.js`);
   //   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
