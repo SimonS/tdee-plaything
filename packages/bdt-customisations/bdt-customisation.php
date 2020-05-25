@@ -4,7 +4,7 @@
  * Plugin Name: BDT Customisations
  * Plugin URI: https://github.com/simons/tdee-plaything
  * Description: Little self-rolled plugin to customise my rubbish blog in a non-themey way, requires a TMDB_API_KEY defined in wp-config
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Simon Scarfe
  * Author URI: https://breakfastdinnertea.co.uk
  * License: MIT
@@ -84,7 +84,7 @@ function register_film_meta_type()
 
 function rating_to_float($rating)
 {
-    return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - .5 : mb_strlen($rating);
+    return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - 1.5 : mb_strlen($rating) - 1;
 }
 
 add_action('graphql_register_types', function () {
@@ -118,10 +118,11 @@ add_action('graphql_register_types', function () {
                         }
                         $watchOfObject["url"] = $props["url"][0];
 
-                        preg_match('/A (\x{2605}*\x{00BD}?) (?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
+                        preg_match('/A (\x{2605}*\x{00BD}? )?(?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
+
                         $watchOfObject["name"] = $splitTitle[2];
                         $watchOfObject["year"] = $splitTitle[3];
-                        $watchOfObject["rating"] = rating_to_float($splitTitle[1]);
+                        $watchOfObject["rating"] = rating_to_float($splitTitle[1]) > 0 ? rating_to_float($splitTitle[1]) : null;
 
                         $watchOfObject["meta"] = fetchMovieMetaData($watchOfObject["name"], $watchOfObject["year"]);
                     }
