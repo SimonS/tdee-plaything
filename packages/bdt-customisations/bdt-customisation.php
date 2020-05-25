@@ -84,7 +84,7 @@ function register_film_meta_type()
 
 function rating_to_float($rating)
 {
-    return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - 1.5 : mb_strlen($rating) - 1;
+    return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - .5 : mb_strlen($rating);
 }
 
 add_action('graphql_register_types', function () {
@@ -118,7 +118,7 @@ add_action('graphql_register_types', function () {
                         }
                         $watchOfObject["url"] = $props["url"][0];
 
-                        preg_match('/A (\x{2605}*\x{00BD}? )?(?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
+                        preg_match('/A (\x{2605}*\x{00BD}?)(?:\s)?(?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
 
                         $watchOfObject["name"] = $splitTitle[2];
                         $watchOfObject["year"] = $splitTitle[3];
