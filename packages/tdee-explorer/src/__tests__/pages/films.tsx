@@ -29,15 +29,27 @@ describe("Films", () => {
     },
   };
 
-  const makeFilmResponse = (watches: FilmWatch[]): GraphQLFilmQuery => ({
-    data: {
-      bdt: {
-        posts: {
-          nodes: [...watches],
+  const makeFilmResponse = (
+    watches: FilmWatch[],
+    hasPagination = false
+  ): GraphQLFilmQuery => {
+    const result: GraphQLFilmQuery = {
+      data: {
+        bdt: {
+          posts: {
+            nodes: [...watches],
+          },
         },
       },
-    },
-  });
+    };
+    if (hasPagination) {
+      result.data.bdt.posts.pageInfo = {
+        hasNextPage: true,
+        hasPreviousPage: false,
+      };
+    }
+    return result;
+  };
 
   it("displays the film name", () => {
     const { data } = makeFilmResponse([simpleWatch]);
@@ -93,5 +105,12 @@ describe("Films", () => {
     const { queryByText } = render(<FilmsPage data={data} />);
 
     expect(queryByText(/A FILM I JUST WATCHED/)).toContainHTML("(2001)");
+  });
+
+  it("displays pagination when required", () => {
+    const { data } = makeFilmResponse([simpleWatch], true);
+    const { getByText } = render(<FilmsPage data={data} />);
+
+    expect(getByText(/Next/)).toBeVisible();
   });
 });

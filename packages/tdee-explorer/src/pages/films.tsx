@@ -5,11 +5,16 @@ import Sidebar from "../layouts/sidebar";
 import Stack from "../layouts/stack";
 
 import { graphql } from "gatsby";
+import Pagination from "../components/pagination";
 
 export const query = graphql`
   query FilmsQuery($from: String, $first: Int) {
     bdt {
       posts(where: { tag: "film" }, after: $from, first: $first) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+        }
         nodes {
           date
           watchOf {
@@ -47,6 +52,7 @@ export interface GraphQLFilmQuery {
     bdt: {
       posts: {
         nodes: FilmWatch[];
+        pageInfo?: { hasNextPage: boolean; hasPreviousPage: boolean };
       };
     };
   };
@@ -85,6 +91,10 @@ const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
         />
       </Sidebar>
     ))}
+
+    {data.bdt.posts.pageInfo ? (
+      <Pagination pageInfo={data.bdt.posts.pageInfo} />
+    ) : null}
   </Layout>
 );
 
