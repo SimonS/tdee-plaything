@@ -93,7 +93,7 @@ const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
     ))}
 
     {data.bdt.posts.pageInfo ? (
-      <Pagination pageInfo={data.bdt.posts.pageInfo} />
+      <Pagination pageInfo={data.bdt.posts.pageInfo} urlRoot="/films/page" />
     ) : null}
   </Layout>
 );
