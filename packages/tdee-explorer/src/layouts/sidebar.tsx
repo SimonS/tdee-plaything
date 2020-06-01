@@ -4,15 +4,15 @@ import * as layoutStyles from "./sidebar.module.css";
 type Side = "left" | "right";
 
 const Sidebar = ({
+  as = "div",
   children,
   side = "left",
   sideWidth,
-  as = "div",
 }: {
   children: React.ReactElement[];
   side?: Side;
   sideWidth?: string;
-  as: keyof JSX.IntrinsicElements;
+  as?: keyof JSX.IntrinsicElements;
 }): JSX.Element => {
   const Tag = as;
   return (
