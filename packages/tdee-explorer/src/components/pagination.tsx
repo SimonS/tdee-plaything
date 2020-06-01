@@ -3,10 +3,22 @@ import { Link } from "gatsby";
 
 type PageInfo = { hasNextPage?: boolean; hasPreviousPage?: boolean };
 
-const Pagination = ({ pageInfo }: { pageInfo: PageInfo }): JSX.Element => (
+const Pagination = ({
+  pageInfo,
+  urlRoot,
+  pageNumber = 1,
+}: {
+  pageInfo: PageInfo;
+  urlRoot: string;
+  pageNumber?: number;
+}): JSX.Element => (
   <nav>
-    {pageInfo.hasPreviousPage ? <Link to="/">&lt; Previous</Link> : null}
-    {pageInfo.hasNextPage ? <Link to="/">Next &gt;</Link> : null}
+    {pageInfo.hasPreviousPage ? (
+      <Link to={`${urlRoot}/${pageNumber - 1}`}>&lt; Previous</Link>
+    ) : null}
+    {pageInfo.hasNextPage ? (
+      <Link to={`${urlRoot}/${pageNumber + 1}`}>Next &gt;</Link>
+    ) : null}
   </nav>
 );
 export default Pagination;
