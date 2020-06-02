@@ -48,17 +48,21 @@ export interface FilmWatch {
 }
 
 export interface GraphQLFilmQuery {
-  data: {
-    bdt: {
-      posts: {
-        nodes: FilmWatch[];
-        pageInfo?: { hasNextPage: boolean; hasPreviousPage: boolean };
-      };
+  bdt: {
+    posts: {
+      nodes: FilmWatch[];
+      pageInfo?: { hasNextPage: boolean; hasPreviousPage: boolean };
     };
   };
 }
 
-const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
+const FilmsPage = ({
+  data,
+  pageContext,
+}: {
+  data: GraphQLFilmQuery;
+  pageContext?: { pageNumber: number };
+}): JSX.Element => (
   <Layout>
     <h1>Films</h1>
 
@@ -93,7 +97,11 @@ const FilmsPage = ({ data }: GraphQLFilmQuery): JSX.Element => (
     ))}
 
     {data.bdt.posts.pageInfo ? (
-      <Pagination pageInfo={data.bdt.posts.pageInfo} urlRoot="/films/page" />
+      <Pagination
+        pageInfo={data.bdt.posts.pageInfo}
+        urlRoot="/films/page"
+        pageNumber={pageContext?.pageNumber}
+      />
     ) : null}
   </Layout>
 );

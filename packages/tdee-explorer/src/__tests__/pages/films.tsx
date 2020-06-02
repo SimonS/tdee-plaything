@@ -32,8 +32,8 @@ describe("Films", () => {
   const makeFilmResponse = (
     watches: FilmWatch[],
     hasPagination = false
-  ): GraphQLFilmQuery => {
-    const result: GraphQLFilmQuery = {
+  ): { data: GraphQLFilmQuery } => {
+    const result: { data: GraphQLFilmQuery } = {
       data: {
         bdt: {
           posts: {
