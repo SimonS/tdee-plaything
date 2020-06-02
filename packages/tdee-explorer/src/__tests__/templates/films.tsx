@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import FilmsPage, { FilmWatch, GraphQLFilmQuery } from "../../pages/films";
+import FilmsPage, { FilmWatch, FilmProps } from "../../templates/films";
 
 describe("Films", () => {
   const filmWithReview = {
@@ -29,15 +29,32 @@ describe("Films", () => {
     },
   };
 
-  const makeFilmResponse = (watches: FilmWatch[]): GraphQLFilmQuery => ({
-    data: {
-      bdt: {
-        posts: {
-          nodes: [...watches],
+  const makeFilmResponse = (
+    watches: FilmWatch[],
+    hasPagination = false,
+    pageNumber?: number
+  ): FilmProps => {
+    const result: FilmProps = {
+      data: {
+        bdt: {
+          posts: {
+            nodes: [...watches],
+          },
         },
       },
-    },
-  });
+    };
+    if (hasPagination) {
+      result.data.bdt.posts.pageInfo = {
+        hasNextPage: true,
+        hasPreviousPage: false,
+      };
+    }
+
+    if (pageNumber) {
+      result.pageContext = { pageNumber };
+    }
+    return result;
+  };
 
   it("displays the film name", () => {
     const { data } = makeFilmResponse([simpleWatch]);
@@ -93,5 +110,19 @@ describe("Films", () => {
     const { queryByText } = render(<FilmsPage data={data} />);
 
     expect(queryByText(/A FILM I JUST WATCHED/)).toContainHTML("(2001)");
+  });
+
+  it("displays pagination when required", () => {
+    const { data } = makeFilmResponse([simpleWatch], true);
+    const { getByText } = render(<FilmsPage data={data} />);
+
+    expect(getByText(/Next/)).toBeVisible();
+  });
+
+  it("sends the pageNumber through when available", () => {
+    const { data, pageContext } = makeFilmResponse([simpleWatch], true, 1);
+    const { getByText } = render(<FilmsPage data={data} {...pageContext} />);
+
+    expect(getByText(/Next/)).toHaveAttribute("href", "/films/page/2");
   });
 });
