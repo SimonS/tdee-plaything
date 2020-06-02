@@ -7,7 +7,18 @@ exports.createPages = async ({ graphql, actions }) => {
 
   // Create pages for each page of films.
   const path = require("path");
-  const filmPageTemplate = path.resolve(`src/pages/films.tsx`);
+  const filmPageTemplate = path.resolve(`src/templates/films.tsx`);
+  createPage({
+    path: `/films`,
+    component: filmPageTemplate,
+    context: {
+      pagePath: `/films`,
+      pageInfo: pageInfos[0],
+      pageNumber: 1,
+      from: pageInfos[0].after,
+      first: filmsPerPage,
+    },
+  });
   pageInfos.forEach((pageInfo, i) => {
     const path = `/films/page/${i + 1}`;
     createPage({
