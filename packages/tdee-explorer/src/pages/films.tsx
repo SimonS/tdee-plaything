@@ -95,13 +95,13 @@ const FilmsPage = ({ data, pageContext }: FilmProps): JSX.Element => (
       </Sidebar>
     ))}
 
-    {data.bdt.posts.pageInfo ? (
+    {data.bdt.posts.pageInfo && (
       <Pagination
         pageInfo={data.bdt.posts.pageInfo}
         urlRoot="/films/page"
         pageNumber={pageContext?.pageNumber}
       />
-    ) : null}
+    )}
   </Layout>
 );
 

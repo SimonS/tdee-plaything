@@ -13,12 +13,12 @@ const Pagination = ({
   pageNumber?: number;
 }): JSX.Element => (
   <nav>
-    {pageInfo.hasPreviousPage ? (
+    {pageInfo.hasPreviousPage && (
       <Link to={`${urlRoot}/${pageNumber - 1}`}>&lt; Previous</Link>
-    ) : null}
-    {pageInfo.hasNextPage ? (
+    )}
+    {pageInfo.hasNextPage && (
       <Link to={`${urlRoot}/${pageNumber + 1}`}>Next &gt;</Link>
-    ) : null}
+    )}
   </nav>
 );
 export default Pagination;
