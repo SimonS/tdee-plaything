@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import FilmsPage, { FilmWatch, GraphQLFilmQuery } from "../../pages/films";
+import FilmsPage, { FilmWatch, FilmProps } from "../../pages/films";
 
 describe("Films", () => {
   const filmWithReview = {
@@ -33,11 +33,8 @@ describe("Films", () => {
     watches: FilmWatch[],
     hasPagination = false,
     pageNumber?: number
-  ): { data: GraphQLFilmQuery; pageContext?: { pageNumber: number } } => {
-    const result: {
-      data: GraphQLFilmQuery;
-      pageContext?: { pageNumber: number };
-    } = {
+  ): FilmProps => {
+    const result: FilmProps = {
       data: {
         bdt: {
           posts: {

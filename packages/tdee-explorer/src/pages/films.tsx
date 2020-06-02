@@ -56,13 +56,12 @@ export interface GraphQLFilmQuery {
   };
 }
 
-const FilmsPage = ({
-  data,
-  pageContext,
-}: {
+export interface FilmProps {
   data: GraphQLFilmQuery;
   pageContext?: { pageNumber: number };
-}): JSX.Element => (
+}
+
+const FilmsPage = ({ data, pageContext }: FilmProps): JSX.Element => (
   <Layout>
     <h1>Films</h1>
 
