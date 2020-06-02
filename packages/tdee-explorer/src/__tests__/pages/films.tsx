@@ -31,9 +31,13 @@ describe("Films", () => {
 
   const makeFilmResponse = (
     watches: FilmWatch[],
-    hasPagination = false
-  ): { data: GraphQLFilmQuery } => {
-    const result: { data: GraphQLFilmQuery } = {
+    hasPagination = false,
+    pageNumber?: number
+  ): { data: GraphQLFilmQuery; pageContext?: { pageNumber: number } } => {
+    const result: {
+      data: GraphQLFilmQuery;
+      pageContext?: { pageNumber: number };
+    } = {
       data: {
         bdt: {
           posts: {
@@ -47,6 +51,10 @@ describe("Films", () => {
         hasNextPage: true,
         hasPreviousPage: false,
       };
+    }
+
+    if (pageNumber) {
+      result.pageContext = { pageNumber };
     }
     return result;
   };
@@ -112,5 +120,12 @@ describe("Films", () => {
     const { getByText } = render(<FilmsPage data={data} />);
 
     expect(getByText(/Next/)).toBeVisible();
+  });
+
+  it("sends the pageNumber through when available", () => {
+    const { data, pageContext } = makeFilmResponse([simpleWatch], true, 1);
+    const { getByText } = render(<FilmsPage data={data} {...pageContext} />);
+
+    expect(getByText(/Next/)).toHaveAttribute("href", "/films/page/2");
   });
 });
