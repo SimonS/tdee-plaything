@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import FilmsPage, { FilmWatch, FilmProps } from "../../pages/films";
+import FilmsPage, { FilmWatch, FilmProps } from "../../templates/films";
 
 describe("Films", () => {
   const filmWithReview = {
