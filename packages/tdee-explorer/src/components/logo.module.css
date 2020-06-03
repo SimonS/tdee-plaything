@@ -1,0 +1,17 @@
+.logo {
+  border-bottom: 4px #dfcc4c solid;
+  max-width: 8.4rem; /* Yes, this is hacky as fuck (and probably brittle), 
+                        I just like the way the type falls. */
+  padding-bottom: var(--s1);
+}
+
+.logo * {
+  font-family: Actor;
+  font-size: var(--s3);
+  line-height: 1;
+  overflow-wrap: break-word;
+}
+
+.logo .highlighted {
+  color: #b81007;
+}
