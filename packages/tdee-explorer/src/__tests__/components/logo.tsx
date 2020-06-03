@@ -14,4 +14,28 @@ describe("Logo component", () => {
     expect(getByText("Breakfast")).not.toHaveClass(highlighted);
     expect(getByText("Tea")).not.toHaveClass(highlighted);
   });
+
+  it("highlights breakfast if morning by default", () => {
+    jest.spyOn(Date.prototype, "getHours").mockImplementationOnce(() => 9);
+
+    const { getByText } = render(<Logo />);
+
+    expect(getByText("Breakfast")).toHaveClass(highlighted);
+  });
+
+  it("highlights dinner at the correct time", () => {
+    jest.spyOn(Date.prototype, "getHours").mockImplementationOnce(() => 12);
+
+    const { getByText } = render(<Logo />);
+
+    expect(getByText("Dinner")).toHaveClass(highlighted);
+  });
+
+  it("highlights tea at the correct time", () => {
+    jest.spyOn(Date.prototype, "getHours").mockImplementationOnce(() => 18);
+
+    const { getByText } = render(<Logo />);
+
+    expect(getByText("Tea")).toHaveClass(highlighted);
+  });
 });
