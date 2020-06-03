@@ -3,12 +3,14 @@ import Centered from "./centered";
 import Sidebar from "./sidebar";
 import Stack from "./stack";
 
+import Logo from "../components/logo";
+
 import "../styles/global.css";
 
 const Layout = ({ children }: { children: ReactNode }): JSX.Element => (
   <Centered className="layout">
     <Sidebar>
-      <div className="logo">BreakfastDinnerTea</div>
+      <Logo />
       <Stack as="main">
         {children}
         <footer>
