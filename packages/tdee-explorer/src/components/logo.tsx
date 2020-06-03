@@ -4,7 +4,7 @@ import { highlighted, logo } from "./logo.module.css";
 type LogoState = "Breakfast" | "Dinner" | "Tea" | undefined;
 type LogoProps = { highlight?: LogoState };
 
-const Logo = ({ highlight }: LogoProps): JSX.Element => {
+const useHighlightedMeal = (highlight: LogoState): LogoState => {
   const [highlightedMeal, setHighlightedMeal] = useState(highlight);
 
   useEffect(() => {
@@ -19,6 +19,12 @@ const Logo = ({ highlight }: LogoProps): JSX.Element => {
       }
     }
   }, []);
+
+  return highlightedMeal;
+};
+
+const Logo = ({ highlight }: LogoProps): JSX.Element => {
+  const highlightedMeal = useHighlightedMeal(highlight);
 
   return (
     <div className={logo}>
