@@ -10,11 +10,11 @@ const useHighlightedMeal = (highlight: LogoState): LogoState => {
   useEffect(() => {
     if (highlight === undefined) {
       const hour = new Date().getHours();
-      if (hour > 5 && hour <= 11) {
+      if (hour >= 5 && hour < 11) {
         setHighlightedMeal("Breakfast");
-      } else if (hour <= 15) {
+      } else if (hour < 15) {
         setHighlightedMeal("Dinner");
-      } else if (hour <= 22) {
+      } else if (hour < 22) {
         setHighlightedMeal("Tea");
       }
     }
