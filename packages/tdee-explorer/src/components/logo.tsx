@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { highlighted, logo } from "./logo.module.css";
+import { Link } from "gatsby";
 
 type LogoState = "Breakfast" | "Dinner" | "Tea" | undefined;
 type LogoProps = { highlight?: LogoState };
@@ -27,7 +28,7 @@ const Logo = ({ highlight }: LogoProps): JSX.Element => {
   const highlightedMeal = useHighlightedMeal(highlight);
 
   return (
-    <a href="/" className={logo}>
+    <Link to="/" className={logo}>
       <span className={highlightedMeal === "Breakfast" ? highlighted : ""}>
         Breakfast
       </span>
@@ -35,7 +36,7 @@ const Logo = ({ highlight }: LogoProps): JSX.Element => {
         Dinner
       </span>
       <span className={highlightedMeal === "Tea" ? highlighted : ""}>Tea</span>
-    </a>
+    </Link>
   );
 };
 
