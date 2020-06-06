@@ -27,7 +27,7 @@ const Logo = ({ highlight }: LogoProps): JSX.Element => {
   const highlightedMeal = useHighlightedMeal(highlight);
 
   return (
-    <div className={logo}>
+    <a href="/" className={logo}>
       <span className={highlightedMeal === "Breakfast" ? highlighted : ""}>
         Breakfast
       </span>
@@ -35,7 +35,7 @@ const Logo = ({ highlight }: LogoProps): JSX.Element => {
         Dinner
       </span>
       <span className={highlightedMeal === "Tea" ? highlighted : ""}>Tea</span>
-    </div>
+    </a>
   );
 };
 
