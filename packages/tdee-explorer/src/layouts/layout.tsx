@@ -4,13 +4,23 @@ import Sidebar from "./sidebar";
 import Stack from "./stack";
 
 import Logo from "../components/logo";
+import Nav from "../components/nav";
 
 import "../styles/global.css";
 
-const Layout = ({ children }: { children: ReactNode }): JSX.Element => (
+const Layout = ({
+  children,
+  pathname = "",
+}: {
+  children: ReactNode;
+  pathname?: string;
+}): JSX.Element => (
   <Centered className="layout">
     <Sidebar>
-      <Logo />
+      <Stack>
+        <Logo />
+        <Nav url={pathname} />
+      </Stack>
       <Stack as="main">
         {children}
         <footer>

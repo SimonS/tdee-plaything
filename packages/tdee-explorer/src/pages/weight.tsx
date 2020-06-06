@@ -6,14 +6,12 @@ import { CheckIn } from "@tdee/types/src/checkins";
 import TDEEGraph from "../components/tdee-graph";
 
 interface CheckInQuery {
-  data: {
-    allCheckIn: {
-      nodes: {
-        date: string;
-        weight: number;
-        calories: number;
-      }[];
-    };
+  allCheckIn: {
+    nodes: {
+      date: string;
+      weight: number;
+      calories: number;
+    }[];
   };
 }
 
@@ -32,8 +30,14 @@ export const query = graphql`
 const asCheckIns = (checkInNodes): CheckIn[] =>
   checkInNodes.map((d) => ({ ...d, date: new Date(d.date) }));
 
-const WeightPage = ({ data }: CheckInQuery): JSX.Element => (
-  <Layout>
+const WeightPage = ({
+  data,
+  location,
+}: {
+  data: CheckInQuery;
+  location?: { pathname: string };
+}): JSX.Element => (
+  <Layout pathname={location?.pathname}>
     <h1>Weight</h1>
     <p>
       A little experiment I ran during 2019 - leading to 11kg weight loss (think

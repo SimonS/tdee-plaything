@@ -38,4 +38,9 @@ describe("Logo component", () => {
 
     expect(getByText("Tea")).toHaveClass(highlighted);
   });
+
+  it("links to the homepage", () => {
+    const { getByText } = render(<Logo />);
+    expect(getByText("Breakfast").closest("a")).toHaveAttribute("href", "/");
+  });
 });

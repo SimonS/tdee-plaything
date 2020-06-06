@@ -1,8 +1,10 @@
 .logo {
   border-bottom: 4px #dfcc4c solid;
+  display: block;
   max-width: 8.4rem; /* Yes, this is hacky as fuck (and probably brittle), 
                         I just like the way the type falls. */
   padding-bottom: var(--s1);
+  text-decoration: none;
 }
 
 .logo * {
