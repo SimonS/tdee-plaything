@@ -41,7 +41,6 @@ describe("Logo component", () => {
 
   it("links to the homepage", () => {
     const { getByText } = render(<Logo />);
-
     expect(getByText("Breakfast").closest("a")).toHaveAttribute("href", "/");
   });
 });

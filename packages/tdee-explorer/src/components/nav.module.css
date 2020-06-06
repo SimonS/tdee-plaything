@@ -7,6 +7,6 @@
 .current::before {
   color: #050704;
   content: "\2192";
-  position: absolute;
   margin-left: calc(var(--s1) * -1);
+  position: absolute;
 }
