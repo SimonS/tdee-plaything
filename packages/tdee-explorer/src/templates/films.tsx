@@ -59,10 +59,11 @@ export interface GraphQLFilmQuery {
 export interface FilmProps {
   data: GraphQLFilmQuery;
   pageContext?: { pageNumber: number };
+  location?: { pathname: string };
 }
 
-const FilmsPage = ({ data, pageContext }: FilmProps): JSX.Element => (
-  <Layout>
+const FilmsPage = ({ data, pageContext, location }: FilmProps): JSX.Element => (
+  <Layout pathname={location?.pathname}>
     <h1>Films</h1>
 
     {data.bdt.posts.nodes.map((film, i: number) => (
