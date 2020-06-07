@@ -1,7 +1,11 @@
 const path = require("path");
 module.exports = {
   stories: ["../../tdee-explorer/src/**/*.stories.tsx"],
-  addons: ["@storybook/addon-actions", "@storybook/addon-links"],
+  addons: [
+    "@storybook/addon-actions",
+    "@storybook/addon-links",
+    "@storybook/addon-knobs/register",
+  ],
   webpackFinal: async (config, { configType }) => {
     // Transpile Gatsby module because Gatsby includes un-transpiled ES6 code.
     config.module.rules[0].exclude = [/node_modules\/(?!(gatsby)\/)/];
