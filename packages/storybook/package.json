@@ -1,0 +1,21 @@
+{
+  "name": "@tdee/storybook",
+  "version": "1.0.0",
+  "description": "Instance of storybook",
+  "main": "index.js",
+  "repository": "https://github.com/SimonS/tdee-plaything",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "storybook": "start-storybook"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@storybook/react": "^5.3.19",
+    "babel-loader": "^8.1.0"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
