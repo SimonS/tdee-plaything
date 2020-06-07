@@ -3,7 +3,7 @@ import Centered from "./centered";
 import Sidebar from "./sidebar";
 import Stack from "./stack";
 
-import Logo from "../components/logo";
+import Logo from "../components/logo/logo";
 import Nav from "../components/nav";
 
 import "../styles/global.css";
