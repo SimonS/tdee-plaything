@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Nav from "../../components/nav";
+import Nav from "../../components/nav/nav";
 
 describe("Nav component", () => {
   it("displays some links that link to the right place", () => {
