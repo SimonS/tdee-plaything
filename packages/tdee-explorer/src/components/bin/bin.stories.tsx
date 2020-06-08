@@ -5,6 +5,6 @@ import { BinType } from "@tdee/bin-day-fetcher/src/getBinDays";
 
 export default { title: "Bin", component: Bin, decorators: [withKnobs] };
 
-export const BasicBin = (): JSX.Element => (
+export const bin = (): JSX.Element => (
   <Bin bin={radios("Bin Type", BinType, BinType.FOOD)} />
 );
