@@ -2,7 +2,7 @@ import React, { ReactText } from "react";
 import { withKnobs, radios } from "@storybook/addon-knobs";
 import Logo, { LogoState } from "./logo";
 
-export default { title: "BDT Logo", component: Logo, decorators: [withKnobs] };
+export default { title: "Logo", component: Logo, decorators: [withKnobs] };
 
 export const AutomatedHighlighting = (): JSX.Element => {
   return <Logo />;
