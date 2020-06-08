@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Pagination from "../../components/pagination";
+import Pagination from "../../components/pagination/pagination";
 
 describe("Pagination component", () => {
   it("renders a next link", () => {
