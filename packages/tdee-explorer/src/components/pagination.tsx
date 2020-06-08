@@ -15,12 +15,7 @@ const Pagination = ({
 }): JSX.Element => (
   <nav className={paginationStyles.pagination}>
     {pageInfo.hasPreviousPage && (
-      <Link
-        className={paginationStyles.previous}
-        to={`${urlRoot}/${pageNumber - 1}`}
-      >
-        &lt; Previous
-      </Link>
+      <Link to={`${urlRoot}/${pageNumber - 1}`}>&lt; Previous</Link>
     )}
     {pageInfo.hasNextPage && (
       <Link
