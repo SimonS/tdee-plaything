@@ -1,7 +1,7 @@
 import React from "react";
 import { useStaticQuery, graphql } from "gatsby";
 import { BinType } from "@tdee/bin-day-fetcher/src/getBinDays";
-import Bin from "./bin";
+import Bin from "./bin/bin";
 
 interface BinDayInfo {
   date: Date;
