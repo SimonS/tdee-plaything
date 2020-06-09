@@ -6,12 +6,24 @@ export default {
   component: Pagination,
 };
 
-export const pagination = (args): JSX.Element => {
-  return <Pagination {...args} />;
+export const pagination = ({
+  hasNextPage,
+  hasPreviousPage,
+  urlRoot,
+  pageNumber,
+}): JSX.Element => {
+  return (
+    <Pagination
+      urlRoot={urlRoot}
+      pageNumber={pageNumber}
+      pageInfo={{ hasNextPage, hasPreviousPage }}
+    />
+  );
 };
 
 pagination.args = {
   urlRoot: "/foo",
   pageNumber: 2,
-  pageInfo: { hasNextPage: true, hasPreviousPage: true },
+  hasNextPage: true,
+  hasPreviousPage: true,
 };
