@@ -1,22 +1,17 @@
 import React from "react";
-import { withKnobs, boolean, number } from "@storybook/addon-knobs";
 import Pagination from "./pagination";
 
 export default {
   title: "Pagination",
   component: Pagination,
-  decorators: [withKnobs],
 };
 
-export const pagination = (): JSX.Element => {
-  return (
-    <Pagination
-      pageInfo={{
-        hasNextPage: boolean("hasNextPage", true),
-        hasPreviousPage: boolean("hasPreviousPage", true),
-      }}
-      urlRoot="/foo"
-      pageNumber={number("pageNumber", 2)}
-    />
-  );
+export const pagination = (args): JSX.Element => {
+  return <Pagination {...args} />;
+};
+
+pagination.args = {
+  urlRoot: "/foo",
+  pageNumber: 2,
+  pageInfo: { hasNextPage: true, hasPreviousPage: true },
 };

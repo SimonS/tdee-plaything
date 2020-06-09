@@ -1,18 +1,16 @@
-import React, { ReactText } from "react";
-import { withKnobs, radios } from "@storybook/addon-knobs";
-import Logo, { LogoState } from "./logo";
+import React from "react";
+import Logo from "./logo";
 
-export default { title: "Logo", component: Logo, decorators: [withKnobs] };
+export default { title: "Logo", component: Logo };
+
+export const ManualHighlighting = (args): JSX.Element => {
+  return <Logo {...args} />;
+};
+
+ManualHighlighting.args = {
+  highlight: "Breakfast",
+};
 
 export const AutomatedHighlighting = (): JSX.Element => {
   return <Logo />;
-};
-
-export const ManualHighlighting = (): JSX.Element => {
-  const states: Record<ReactText, LogoState> = {
-    Breakfast: "Breakfast",
-    Dinner: "Dinner",
-    Tea: "Tea",
-  };
-  return <Logo highlight={radios("Highlight", states, "Breakfast")} />;
 };
