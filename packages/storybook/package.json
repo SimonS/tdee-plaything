@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "storybook": "start-storybook",
-    "build-storybook": "build-storybook -c .storybook -o .out"
+    "build-storybook": "build-storybook -c .storybook -o ../tdee-explorer/public/storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
