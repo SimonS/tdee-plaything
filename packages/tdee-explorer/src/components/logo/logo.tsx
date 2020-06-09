@@ -26,7 +26,7 @@ const useHighlightedMeal = (highlight: LogoState): LogoState => {
   return highlightedMeal;
 };
 
-const Logo = ({ highlight }: LogoProps): JSX.Element => {
+export const Logo = ({ highlight }: LogoProps): JSX.Element => {
   const highlightedMeal = useHighlightedMeal(highlight);
 
   return (

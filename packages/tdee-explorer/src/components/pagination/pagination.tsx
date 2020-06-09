@@ -4,7 +4,7 @@ import * as paginationStyles from "./pagination.module.css";
 
 type PageInfo = { hasNextPage?: boolean; hasPreviousPage?: boolean };
 
-const Pagination = ({
+export const Pagination = ({
   pageInfo,
   urlRoot,
   pageNumber = 1,
