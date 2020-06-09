@@ -1,5 +1,7 @@
 import React from "react";
 import { action } from "@storybook/addon-actions";
+import { addParameters } from "@storybook/react";
+import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
 import "../../tdee-explorer/src/styles/global.css";
 
 // Gatsby's Link overrides:
@@ -13,6 +15,7 @@ global.___loader = {
 
 // __PATH_PREFIX__ is used inside gatsby-link an other various places. For storybook not to crash we need to set it as well.
 global.__PATH_PREFIX__ = "";
+global.__BASE_PATH__ = "";
 
 // Navigating through a gatsby app using gatsby-link or any other gatsby component will use the `___navigate` method.
 // In storybook it doesn't make sense to do an actual navigate, instead we want to log an action. Checkout the actions addon docs https://github.com/storybookjs/storybook/tree/master/addons/actions.
@@ -20,3 +23,10 @@ global.__PATH_PREFIX__ = "";
 window.___navigate = (pathname) => {
   action("NavigateTo:")(pathname);
 };
+
+addParameters({
+  docs: {
+    container: DocsContainer,
+    page: DocsPage,
+  },
+});
