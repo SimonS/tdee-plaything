@@ -12,6 +12,7 @@
     "test": "jest && yarn workspace @tdee/tdee-explorer jest",
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
+    "deploy-all": "yarn workspace @tdee/tdee-explorer build && yarn workspace @tdee/storybook run build-storybook",
     "compile": "tsc"
   },
   "workspaces": [
