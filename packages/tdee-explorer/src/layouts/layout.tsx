@@ -3,8 +3,8 @@ import Centered from "./centered";
 import Sidebar from "./sidebar";
 import Stack from "./stack";
 
-import Logo from "../components/logo";
-import Nav from "../components/nav";
+import Logo from "../components/logo/logo";
+import Nav from "../components/nav/nav";
 
 import "../styles/global.css";
 

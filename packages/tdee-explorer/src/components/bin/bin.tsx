@@ -17,7 +17,7 @@ const binColours: BinColours = {
   "Plastic and Glass": { baseColour: "#71B43D", lidColour: "#0086C1" },
 };
 
-const Bin = ({ bin }: { bin: BinType }): JSX.Element => {
+export const Bin = ({ bin }: { bin: BinType }): JSX.Element => {
   const colours = binColours[bin];
   return (
     <>

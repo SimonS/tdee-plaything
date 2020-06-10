@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2015", "dom"],
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "jsx": "react",
+    "esModuleInterop": true
+  },
+  "extends": "../../tsconfig.base.json",
+  "rootDir": "src",
+  "outDir": "dist",
+  "baseUrl": "src",
+  "paths": {
+    "@tdee/*": ["../packages/*"]
+  },
+
+  "references": [
+    {
+      "path": "../gsheet-log-fetcher"
+    }
+  ]
+}

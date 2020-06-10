@@ -4,7 +4,7 @@ import * as paginationStyles from "./pagination.module.css";
 
 type PageInfo = { hasNextPage?: boolean; hasPreviousPage?: boolean };
 
-const Pagination = ({
+export const Pagination = ({
   pageInfo,
   urlRoot,
   pageNumber = 1,
@@ -15,12 +15,7 @@ const Pagination = ({
 }): JSX.Element => (
   <nav className={paginationStyles.pagination}>
     {pageInfo.hasPreviousPage && (
-      <Link
-        className={paginationStyles.previous}
-        to={`${urlRoot}/${pageNumber - 1}`}
-      >
-        &lt; Previous
-      </Link>
+      <Link to={`${urlRoot}/${pageNumber - 1}`}>&lt; Previous</Link>
     )}
     {pageInfo.hasNextPage && (
       <Link

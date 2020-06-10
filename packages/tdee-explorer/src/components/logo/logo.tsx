@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { highlighted, logo } from "./logo.module.css";
 import { Link } from "gatsby";
 
-type LogoState = "Breakfast" | "Dinner" | "Tea" | undefined;
+export type LogoState = "Breakfast" | "Dinner" | "Tea" | undefined;
 type LogoProps = { highlight?: LogoState };
 
 const useHighlightedMeal = (highlight: LogoState): LogoState => {
@@ -18,13 +18,15 @@ const useHighlightedMeal = (highlight: LogoState): LogoState => {
       } else if (hour < 22) {
         setHighlightedMeal("Tea");
       }
+    } else {
+      setHighlightedMeal(highlight);
     }
-  }, []);
+  }, [highlight]);
 
   return highlightedMeal;
 };
 
-const Logo = ({ highlight }: LogoProps): JSX.Element => {
+export const Logo = ({ highlight }: LogoProps): JSX.Element => {
   const highlightedMeal = useHighlightedMeal(highlight);
 
   return (

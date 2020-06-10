@@ -10,3 +10,7 @@
   margin-left: calc(var(--s1) * -1);
   position: absolute;
 }
+
+.mainMenu li {
+  list-style: none;
+}

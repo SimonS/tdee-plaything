@@ -5,7 +5,7 @@ import Sidebar from "../layouts/sidebar";
 import Stack from "../layouts/stack";
 
 import { graphql } from "gatsby";
-import Pagination from "../components/pagination";
+import Pagination from "../components/pagination/pagination";
 
 export const query = graphql`
   query FilmsQuery($from: String, $first: Int) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Logo from "../../components/logo";
-import { highlighted } from "../../components/logo.module.css";
+import Logo from "../../components/logo/logo";
+import { highlighted } from "../../components/logo/logo.module.css";
 
 describe("Logo component", () => {
   it("highlights the correct word when appropriate", () => {

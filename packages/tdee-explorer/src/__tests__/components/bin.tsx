@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Bin from "../../components/bin";
+import Bin from "../../components/bin/bin";
 import { BinType } from "@tdee/bin-day-fetcher/src/getBinDays";
 
 describe("Bin component", () => {
