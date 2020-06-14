@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
-    "@storybook/addon-actions": "6.0.0-beta.23",
-    "@storybook/addon-docs": "6.0.0-beta.23",
-    "@storybook/addon-links": "6.0.0-beta.23",
-    "@storybook/react": "6.0.0-beta.23",
+    "@storybook/addon-actions": "6.0.0-beta.27",
+    "@storybook/addon-docs": "6.0.0-beta.27",
+    "@storybook/addon-links": "6.0.0-beta.27",
+    "@storybook/react": "6.0.0-beta.27",
     "babel-loader": "^8.1.0",
-    "storybook": "6.0.0-beta.23"
+    "storybook": "6.0.0-beta.27"
   },
   "dependencies": {
     "react": "^16.13.1",
