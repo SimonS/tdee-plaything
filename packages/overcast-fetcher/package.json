@@ -1,29 +1,30 @@
 {
-  "name": "@tdee/overcast-fetcher",
-  "version": "0.0.1",
-  "description": "Logs in and fetches listening data from someone's overcast account",
-  "repository": "https://github.com/simons/unnamed-tdee-app",
-  "author": "Simon Scarfe",
-  "license": "MIT",
-  "private": true,
-  "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/cheerio": "^0.22.18",
-    "@types/jest": "^24.0.22",
-    "@types/mock-fs": "^4.10.0",
-    "@types/nock": "^11.1.0",
-    "@types/node": "^14.0.13",
-    "@types/tough-cookie": "^4.0.0",
-    "jest": "^26.0.1",
-    "mock-fs": "^4.12.0",
-    "nock": "^12.0.3",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.7.2"
-  },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "axios-cookiejar-support": "^1.0.0",
-    "cheerio": "^1.0.0-rc.3",
-    "tough-cookie": "^4.0.0"
-  }
+    "name": "@tdee/overcast-fetcher",
+    "version": "0.0.1",
+    "description": "Logs in and fetches listening data from someone's overcast account",
+    "repository": "https://github.com/simons/unnamed-tdee-app",
+    "author": "Simon Scarfe",
+    "license": "MIT",
+    "private": true,
+    "devDependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/jest": "^24.0.22",
+        "@types/mock-fs": "^4.10.0",
+        "@types/nock": "^11.1.0",
+        "@types/node": "^14.0.13",
+        "@types/tough-cookie": "^4.0.0",
+        "jest": "^26.0.1",
+        "mock-fs": "^4.12.0",
+        "nock": "^12.0.3",
+        "ts-jest": "^24.1.0",
+        "typescript": "^3.7.2"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "axios-cookiejar-support": "^1.0.0",
+        "cheerio": "^1.0.0-rc.3",
+        "node-fetch": "^2.6.0",
+        "node-fetch-cookies": "^1.3.6",
+        "tough-cookie": "^4.0.0"
+    }
 }
