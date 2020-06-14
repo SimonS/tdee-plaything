@@ -1,0 +1,9 @@
+{
+  "name": "@tdee/overcast-fetcher",
+  "version": "0.0.1",
+  "description": "Logs in an fetches listening data from someone's overcast account",
+  "repository": "https://github.com/simons/unnamed-tdee-app",
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "private": true
+}
