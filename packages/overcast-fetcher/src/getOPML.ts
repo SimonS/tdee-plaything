@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import axiosCookieJarSupport from "axios-cookiejar-support";
 import { stringify } from "querystring";
 
@@ -28,11 +28,16 @@ const getOPML = async (): Promise<void> => {
     password: PASSWORD,
   };
 
-  await http.post(`${urlBase}${loginURL}`, stringify(authParams), {
+  const resp = await http.post(`${urlBase}${loginURL}`, stringify(authParams), {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
   });
-  const opmlResponse = await http.get(`${urlBase}${opmlURL}`);
-  console.log(opmlResponse.data);
+
+  if (resp.request.path === "/podcasts") {
+    const opmlFile = await http.get(`${urlBase}${opmlURL}`);
+    console.log(opmlFile.data);
+  } else {
+    console.log("login failed");
+  }
 };
 
 getOPML();
