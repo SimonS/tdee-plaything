@@ -1,10 +1,9 @@
 module.exports = {
   siteMetadata: {
     name: "Hello Typescript World!",
-    tagline: "Gatsby + SASS + Typescript = 💪",
+    tagline: "💪",
   },
   plugins: [
-    "gatsby-plugin-sass",
     "gatsby-plugin-typescript",
     "gatsby-plugin-css-modules-typings",
     "gatsby-source-tdee-json-api",
