@@ -44,7 +44,7 @@ I'm not - I'm coding in the open. I'll add a permissive license so you can copy 
 
 ## What else do you want to do?
 
-I have loads of stuff I WANT to do, but best intentions and all that...
+I have loads of stuff I WANT to do, but best intentions and all that…
 
 I'd like to learn a bit more about the TDEE side of the spreadsheet, understand how that's calculated, replicate that and maybe graph that over time. If I do that, I can maybe mash that up with Strava running data and get some idea of just what sort of an effect running has on my weight/energy expenditure. I'm 90% sure MyFitnessPal (which I generally use to track nutrition/intake) grossly inflates it, but I'd like to know by just how much.
 
