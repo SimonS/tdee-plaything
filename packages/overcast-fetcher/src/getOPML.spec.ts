@@ -23,14 +23,4 @@ describe("getOPML", () => {
     expect(result).toEqual(latestOPML);
     mock.restore();
   });
-
-  it("attempts a login with a bad password and throws an error", async () => {
-    nock(rootUrl)
-      .post("/login", "then=podcasts&email=email&password=badpassword")
-      .reply(200);
-
-    await expect(
-      async () => await getOPML("email", "badpassword")
-    ).rejects.toThrow();
-  });
 });
