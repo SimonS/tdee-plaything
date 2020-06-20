@@ -3,7 +3,6 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 describe("getListensSince", () => {
-
   // get listens
   // only gets listens since
   // only gets listens that have been played
@@ -19,11 +18,9 @@ describe("getListensSince", () => {
 
     expect(result[0]).toMatchObject({
       title: "The Transfer Market & 21st Club",
-      url:
-        "https://theathletic.com/podcast/197-the-tifo-football-podcast/?episode=19",
+      url: "https://theathletic.com/podcast/197-the-tifo-football-podcast/?episode=19",
       overcastUrl: "https://overcast.fm/+Zuyvu2MpA",
       listenDate: new Date("2020-06-20T07:53:15-04:00"),
-
     });
   });
 });
