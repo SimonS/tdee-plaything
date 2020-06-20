@@ -28,11 +28,12 @@ const getOPML = async (email: string, password: string): Promise<void> => {
 
   const resp = await http.post(`${urlBase}${loginURL}`, stringify(authParams));
 
-  if (resp.request.path === "/podcasts") {
-    const opmlFile = await http.get(`${urlBase}${opmlURL}`);
-    writeFileSync("./extended.opml", opmlFile.data);
-    return Promise.resolve();
+  if (resp.request.path !== "/podcasts") {
+    throw Error("overcast login failed");
   }
+
+  const opmlFile = await http.get(`${urlBase}${opmlURL}`);
+  writeFileSync("./extended.opml", opmlFile.data);
 };
 
 export default getOPML;
