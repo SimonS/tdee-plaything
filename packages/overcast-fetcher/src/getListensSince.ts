@@ -1,15 +1,10 @@
 import { load } from "cheerio";
 
-// TODO: Get episode image and summary
-export type OvercastListen = {
+type OvercastListen = {
   title: string;
   url: string;
   overcastUrl: string;
   listenDate: Date;
-  podcast: {
-    title: string;
-    url: string;
-  };
 };
 
 const getListensSince = (since: Date, xml: string): OvercastListen[] => {
@@ -18,19 +13,14 @@ const getListensSince = (since: Date, xml: string): OvercastListen[] => {
     ignoreWhitespace: true,
   });
 
-  return overcastFile("[type='podcast-episode'][played='1']")
+  return overcastFile("[type='podcast-episode']")
     .toArray()
     .map((el) => ({
       title: el.attribs["title"],
       url: el.attribs["url"],
       overcastUrl: el.attribs["overcastUrl"],
       listenDate: new Date(el.attribs["userUpdatedDate"]),
-      podcast: {
-        title: el.parent.attribs["title"],
-        url: el.parent.attribs["htmlUrl"],
-      },
-    }))
-    .filter((listen) => listen.listenDate > since);
+    }));
 };
 
 export default getListensSince;
