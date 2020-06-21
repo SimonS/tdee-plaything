@@ -5,6 +5,10 @@ export type OvercastListen = {
   url: string;
   overcastUrl: string;
   listenDate: Date;
+  podcast: {
+    title: string;
+    url: string;
+  };
 };
 
 const getListensSince = (since: Date, xml: string): OvercastListen[] => {
@@ -20,6 +24,10 @@ const getListensSince = (since: Date, xml: string): OvercastListen[] => {
       url: el.attribs["url"],
       overcastUrl: el.attribs["overcastUrl"],
       listenDate: new Date(el.attribs["userUpdatedDate"]),
+      podcast: {
+        title: el.parent.attribs["title"],
+        url: el.parent.attribs["htmlUrl"],
+      },
     }))
     .filter((listen) => listen.listenDate > since);
 };

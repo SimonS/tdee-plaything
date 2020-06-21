@@ -19,6 +19,10 @@ describe("getListensSince", () => {
         "https://theathletic.com/podcast/197-the-tifo-football-podcast/?episode=19",
       overcastUrl: "https://overcast.fm/+Zuyvu2MpA",
       listenDate: new Date("2020-06-20T07:53:15-04:00"),
+      podcast: {
+        title: "Tifo Football Podcast",
+        url: "https://audioboom.com/channels/4995098",
+      },
     });
   });
 
