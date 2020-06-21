@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<opml version="1.0">
+    <head>
+        <title>Overcast Podcast Subscriptions</title>
+    </head>
+    <body>
+        <outline text="feeds">
+            <outline type="rss" overcastId="1686315" text="Tifo Football Podcast" title="Tifo Football Podcast" xmlUrl="https://feeds.simplecast.com/CO_QAKHm" htmlUrl="https://audioboom.com/channels/4995098" subscribed="1" notifications="1">
+                <outline type="podcast-episode" overcastId="1810667945734800" pubDate="2020-06-17T23:00:10-04:00" title="The Transfer Market &amp; 21st Club" url="https://theathletic.com/podcast/197-the-tifo-football-podcast/?episode=19" overcastUrl="https://overcast.fm/+Zuyvu2MpA" enclosureUrl="https://cdn.simplecast.com/audio/f15a18/f15a18fe-cafb-482c-b233-c1db6b15272e/d4bfb2a8-f58c-47f1-813e-4879a914137f/omar-audio-ads_tc.mp3?aid=rss_feed" userUpdatedDate="2020-06-20T07:53:15-04:00" userDeleted="1" played="1"/>
+            </outline>
+            <outline type="rss" overcastId="1372292" text="Running in Production" title="Running in Production" xmlUrl="https://runninginproduction.com/podcast/feed.xml" htmlUrl="https://runninginproduction.com/podcast/" subscribed="1" notifications="1">
+                <outline type="podcast-episode" overcastId="1473488066921138" pubDate="2020-02-10T00:00:00-05:00" title="Smart Music Helps Musicians Practice More Efficiently" url="https://runninginproduction.com/podcast/17-smart-music-helps-musicians-practice-more-efficiently" overcastUrl="https://overcast.fm/+U8ISzPQrI" enclosureUrl="https://runninginproduction.com/assets/podcast/running-in-production-17.mp3" userUpdatedDate="2020-06-20T17:04:46-04:00" progress="1440"/>
+            </outline>
+        </body>
+    </opml>
+

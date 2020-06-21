@@ -1,6 +1,6 @@
 import { load } from "cheerio";
 
-type OvercastListen = {
+export type OvercastListen = {
   title: string;
   url: string;
   overcastUrl: string;
@@ -13,14 +13,15 @@ const getListensSince = (since: Date, xml: string): OvercastListen[] => {
     ignoreWhitespace: true,
   });
 
-  return overcastFile("[type='podcast-episode']")
+  return overcastFile("[type='podcast-episode'][played='1']")
     .toArray()
     .map((el) => ({
       title: el.attribs["title"],
       url: el.attribs["url"],
       overcastUrl: el.attribs["overcastUrl"],
       listenDate: new Date(el.attribs["userUpdatedDate"]),
-    }));
+    }))
+    .filter((listen) => listen.listenDate > since);
 };
 
 export default getListensSince;
