@@ -9255,10 +9255,10 @@ gatsby-recipes@^0.1.39:
     ws "^7.3.0"
     xstate "^4.10.0"
 
-gatsby-source-graphql@^2.5.1, gatsby-source-graphql@^2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-2.5.4.tgz#fc2eba5e6128bbe2af06c7e1405fca4370fba5dc"
-  integrity sha512-lP8/GS6f1SMQXa4q72iH/CAAZQ/RxwgADPdFSAZS8e7fNkdlhUYpUqY69mdmQxwv5iMqaHMVQTdQmuiKcyQYXg==
+gatsby-source-graphql@^2.5.4, gatsby-source-graphql@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-2.5.6.tgz#d9400f9b4996ee4f651ebabcb09b810c54e5c042"
+  integrity sha512-66P9h/xHCT4O+ISEngBoTmbfsadUPYuT+Tpw1iuc/3vnqKLx//48ihthiSCcEv1CpdNGhSE8Mux3n5skSwvFJg==
   dependencies:
     "@babel/runtime" "^7.10.2"
     apollo-link "1.2.14"
