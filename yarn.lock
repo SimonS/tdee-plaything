@@ -2078,15 +2078,15 @@
     ts-dedent "^1.1.1"
     util-deprecate "^1.0.2"
 
-"@storybook/cli@6.0.0-beta.27":
-  version "6.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/@storybook/cli/-/cli-6.0.0-beta.27.tgz#80295ef39289559a5d9779167224fd49600e2407"
-  integrity sha512-toh7gJNGIdQFBdGxrSHIuDggmpurNKJn053VF3UBw0w0k85e+5nTqu2ObPK0Uld6yYkDFb5/RnWH/IVHX1Vb9w==
+"@storybook/cli@6.0.17":
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/@storybook/cli/-/cli-6.0.17.tgz#5db63f1a7acd5fbd2bb818a20033d3313780b40e"
+  integrity sha512-I7V4wyO7cbsZqlJbaO5BPGD9pXVqa3bnD8S8WPuCUPEtKWrNzYBd0H88ECy2QM4oN56L91C0/GvDdZ/zAe+WIA==
   dependencies:
     "@babel/core" "^7.9.6"
     "@babel/preset-env" "^7.9.6"
-    "@storybook/codemod" "6.0.0-beta.27"
-    "@storybook/node-logger" "6.0.0-beta.27"
+    "@storybook/codemod" "6.0.17"
+    "@storybook/node-logger" "6.0.17"
     "@storybook/semver" "^7.3.2"
     chalk "^4.0.0"
     commander "^5.0.0"
@@ -2135,20 +2135,20 @@
     core-js "^3.0.1"
     global "^4.3.2"
 
-"@storybook/codemod@6.0.0-beta.27":
-  version "6.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/@storybook/codemod/-/codemod-6.0.0-beta.27.tgz#34af200d74faab93f07215d4642c8942aa7c69b2"
-  integrity sha512-MbPHDG5/2E/8116LNAobdb7b7yE6xBgHuWwfhjPCdSAFl8+z1frUVcTozVyc1Tks5s3SBzzRWmGvxNW8E/U1tQ==
+"@storybook/codemod@6.0.17":
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/@storybook/codemod/-/codemod-6.0.17.tgz#42a252ba63042a14518db9445c3f3dd4f921a7b9"
+  integrity sha512-a8Jt0ybf0fugYtUvSooqF3Y90BkpsrgPx+S4wr1kLogDmwXxV4TbA5lahqHg+rp9CPmFipN+ALrybGseBrw92A==
   dependencies:
     "@mdx-js/mdx" "^1.5.1"
     "@storybook/csf" "0.0.1"
-    "@storybook/node-logger" "6.0.0-beta.27"
+    "@storybook/node-logger" "6.0.17"
     core-js "^3.0.1"
     cross-spawn "^7.0.0"
     globby "^11.0.0"
     jscodeshift "^0.7.0"
     lodash "^4.17.15"
-    prettier "^2.0.5"
+    prettier "~2.0.5"
     recast "^0.19.0"
     regenerator-runtime "^0.13.3"
 
@@ -2299,6 +2299,17 @@
   version "6.0.0-beta.27"
   resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-6.0.0-beta.27.tgz#2b9ad2814c0bef297c5b1dd909e44791dad79b23"
   integrity sha512-BYQ3E+TmY4qThMMiAkU4sSgcUBntFRYBhoAZjgxjGH5sQaxU6b3bUB7v3uE9MUdCc2IEbxna7Ctn4I39t56U/Q==
+  dependencies:
+    "@types/npmlog" "^4.1.2"
+    chalk "^4.0.0"
+    core-js "^3.0.1"
+    npmlog "^4.1.2"
+    pretty-hrtime "^1.0.3"
+
+"@storybook/node-logger@6.0.17":
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-6.0.17.tgz#a5ae8103d0d9399527a27f2d3760aa9aa48ffc44"
+  integrity sha512-AnV5gn9bjo1YZmFSdCUDs3WJtinzXa3QD/SoObUMdl3BZ/Jly1AAwE9F5FuSox585QRrt29+f7go9qbSn5MeeQ==
   dependencies:
     "@types/npmlog" "^4.1.2"
     chalk "^4.0.0"
@@ -14662,7 +14673,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@2.0.5, prettier@^2.0.5:
+prettier@2.0.5, prettier@^2.0.5, prettier@~2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
   integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
@@ -17111,12 +17122,12 @@ store2@^2.7.1:
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.11.2.tgz#a298e5e97b21b3ce7419b732540bc7c79cb007db"
   integrity sha512-TQMKs+C6n9idtzLpxluikmDCYiDJrTbbIGn9LFxMg0BVTu+8JZKSlXTWYRpOFKlfKD5HlDWLVpJJyNGZ2e9l1A==
 
-storybook@6.0.0-beta.27:
-  version "6.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/storybook/-/storybook-6.0.0-beta.27.tgz#c1825492106f32651f922e218c21fc143a1ef120"
-  integrity sha512-Gc/zSDvA1RJdOuFJ17vhjirCY6qCcc9YWtpMvReK+sbROoYz1yMZKj1eP2PyKGll47/JlxOC0ZXDYmDKPBUYnQ==
+storybook@6.0.17:
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/storybook/-/storybook-6.0.17.tgz#c459f424440420a1d2e1cbec008b52d9d8b05370"
+  integrity sha512-hLSlxdwMDPmESxxxpJ6vLH2gR/TEB/82Q+ZMlefh06TyPfaUHAW6iJ6DVfOSjrNqzB3d0PXQdWrYhmhk+ZjA0A==
   dependencies:
-    "@storybook/cli" "6.0.0-beta.27"
+    "@storybook/cli" "6.0.17"
 
 stream-browserify@^2.0.1:
   version "2.0.2"
