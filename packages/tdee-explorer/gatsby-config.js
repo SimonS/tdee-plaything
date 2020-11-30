@@ -9,13 +9,15 @@ module.exports = {
     "gatsby-source-tdee-json-api",
     "gatsby-source-bin-day-api",
     {
-      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      resolve: `gatsby-plugin-webfonts`,
       options: {
-        fonts: [
-          {
-            family: `Actor`,
-          },
-        ],
+        fonts: {
+          google: [
+            {
+              family: `Actor`,
+            },
+          ],
+        },
       },
     },
     {
