@@ -11,7 +11,7 @@
     "build-storybook": "build-storybook -c .storybook -o ../tdee-explorer/public/storybook"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
+    "@babel/core": "^7.12.9",
     "@storybook/addon-actions": "6.1.9",
     "@storybook/addon-docs": "6.0.0-beta.27",
     "@storybook/addon-links": "6.0.0-beta.27",
