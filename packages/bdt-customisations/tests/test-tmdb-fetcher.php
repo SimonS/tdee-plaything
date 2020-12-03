@@ -1,7 +1,7 @@
 <?php
 namespace bdt;
 
-require dirname(dirname(__FILE__)) . '/lib/tmdb-fetcher.php';
+require_once dirname(dirname(__FILE__)) . '/lib/tmdb-fetcher.php';
 
 function wp_remote_get($query)
 {
