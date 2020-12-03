@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@tdee/types": "0.0.1",
-    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@types/d3": "^6.2.0",
     "@types/node-sass": "^4.11.0",
