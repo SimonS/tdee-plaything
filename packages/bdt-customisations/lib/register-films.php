@@ -144,6 +144,7 @@ function register_film_meta_type()
     ]);
 }
 
+<<<<<<< HEAD
 add_action('graphql_register_types', function () {
     $post_types = WPGraphQL::get_allowed_post_types();
     $type_name = get_post_type_object($post_types['bdt_film'])->graphql_single_name;
@@ -221,3 +222,55 @@ add_filter('graphql_post_object_connection_query_args', function ($query_args, $
 
     return $query_args;
 }, 10, 3);
+=======
+function rating_to_float($rating)
+{
+    return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - .5 : mb_strlen($rating);
+}
+
+add_action('graphql_register_types', function () {
+    $post_types = WPGraphQL::get_allowed_post_types();
+
+    if (!empty($post_types) && is_array($post_types)) {
+        foreach ($post_types as $post_type) {
+            $post_type_object = get_post_type_object($post_type);
+
+            register_graphql_field($post_type_object->graphql_single_name, 'syndication', [
+                'type' => 'String',
+                'description' => __('Syndication', 'mf2'),
+                'resolve' => function ($post) {
+                    $syndication = get_post_meta($post->ID, 'mf2_syndication', true);
+                    return !empty($syndication) ? $syndication[0] : null;
+                },
+            ]);
+
+            register_graphql_field($post_type_object->graphql_single_name, 'watchOf', [
+                'type' => 'WatchOf',
+                'description' => __('Watch Of', 'mf2'),
+                'resolve' => function ($post) {
+                    $watchOf = get_post_meta($post->ID, 'mf2_watch-of', true);
+
+                    $watchOfObject = array();
+
+                    if (!empty($watchOf["properties"])) {
+                        $props = $watchOf["properties"];
+                        if (!empty($props["summary"])) {
+                            $watchOfObject["review"] = $props["summary"][0];
+                        }
+                        $watchOfObject["url"] = $props["url"][0];
+
+                        preg_match('/A (\x{2605}*\x{00BD}?)(?:\s)?(?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
+
+                        $watchOfObject["name"] = $splitTitle[2];
+                        $watchOfObject["year"] = $splitTitle[3];
+                        $watchOfObject["rating"] = rating_to_float($splitTitle[1]) > 0 ? rating_to_float($splitTitle[1]) : null;
+
+                        $watchOfObject["meta"] = fetchMovieMetaData($watchOfObject["name"], $watchOfObject["year"]);
+                    }
+                    return !empty($watchOfObject) ? $watchOfObject : null;
+                },
+            ]);
+        }
+    }
+});
+>>>>>>> 1cc8b2c (start separating concerns)
