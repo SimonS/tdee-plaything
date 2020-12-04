@@ -14,7 +14,7 @@
     "@babel/core": "^7.12.9",
     "@storybook/addon-actions": "6.1.9",
     "@storybook/addon-docs": "6.1.9",
-    "@storybook/addon-links": "6.0.0-beta.27",
+    "@storybook/addon-links": "6.1.10",
     "@storybook/react": "6.0.28",
     "babel-loader": "^8.1.0",
     "storybook": "6.1.9"
