@@ -25,7 +25,12 @@ function bdt_register_weighin()
         'supports'              => array( 'title', 'custom-fields'),
         'rewrite'               => array( 'slug' => 'weighin' ),
         'show_in_rest'          => true,
+        'rest_controller_class' => 'WP_REST_Posts_Controller',
+        'rest_base' => 'bdt_weighin',
     );
     register_post_type('bdt_weighin', $args);
+    register_post_meta('bdt_weighin', 'weight', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_weighin', 'body_fat_percentage', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_weighin', 'weighin_time', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
 add_action('init', 'bdt_register_weighin', 0);
