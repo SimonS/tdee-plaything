@@ -2,7 +2,7 @@
 
 add_filter('acf/settings/remove_wp_meta_box', '__return_false');
 
-function withings_date_to_time($date)
+function bdt_withingsdate_to_time($date)
 {
     return DateTime::createFromFormat('F d, Y \a\t h:ia', $date)->format(DateTime::ISO8601);
 }
@@ -29,6 +29,6 @@ function bdt_register_weighin()
     register_post_type('bdt_weighin', $args);
     register_post_meta('bdt_weighin', 'weight', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_weighin', 'body_fat_percentage', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_weighin', 'weighin_time', array('type'=> 'string', 'show_in_rest' => true, 'single' => true, 'sanitize_callback' => 'withings_date_to_time'));
+    register_post_meta('bdt_weighin', 'weighin_time', array('type'=> 'string', 'show_in_rest' => true, 'single' => true, 'sanitize_callback' => 'bdt_withingsdate_to_time'));
 }
 add_action('init', 'bdt_register_weighin', 0);
