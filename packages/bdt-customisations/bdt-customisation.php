@@ -12,3 +12,5 @@
 
 require_once dirname(__FILE__) . '/lib/register-films.php';
 require_once dirname(__FILE__) . '/lib/register-weighins.php';
+
+add_filter('acf/settings/remove_wp_meta_box', '__return_false');

@@ -1,7 +1,5 @@
 <?php
 
-add_filter('acf/settings/remove_wp_meta_box', '__return_false');
-
 function bdt_withingsdate_to_time($date)
 {
     return DateTime::createFromFormat('F d, Y \a\t h:ia', $date)->format(DateTime::ISO8601);
