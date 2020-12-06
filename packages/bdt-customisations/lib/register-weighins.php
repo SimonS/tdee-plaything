@@ -7,7 +7,7 @@ function bdt_withingsdate_to_time($date)
         DateTime::createFromFormat('F d, Y \a\t h:ia', $date)->format(DateTime::ISO8601);
 }
 
-function withings_date_to_time($date)
+function bdt_withingsdate_to_time($date)
 {
     return DateTime::createFromFormat('F d, Y \a\t h:ia', $date)->format(DateTime::ISO8601);
 }
