@@ -23,6 +23,9 @@ function bdt_register_weighin()
         'show_in_rest'          => true,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
         'rest_base' => 'bdt_weighin',
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'weighin',
+        'graphql_plural_name' => 'weighins',
     );
     register_post_type('bdt_weighin', $args);
     register_post_meta('bdt_weighin', 'weight', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
