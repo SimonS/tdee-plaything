@@ -7,10 +7,6 @@ function bdt_withingsdate_to_time($date)
         DateTime::createFromFormat('F d, Y \a\t h:ia', $date)->format(DateTime::ISO8601);
 }
 
-function bdt_withingsdate_to_time($date)
-{
-    return DateTime::createFromFormat('F d, Y \a\t h:ia', $date)->format(DateTime::ISO8601);
-}
 
 // Register Weigh In Post Type
 function bdt_register_weighin()
