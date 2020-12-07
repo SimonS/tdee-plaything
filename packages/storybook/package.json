@@ -17,7 +17,7 @@
     "@storybook/addon-links": "6.1.10",
     "@storybook/react": "6.0.28",
     "babel-loader": "^8.1.0",
-    "storybook": "6.1.9"
+    "storybook": "6.1.10"
   },
   "dependencies": {
     "react": "^16.13.1",
