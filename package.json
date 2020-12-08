@@ -13,12 +13,14 @@
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
     "deploy-all": "yarn workspace @tdee/tdee-explorer build && yarn workspace @tdee/storybook run build-storybook",
-    "compile": "tsc"
+    "compile": "tsc",
+    "build:lambda": "netlify-lambda build packages/netlify-functions"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.64",
     "@types/jest": "^24.0.22",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
@@ -36,6 +38,5 @@
     "prettier": "2.0.5",
     "ts-jest": "^24.1.0",
     "typescript": "^3.7.2"
-  },
-  "dependencies": {}
+  }
 }
