@@ -11,7 +11,6 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// payload, strips out access token and endpoint and returns each aspect separated
 var generateRequest = function (_a) {
     var authToken = _a.access_token, endpoint = _a.bdt_endpoint, body = __rest(_a, ["access_token", "bdt_endpoint"]);
     return ({

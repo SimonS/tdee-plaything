@@ -1,6 +1,5 @@
 import { BDTRequest } from "@tdee/types/src/bdt";
 
-// payload, strips out access token and endpoint and returns each aspect separated
 const generateRequest = ({
   access_token: authToken,
   bdt_endpoint: endpoint,
