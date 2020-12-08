@@ -6,3 +6,6 @@ dist
 .env.test
 .out
 .vscode
+
+# Local Netlify folder
+.netlify
