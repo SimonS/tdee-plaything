@@ -1,0 +1,16 @@
+{
+  "name": "@tdee/netlify-functions",
+  "version": "0.0.1",
+  "description": "package containing various netlify functions",
+  "main": "index.js",
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.0"
+  },
+  "dependencies": {}
+}
