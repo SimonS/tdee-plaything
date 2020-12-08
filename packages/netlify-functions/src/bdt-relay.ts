@@ -3,11 +3,11 @@ import { APIGatewayEvent } from "aws-lambda";
 import { BDTRequest } from "@tdee/types/src/bdt";
 
 import generateRequest from "./lib/generateRequest";
+import postToBDT from "./lib/postToBDT";
 
 exports.handler = async (
   event: APIGatewayEvent
 ): Promise<{ statusCode: number; body: string }> => {
-  console.log(event.headers);
   if (!event.body || event.httpMethod !== "POST") {
     return {
       statusCode: 400,
@@ -23,8 +23,8 @@ exports.handler = async (
     JSON.parse(event.body) as BDTRequest
   );
 
-  // make request to bdt
+  const response = await postToBDT(body, endpoint, authToken);
+  const responseBody = await response.json();
 
-  // return response
-  return { statusCode: 200, body };
+  return { statusCode: response.status, body: JSON.stringify(responseBody) };
 };

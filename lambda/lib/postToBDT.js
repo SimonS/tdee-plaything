@@ -39,29 +39,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var generateRequest_1 = __importDefault(require("./lib/generateRequest"));
-var postToBDT_1 = __importDefault(require("./lib/postToBDT"));
-exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, authToken, endpoint, body, response, responseBody;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                console.log(event.headers);
-                if (!event.body || event.httpMethod !== "POST") {
-                    return [2 /*return*/, {
-                            statusCode: 400,
-                            body: "Expected a POST request containing data in body",
-                        }];
-                }
-                _a = generateRequest_1.default(JSON.parse(event.body)), authToken = _a.authToken, endpoint = _a.endpoint, body = _a.body;
-                return [4 /*yield*/, postToBDT_1.default(body, endpoint, authToken)];
-            case 1:
-                response = _b.sent();
-                return [4 /*yield*/, response.json()];
-            case 2:
-                responseBody = _b.sent();
-                return [2 /*return*/, { statusCode: response.status, body: JSON.stringify(responseBody) }];
-        }
+var node_fetch_1 = __importDefault(require("node-fetch"));
+var postToBDT = function (body, endpoint, accessToken) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, node_fetch_1.default(endpoint, {
+                method: "POST",
+                body: body,
+                headers: {
+                    authorization: "Bearer " + accessToken,
+                    "Content-Type": "application/json",
+                },
+            })];
     });
 }); };
-//# sourceMappingURL=bdt-relay.js.map
+exports.default = postToBDT;
+//# sourceMappingURL=postToBDT.js.map
