@@ -1,10 +1,12 @@
-import { APIGatewayEvent, Context } from "aws-lambda";
+import { APIGatewayEvent } from "aws-lambda";
 
 import { BDTRequest } from "@tdee/types/src/bdt";
 
 import generateRequest from "./lib/generateRequest";
 
-exports.handler = async (event: APIGatewayEvent, context: Context) => {
+exports.handler = async (
+  event: APIGatewayEvent
+): Promise<{ statusCode: number; body: string }> => {
   console.log(event.headers);
   if (!event.body || event.httpMethod !== "POST") {
     return {
@@ -13,7 +15,11 @@ exports.handler = async (event: APIGatewayEvent, context: Context) => {
     };
   }
 
-  const { authToken, endPoint, body } = generateRequest(
+  const {
+    authToken,
+    endpoint,
+    body,
+  }: { authToken: string; endpoint: string; body: string } = generateRequest(
     JSON.parse(event.body) as BDTRequest
   );
 

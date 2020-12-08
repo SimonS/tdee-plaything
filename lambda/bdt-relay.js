@@ -40,8 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var generateRequest_1 = __importDefault(require("./lib/generateRequest"));
-exports.handler = function (event, context) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, authToken, endPoint, body;
+exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, authToken, endpoint, body;
     return __generator(this, function (_b) {
         console.log(event.headers);
         if (!event.body || event.httpMethod !== "POST") {
@@ -50,7 +50,9 @@ exports.handler = function (event, context) { return __awaiter(void 0, void 0, v
                     body: "Expected a POST request containing data in body",
                 }];
         }
-        _a = generateRequest_1.default(JSON.parse(event.body)), authToken = _a.authToken, endPoint = _a.endPoint, body = _a.body;
+        _a = generateRequest_1.default(JSON.parse(event.body)), authToken = _a.authToken, endpoint = _a.endpoint, body = _a.body;
+        // make request to bdt
+        // return response
         return [2 /*return*/, { statusCode: 200, body: body }];
     });
 }); };
