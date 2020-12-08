@@ -1,10 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-      "rootDir": "src",
-      "outDir": "../../lambda",
-      "sourceMap": false,
-      "declaration": false
+    "rootDir": "src",
+    "outDir": "../../lambda",
+    "sourceMap": false,
+    "declaration": false
   },
 
   "include": ["src/**/*"],
