@@ -8,4 +8,9 @@ class RegisterWeighinsTest extends \WP_UnitTestCase
     {
         $this->assertEquals("2020-11-30T05:49:00+0000", bdt_withingsdate_to_time("November 30, 2020 at 05:49AM"));
     }
+
+    public function test_dont_sanitise_sanitised_field()
+    {
+        $this->assertEquals("2020-11-30T05:49:00+0000", bdt_withingsdate_to_time("2020-11-30T05:49:00+0000"));
+    }
 }
