@@ -36,6 +36,34 @@ function bdt_register_weighin()
 }
 add_action('init', 'bdt_register_weighin', 0);
 
+add_filter('manage_edit-bdt_weighin_columns', 'weighins_columns');
+function weighins_columns($columns)
+{
+    unset($columns['date']);
+    $columns['weighin_date'] = 'Weigh in date';
+    $columns['weight'] = 'Weight (kg)';
+    return $columns;
+}
+
+add_action('manage_posts_custom_column', 'show_weighins_columns');
+function show_weighins_columns($name)
+{
+    global $post;
+    switch ($name) {
+        case 'weighin_date':
+            $date = get_post_meta($post->ID, 'weighin_time', true);
+            if ($date) {
+                $parsedDate = new DateTime($date);
+                echo $parsedDate->format('Y/m/d H:i:s');
+            }
+        break;
+        case 'weight':
+            echo get_post_meta($post->ID, 'weight', true);
+        break;
+            
+    }
+}
+
 add_action('graphql_register_types', function () {
     $post_types = WPGraphQL::get_allowed_post_types();
     $type_name = get_post_type_object($post_types['bdt_weighin'])->graphql_single_name;
