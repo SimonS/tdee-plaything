@@ -44,8 +44,7 @@ add_action('graphql_register_types', function () {
         'type' => 'number',
         'description' => __('Weight (in kgs)'),
         'resolve' => function ($post) {
-            $weight = get_post_meta($post->ID, 'weight', true);
-            return !empty($weight) ? $weight[0] : null;
+            return get_post_meta($post->ID, 'weight', true);
         },
     ]);
 
@@ -53,8 +52,7 @@ add_action('graphql_register_types', function () {
         'type' => 'number',
         'description' => __('Body fat percentage'),
         'resolve' => function ($post) {
-            $value = get_post_meta($post->ID, 'body_fat_percentage', true);
-            return !empty($value) ? $value[0] : null;
+            return get_post_meta($post->ID, 'body_fat_percentage', true);
         },
     ]);
 
@@ -62,8 +60,7 @@ add_action('graphql_register_types', function () {
         'type' => 'string',
         'description' => __('Weigh In Time'),
         'resolve' => function ($post) {
-            $value = get_post_meta($post->ID, 'weighin_time', true);
-            return !empty($value) ? $value[0] : null;
+            return get_post_meta($post->ID, 'weighin_time', true);
         },
     ]);
 });
