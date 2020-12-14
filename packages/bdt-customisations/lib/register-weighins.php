@@ -35,3 +35,35 @@ function bdt_register_weighin()
     register_post_meta('bdt_weighin', 'weighin_time', array('type'=> 'string', 'show_in_rest' => true, 'single' => true, 'sanitize_callback' => 'bdt_withingsdate_to_time'));
 }
 add_action('init', 'bdt_register_weighin', 0);
+
+add_action('graphql_register_types', function () {
+    $post_types = WPGraphQL::get_allowed_post_types();
+    $type_name = get_post_type_object($post_types['bdt_weighin'])->graphql_single_name;
+
+    register_graphql_field($type_name, 'weight', [
+        'type' => 'number',
+        'description' => __('Weight (in kgs)'),
+        'resolve' => function ($post) {
+            $weight = get_post_meta($post->ID, 'weight', true);
+            return !empty($weight) ? $weight[0] : null;
+        },
+    ]);
+
+    register_graphql_field($type_name, 'body_fat_percentage', [
+        'type' => 'number',
+        'description' => __('Body fat percentage'),
+        'resolve' => function ($post) {
+            $value = get_post_meta($post->ID, 'body_fat_percentage', true);
+            return !empty($value) ? $value[0] : null;
+        },
+    ]);
+
+    register_graphql_field($type_name, 'weighin_time', [
+        'type' => 'string',
+        'description' => __('Weigh In Time'),
+        'resolve' => function ($post) {
+            $value = get_post_meta($post->ID, 'weighin_time', true);
+            return !empty($value) ? $value[0] : null;
+        },
+    ]);
+});
