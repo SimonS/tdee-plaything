@@ -1,0 +1,19 @@
+{
+  "name": "@tdee/withings-to-bdt",
+  "version": "0.0.1",
+  "description": "Quick utility script to populate BDT with historic withings data",
+  "main": "index.js",
+  "author": "Simon Scarfe",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@tdee/netlify-functions": "0.0.1",
+    "csv-parser": "^3.0.0"
+  }
+}
