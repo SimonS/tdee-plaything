@@ -14,21 +14,29 @@ if (!filename) {
   process.exitCode = 1;
 }
 
+const before = new Date(process.argv.slice(3)[0]);
+
 const results: WithingsWeighin[] = [];
 createReadStream(filename)
   .pipe(csv())
   .on("data", (data) => {
-    if (!("Date" in data && "Weight (kg)" in data && "Fat mass (kg)" in data)) {
+    if (!(data["Weight (kg)"] && data["Fat mass (kg)"])) {
       return;
     }
+    const weighinTime = new Date(data["Date"]);
     const weight = parseInt(data["Weight (kg)"], 10);
-    const newWeighIn: WithingsWeighin = {
-      weighinTime: new Date(data["Date"]),
-      weight: weight,
-      bodyFatPercentage: (parseInt(data["Fat mass (kg)"], 10) / weight) * 100,
-    };
-    results.push(newWeighIn);
+
+    if (!isNaN(before.getTime()) && before > weighinTime) {
+      const newWeighIn: WithingsWeighin = {
+        weighinTime,
+        weight,
+        bodyFatPercentage: (parseInt(data["Fat mass (kg)"], 10) / weight) * 100,
+      };
+      results.push(newWeighIn);
+    }
   })
   .on("end", () => {
-    console.log(results);
+    console.log(results.length);
+
+    // at this point we start posting the 311 results to BDT, reusing the netlify logic
   });
