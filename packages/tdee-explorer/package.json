@@ -36,7 +36,7 @@
     "gatsby-plugin-typescript": "^2.1.15",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
-    "prettier": "2.0.5",
+    "prettier": "2.2.1",
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^25.4.0"
   },
