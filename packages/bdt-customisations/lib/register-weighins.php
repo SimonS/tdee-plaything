@@ -67,8 +67,22 @@ function show_weighins_columns($name)
 add_filter('manage_edit-bdt_weighin_sortable_columns', 'sortable_by_weighin_date');
 function sortable_by_weighin_date($columns)
 {
-    $columns['weighin_date'] = 'weighin_date';
+    $columns['weighin_date'] = 'weighin_time';
     return $columns;
+}
+
+add_action('pre_get_posts', 'bdt_orderby_weighin_date');
+function bdt_orderby_weighin_date($query)
+{
+    if (! is_admin() || ! $query->is_main_query()) {
+        return;
+    }
+
+    if ('weighin_time' === $query->get('orderby')) {
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', 'weighin_time');
+        $query->set('meta_type', 'DATE');
+    }
 }
 
 add_action('graphql_register_types', function () {
