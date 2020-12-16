@@ -64,6 +64,13 @@ function show_weighins_columns($name)
     }
 }
 
+add_filter('manage_edit-bdt_weighin_sortable_columns', 'sortable_by_weighin_date');
+function sortable_by_weighin_date($columns)
+{
+    $columns['weighin_date'] = 'weighin_date';
+    return $columns;
+}
+
 add_action('graphql_register_types', function () {
     $post_types = WPGraphQL::get_allowed_post_types();
     $type_name = get_post_type_object($post_types['bdt_weighin'])->graphql_single_name;
