@@ -112,4 +112,30 @@ add_action('graphql_register_types', function () {
             return get_post_meta($post->ID, 'weighin_time', true);
         },
     ]);
+
+
+    add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
+        $values['WEIGHIN_TIME'] = [
+        'value'       => 'weighin_time',
+        'description' => __('Order by weighin_time', 'bdt'),
+    ];
+        return $values;
+    });
 });
+
+add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $input) {
+    if (isset($input['where']['orderby']) && is_array($input['where']['orderby'])) {
+        foreach ($input['where']['orderby'] as $orderby) {
+            if (! isset($orderby['field']) || 'weighin_time' !== $orderby['field']) {
+                continue;
+            }
+
+            $query_args['meta_key'] = 'weighin_time';
+            $query_args['meta_type'] = 'DATE';
+            $query_args['orderby'] = 'meta_value';
+            $query_args['order'] = $orderby['order'];
+        }
+    }
+
+    return $query_args;
+}, 10, 3);
