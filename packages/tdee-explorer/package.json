@@ -30,7 +30,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@types/d3": "^6.2.0",
-    "@types/react-test-renderer": "^16.9.2",
+    "@types/react-test-renderer": "^17.0.0",
     "babel-jest": "^26.0.0",
     "gatsby-plugin-css-modules-typings": "^1.0.1",
     "gatsby-plugin-typescript": "^2.1.15",
