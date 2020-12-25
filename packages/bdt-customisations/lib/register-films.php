@@ -1,6 +1,15 @@
 <?php
 use function bdt\fetchMovieMetaData;
 
+$res = fetch_feed("https://letterboxd.com/simonscarfe/rss/");
+var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "watchedDate")[0]["data"]);
+var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmTitle")[0]["data"]);
+var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "memberRating")[0]["data"]);
+var_dump($res->get_items()[1]->get_description());
+var_dump($res->get_items()[1]->get_link());
+var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmYear")[0]["data"]);
+
+
 require dirname(__FILE__) . '/tmdb-fetcher.php';
 
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
