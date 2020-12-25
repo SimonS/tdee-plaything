@@ -43,6 +43,38 @@ function bdt_register_film_watch()
 }
 add_action('init', 'bdt_register_film_watch', 0);
 
+add_filter('manage_edit-bdt_film_columns', 'film_watch_columns');
+function film_watch_columns($columns)
+{
+    unset($columns['date']);
+    unset($columns['title']);
+    $columns['film_title'] = 'Film title';
+    $columns['watched_date'] = 'Date watched';
+    $columns['rating'] = 'rating';
+    return $columns;
+}
+
+add_action('manage_posts_custom_column', 'show_film_watch_columns');
+function show_film_watch_columns($name)
+{
+    global $post;
+    switch ($name) {
+        case 'watched_date':
+            $date = get_post_meta($post->ID, 'watched_date', true);
+            if ($date) {
+                $parsedDate = new DateTime($date);
+                echo $parsedDate->format('Y/m/d H:i:s');
+            }
+        break;
+        case 'film_title':
+            echo get_post_meta($post->ID, 'film_title', true);
+        break;
+        case 'rating':
+            echo get_post_meta($post->ID, 'rating', true);
+        break;
+    }
+}
+
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
     if ('kind' === $taxonomy) {
         $args['show_in_graphql'] = true;
