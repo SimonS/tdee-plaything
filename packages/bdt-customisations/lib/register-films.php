@@ -75,6 +75,14 @@ function show_film_watch_columns($name)
     }
 }
 
+add_filter('manage_edit-bdt_film_sortable_columns', 'sortable_by_film');
+function sortable_by_film($columns)
+{
+    $columns['film_title'] = 'film_title';
+    $columns['watched_date'] = 'watched_date';
+    return $columns;
+}
+
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
     if ('kind' === $taxonomy) {
         $args['show_in_graphql'] = true;
