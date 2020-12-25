@@ -11,7 +11,7 @@ use function bdt\fetchMovieMetaData;
 
 require dirname(__FILE__) . '/tmdb-fetcher.php';
 
-// Register Film Watch Post Type
+// ---- Register Film Watch Post Type
 function bdt_register_film_watch()
 {
     $labels = array(
@@ -83,6 +83,9 @@ function sortable_by_film($columns)
     return $columns;
 }
 
+// ---- Consume Letterboxd feed
+
+// ---- GraphQL set-up
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
     if ('kind' === $taxonomy) {
         $args['show_in_graphql'] = true;
