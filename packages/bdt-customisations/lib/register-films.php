@@ -1,16 +1,47 @@
 <?php
 use function bdt\fetchMovieMetaData;
 
-$res = fetch_feed("https://letterboxd.com/simonscarfe/rss/");
-var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "watchedDate")[0]["data"]);
-var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmTitle")[0]["data"]);
-var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "memberRating")[0]["data"]);
-var_dump($res->get_items()[1]->get_description());
-var_dump($res->get_items()[1]->get_link());
-var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmYear")[0]["data"]);
-
+// $res = fetch_feed("https://letterboxd.com/simonscarfe/rss/");
+// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "watchedDate")[0]["data"]);
+// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmTitle")[0]["data"]);
+// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "memberRating")[0]["data"]);
+// var_dump($res->get_items()[1]->get_description());
+// var_dump($res->get_items()[1]->get_link());
+// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmYear")[0]["data"]);
 
 require dirname(__FILE__) . '/tmdb-fetcher.php';
+
+// Register Film Watch Post Type
+function bdt_register_film_watch()
+{
+    $labels = array(
+        'name'                  => 'Films',
+        'singular_name'         => 'Film',
+        'add_new_item'          => 'Add New Film Watch',
+    );
+    $args = array(
+        'labels'                => $labels,
+        'has_archive'           => false,
+        'public'                => true,
+        'hierarchical'          => false,
+        'supports'              => array( 'thumbnail', 'custom-fields' ),
+        'rewrite'               => array( 'slug' => 'film_watch' ),
+        'show_in_rest'          => true,
+        'rest_controller_class' => 'WP_REST_Posts_Controller',
+        'rest_base' => 'bdt_film_watch',
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'film',
+        'graphql_plural_name' => 'films',
+    );
+    register_post_type('bdt_film', $args);
+    register_post_meta('bdt_film', 'film_title', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'year', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'rating', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'watched_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'review', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+}
+add_action('init', 'bdt_register_film_watch', 0);
 
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
     if ('kind' === $taxonomy) {
