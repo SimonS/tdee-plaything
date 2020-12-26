@@ -2,14 +2,6 @@
 use function bdt\fetchMovieMetaData;
 use function bdt\get_updated_feeds;
 
-// $res = fetch_feed("https://letterboxd.com/simonscarfe/rss/");
-// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "watchedDate")[0]["data"]);
-// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmTitle")[0]["data"]);
-// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "memberRating")[0]["data"]);
-// var_dump($res->get_items()[1]->get_description());
-// var_dump($res->get_items()[1]->get_link());
-// var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmYear")[0]["data"]);
-
 require dirname(__FILE__) . '/tmdb-fetcher.php';
 require dirname(__FILE__) . '/letterboxd-fetcher.php';
 
@@ -26,7 +18,7 @@ function bdt_register_film_watch()
         'has_archive'           => false,
         'public'                => true,
         'hierarchical'          => false,
-        'supports'              => array( 'thumbnail', 'custom-fields' ),
+        'supports'              => array( 'editor', 'thumbnail', 'custom-fields' ),
         'rewrite'               => array( 'slug' => 'film_watch' ),
         'show_in_rest'          => true,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
@@ -40,17 +32,14 @@ function bdt_register_film_watch()
     register_post_meta('bdt_film', 'year', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'rating', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'watched_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'review', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
-add_action('init', 'bdt_register_film_watch', 0);
+add_action('init', 'bdt_register_film_watch', 0, 100);
 
 add_filter('manage_edit-bdt_film_columns', 'film_watch_columns');
 function film_watch_columns($columns)
 {
     unset($columns['date']);
-    unset($columns['title']);
-    $columns['film_title'] = 'Film title';
     $columns['watched_date'] = 'Date watched';
     $columns['rating'] = 'rating';
     return $columns;
@@ -65,12 +54,10 @@ function show_film_watch_columns($name)
             $date = get_post_meta($post->ID, 'watched_date', true);
             if ($date) {
                 $parsedDate = new DateTime($date);
-                echo $parsedDate->format('Y/m/d H:i:s');
+                echo $parsedDate->format('Y/m/d');
             }
         break;
-        case 'film_title':
-            echo get_post_meta($post->ID, 'film_title', true);
-        break;
+
         case 'rating':
             echo get_post_meta($post->ID, 'rating', true);
         break;
@@ -80,18 +67,48 @@ function show_film_watch_columns($name)
 add_filter('manage_edit-bdt_film_sortable_columns', 'sortable_by_film');
 function sortable_by_film($columns)
 {
-    $columns['film_title'] = 'film_title';
     $columns['watched_date'] = 'watched_date';
     return $columns;
+}
+
+add_action('pre_get_posts', 'bdt_orderby_watch_date');
+function bdt_orderby_watch_date($query)
+{
+    if (! is_admin() || ! $query->is_main_query()) {
+        return;
+    }
+
+    if ('watched_date' === $query->get('orderby') || '' === $query->get('orderby')) {
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', 'watched_date');
+        $query->set('meta_type', 'DATE');
+    }
 }
 
 // ---- Consume Letterboxd feed
 function add_new_films()
 {
-    // var_dump(get_updated_feeds());
+    $new_films = get_updated_feeds();
+    foreach ($new_films as $film) {
+        $newFilm = [
+            "post_title" => "Watch of {$film['filmTitle']}",
+            "post_type" => "bdt_film",
+            "post_status" => "publish",
+            "meta_input" => [
+                "film_title" => $film['filmTitle'],
+                "year" => $film['filmYear'],
+                "rating" => $film['rating'],
+                "watched_date" => $film['watchedDate'],
+                "link" => $film['link']
+            ]
+        ];
+        if ($film['review']) {
+            $newFilm["post_content"] = $film['review'];
+        }
+        wp_insert_post($newFilm);
+    }
 }
-
-add_action('init', 'add_new_films');
+// add_action('init', 'add_new_films');
 
 // ---- GraphQL set-up
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
