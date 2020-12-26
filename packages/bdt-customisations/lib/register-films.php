@@ -34,7 +34,7 @@ function bdt_register_film_watch()
     register_post_meta('bdt_film', 'watched_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
-add_action('init', 'bdt_register_film_watch', 0, 100);
+add_action('init', 'bdt_register_film_watch', 0, 9);
 
 add_filter('manage_edit-bdt_film_columns', 'film_watch_columns');
 function film_watch_columns($columns)
@@ -86,7 +86,7 @@ function bdt_orderby_watch_date($query)
 }
 
 // ---- Consume Letterboxd feed
-function add_new_films()
+function bdt_add_new_films()
 {
     $new_films = get_updated_feeds();
     foreach ($new_films as $film) {
@@ -108,7 +108,15 @@ function add_new_films()
         wp_insert_post($newFilm);
     }
 }
-// add_action('init', 'add_new_films');
+
+add_action('init', 'bdt_enable_film_cron', 0);
+
+function bdt_enable_film_cron()
+{
+    if (!wp_next_scheduled('bdt_add_new_films')) {
+        wp_schedule_event(time(), "hourly", "bdt_add_new_films");
+    }
+}
 
 // ---- GraphQL set-up
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
