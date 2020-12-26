@@ -86,7 +86,7 @@ function bdt_orderby_watch_date($query)
 }
 
 // ---- Consume Letterboxd feed
-function bdt_add_new_films()
+function add_new_films()
 {
     $new_films = get_updated_feeds();
     foreach ($new_films as $film) {
@@ -109,6 +109,7 @@ function bdt_add_new_films()
     }
 }
 
+add_action("bdt_add_new_films", "add_new_films");
 add_action('init', 'bdt_enable_film_cron', 0);
 
 function bdt_enable_film_cron()
