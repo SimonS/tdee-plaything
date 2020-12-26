@@ -9,9 +9,9 @@ A little self-rolled WP plugin to customise my rubbish blog in a non-themey way.
 
 **The above is all kinds of broken. It breaks every time post kinds updates. This code is now 75% of the way though moving towards using a custom post type. We no longer use the IFTTT recipe, but rather native wordpress RSS consumption and a local cron job.**
 
-```
+```graphql
 {
-  posts(where: {tag: "film"}) {
+  posts(where: { tag: "film" }) {
     edges {
       node {
         watchOf {
