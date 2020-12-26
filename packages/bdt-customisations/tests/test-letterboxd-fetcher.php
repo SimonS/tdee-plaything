@@ -29,4 +29,16 @@ class LetterboxdFetcherTest extends \WP_UnitTestCase
         ]));
         $this->assertEquals(3, count(get_updated_feeds()));
     }
+
+    public function test_maps_to_correct_fields()
+    {
+        $film = get_updated_feeds()[0];
+        $this->assertArraySubset(array(
+            'filmTitle' => 'Nina Conti: Her Master\'s Voice',
+            'watchedDate' => '2020-12-24',
+            'rating' => '4.0',
+            'link' => 'https://letterboxd.com/simonscarfe/film/nina-conti-her-masters-voice/',
+            'filmYear' => '2012'
+        ), $film);
+    }
 }
