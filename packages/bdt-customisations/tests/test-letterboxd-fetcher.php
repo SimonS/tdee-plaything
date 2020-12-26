@@ -21,4 +21,12 @@ class LetterboxdFetcherTest extends \WP_UnitTestCase
     {
         $this->assertEquals(4, count(get_updated_feeds()));
     }
+
+    public function test_excludes_previous_watches()
+    {
+        $this->factory->post->create(array('post_type' => 'bdt_film', 'meta_input' => [
+            'link' => 'https://letterboxd.com/simonscarfe/film/nina-conti-her-masters-voice/'
+        ]));
+        $this->assertEquals(3, count(get_updated_feeds()));
+    }
 }
