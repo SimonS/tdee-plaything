@@ -1,6 +1,35 @@
 <?php
 namespace bdt;
 
+function extract_image($html)
+{
+    $dom = new \DOMDocument;
+    $dom->loadHTML($html);
+    return $dom->getElementsByTagName("img")[0]->getAttribute("src");
+}
+
+function extract_review($html)
+{
+    if (preg_match("/Watched on (.*), \d{4}\./", $html)) {
+        return false;
+    }
+
+    $dom = new \DOMDocument;
+    $dom->loadHTML("<div>$html</div>");
+
+    $xpath = new \DOMXPath($dom);
+
+    foreach ($xpath->query('//*[not(node())]') as $node) {
+        $node->parentNode->removeChild($node);
+    }
+
+    foreach ($xpath->query('//*[not(node())]') as $node) {
+        $node->parentNode->removeChild($node);
+    }
+
+    return trim(substr($dom->saveXML($dom->getElementsByTagName('div')->item(0)), 5, -6));
+}
+
 function get_updated_feeds()
 {
     $films = fetch_feed("https://letterboxd.com/simonscarfe/rss/")->get_items();
@@ -20,6 +49,8 @@ function get_updated_feeds()
             "rating" => $film->get_item_tags("https://letterboxd.com", "memberRating")[0]["data"],
             "link" => $film->get_link(),
             "filmYear" => $film->get_item_tags("https://letterboxd.com", "filmYear")[0]["data"],
+            "image" => extract_image($film->get_description()),
+            "review" => extract_review($film->get_description())
         ];
     }, $updated);
 }
