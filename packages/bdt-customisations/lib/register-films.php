@@ -32,7 +32,7 @@ function bdt_register_film_watch()
     register_post_meta('bdt_film', 'year', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'rating', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'watched_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'review_link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
 add_action('init', 'bdt_register_film_watch', 0, 9);
 
@@ -99,7 +99,7 @@ function add_new_films()
                 "year" => $film['filmYear'],
                 "rating" => $film['rating'],
                 "watched_date" => $film['watchedDate'],
-                "link" => $film['link']
+                "review_link" => $film['link']
             ]
         ];
         if ($film['review']) {
@@ -192,6 +192,59 @@ function rating_to_float($rating)
 {
     return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - .5 : mb_strlen($rating);
 }
+
+add_action('graphql_register_types', function () {
+    $post_types = WPGraphQL::get_allowed_post_types();
+    $type_name = get_post_type_object($post_types['bdt_film'])->graphql_single_name;
+
+    register_graphql_field($type_name, 'filmTitle', [
+        'type' => 'string',
+        'description' => __('Name of film'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'film_title', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'year', [
+        'type' => 'number',
+        'description' => __('Year of release'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'year', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'rating', [
+        'type' => 'number',
+        'description' => __('Rating out of 5'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'rating', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'watchedDate', [
+        'type' => 'string',
+        'description' => __('Date watched on'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'watched_date', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'reviewLink', [
+        'type' => 'string',
+        'description' => __('Link to original review'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'review_link', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'meta', [
+        'type' => 'FilmMeta',
+        'description' => __('Information about the film'),
+        'resolve' => function ($post) {
+            return fetchMovieMetaData(get_post_meta($post->ID, 'film_title', true), get_post_meta($post->ID, 'year', true));
+        },
+    ]);
+});
 
 add_action('graphql_register_types', function () {
     $post_types = WPGraphQL::get_allowed_post_types();
