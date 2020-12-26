@@ -10,6 +10,8 @@ function extract_image($html)
 
 function extract_review($html)
 {
+    // there is one flaw in this ingenious plan. I can never reference when
+    // I have watched a film using this exact formatting. 👀
     if (preg_match("/Watched on (.*), \d{4}\./", $html)) {
         return false;
     }
