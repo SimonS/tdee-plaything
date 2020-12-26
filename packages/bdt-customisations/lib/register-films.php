@@ -1,5 +1,6 @@
 <?php
 use function bdt\fetchMovieMetaData;
+use function bdt\get_updated_feeds;
 
 // $res = fetch_feed("https://letterboxd.com/simonscarfe/rss/");
 // var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "watchedDate")[0]["data"]);
@@ -10,6 +11,7 @@ use function bdt\fetchMovieMetaData;
 // var_dump($res->get_items()[1]->get_item_tags("https://letterboxd.com", "filmYear")[0]["data"]);
 
 require dirname(__FILE__) . '/tmdb-fetcher.php';
+require dirname(__FILE__) . '/letterboxd-fetcher.php';
 
 // ---- Register Film Watch Post Type
 function bdt_register_film_watch()
@@ -84,6 +86,12 @@ function sortable_by_film($columns)
 }
 
 // ---- Consume Letterboxd feed
+function add_new_films()
+{
+    // var_dump(get_updated_feeds());
+}
+
+add_action('init', 'add_new_films');
 
 // ---- GraphQL set-up
 add_filter('register_taxonomy_args', function ($args, $taxonomy) {
