@@ -32,7 +32,7 @@ function bdt_register_film_watch()
     register_post_meta('bdt_film', 'year', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'rating', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_film', 'watched_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'review_link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
 add_action('init', 'bdt_register_film_watch', 0, 9);
 
@@ -99,7 +99,7 @@ function add_new_films()
                 "year" => $film['filmYear'],
                 "rating" => $film['rating'],
                 "watched_date" => $film['watchedDate'],
-                "link" => $film['link']
+                "review_link" => $film['link']
             ]
         ];
         if ($film['review']) {
@@ -120,50 +120,6 @@ function bdt_enable_film_cron()
 }
 
 // ---- GraphQL set-up
-add_filter('register_taxonomy_args', function ($args, $taxonomy) {
-    if ('kind' === $taxonomy) {
-        $args['show_in_graphql'] = true;
-        $args['graphql_single_name'] = 'Kind';
-        $args['graphql_plural_name'] = 'Kinds';
-    }
-
-    return $args;
-}, 10, 2);
-
-add_action('graphql_register_types', 'register_watchof_type');
-
-function register_watchof_type()
-{
-    register_graphql_object_type('WatchOf', [
-        'description' => __("A watch, typically of a film or TV show", 'bdt'),
-        'fields' => [
-            'name' => [
-                'type' => 'String',
-                'description' => __('The title of the film', 'bdt'),
-            ],
-            'rating' => [
-                'type' => 'Float',
-                'description' => __('My rating, if applicable', 'bdt'),
-            ],
-            'review' => [
-                'type' => 'String',
-                'description' => __('A review or summary, if applicable', 'bdt'),
-            ],
-            'url' => [
-                'type' => 'String',
-                'description' => __('The URL of thing we have watched', 'bdt'),
-            ],
-            'year' => [
-                'type' => 'Integer',
-                'description' => __('The year the film of TV show was released', 'bdt'),
-            ],
-            'meta' => [
-                'type' => 'FilmMeta',
-                'description' => __('Metadata around a film, retrieved from TMDB', 'bdt'),
-            ]
-        ],
-    ]);
-}
 
 add_action('graphql_register_types', 'register_film_meta_type');
 
@@ -188,53 +144,80 @@ function register_film_meta_type()
     ]);
 }
 
-function rating_to_float($rating)
-{
-    return (mb_substr($rating, -1) === '½') ? mb_strlen($rating) - .5 : mb_strlen($rating);
-}
-
 add_action('graphql_register_types', function () {
     $post_types = WPGraphQL::get_allowed_post_types();
+    $type_name = get_post_type_object($post_types['bdt_film'])->graphql_single_name;
 
-    if (!empty($post_types) && is_array($post_types)) {
-        foreach ($post_types as $post_type) {
-            $post_type_object = get_post_type_object($post_type);
+    register_graphql_field($type_name, 'filmTitle', [
+        'type' => 'string',
+        'description' => __('Name of film'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'film_title', true);
+        },
+    ]);
 
-            register_graphql_field($post_type_object->graphql_single_name, 'syndication', [
-                'type' => 'String',
-                'description' => __('Syndication', 'mf2'),
-                'resolve' => function ($post) {
-                    $syndication = get_post_meta($post->ID, 'mf2_syndication', true);
-                    return !empty($syndication) ? $syndication[0] : null;
-                },
-            ]);
+    register_graphql_field($type_name, 'year', [
+        'type' => 'number',
+        'description' => __('Year of release'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'year', true);
+        },
+    ]);
 
-            register_graphql_field($post_type_object->graphql_single_name, 'watchOf', [
-                'type' => 'WatchOf',
-                'description' => __('Watch Of', 'mf2'),
-                'resolve' => function ($post) {
-                    $watchOf = get_post_meta($post->ID, 'mf2_watch-of', true);
+    register_graphql_field($type_name, 'rating', [
+        'type' => 'number',
+        'description' => __('Rating out of 5'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'rating', true);
+        },
+    ]);
 
-                    $watchOfObject = array();
+    register_graphql_field($type_name, 'watchedDate', [
+        'type' => 'string',
+        'description' => __('Date watched on'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'watched_date', true);
+        },
+    ]);
 
-                    if (!empty($watchOf["properties"])) {
-                        $props = $watchOf["properties"];
-                        if (!empty($props["summary"])) {
-                            $watchOfObject["review"] = $props["summary"][0];
-                        }
-                        $watchOfObject["url"] = $props["url"][0];
+    register_graphql_field($type_name, 'reviewLink', [
+        'type' => 'string',
+        'description' => __('Link to original review'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'review_link', true);
+        },
+    ]);
 
-                        preg_match('/A (\x{2605}*\x{00BD}?)(?:\s)?(?:review of|diary entry for) (.*) \((\d+)\)/u', $props['name'][0], $splitTitle);
+    register_graphql_field($type_name, 'meta', [
+        'type' => 'FilmMeta',
+        'description' => __('Information about the film'),
+        'resolve' => function ($post) {
+            return fetchMovieMetaData(get_post_meta($post->ID, 'film_title', true), get_post_meta($post->ID, 'year', true));
+        },
+    ]);
 
-                        $watchOfObject["name"] = $splitTitle[2];
-                        $watchOfObject["year"] = $splitTitle[3];
-                        $watchOfObject["rating"] = rating_to_float($splitTitle[1]) > 0 ? rating_to_float($splitTitle[1]) : null;
+    add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
+        $values['DATE_WATCHED'] = [
+        'value'       => 'watched_date',
+        'description' => __('Order by watched_date', 'bdt'),
+    ];
+        return $values;
+    });
+});
 
-                        $watchOfObject["meta"] = fetchMovieMetaData($watchOfObject["name"], $watchOfObject["year"]);
-                    }
-                    return !empty($watchOfObject) ? $watchOfObject : null;
-                },
-            ]);
+add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $input) {
+    if (isset($input['where']['orderby']) && is_array($input['where']['orderby'])) {
+        foreach ($input['where']['orderby'] as $orderby) {
+            if (! isset($orderby['field']) || 'watched_date' !== $orderby['field']) {
+                continue;
+            }
+
+            $query_args['meta_key'] = 'watched_date';
+            $query_args['meta_type'] = 'DATE';
+            $query_args['orderby'] = 'meta_value';
+            $query_args['order'] = $orderby['order'];
         }
     }
-});
+
+    return $query_args;
+}, 10, 3);
