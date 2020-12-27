@@ -4,28 +4,24 @@ import { render } from "@testing-library/react";
 import FilmsPage, { FilmWatch, FilmProps } from "../../templates/films";
 
 describe("Films", () => {
-  const filmWithReview = {
-    date: "2020-05-20T22:18:04",
-    watchOf: {
-      name: "FILM",
-      year: 2002,
-      rating: 4,
-      review: "REVIEW",
-      url: "https://example.com/user/film/film/",
-    },
+  const filmWithReview: FilmWatch = {
+    watchedDate: "2020-05-20T22:18:04",
+    filmTitle: "FILM",
+    year: 2002,
+    rating: 4,
+    content: "REVIEW",
+    reviewLink: "https://example.com/user/film/film/",
   };
 
-  const simpleWatch = {
-    date: "2020-05-10T21:17:00",
-    watchOf: {
-      name: "A FILM I JUST WATCHED",
-      year: 2001,
-      rating: 3.5,
-      review: null,
-      url: "https://example.com/user/film/a-film-i-just-watched/",
-      meta: {
-        image: "foo.jpg",
-      },
+  const simpleWatch: FilmWatch = {
+    watchedDate: "2020-05-10T21:17:00",
+    filmTitle: "A FILM I JUST WATCHED",
+    year: 2001,
+    rating: 3.5,
+    content: null,
+    reviewLink: "https://example.com/user/film/a-film-i-just-watched/",
+    meta: {
+      image: "foo.jpg",
     },
   };
 
@@ -37,14 +33,14 @@ describe("Films", () => {
     const result: FilmProps = {
       data: {
         bdt: {
-          posts: {
+          films: {
             nodes: [...watches],
           },
         },
       },
     };
     if (hasPagination) {
-      result.data.bdt.posts.pageInfo = {
+      result.data.bdt.films.pageInfo = {
         hasNextPage: true,
         hasPreviousPage: false,
       };

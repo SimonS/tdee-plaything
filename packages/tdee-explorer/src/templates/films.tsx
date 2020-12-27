@@ -10,22 +10,26 @@ import Pagination from "../components/pagination/pagination";
 export const query = graphql`
   query FilmsQuery($from: String, $first: Int) {
     bdt {
-      posts(where: { tag: "film" }, after: $from, first: $first) {
+      films(
+        where: { orderby: { field: DATE_WATCHED, order: DESC } }
+        after: $from
+        first: $first
+      ) {
         pageInfo {
           hasNextPage
           hasPreviousPage
         }
         nodes {
-          date
-          watchOf {
-            name
-            year
-            rating
-            review
-            url
-            meta {
-              image
-            }
+          watchedDate
+          filmTitle
+          year
+          rating
+          reviewLink
+          content(format: RAW)
+          meta {
+            image
+            runtime
+            original_language
           }
         }
       }
@@ -34,22 +38,22 @@ export const query = graphql`
 `;
 
 export interface FilmWatch {
-  date: string;
-  watchOf: {
-    name: string;
-    year: number;
-    rating?: number;
-    review?: string | null;
-    url?: string;
-    meta?: {
-      image?: string;
-    };
+  watchedDate: string;
+  filmTitle: string;
+  year: number;
+  rating?: number;
+  reviewLink?: string;
+  content?: string | null;
+  meta?: {
+    image?: string;
+    runtime?: number;
+    original_language?: string;
   };
 }
 
 export interface GraphQLFilmQuery {
   bdt: {
-    posts: {
+    films: {
       nodes: FilmWatch[];
       pageInfo?: { hasNextPage: boolean; hasPreviousPage: boolean };
     };
@@ -66,39 +70,39 @@ const FilmsPage = ({ data, pageContext, location }: FilmProps): JSX.Element => (
   <Layout pathname={location?.pathname}>
     <h1>Films</h1>
 
-    {data.bdt.posts.nodes.map((film, i: number) => (
+    {data.bdt.films.nodes.map((film, i: number) => (
       <Sidebar as="article" key={`film-${i}`} side="right" sideWidth="154px">
         <Stack className="kind-watch h-entry">
           <header>
             <h2>
-              {film.watchOf.name} ({film.watchOf.year})
+              {film.filmTitle} ({film.year})
             </h2>
           </header>
           <dl>
             <dt>Viewed</dt>
             <dd>
-              <time className="dt-published" dateTime={film.date}>
-                {new Date(film.date).toDateString()}
+              <time className="dt-published" dateTime={film.watchedDate}>
+                {new Date(film.watchedDate).toDateString()}
               </time>
             </dd>
             <dt>Rated</dt>
-            <dd>{film.watchOf.rating}/5</dd>
+            <dd>{film.rating}/5</dd>
           </dl>
-          {film.watchOf.review && (
-            <a href={film.watchOf.url}>I wrote some thoughts on Letterboxd</a>
+          {film.content && (
+            <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
           )}
         </Stack>
         <img
-          src={film.watchOf.meta?.image}
-          alt={`Poster for '${film.watchOf.name}'`}
+          src={film.meta?.image}
+          alt={`Poster for '${film.filmTitle}'`}
           className="poster-image"
         />
       </Sidebar>
     ))}
 
-    {data.bdt.posts.pageInfo && (
+    {data.bdt.films.pageInfo && (
       <Pagination
-        pageInfo={data.bdt.posts.pageInfo}
+        pageInfo={data.bdt.films.pageInfo}
         urlRoot="/films/page"
         pageNumber={pageContext?.pageNumber}
       />
