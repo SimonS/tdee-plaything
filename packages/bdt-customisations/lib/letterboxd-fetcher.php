@@ -39,7 +39,7 @@ function get_updated_feeds()
         return !(empty($film->get_item_tags("https://letterboxd.com", "filmTitle")) ||
             (new \WP_Query([
                 'post_type'=>'bdt_film',
-                'meta_key' => 'link',
+                'meta_key' => 'reviewLink',
                 'meta_value' => $film->get_link()
             ]))->have_posts());
     });
