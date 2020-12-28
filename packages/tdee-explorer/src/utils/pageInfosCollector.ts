@@ -7,7 +7,7 @@ type PageInfo = {
 };
 
 type GraphQLResult = {
-  data: { bdt: { posts: { pageInfo: PageInfo } } };
+  data: { bdt: { films: { pageInfo: PageInfo } } };
 };
 
 type GraphQLParams = {
@@ -27,7 +27,11 @@ const pageInfosCollector = async (
   const queryString = `
     query PaginatedFilmsQuery($first: Int, $after: String) {
       bdt {
-        posts(where: { tag: "film" }, after: $after, first: $first) {
+        films(
+            where: { orderby: { field: DATE_WATCHED, order: DESC } },
+            after: $after, 
+            first: $first
+        ) {
           pageInfo {
             hasNextPage
             hasPreviousPage
@@ -44,16 +48,16 @@ const pageInfosCollector = async (
 
   let result = await getNextPage();
   let pageInfos: PageInfo[] = [
-    { ...result.data.bdt.posts.pageInfo, after: "" },
+    { ...result.data.bdt.films.pageInfo, after: "" },
   ];
 
-  while (result.data.bdt.posts.pageInfo.hasNextPage) {
+  while (result.data.bdt.films.pageInfo.hasNextPage) {
     const after = pageInfos[pageInfos.length - 1].endCursor;
 
-    result = await getNextPage(result.data.bdt.posts.pageInfo.endCursor);
+    result = await getNextPage(result.data.bdt.films.pageInfo.endCursor);
     pageInfos = [
       ...pageInfos,
-      { ...result.data.bdt.posts.pageInfo, after: after },
+      { ...result.data.bdt.films.pageInfo, after: after },
     ];
   }
 
