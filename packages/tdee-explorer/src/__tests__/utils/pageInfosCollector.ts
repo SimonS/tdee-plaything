@@ -12,7 +12,7 @@ describe("pageInfosCollector", () => {
     const returned = {
       data: {
         bdt: {
-          posts: {
+          films: {
             pageInfo: { ...singlePageInfo },
           },
         },
@@ -54,7 +54,7 @@ describe("pageInfosCollector", () => {
       .mockReturnValueOnce({
         data: {
           bdt: {
-            posts: {
+            films: {
               pageInfo: { ...pageInfos[0] },
             },
           },
@@ -63,7 +63,7 @@ describe("pageInfosCollector", () => {
       .mockReturnValueOnce({
         data: {
           bdt: {
-            posts: {
+            films: {
               pageInfo: { ...pageInfos[1] },
             },
           },
@@ -72,7 +72,7 @@ describe("pageInfosCollector", () => {
       .mockReturnValue({
         data: {
           bdt: {
-            posts: {
+            films: {
               pageInfo: { ...pageInfos[2] },
             },
           },
