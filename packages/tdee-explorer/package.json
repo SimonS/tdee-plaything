@@ -18,7 +18,7 @@
     "@tdee/gsheet-log-fetcher": "0.0.2",
     "babel-preset-gatsby": "^0.9.1",
     "d3": "^6.3.1",
-    "gatsby": "^2.29.2",
+    "gatsby": "^2.29.3",
     "gatsby-plugin-sass": "^2.7.0",
     "gatsby-plugin-webfonts": "^1.1.3",
     "gatsby-source-graphql": "^2.11.0",
