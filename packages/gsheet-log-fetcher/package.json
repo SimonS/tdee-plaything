@@ -1,7 +1,7 @@
 {
-  "name": "@tdee/bin-day-fetcher",
-  "version": "0.0.1",
-  "description": "fetches data from Rochdale council about upcoming bin days",
+  "name": "@tdee/gsheet-log-fetcher",
+  "version": "0.0.2",
+  "description": "fetches data from a published google spreadsheet representing weight and calorie logs",
   "main": "index.js",
   "author": "Simon Scarfe",
   "license": "MIT",
@@ -18,6 +18,8 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "node-fetch": "^2.6.6"
+    "@tdee/types": "0.0.1",
+    "@tdee/tdee-explorer": "0.2.0",
+    "node-fetch": "^2.6.1"
   }
 }
