@@ -1,0 +1,26 @@
+{
+  "name": "@tdee/storybook",
+  "version": "1.0.0",
+  "description": "Instance of storybook",
+  "main": "index.js",
+  "repository": "https://github.com/SimonS/tdee-plaything",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "storybook": "start-storybook",
+    "build-storybook": "build-storybook -c .storybook -o ../tdee-explorer/public/storybook"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@storybook/addon-actions": "^6.1.11",
+    "@storybook/addon-docs": "^6.1.11",
+    "@storybook/addon-links": "^6.1.11",
+    "@storybook/react": "^6.1.11",
+    "babel-loader": "^8.2.2",
+    "storybook": "^6.1.11"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
