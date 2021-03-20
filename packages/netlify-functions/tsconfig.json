@@ -3,7 +3,8 @@
   "compilerOptions": {
       "rootDir": "src",
       "outDir": "../../lambda",
-
+      "sourceMap": false,
+      "declaration": false
   },
 
   "include": ["src/**/*"],
