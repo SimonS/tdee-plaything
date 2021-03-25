@@ -13,6 +13,7 @@ test("makes a request using the correct attributes", async () => {
       body: "content",
       headers: {
         authorization: "Bearer letmein",
+        "Content-Type": "application/json",
       },
     }
   );
