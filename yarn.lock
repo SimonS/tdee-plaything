@@ -8509,10 +8509,10 @@ gatsby-plugin-utils@^1.1.0:
   dependencies:
     joi "^17.2.1"
 
-gatsby-plugin-webfonts@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-webfonts/-/gatsby-plugin-webfonts-2.0.0.tgz#8b39444e985a576031ef2ee3b1280b4dc6b1b4d0"
-  integrity sha512-qjsScI70Aprb+S2JXyW86X7FEIR77EPQO61RFvbPv8CcB13ivUrPNCLRu1ki3EHRHMa2mzKbFPYb08oGG8E+fw==
+gatsby-plugin-webfonts@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-webfonts/-/gatsby-plugin-webfonts-2.1.0.tgz#d226a8063fbfce9a6fe50bc8b3b2b0decb3d7308"
+  integrity sha512-5emNlF2PMhUPTlTc8OQp3FhVptizlUBjbYRyc3GtKiI4M0mZjSU7d78/6hvUonmlXgqLP94pN2Tkls+r5a2sKg==
   dependencies:
     axios "^0.21.1"
     cssnano "^4.1.10"
