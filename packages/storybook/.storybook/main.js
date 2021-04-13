@@ -1,4 +1,7 @@
 module.exports = {
+  core: {
+    builder: "webpack5",
+  },
   stories: ["../../tdee-explorer/src/**/*.stories.@(tsx|mdx)"],
   addons: ["@storybook/addon-actions", "@storybook/addon-docs"],
   webpackFinal: async (config, { configType }) => {
@@ -29,6 +32,13 @@ module.exports = {
       return item;
     });
 
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...config.fallback,
+        assert: require.resolve("assert-browserify/"),
+      },
+    };
     return config;
   },
 };
