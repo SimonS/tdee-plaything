@@ -5,7 +5,6 @@ module.exports = {
   },
   plugins: [
     "gatsby-plugin-typescript",
-    "gatsby-plugin-css-modules-typings",
     "gatsby-source-tdee-json-api",
     "gatsby-source-bin-day-api",
     {
