@@ -4,9 +4,7 @@ module.exports = {
     tagline: "Gatsby + SASS + Typescript = 💪",
   },
   plugins: [
-    "gatsby-plugin-sass",
     "gatsby-plugin-typescript",
-    "gatsby-plugin-css-modules-typings",
     "gatsby-source-tdee-json-api",
     "gatsby-source-bin-day-api",
     {
