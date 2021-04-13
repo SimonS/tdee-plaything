@@ -25,7 +25,7 @@ export const query = graphql`
           year
           rating
           reviewLink
-          content(format: RAW)
+          content(format: RENDERED)
           meta {
             image
             runtime
