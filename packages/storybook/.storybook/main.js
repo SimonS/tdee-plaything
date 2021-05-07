@@ -20,12 +20,23 @@ module.exports = {
     );
 
     config.module.rules[ruleCssIndex].use = [
-      "style-loader",
+      {
+        loader: "style-loader",
+        options: {
+          esModule: true,
+          modules: {
+            namedExport: true,
+          },
+        },
+      },
       {
         loader: "css-loader",
         options: {
           importLoaders: 1,
-          modules: true,
+          esModule: true,
+          modules: {
+            namedExport: true,
+          },
         },
       },
     ];
