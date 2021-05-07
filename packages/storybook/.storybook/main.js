@@ -18,19 +18,28 @@ module.exports = {
     const ruleCssIndex = config.module.rules.findIndex(
       (rule) => rule.test.toString() === "/\\.css$/"
     );
-    // map over the 'use' array of the css rule and set the 'module' option to true
-    config.module.rules[ruleCssIndex].use.map((item) => {
-      if (item.loader && item.loader.includes("/css-loader/")) {
-        item.options.modules = {
-          mode: "local",
-          localIdentName:
-            configType === "PRODUCTION"
-              ? "[local]--[hash:base64:5]"
-              : "[name]__[local]--[hash:base64:5]",
-        };
-      }
-      return item;
-    });
+
+    config.module.rules[ruleCssIndex].use = [
+      {
+        loader: "style-loader",
+        options: {
+          esModule: true,
+          modules: {
+            namedExport: true,
+          },
+        },
+      },
+      {
+        loader: "css-loader",
+        options: {
+          importLoaders: 1,
+          esModule: true,
+          modules: {
+            namedExport: true,
+          },
+        },
+      },
+    ];
 
     config.resolve = {
       ...config.resolve,
