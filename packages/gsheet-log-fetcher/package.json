@@ -10,8 +10,8 @@
     "compile": "tsc"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.19",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^15.0.2",
     "@types/node-fetch": "^2.5.3",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.4",
