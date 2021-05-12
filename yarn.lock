@@ -8402,10 +8402,10 @@ gatsby-recipes@^0.15.1:
     xstate "^4.9.1"
     yoga-layout-prebuilt "^1.9.6"
 
-gatsby-source-graphql@^3.3.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-3.4.0.tgz#059466f39cc1d9f9f2c92750d291c58cfe02a8d4"
-  integrity sha512-OLySBd8qqzfOhHHDWEC76xmxJTfOzaQStOgQJqNZLYiPZG556XkPQB7NJS00uUf3uRfIaaEstiaPjBdpgseACQ==
+gatsby-source-graphql@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-3.5.0.tgz#5168a32781414f9a4c824bf34a8fa08ad69a0a45"
+  integrity sha512-CbHBz5xEK7OELf9P3E90mZw0TPP4toMJBDcoYIBQVXHFcbw1M7KXMnHZJYIN5XR9kH4hDjM3k8bV8tczo1QxDw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@graphql-tools/links" "^7.1.0"
@@ -16768,9 +16768,9 @@ webpack-virtual-modules@^0.2.2, webpack-virtual-modules@^0.3.2, webpack-virtual-
   integrity sha512-OUsT1VZhArN8nY7g6mMlw91HWnXcNXsIQjsQ83WteF4ViZ6YXqF2sWKOTDIZ0H+PPiApQdszLdZIrD7NNlU0Yw==
 
 webpack@4, webpack@^5.24.2, webpack@^5.35.0, webpack@^5.9.0:
-  version "5.36.2"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.36.2.tgz#6ef1fb2453ad52faa61e78d486d353d07cca8a0f"
-  integrity sha512-XJumVnnGoH2dV+Pk1VwgY4YT6AiMKpVoudUFCNOXMIVrEKPUgEwdIfWPjIuGLESAiS8EdIHX5+TiJz/5JccmRg==
+  version "5.37.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.37.0.tgz#2ab00f613faf494504eb2beef278dab7493cc39d"
+  integrity sha512-yvdhgcI6QkQkDe1hINBAJ1UNevqNGTVaCkD2SSJcB8rcrNNl922RI8i2DXUAuNfANoxwsiXXEA4ZPZI9q2oGLA==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.47"
