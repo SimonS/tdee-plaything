@@ -15,7 +15,7 @@
     "@storybook/addon-actions": "^6.2.7",
     "@storybook/addon-docs": "^6.2.7",
     "@storybook/addon-links": "^6.2.7",
-    "@storybook/builder-webpack5": "^6.3.0-alpha.21",
+    "@storybook/builder-webpack5": "^6.3.0-alpha.25",
     "@storybook/react": "^6.2.7",
     "assert-browserify": "^2.0.0",
     "babel-loader": "^8.2.2",
