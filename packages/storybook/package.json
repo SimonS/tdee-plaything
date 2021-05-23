@@ -11,11 +11,11 @@
     "build-storybook": "build-storybook -c .storybook -o ../tdee-explorer/public/storybook"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.14.3",
     "@storybook/addon-actions": "^6.2.7",
     "@storybook/addon-docs": "^6.2.7",
     "@storybook/addon-links": "^6.2.7",
-    "@storybook/builder-webpack5": "^6.3.0-alpha.21",
+    "@storybook/builder-webpack5": "^6.3.0-alpha.36",
     "@storybook/react": "^6.2.7",
     "assert-browserify": "^2.0.0",
     "babel-loader": "^8.2.2",
