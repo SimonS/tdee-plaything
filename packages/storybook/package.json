@@ -12,15 +12,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
-    "@storybook/addon-actions": "^6.3.2",
-    "@storybook/addon-docs": "^6.3.2",
-    "@storybook/addon-links": "^6.3.2",
-    "@storybook/builder-webpack5": "^6.3.2",
-    "@storybook/manager-webpack5": "^6.3.2",
-    "@storybook/react": "^6.3.2",
+    "@storybook/addon-actions": "^6.3.4",
+    "@storybook/addon-docs": "^6.3.4",
+    "@storybook/addon-links": "^6.3.4",
+    "@storybook/builder-webpack5": "^6.3.4",
+    "@storybook/manager-webpack5": "^6.3.4",
+    "@storybook/react": "^6.3.4",
     "assert-browserify": "^2.0.0",
     "babel-loader": "^8.2.2",
-    "storybook": "^6.3.2"
+    "storybook": "^6.3.4"
   },
   "dependencies": {
     "react": "^17.0.1",
