@@ -16,7 +16,7 @@
   "dependencies": {
     "@tdee/bin-day-fetcher": "0.0.1",
     "@tdee/gsheet-log-fetcher": "0.0.2",
-    "babel-preset-gatsby": "^1.9.0",
+    "babel-preset-gatsby": "^1.10.0",
     "d3": "^7.0.0",
     "gatsby": "^3.9.1",
     "gatsby-plugin-webfonts": "^2.0.0",
