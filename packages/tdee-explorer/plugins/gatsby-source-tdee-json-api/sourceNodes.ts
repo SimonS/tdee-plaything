@@ -29,7 +29,8 @@ export const sourceNodes = async ({
 }: SourceNodesArgs): Promise<void> => {
   const { createNode } = actions;
 
-  const checkins: CheckIn[] = await getAllCheckins(getSpreadsheetID());
+  // const checkins: CheckIn[] = await getAllCheckins(getSpreadsheetID());
+  const checkins: CheckIn[] = [];
 
   checkins.forEach((checkIn: CheckIn) => {
     const strCheckIn = JSON.stringify(checkIn);
