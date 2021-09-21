@@ -36,7 +36,7 @@
     "@types/react-test-renderer": "^17.0.0",
     "babel-jest": "^27.0.6",
     "eslint-config-prettier": "^8.2.0",
-    "gatsby-plugin-typescript": "^3.5.0",
+    "gatsby-plugin-typescript": "^3.14.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
     "prettier": "2.3.2",
