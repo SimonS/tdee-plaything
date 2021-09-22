@@ -10,7 +10,7 @@
     "compile": "tsc"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.3.1",
     "@types/node-fetch": "^2.5.3",
     "jest": "^27.0.6",
