@@ -38,7 +38,7 @@
     "eslint-config-prettier": "^8.2.0",
     "gatsby-plugin-typescript": "^3.5.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.0.6",
+    "jest": "^27.2.5",
     "prettier": "2.3.2",
     "react-test-renderer": "^17.0.1",
     "ts-jest": "^27.0.3"
