@@ -15,7 +15,7 @@
     "@types/node-fetch": "^2.5.3",
     "jest": "^27.0.6",
     "ts-jest": "^27.0.3",
-    "typescript": "^4.1.3"
+    "typescript": "^4.4.4"
   },
   "dependencies": {
     "node-fetch": "^2.6.1"
