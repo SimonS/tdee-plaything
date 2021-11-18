@@ -6,7 +6,7 @@ I think medium/long-term I need to figure out what this thing is for.
 
 ## Mini-todo list
 
-- [ ] little bit of root styling
+- [x] little bit of root styling
 - [ ] move layout across
 - [ ] create framework agnostic component library (with tests?)
 - [ ] hookup storybook to new library
