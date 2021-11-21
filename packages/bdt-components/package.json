@@ -11,20 +11,29 @@
     "build-storybook": "build-storybook -c .storybook -o ../tdee-explorer/public/storybook",
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir lib/cjs"
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "test": "jest"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-docs": "^6.3.4",
     "@storybook/addon-links": "^6.3.4",
     "@storybook/builder-webpack5": "^6.3.4",
     "@storybook/manager-webpack5": "^6.3.4",
     "@storybook/react": "^6.3.4",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "^27.0.3",
     "@types/react": "^17.0.36",
     "@types/react-dom": "^17.0.11",
     "assert-browserify": "^2.0.0",
+    "babel-jest": "^27.3.1",
     "babel-loader": "^8.2.2",
+    "jest": "^27.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "storybook": "^6.3.4",
@@ -33,5 +42,11 @@
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest-setup.ts"
+    ]
   }
 }
