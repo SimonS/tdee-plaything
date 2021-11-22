@@ -1,0 +1,15 @@
+.stack {
+  --space: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-bottom: 0;
+}
+
+.stack > * + * {
+  margin-top: var(--s4);
+}
+
+.stack .stack > * + * {
+  margin-top: var(--s1);
+}
