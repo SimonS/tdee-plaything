@@ -87,12 +87,21 @@
     preact "^10.5.13"
     preact-render-to-string "^5.1.18"
 
-"@astrojs/renderer-react@0.2.2", "@astrojs/renderer-react@^0.2.2":
+"@astrojs/renderer-react@0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@astrojs/renderer-react/-/renderer-react-0.2.2.tgz#9458ca8234febb5b770691a925dffa8e0eb8171e"
   integrity sha512-NBiqARsZyPEehkcDs7vXQWDkZs4JRjVU1un6mKyMJ0Q2DLiww9jryhGf/t4esziFD+PJlEiJZft5Pt3l7zyshw==
   dependencies:
     "@babel/plugin-transform-react-jsx" "^7.14.5"
+    react "^17.0.2"
+    react-dom "^17.0.2"
+
+"@astrojs/renderer-react@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/renderer-react/-/renderer-react-0.3.0.tgz#740803cc68b14293006670ac246db9c76544a3a7"
+  integrity sha512-pb9gKVHJwtFNoYrtSnBfOPm/0IerEGe6MCDrgys5lwVPWiZ9Di+7uK+C2/UdBuHDM8NEKw+zXA+6qZi/endy+g==
+  dependencies:
+    "@babel/plugin-transform-react-jsx" "^7.16.0"
     react "^17.0.2"
     react-dom "^17.0.2"
 
