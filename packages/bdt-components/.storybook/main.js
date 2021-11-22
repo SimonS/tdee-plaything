@@ -2,8 +2,15 @@ module.exports = {
   core: {
     builder: "webpack5",
   },
-  stories: ["../../tdee-explorer/src/**/*.stories.@(tsx|mdx)", "../src/**/*.stories.@(tsx|mdx)"],
-  addons: ["@storybook/addon-actions", "@storybook/addon-docs"],
+  stories: [
+    "../../tdee-explorer/src/**/*.stories.@(tsx|mdx)",
+    "../src/**/*.stories.@(tsx|mdx)",
+  ],
+  addons: [
+    "@storybook/addon-actions",
+    "@storybook/addon-docs",
+    "@storybook/addon-controls",
+  ],
   webpackFinal: async (config, { configType }) => {
     // Transpile Gatsby module because Gatsby includes un-transpiled ES6 code.
     config.module.rules[0].exclude = [/node_modules\/(?!(gatsby)\/)/];
