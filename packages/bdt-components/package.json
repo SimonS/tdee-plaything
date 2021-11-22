@@ -20,6 +20,7 @@
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
     "@storybook/addon-actions": "^6.3.4",
+    "@storybook/addon-controls": "^6.3.4",
     "@storybook/addon-docs": "^6.3.4",
     "@storybook/addon-links": "^6.3.4",
     "@storybook/builder-webpack5": "^6.3.4",
