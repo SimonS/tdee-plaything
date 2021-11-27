@@ -3,12 +3,13 @@ import { ReactNode } from "react";
 import Centered from "@components/layouts/centered/centered";
 import Sidebar from "@components/layouts/sidebar/sidebar";
 import Stack from "@components/layouts/stack/stack";
+import Logo from "@components/logo/logo";
 
 const Layout = ({ children }: { children?: ReactNode }) => (
   <Centered>
     <Sidebar>
       <Stack>
-        <p>Logo</p>
+        <Logo />
         <ul>
           <li>nav</li>
         </ul>
