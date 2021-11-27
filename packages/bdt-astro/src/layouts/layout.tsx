@@ -4,15 +4,20 @@ import Centered from "@components/layouts/centered/centered";
 import Sidebar from "@components/layouts/sidebar/sidebar";
 import Stack from "@components/layouts/stack/stack";
 import Logo from "@components/logo/logo";
+import Nav from "@components/nav/nav";
 
-const Layout = ({ children }: { children?: ReactNode }) => (
+const Layout = ({
+  path,
+  children,
+}: {
+  path?: string;
+  children?: ReactNode;
+}) => (
   <Centered>
     <Sidebar>
       <Stack>
         <Logo />
-        <ul>
-          <li>nav</li>
-        </ul>
+        <Nav url={path} />
       </Stack>
       <Stack as="main">
         {children}
