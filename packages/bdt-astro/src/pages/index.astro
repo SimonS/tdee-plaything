@@ -1,27 +1,9 @@
 ---
 
-let title = 'astro.bdt';
+import BaseLayout from '../layouts/BaseLayout.astro'
 
 ---
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>{title}</title>
 
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/style/global.css">
-    <style>
-        
-    </style>
-</head>
-<body>
-    <main>
-        <header>
-            <div>
-                <h1>{title}</h1>
-            </div>
-        </header>
-    </main>
-</body>
-</html>
+<BaseLayout title="bdt.astro">
+  <h1>Testing!</h1>
+</BaseLayout>

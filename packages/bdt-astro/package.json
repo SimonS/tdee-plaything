@@ -1,5 +1,5 @@
 {
-  "name": "@example/starter",
+  "name": "@tdee/bdt-astro",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "^0.20.12",
-    "@astrojs/renderer-react": "^0.2.2"
+    "astro": "^0.21.4",
+    "@astrojs/renderer-react": "^0.3.0"
   }
 }

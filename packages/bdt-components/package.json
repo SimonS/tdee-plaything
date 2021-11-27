@@ -2,7 +2,6 @@
   "name": "@tdee/bdt-components",
   "version": "1.0.0",
   "description": "Component Library for BreakfastDinnerTea common assets",
-  "main": "index.js",
   "repository": "https://github.com/SimonS/tdee-plaything",
   "license": "MIT",
   "private": true,
