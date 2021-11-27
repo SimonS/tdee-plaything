@@ -1,6 +1,6 @@
 ---
 
-import Centered from '@components/layouts/centered/centered.tsx';
+import Layout from './layout.tsx';
 
 const {title} = Astro.props;
 
@@ -13,15 +13,10 @@ const {title} = Astro.props;
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/style/global.css">
-    <style>
-        
-    </style>
 </head>
 <body>
     <main>
-        <Centered>
-            <slot />
-        </Centered>
+        <Layout><slot /></Layout>
     </main>
 </body>
 </html>
