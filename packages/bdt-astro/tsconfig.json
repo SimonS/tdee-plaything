@@ -2,7 +2,8 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-        "@components/*": ["../bdt-components/src/*"]
+        "@components/*": ["../bdt-components/src/*"],
+        "@bin-day-fetcher/*": ["../bin-day-fetcher/src/*"]
       }
     }
   }

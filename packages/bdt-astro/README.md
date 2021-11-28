@@ -14,5 +14,5 @@ I think medium/long-term I need to figure out what this thing is for.
 - [x] footer
 - [x] logo
 - [x] bin component
-- [ ] bin data
+- [x] bin data
 - [ ] films
