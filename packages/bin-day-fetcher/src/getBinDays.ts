@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import nodeFetch from "node-fetch";
 
 export enum BinType {
   FOOD = "Food",
@@ -47,7 +47,9 @@ export const getBinDays = async (date?: Date): Promise<BinDay[]> => {
     date.getFullYear().toString(),
   ].join("/");
 
-  return await fetch(`${apiRoot}?UPRN=${UPRN}&selectedDate=${formattedDate}`)
+  return await nodeFetch(
+    `${apiRoot}?UPRN=${UPRN}&selectedDate=${formattedDate}`
+  )
     .then((res) => res.json())
     .then((binDays: BinDayAPIResponse[]) =>
       binDays.map((binDay) => {
