@@ -3,7 +3,7 @@ import { Bin } from "./bin";
 import { BinType } from "@tdee/bin-day-fetcher/src/getBinDays";
 
 export default {
-  title: "Components/Bin",
+  title: "Bin",
   component: Bin,
 };
 

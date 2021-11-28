@@ -2,7 +2,7 @@ import React from "react";
 import { Bin } from "./bin";
 
 export default {
-  title: "Bin",
+  title: "Components/Bin",
   component: Bin,
 };
 
