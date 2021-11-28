@@ -1,7 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Stack from "@components/layouts/stack/stack";
+import Bin from '@components/bin/bin.tsx'
+import {BinType, getNextBinDay} from '@bin-day-fetcher/getBinDays.ts'
+
+const { bins }: {bins: BinType[]} = await getNextBinDay();
 ---
 
 <BaseLayout title="bdt.astro">
-  <h1>Index</h1>
+  <Stack>
+  {bins.map((bin: BinType, i) => (
+    <Bin key={`bin-${i}`} bin={bin} />
+  ))}
+  </Stack>
 </BaseLayout>
