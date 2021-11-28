@@ -17,8 +17,8 @@ I think medium/long-term I need to figure out what this thing is for.
   - [x] bin component
   - [x] bin data
 - [ ] films
-  - [ ] film components
-  - [ ] film template
+  - [x] film component
+  - [x] film template
   - [ ] film data
   - [ ] film pagination
   - [ ] pagination component
