@@ -11,7 +11,9 @@ const MediaObject = ({
   children: React.ReactElement[];
 }) => (
   <Sidebar as="article" side="right" sideWidth="154px">
-    <Stack className="h-entry">{children}</Stack>
+    <Stack className="h-entry" compressed>
+      {children}
+    </Stack>
     <img src={imgObj.src} alt={imgObj.alt} className="poster-image" />
   </Sidebar>
 );

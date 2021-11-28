@@ -4,7 +4,7 @@ import { mainMenu, current } from "./nav.module.css";
 
 export const Nav = ({ url = "" }: { url?: string }): JSX.Element => (
   <nav className={mainMenu}>
-    <Stack as="ul">
+    <Stack as="ul" compressed>
       <li>
         <a className={url === "/" ? current : ""} href="/">
           Home

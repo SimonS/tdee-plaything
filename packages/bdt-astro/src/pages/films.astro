@@ -1,30 +1,58 @@
 ---
+import { request, gql } from 'graphql-request';
 import BaseLayout from '../layouts/BaseLayout.astro'
-import MediaObject from "@components/compositions/media-object";
+import Stack from '@components/layouts/stack/stack.tsx'
+import MediaObject from "@components/compositions/media-object.tsx";
+
+const query = gql`
+{
+  films {
+    nodes {
+      watchedDate
+      filmTitle
+      year
+      rating
+      reviewLink
+      content(format: RENDERED)
+      meta {
+        image
+        runtime
+        original_language
+      }
+    }
+  }
+}
+`
+
+const films = await request('https://breakfastdinnertea.co.uk/graphql', query).then((data) => data.films.nodes)
 ---
 
 <BaseLayout>
+  <Stack>
   <h1>Films</h1>
-  <MediaObject imgObj={{
-    src:`https://image.tmdb.org/t/p/w154/wVbeL6fkbTKSmNfalj4VoAUUqJv.jpg`,
-    alt:`Poster for 'film'`
-  }}>
-    <header>
-      <h2>
-        Film (Year)
-      </h2>
-    </header>
-    <dl>
-      <dt>Viewed</dt>
-      <dd>
-        <time className="dt-published" dateTime={``}>
-          12
-        </time>
-      </dd>
-      <dt>Rated</dt>
-      <dd>3/5</dd>
-    </dl>
-    <a href={`/films`}>I wrote some thoughts on Letterboxd</a>
-  </MediaObject>
+  {films.map(film => (
+    <MediaObject imgObj={{
+      src: film.meta.image,
+      alt:`Poster for '${film.filmTitle}'`
+    }}>
+      <header>
+        <h2>{film.filmTitle} ({film.year})</h2>
+      </header>
+      <dl>
+        <dt>Viewed</dt>
+        <dd>
+          <time className="dt-published" dateTime={film.watchedDate}>
+            {new Date(film.watchedDate).toDateString()}
+          </time>
+        </dd>
+        <dt>Rated</dt>
+        <dd>{film.rating}/5</dd>
+      </dl>
+      {film.content && (
+        <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
+      )}
+    </MediaObject>
+  ))}
+  </Stack>
 </BaseLayout>
     
