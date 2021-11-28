@@ -19,7 +19,7 @@ I think medium/long-term I need to figure out what this thing is for.
 - [ ] films
   - [x] film component
   - [x] film template
-  - [ ] film data
+  - [x] film data
   - [ ] film pagination
   - [ ] pagination component
 - [ ] deploy to astro.breakfastdinnertea.co.uk
