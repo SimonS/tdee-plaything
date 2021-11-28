@@ -53,6 +53,7 @@ module.exports = {
       fallback: {
         ...config.fallback,
         assert: require.resolve("assert-browserify/"),
+        path: require.resolve("path-browserify/"),
       },
     };
     return config;
