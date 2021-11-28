@@ -13,6 +13,13 @@ I think medium/long-term I need to figure out what this thing is for.
 - [x] nav
 - [x] footer
 - [x] logo
-- [x] bin component
-- [x] bin data
+- [x] bins
+  - [x] bin component
+  - [x] bin data
 - [ ] films
+  - [x] film component
+  - [x] film template
+  - [ ] film data
+  - [ ] film pagination
+  - [ ] pagination component
+- [ ] deploy to astro.breakfastdinnertea.co.uk
