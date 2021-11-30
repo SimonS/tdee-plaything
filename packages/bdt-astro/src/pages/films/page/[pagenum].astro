@@ -5,7 +5,11 @@ import MediaObject from "@components/compositions/media-object.tsx";
 
 import { request, gql } from 'graphql-request';
 
-export async function getStaticPaths() {
+export async function getAllPages(pageSize: number) {
+  const getNextPage = async (after?: string) => await request('https://breakfastdinnertea.co.uk/graphql', query, {"first": pageSize, "after": after ? after : ""}).then((data) => {return {meta: data.films.pageInfo}})
+  const countToObject = (count: number, meta) => { return {params: {pagenum: count.toString()}, props: {after: meta.endCursor}}};
+
+  const paths = [];
   const query = gql`
     query nextPage($first: Int, $after: String) {
       films(where: {orderby: {field: DATE_WATCHED, order: DESC}}, first: $first, after: $after) {
@@ -17,22 +21,22 @@ export async function getStaticPaths() {
         }
       }
     }
-  `
+  `;
 
-  const pageSize = 10;
-  let {meta} = await request('https://breakfastdinnertea.co.uk/graphql', query, {"first": pageSize}).then((data) => {return {meta: data.films.pageInfo}})
-  let paths = [];
-  let count = 1;
-  paths.push({params: {pagenum: count.toString()}})
+  let count = 2;
+  let {meta} = await getNextPage();
+  paths.push({params: {pagenum: "1"}})
 
   while(meta.hasNextPage) {
-    count++;
-    paths.push({params: {pagenum: count.toString()}, props: {after: meta.endCursor}})
-    meta = (await request('https://breakfastdinnertea.co.uk/graphql', query, {"first": pageSize, "after": meta.endCursor}).then((data) => {return {meta: data.films.pageInfo}})).meta
+    paths.push(countToObject(count++, meta));
+    ({meta} = await getNextPage(meta.endCursor));
   }
-  paths.push({params: {pagenum: (count + 1).toString()}, props: {after: meta.endCursor}})
 
   return paths;
+};
+
+export async function getStaticPaths() {
+  return await getAllPages(10);
 }
 
 const {after} = Astro.props;
