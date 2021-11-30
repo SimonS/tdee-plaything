@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Stack from '@components/layouts/stack/stack.tsx'
 import MediaObject from "@components/compositions/media-object.tsx";
+import Pagination from "@components/pagination/pagination.tsx";
 
 import { request, gql } from 'graphql-request';
 
@@ -40,6 +41,7 @@ export async function getStaticPaths() {
 }
 
 const {after} = Astro.props;
+const {pagenum} = Astro.request.params;
 
 const filmQuery = gql`
 {
@@ -66,7 +68,7 @@ const filmQuery = gql`
   }
 }
 `
-const {films, next} = await request('https://breakfastdinnertea.co.uk/graphql', filmQuery).then((data) => {return {films: data.films.nodes, next: data.films.pageInfo}})
+const {films, meta} = await request('https://breakfastdinnertea.co.uk/graphql', filmQuery).then((data) => {return {films: data.films.nodes, meta: data.films.pageInfo}})
 
 ---
 <BaseLayout>
@@ -95,5 +97,7 @@ const {films, next} = await request('https://breakfastdinnertea.co.uk/graphql', 
       )}
     </MediaObject>
   ))}
+  <Pagination pageNumber={parseInt(pagenum, 10)} urlRoot={`/films/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+
   </Stack>
 </BaseLayout>
