@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import Stack from '@components/layouts/stack/stack.tsx'
+import MediaObject from "@components/compositions/media-object.tsx";
+
+import { request, gql } from 'graphql-request';
+
+export async function getStaticPaths() {
+  const query = gql`
+    query nextPage($first: Int, $after: String) {
+      films(where: {orderby: {field: DATE_WATCHED, order: DESC}}, first: $first, after: $after) {
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
+        }
+      }
+    }
+  `
+
+  const pageSize = 10;
+  let {meta} = await request('https://breakfastdinnertea.co.uk/graphql', query, {"first": pageSize}).then((data) => {return {meta: data.films.pageInfo}})
+  let paths = [];
+  let count = 1;
+  paths.push({params: {pagenum: count.toString()}})
+
+  while(meta.hasNextPage) {
+    count++;
+    paths.push({params: {pagenum: count.toString()}, props: {after: meta.endCursor}})
+    meta = (await request('https://breakfastdinnertea.co.uk/graphql', query, {"first": pageSize, "after": meta.endCursor}).then((data) => {return {meta: data.films.pageInfo}})).meta
+  }
+  paths.push({params: {pagenum: (count + 1).toString()}, props: {after: meta.endCursor}})
+
+  return paths;
+}
+
+const {after} = Astro.props;
+
+const filmQuery = gql`
+{
+  films(where: {orderby: {field: DATE_WATCHED, order: DESC}}, first: 10, after: "${after ? after : ''}") {
+    nodes {
+      watchedDate
+      filmTitle
+      year
+      rating
+      reviewLink
+      content(format: RENDERED)
+      meta {
+        image
+        runtime
+        original_language
+      }
+    }
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+`
+const {films, next} = await request('https://breakfastdinnertea.co.uk/graphql', filmQuery).then((data) => {return {films: data.films.nodes, next: data.films.pageInfo}})
+
+---
+<BaseLayout>
+  <Stack>
+  <h1>Films</h1>
+  {films.map(film => (
+    <MediaObject imgObj={{
+      src: film.meta.image,
+      alt:`Poster for '${film.filmTitle}'`
+    }}>
+      <header>
+        <h2>{film.filmTitle} ({film.year})</h2>
+      </header>
+      <dl>
+        <dt>Viewed</dt>
+        <dd>
+          <time className="dt-published" dateTime={film.watchedDate}>
+            {new Date(film.watchedDate).toDateString()}
+          </time>
+        </dd>
+        <dt>Rated</dt>
+        <dd>{film.rating}/5</dd>
+      </dl>
+      {film.content && (
+        <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
+      )}
+    </MediaObject>
+  ))}
+  </Stack>
+</BaseLayout>
