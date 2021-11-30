@@ -3,6 +3,7 @@ import { request, gql } from 'graphql-request';
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Stack from '@components/layouts/stack/stack.tsx'
 import MediaObject from "@components/compositions/media-object.tsx";
+import Pagination from "@components/pagination/pagination.tsx";
 
 const query = gql`
 {
@@ -35,30 +36,31 @@ const {films, meta} = await request('https://breakfastdinnertea.co.uk/graphql', 
 
 <BaseLayout>
   <Stack>
-  <h1>Films</h1>
-  {films.map(film => (
-    <MediaObject imgObj={{
-      src: film.meta.image,
-      alt:`Poster for '${film.filmTitle}'`
-    }}>
-      <header>
-        <h2>{film.filmTitle} ({film.year})</h2>
-      </header>
-      <dl>
-        <dt>Viewed</dt>
-        <dd>
-          <time className="dt-published" dateTime={film.watchedDate}>
-            {new Date(film.watchedDate).toDateString()}
-          </time>
-        </dd>
-        <dt>Rated</dt>
-        <dd>{film.rating}/5</dd>
-      </dl>
-      {film.content && (
-        <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
-      )}
-    </MediaObject>
-  ))}
+    <h1>Films</h1>
+    {films.map(film => (
+      <MediaObject imgObj={{
+        src: film.meta.image,
+        alt:`Poster for '${film.filmTitle}'`
+      }}>
+        <header>
+          <h2>{film.filmTitle} ({film.year})</h2>
+        </header>
+        <dl>
+          <dt>Viewed</dt>
+          <dd>
+            <time className="dt-published" dateTime={film.watchedDate}>
+              {new Date(film.watchedDate).toDateString()}
+            </time>
+          </dd>
+          <dt>Rated</dt>
+          <dd>{film.rating}/5</dd>
+        </dl>
+        {film.content && (
+          <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
+        )}
+      </MediaObject>
+    ))}
+    <Pagination pageNumber={1} urlRoot={`/films/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
   </Stack>
 </BaseLayout>
     
