@@ -16,10 +16,10 @@ I think medium/long-term I need to figure out what this thing is for.
 - [x] bins
   - [x] bin component
   - [x] bin data
-- [ ] films
+- [x] films
   - [x] film component
   - [x] film template
   - [x] film data
-  - [ ] film pagination
-  - [ ] pagination component
+  - [x] film pagination
+  - [x] pagination component
 - [ ] deploy to astro.breakfastdinnertea.co.uk
