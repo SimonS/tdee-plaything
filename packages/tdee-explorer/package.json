@@ -34,7 +34,7 @@
     "@types/d3": "^7.0.0",
     "@types/node-sass": "^4.11.0",
     "@types/react-test-renderer": "^17.0.0",
-    "babel-jest": "^27.0.6",
+    "babel-jest": "^27.4.0",
     "eslint-config-prettier": "^8.2.0",
     "gatsby-plugin-typescript": "^4.0.0",
     "identity-obj-proxy": "^3.0.0",
