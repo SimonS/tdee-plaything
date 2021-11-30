@@ -11,6 +11,11 @@ export const pagination = ({
   hasPreviousPage,
   urlRoot,
   pageNumber,
+}: {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  urlRoot: string;
+  pageNumber: number;
 }): JSX.Element => {
   return (
     <Pagination
