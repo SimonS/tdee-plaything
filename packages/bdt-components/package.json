@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "storybook": "start-storybook",
-    "build-storybook": "build-storybook -c .storybook -o ../tdee-explorer/public/storybook",
+    "build-storybook": "build-storybook -c .storybook -o ../bdt-components/dist/storybook",
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs",
