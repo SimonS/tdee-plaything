@@ -14,7 +14,7 @@ const useHighlightedMeal = (highlight: LogoState): LogoState => {
         setHighlightedMeal("Breakfast");
       } else if (hour < 15) {
         setHighlightedMeal("Dinner");
-      } else if (hour < 22) {
+      } else {
         setHighlightedMeal("Tea");
       }
     } else {
