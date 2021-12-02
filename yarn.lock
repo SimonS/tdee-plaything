@@ -9493,10 +9493,10 @@ gatsby-cli@^4.2.0:
     yoga-layout-prebuilt "^1.10.0"
     yurnalist "^2.1.0"
 
-gatsby-core-utils@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/gatsby-core-utils/-/gatsby-core-utils-3.2.0.tgz#4dbf67f016c27345fc4a8f3c140ef9fcd9d2918b"
-  integrity sha512-gPz02QD1kOGQmu49TZL8Fdo9rX8QBsA7XID0oXyIkZqkK80Tm1Uq1pOOfPE3cWSMEkzc71M79iKISCntk/wNuw==
+gatsby-core-utils@^3.2.0, gatsby-core-utils@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-core-utils/-/gatsby-core-utils-3.3.0.tgz#a8fb10e2341fd0e98a50ee3dd2b707bcca65fdee"
+  integrity sha512-Mr90+2T5mUie2fCkQS3dM6oHzTyt1vLbpJ2nU2OsdF95LHnLBt0kDgK+qEIuz7Ypr91gFN8y2HoP08vuokq7ZQ==
   dependencies:
     "@babel/runtime" "^7.15.4"
     ci-info "2.0.0"
@@ -9669,10 +9669,10 @@ gatsby-recipes@^1.2.0:
     xstate "^4.9.1"
     yoga-layout-prebuilt "^1.9.6"
 
-gatsby-source-graphql@^4.0.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-4.2.0.tgz#3d3307eb06ebd4d823830c92967276f34769ef8a"
-  integrity sha512-tvazOX0O54wyaz83umrVDlp/Su/+GAFz0TEotE172PcXAFnskwMOho5fSKyJGo0hvmDESqI3AQOu0w4ruNtvUw==
+gatsby-source-graphql@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-4.3.0.tgz#a76f7683864e7394a56f4d1c1154397f88b7450e"
+  integrity sha512-V2qi+IyXv7n82VTpdn74hMbBHUpCXPO/s/u+xrr2XGfC8iYgEFhUH0cL8Rxl6fMjAisr5ykfyNnAaqQgwIGTLw==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@graphql-tools/links" "^7.1.0"
@@ -9681,7 +9681,7 @@ gatsby-source-graphql@^4.0.0:
     apollo-link "1.2.14"
     apollo-link-http "^1.5.17"
     dataloader "^2.0.0"
-    gatsby-core-utils "^3.2.0"
+    gatsby-core-utils "^3.3.0"
     invariant "^2.2.4"
     node-fetch "^2.6.6"
 
