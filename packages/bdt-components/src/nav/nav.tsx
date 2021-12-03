@@ -12,7 +12,7 @@ export const Nav = ({ url = "" }: { url?: string }): JSX.Element => (
       </li>
       <li>
         <a className={/^\/films/.test(url) ? current : ""} href="/films">
-          Films Seen
+          Films
         </a>
       </li>
     </Stack>

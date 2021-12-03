@@ -34,9 +34,10 @@ const query = gql`
 const {films, meta} = await request('https://breakfastdinnertea.co.uk/graphql', query).then((data) => {return {films: data.films.nodes, meta: data.films.pageInfo}})
 ---
 
-<BaseLayout>
+<BaseLayout title="Films I've seen recently">
   <Stack>
     <h1>Films</h1>
+    <p>These are films I've watched recently, as logged in <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>.</p>
     {films.map(film => (
       <MediaObject imgObj={{
         src: film.meta.image,
