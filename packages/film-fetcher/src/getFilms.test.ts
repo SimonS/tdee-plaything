@@ -61,3 +61,29 @@ test("with no additional parameters, returns most recent films and basic meta ob
   expect(films).toHaveLength(3);
   expect(meta.hasNextPage).toBeTruthy();
 });
+
+test("accepts 'after' as a parameter and sends it to graphql", async () => {
+  const after = "123";
+
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql", (body) => {
+      return body.query.indexOf(after) !== -1;
+    })
+    .reply(200, {
+      data: {
+        films: {
+          nodes: [],
+          pageInfo: {
+            endCursor: "123",
+            startCursor: "321",
+            hasNextPage: true,
+            hasPreviousPage: true,
+          },
+        },
+      },
+    });
+
+  const { meta } = await getFilms(after);
+
+  expect(meta.hasPreviousPage).toBeTruthy();
+});

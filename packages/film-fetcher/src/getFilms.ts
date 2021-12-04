@@ -1,7 +1,24 @@
 import { request, gql } from "graphql-request";
-const query = gql`
+
+interface Film {
+  title: string;
+}
+
+interface PageInfo {
+  endCursor: string;
+  startCursor: string;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+const getFilms = async (
+  after?: string
+): Promise<{ films: Film[]; meta: PageInfo }> => {
+  const query = gql`
   {
-    films(where: { orderby: { field: DATE_WATCHED, order: DESC } }, first: 10) {
+    films(where: {orderby: {field: DATE_WATCHED, order: DESC}}, first: 10, after: "${
+      after ? after : ""
+    }") {
       nodes {
         watchedDate
         filmTitle
@@ -25,18 +42,6 @@ const query = gql`
   }
 `;
 
-interface Film {
-  title: string;
-}
-
-interface PageInfo {
-  endCursor: string;
-  startCursor: string;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
-
-const getFilms = async (): Promise<{ films: Film[]; meta: PageInfo }> => {
   const { films, meta } = await request(
     "https://breakfastdinnertea.co.uk/graphql",
     query
