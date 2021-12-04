@@ -5,7 +5,12 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
-  testPathIgnorePatterns: ["/node_modules/", "/.cache/", "/tdee-explorer/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.cache/",
+    "/tdee-explorer/",
+    "/bdt-components/",
+  ],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec|integration))\\.tsx?$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 };

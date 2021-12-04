@@ -1,0 +1,18 @@
+{
+  "name": "@tdee/film-fetcher",
+  "version": "0.0.1",
+  "description": "retrieve data from graphql api representing films I've watched",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.3",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
+  }
+}
