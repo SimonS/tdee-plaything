@@ -3,39 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Stack from '@components/layouts/stack/stack.tsx'
 import MediaObject from "@components/compositions/media-object.tsx";
 import Pagination from "@components/pagination/pagination.tsx";
-import getFilms from "@film-fetcher/getFilms.ts";
-
-import { request, gql } from 'graphql-request';
-
-export async function getAllPages(pageSize: number) {
-  const getNextPage = async (after?: string) => await request('https://breakfastdinnertea.co.uk/graphql', query, {"first": pageSize, "after": after ? after : ""}).then((data) => {return {meta: data.films.pageInfo}})
-  const countToObject = (count: number, meta) => { return {params: {pagenum: count.toString()}, props: {after: meta.endCursor}}};
-
-  const paths = [];
-  const query = gql`
-    query nextPage($first: Int, $after: String) {
-      films(where: {orderby: {field: DATE_WATCHED, order: DESC}}, first: $first, after: $after) {
-        pageInfo {
-          endCursor
-          startCursor
-          hasNextPage
-          hasPreviousPage
-        }
-      }
-    }
-  `;
-
-  let count = 2;
-  let {meta} = await getNextPage();
-  paths.push({params: {pagenum: "1"}})
-
-  while(meta.hasNextPage) {
-    paths.push(countToObject(count++, meta));
-    ({meta} = await getNextPage(meta.endCursor));
-  }
-
-  return paths;
-};
+import getFilms, {getAllPages} from "@film-fetcher/getFilms.ts";
 
 export async function getStaticPaths() {
   return await getAllPages(10);
