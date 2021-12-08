@@ -2,10 +2,7 @@ module.exports = {
   core: {
     builder: "webpack5",
   },
-  stories: [
-    "../../tdee-explorer/src/**/*.stories.@(tsx|mdx)",
-    "../src/**/*.stories.@(tsx|mdx)",
-  ],
+  stories: ["../src/**/*.stories.@(tsx|mdx)"],
   addons: [
     "@storybook/addon-actions",
     "@storybook/addon-docs",
