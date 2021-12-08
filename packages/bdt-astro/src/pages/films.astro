@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Stack from '@components/layouts/stack/stack.tsx'
 import MediaObject from "@components/compositions/media-object.tsx";
 import Pagination from "@components/pagination/pagination.tsx";
 import getFilms from "@film-fetcher/getFilms.ts";
@@ -9,7 +8,7 @@ const {films, meta} = await getFilms();
 ---
 
 <BaseLayout title="Films I've seen recently">
-  <Stack>
+  <div class="stack">
     <h1>Films</h1>
     <p>These are films I've watched recently, as logged in <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>.</p>
     {films.map(film => (
@@ -36,6 +35,6 @@ const {films, meta} = await getFilms();
       </MediaObject>
     ))}
     <Pagination pageNumber={1} urlRoot={`/films/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
-  </Stack>
+  </div>
 </BaseLayout>
     

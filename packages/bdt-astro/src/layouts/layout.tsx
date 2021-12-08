@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 
 import Sidebar from "@components/layouts/sidebar/sidebar";
-import Stack from "@components/layouts/stack/stack";
 import Logo from "@components/logo/logo";
 import Nav from "@components/nav/nav";
 
@@ -13,11 +12,11 @@ const Layout = ({
   children?: ReactNode;
 }) => (
   <Sidebar>
-    <Stack>
+    <div className="stack">
       <Logo />
       <Nav url={path} />
-    </Stack>
-    <Stack as="main">
+    </div>
+    <main className="stack">
       {children}
       <footer>
         <span className="footer-item">
@@ -34,7 +33,7 @@ const Layout = ({
 
         <span className="footer-item">&copy; Simon Scarfe 2007-2021</span>
       </footer>
-    </Stack>
+    </main>
   </Sidebar>
 );
 

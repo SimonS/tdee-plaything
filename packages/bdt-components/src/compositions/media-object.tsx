@@ -1,6 +1,5 @@
 import React from "react";
 
-import Stack from "../layouts/stack/stack";
 import Sidebar from "../layouts/sidebar/sidebar";
 
 const MediaObject = ({
@@ -11,9 +10,7 @@ const MediaObject = ({
   children: React.ReactElement[];
 }) => (
   <Sidebar as="article" side="right" sideWidth="154px">
-    <Stack className="h-entry" compressed>
-      {children}
-    </Stack>
+    <div className="h-entry stack compressed">{children}</div>
     <img src={imgObj.src} alt={imgObj.alt} className="poster-image" />
   </Sidebar>
 );
