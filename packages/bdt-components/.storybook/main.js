@@ -8,4 +8,15 @@ module.exports = {
     "@storybook/addon-docs",
     "@storybook/addon-controls",
   ],
+  webpackFinal: async (config, { configType }) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...config.fallback,
+        assert: require.resolve("assert-browserify/"),
+        path: require.resolve("path-browserify/"),
+      },
+    };
+    return config;
+  },
 };
