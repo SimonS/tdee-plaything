@@ -9,6 +9,31 @@ module.exports = {
     "@storybook/addon-controls",
   ],
   webpackFinal: async (config, { configType }) => {
+    const ruleCssIndex = config.module.rules.findIndex(
+      (rule) => rule.test.toString() === "/\\.css$/"
+    );
+
+    config.module.rules[ruleCssIndex].use = [
+      {
+        loader: "style-loader",
+        options: {
+          esModule: true,
+          modules: {
+            namedExport: true,
+          },
+        },
+      },
+      {
+        loader: "css-loader",
+        options: {
+          importLoaders: 1,
+          esModule: true,
+          modules: {
+            namedExport: true,
+          },
+        },
+      },
+    ];
     config.resolve = {
       ...config.resolve,
       fallback: {

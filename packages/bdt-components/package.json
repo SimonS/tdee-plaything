@@ -33,16 +33,19 @@
     "assert-browserify": "^2.0.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.2",
+    "css-loader": "^6.5.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "storybook": "^6.4.4",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "webpack": "^5.65.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "webpack": "*"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -52,5 +55,8 @@
     "moduleNameMapper": {
       "\\.css$": "identity-obj-proxy"
     }
+  },
+  "dependencies": {
+    "css-loader": "^6.5.1"
   }
 }
