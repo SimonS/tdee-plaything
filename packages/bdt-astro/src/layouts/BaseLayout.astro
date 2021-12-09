@@ -1,5 +1,6 @@
 ---
-import Layout from './layout.tsx';
+import Logo from "@components/logo/logo";
+import Nav from "@components/nav/nav";
 
 const {title} = Astro.props;
 const path = Astro.request.canonicalURL.pathname;
@@ -19,8 +20,37 @@ const path = Astro.request.canonicalURL.pathname;
     <link rel="stylesheet" href={Astro.resolve("../styles/style.scss")}>
 </head>
 <body>
-    <main class="centered">
-        <Layout path={path} client:load><slot /></Layout>
-    </main>
+    <div class="centered">
+      <div class="sidebar left">
+        <div>
+          <div>
+            <div class="stack">
+                <Logo client:load />
+                <Nav url={path} />
+            </div>
+          </div>
+          <div>
+          <main class="stack">
+            <slot />
+            <footer>
+              <span class="footer-item">
+                  <a
+                  rel="license"
+                  href="http://creativecommons.org/licenses/by-sa/3.0/"
+                  >
+                  <img
+                      alt="This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"
+                      src="https://i.creativecommons.org/l/by-sa/3.0/80x15.png"
+                  />
+                  </a>
+              </span>
+  
+              <span class="footer-item">&copy; Simon Scarfe 2007-2021</span>
+            </footer>
+          </main>
+            </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
