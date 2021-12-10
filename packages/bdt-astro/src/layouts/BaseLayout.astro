@@ -17,7 +17,9 @@ const path = Astro.request.canonicalURL.pathname;
         rel="stylesheet"
     />
     <link rel="stylesheet" href="/style/global.css">
-    <link rel="stylesheet" href={Astro.resolve("../../../bdt-components/src/styles/style.scss")}>
+    <style lang="scss">
+      @use '../../../bdt-components/src/styles/style.scss';
+    </style>
 </head>
 <body>
   <div class="centered">
