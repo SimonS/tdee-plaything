@@ -4,6 +4,8 @@ import { addParameters } from "@storybook/react";
 import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
 import "../../bdt-astro/public/style/global.css";
 
+import "!style-loader!css-loader!sass-loader!../src/styles/style.scss";
+
 // Gatsby's Link overrides:
 // Gatsby Link calls the `enqueue` & `hovering` methods on the global variable ___loader.
 // This global object isn't set in storybook context. We override it to empty functions (no-op),

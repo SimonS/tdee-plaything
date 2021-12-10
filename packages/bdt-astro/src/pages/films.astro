@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Stack from '@components/layouts/stack/stack.tsx'
-import MediaObject from "@components/compositions/media-object.tsx";
 import Pagination from "@components/pagination/pagination.tsx";
 import getFilms from "@film-fetcher/getFilms.ts";
 
@@ -9,33 +7,39 @@ const {films, meta} = await getFilms();
 ---
 
 <BaseLayout title="Films I've seen recently">
-  <Stack>
+  <div class="stack">
     <h1>Films</h1>
     <p>These are films I've watched recently, as logged in <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>.</p>
     {films.map(film => (
-      <MediaObject imgObj={{
-        src: film.meta.image,
-        alt:`Poster for '${film.filmTitle}'`
-      }}>
-        <header>
-          <h2>{film.filmTitle} ({film.year})</h2>
-        </header>
-        <dl>
-          <dt>Viewed</dt>
-          <dd>
-            <time className="dt-published" dateTime={film.watchedDate}>
-              {new Date(film.watchedDate).toDateString()}
-            </time>
-          </dd>
-          <dt>Rated</dt>
-          <dd>{film.rating}/5</dd>
-        </dl>
-        {film.content && (
-          <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
-        )}
-      </MediaObject>
+    <article class="sidebar right">
+      <div>
+        <div>
+          <div class="h-entry stack compressed">
+            <header>
+              <h2>{film.filmTitle} ({film.year})</h2>
+            </header>
+            <dl>
+              <dt>Viewed</dt>
+              <dd>
+                <time class="dt-published" dateTime={film.watchedDate}>
+                  {new Date(film.watchedDate).toDateString()}
+                </time>
+              </dd>
+              <dt>Rated</dt>
+              <dd>{film.rating}/5</dd>
+            </dl>
+            {film.content && (
+              <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
+            )}
+          </div>
+        </div>
+        <div style="max-width: 154px">
+          <img src={film.meta.image} alt={`Poster for '${film.filmTitle}'`} class="poster-image" />
+        </div>
+      </div>
+    </article>
     ))}
     <Pagination pageNumber={1} urlRoot={`/films/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
-  </Stack>
+  </div>
 </BaseLayout>
     
