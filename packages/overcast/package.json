@@ -1,5 +1,5 @@
 {
-  "name": "overcast-functions",
+  "name": "@tdee/overcast-functions",
   "version": "1.0.0",
   "description": "functionality to get most recent overcast listens, post them to a third party service and then retrieve them using graphql",
   "main": "index.js",
