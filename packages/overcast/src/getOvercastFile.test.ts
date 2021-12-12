@@ -1,5 +1,16 @@
-import { addit } from "./getOvercastFile";
+import { loginToOvercast } from "./getOvercastFile";
+import * as nock from "nock";
 
-test("hooked up correctly", async () => {
-  expect(addit()).toEqual(4);
+const rootUrl = "https://overcast.fm/";
+
+test("successfully logs into overcast", async () => {
+  nock(rootUrl)
+    .post("/login", "then=podcasts&email=email%40email.com&password=password")
+    .reply(302, undefined, { location: "podcasts" })
+    .get("/podcasts")
+    .reply(200);
+
+  const loginSuccessful = await loginToOvercast("email@email.com", "password");
+
+  expect(loginSuccessful).toBe(true);
 });

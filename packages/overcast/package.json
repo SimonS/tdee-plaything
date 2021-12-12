@@ -4,5 +4,14 @@
   "description": "functionality to get most recent overcast listens, post them to a third party service and then retrieve them using graphql",
   "main": "index.js",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "axios": "^0.24.0",
+    "axios-cookiejar-support": "^2.0.3",
+    "tough-cookie": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/tough-cookie": "^4.0.1"
+  }
 }
