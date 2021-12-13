@@ -20,7 +20,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.79",
+    "@types/aws-lambda": "^8.10.87",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
