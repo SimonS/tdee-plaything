@@ -8,10 +8,12 @@
   "dependencies": {
     "axios": "^0.24.0",
     "axios-cookiejar-support": "^2.0.3",
+    "mock-fs": "^5.1.2",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/mock-fs": "^4.13.1",
     "@types/tough-cookie": "^4.0.1"
   }
 }
