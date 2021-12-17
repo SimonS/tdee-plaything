@@ -1,0 +1,30 @@
+{
+  "name": "@tdee/bdt-cdk",
+  "version": "0.1.0",
+  "bin": {
+    "bdt-cdk": "bin/bdt-cdk.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "1.129.0",
+    "@aws-cdk/aws-apigateway": "1.129.0",
+    "@aws-cdk/aws-lambda": "1.129.0",
+    "@aws-cdk/aws-lambda-nodejs": "1.129.0",
+    "@aws-cdk/core": "1.129.0",
+    "@tdee/overcast-functions": "*",
+    "@types/aws-lambda": "^8.10.88",
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "aws-cdk": "2.2.0",
+    "esbuild": "^0.14.5",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  }
+}
