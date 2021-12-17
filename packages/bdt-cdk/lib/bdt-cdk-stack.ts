@@ -9,8 +9,8 @@ export class BdtCdkStack extends cdk.Stack {
       entry: "./lambda/overcast.ts",
       functionName: "overcastLambda",
       handler: "handler",
-      memorySize: 128,
-      timeout: cdk.Duration.seconds(120),
+      memorySize: 512,
+      timeout: cdk.Duration.seconds(30),
     });
   }
 }
