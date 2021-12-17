@@ -10,6 +10,7 @@ module.exports = {
     "/.cache/",
     "/tdee-explorer/",
     "/bdt-components/",
+    "/bdt-cdk/",
   ],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec|integration))\\.tsx?$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
