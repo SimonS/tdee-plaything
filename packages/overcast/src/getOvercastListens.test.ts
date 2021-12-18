@@ -1,4 +1,4 @@
-import { getOvercastFile, loginToOvercast } from "./getOvercastFile";
+import { getOvercastFile, loginToOvercast } from "./getOvercastListens";
 import { readFileSync } from "fs";
 import * as nock from "nock";
 import * as mockFS from "mock-fs";

@@ -1,7 +1,7 @@
 import {
   loginToOvercast,
   getOvercastFile,
-} from "@tdee/overcast-functions/src/getOvercastFile";
+} from "@tdee/overcast-functions/src/getOvercastListens";
 export const handler = async function (event: {
   email: string;
   password: string;
