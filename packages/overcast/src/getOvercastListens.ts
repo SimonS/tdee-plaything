@@ -2,7 +2,7 @@ import axios from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import { stringify } from "querystring";
 import { CookieJar } from "tough-cookie";
-import { writeFileSync, statSync } from "fs";
+import { load } from "cheerio";
 
 const cookieJar = new CookieJar();
 axios.defaults.jar = cookieJar;
@@ -15,6 +15,16 @@ const http = wrapper(
     jar: cookieJar,
   })
 );
+
+export interface OvercastListen {
+  pubDate: Date;
+  title: string;
+  overcastUrl: string;
+  sourceUrl: string;
+  url?: string;
+  userUpdatedDate: Date;
+  feedUrl: string;
+}
 
 export const loginToOvercast = async (email: string, password: string) => {
   const loginURL = `/login`;
@@ -30,11 +40,27 @@ export const loginToOvercast = async (email: string, password: string) => {
   return resp.request.path === "/podcasts";
 };
 
-export const getOvercastFile = async () => {
+export const getOvercastListens = async (
+  since?: Date
+): Promise<OvercastListen[]> => {
   const opmlURL = `/account/export_opml/extended`;
-  const opmlFile = await http.get(`${urlBase}${opmlURL}`);
+  const opmlFile = await (await http.get(`${urlBase}${opmlURL}`)).data;
 
-  writeFileSync("/tmp/extended.opml", opmlFile.data);
+  const overcastFile = load(opmlFile, {
+    xmlMode: true,
+  });
 
-  return statSync("/tmp/extended.opml").size;
+  const plays = overcastFile("[type='podcast-episode'][played=1]")
+    .toArray()
+    .map((el) => ({
+      pubDate: new Date(el.attribs["pubDate"]),
+      title: el.attribs["title"],
+      overcastUrl: el.attribs["overcastUrl"],
+      sourceUrl: el.attribs["enclosureUrl"],
+      url: el.attribs["url"],
+      userUpdatedDate: new Date(el.attribs["userUpdatedDate"]),
+      feedUrl: overcastFile(el).parent().attr("xmlUrl") || "",
+    }));
+
+  return since ? plays.filter((play) => play.userUpdatedDate > since) : plays;
 };

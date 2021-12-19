@@ -15,9 +15,10 @@ And then from there I should be able to implement logic VERY similar to the [fil
   - [ ] still need to write some tests for lambda
   - [ ] figure out how to send overcast credentials in
 - [ ] implement listen poster
-  - [ ] get new listens
+  - [x] get new listens
   - [ ] adjust wordpress schema/listener to store podcasts
   - [ ] send new listens to BDT
+    - [ ] guard against duplicates
 - [ ] run poster daily
 - [ ] implement overcast fetcher
 - [ ] create podcasts page in astro
