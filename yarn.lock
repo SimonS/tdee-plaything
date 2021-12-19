@@ -92,15 +92,12 @@
     "@vitejs/plugin-vue" "^1.9.4"
     vue "^3.2.22"
 
-"@aws-cdk/assert@1.129.0":
-  version "1.129.0"
-  resolved "https://registry.yarnpkg.com/@aws-cdk/assert/-/assert-1.129.0.tgz#1e18521f8201cc8e765d3a2d6dac52a452477c17"
-  integrity sha512-d3IPScg+MnXfiDHF44mkWj/hWt0m4WUbcQrUKi5SBFKcnKkrZk2QiLuowOtwre/zhcAX0bCQYfuZI+yS0yVNHQ==
+"@aws-cdk/assert@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/assert/-/assert-2.2.0.tgz#6421398adc3da09faad1da0bf6043996e0aef096"
+  integrity sha512-ZVjlFKIKyrrv21anXH4Yh/Hp6vR9IZG8v3Lopi+uqdi08mMLt+xTGahaLB2+JXO1cMdHaJpWJ2GozHGRouF2tA==
   dependencies:
-    "@aws-cdk/cloudformation-diff" "1.129.0"
-    "@aws-cdk/core" "1.129.0"
-    "@aws-cdk/cx-api" "1.129.0"
-    constructs "^3.3.69"
+    "@aws-cdk/cloudformation-diff" "2.2.0"
 
 "@aws-cdk/assets@1.129.0":
   version "1.129.0"
@@ -451,6 +448,14 @@
     fs-extra "^9.1.0"
     md5 "^2.3.0"
 
+"@aws-cdk/cfnspec@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/cfnspec/-/cfnspec-2.2.0.tgz#2d09b5bbdac4fdd248935ab37c74bd885a795936"
+  integrity sha512-5MNqXvUahQpA6hp+UClSsiJiBbkj1QCkNZUtd3O39vjdyaeQfBiTUKMLpsTVnPFWYtvrYqcjHy8n/o7mrmF9ZA==
+  dependencies:
+    fs-extra "^9.1.0"
+    md5 "^2.3.0"
+
 "@aws-cdk/cloud-assembly-schema@1.129.0":
   version "1.129.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/cloud-assembly-schema/-/cloud-assembly-schema-1.129.0.tgz#ceffdd20d3ce40266fc7dcb71257f0235ba0a3fe"
@@ -471,6 +476,19 @@
     fast-deep-equal "^3.1.3"
     string-width "^4.2.3"
     table "^6.7.2"
+
+"@aws-cdk/cloudformation-diff@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/cloudformation-diff/-/cloudformation-diff-2.2.0.tgz#8b76297f0c3d4ffc882108f07bd6cd6c94bfeeea"
+  integrity sha512-ue5Y9elCTg0EqjREt/fnDH63FfDy5rrEw6pe7CwvXdgD0ytWIfpfnDyl3U1Yfn5EhB5xB6yi7UzrKzJRnjvQUw==
+  dependencies:
+    "@aws-cdk/cfnspec" "2.2.0"
+    "@types/node" "^10.17.60"
+    colors "^1.4.0"
+    diff "^5.0.0"
+    fast-deep-equal "^3.1.3"
+    string-width "^4.2.3"
+    table "^6.7.5"
 
 "@aws-cdk/core@1.129.0":
   version "1.129.0"
@@ -15277,7 +15295,7 @@ synchronous-promise@^2.0.15:
   resolved "https://registry.yarnpkg.com/synchronous-promise/-/synchronous-promise-2.0.15.tgz#07ca1822b9de0001f5ff73595f3d08c4f720eb8e"
   integrity sha512-k8uzYIkIVwmT+TcglpdN50pS2y1BDcUnBPK9iJeGu0Pl1lOI8pD6wtzgw91Pjpe+RxtTncw32tLxs/R0yNL2Mg==
 
-table@^6.0.9, table@^6.7.2:
+table@^6.0.9, table@^6.7.2, table@^6.7.5:
   version "6.7.5"
   resolved "https://registry.yarnpkg.com/table/-/table-6.7.5.tgz#f04478c351ef3d8c7904f0e8be90a1b62417d238"
   integrity sha512-LFNeryOqiQHqCVKzhkymKwt6ozeRhlm8IL1mE8rNUurkir4heF6PzMyRgaTa4tlyPTGGgXuvVOF/OLWiH09Lqw==
