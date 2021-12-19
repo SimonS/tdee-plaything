@@ -19,6 +19,7 @@ And then from there I should be able to implement logic VERY similar to the [fil
   - [ ] adjust wordpress schema/listener to store podcasts
   - [ ] send new listens to BDT
     - [ ] guard against duplicates
+    - [ ] may need an extra request to fetch podcast metadata/artwork
 - [ ] run poster daily
 - [ ] implement overcast fetcher
 - [ ] create podcasts page in astro
