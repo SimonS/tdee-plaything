@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@aws-cdk/assert": "1.129.0",
-    "@aws-cdk/aws-apigateway": "1.129.0",
+    "@aws-cdk/aws-apigateway": "1.136.0",
     "@aws-cdk/aws-lambda": "1.129.0",
     "@aws-cdk/aws-lambda-nodejs": "1.129.0",
     "@aws-cdk/core": "1.129.0",
