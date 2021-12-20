@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@astrojs/compiler@^0.5.7":
+"@astrojs/compiler@^0.5.4":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.5.7.tgz#378a65afbc8d9945aa2bce2b80af1d2bf8808560"
   integrity sha512-SMmgApjroKy6PGSjofTBbl9kIQb7/ywtiP0hYpa/x2yuiCQQoe+QLusOnNgmGDgJBmV/5UVEf1+EA+77s4acHQ==
@@ -75,12 +75,12 @@
     react "^17.0.2"
     react-dom "^17.0.2"
 
-"@astrojs/renderer-svelte@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/renderer-svelte/-/renderer-svelte-0.2.2.tgz#ff8182aabb3228126f77176bbe7a407cbb1e6c1b"
-  integrity sha512-6fs/skQURDvn2K/TVAgOmqcMUaGuocV7EwAzthHTJzlfRQUbNEWmyLtuvjcSCZnY+28vupKjEarWl3IsyqJh6Q==
+"@astrojs/renderer-svelte@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/renderer-svelte/-/renderer-svelte-0.2.3.tgz#ed365b9923b08d094cbf50660abf01bb89ec9df5"
+  integrity sha512-E/QbgqdnafPnTzRsfKR/IF8oDuqM65/yAdeZxAWwU0rvacRS2vjCwfQI38lPEAGdGt/NNQ29YJXoh6hWpjAEoA==
   dependencies:
-    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.30"
+    "@sveltejs/vite-plugin-svelte" "1.0.0-next.30"
     svelte "^3.44.2"
     svelte-preprocess "^4.9.8"
 
@@ -91,6 +91,11 @@
   dependencies:
     "@vitejs/plugin-vue" "^1.9.4"
     vue "^3.2.22"
+
+"@astropub/webapi@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@astropub/webapi/-/webapi-0.4.0.tgz#ce03357e562758fe8ac9b461fec4206a888c8e56"
+  integrity sha512-KpHOH9WsIJk2E3Z/suAZri3a6I9GrkZnmm+BHAZp4OBAXUUyNTIid9mIC8tiiHNbY2A6OLbBvfteuD+BYQfcrw==
 
 "@aws-cdk/assert@1.129.0":
   version "1.129.0"
@@ -3242,13 +3247,13 @@
     resolve-from "^5.0.0"
     store2 "^2.12.0"
 
-"@sveltejs/vite-plugin-svelte@^1.0.0-next.30":
-  version "1.0.0-next.32"
-  resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.32.tgz#bafcb15dfa7832566dac2b8a67ac6b03e2be5ef6"
-  integrity sha512-Lhf5BxVylosHIW6U2s6WDQA39ycd+bXivC8gHsXCJeLzxoHj7Pv7XAOk25xRSXT4wHg9DWFMBQh2DFU0DxHZ2g==
+"@sveltejs/vite-plugin-svelte@1.0.0-next.30":
+  version "1.0.0-next.30"
+  resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.30.tgz#a6cd181bb406d590c1fa8d480c55950d567689f9"
+  integrity sha512-YQqdMxjL1VgSFk4/+IY3yLwuRRapPafPiZTiaGEq1psbJYSNYUWx9F1zMm32GMsnogg3zn99mGJOqe3ld3HZSg==
   dependencies:
     "@rollup/pluginutils" "^4.1.1"
-    debug "^4.3.3"
+    debug "^4.3.2"
     kleur "^4.1.4"
     magic-string "^0.25.7"
     require-relative "^0.8.7"
@@ -4720,19 +4725,20 @@ astring@^1.7.5:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.1.tgz#a91c4afd4af3523e11f31242a3d5d9af62bb6cc6"
   integrity sha512-Aj3mbwVzj7Vve4I/v2JYOPFkCGM2YS7OqQTNSxmUR+LECRpokuPgAYghePgr6SALDo5bD5DlfbSaYjOzGJZOLQ==
 
-astro@^0.21.4:
-  version "0.21.12"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-0.21.12.tgz#b857107b3c812e141df340f1320bcb10980dba25"
-  integrity sha512-58vEFjNE97rw84G2s8C8+FbBwPyurIFghaqK5rKouGgJ9aRcXMshsM81mdensz03yO3Y6VdRhyDexiz7eFiUWw==
+astro@^0.21.13:
+  version "0.21.13"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-0.21.13.tgz#1808bb5c3156da2226ccd024de24975513eb97e8"
+  integrity sha512-Wm72q/9KXo0DiAHlQttNSk7cBy7RtqXRj1BL2zjh2zRg6583v30yzSZl4YiJD2PA+TXBc+p4FNyq3med1YEyCw==
   dependencies:
-    "@astrojs/compiler" "^0.5.7"
+    "@astrojs/compiler" "^0.5.4"
     "@astrojs/language-server" "^0.8.2"
     "@astrojs/markdown-remark" "^0.5.0"
     "@astrojs/prism" "0.3.0"
     "@astrojs/renderer-preact" "^0.3.1"
     "@astrojs/renderer-react" "0.3.1"
-    "@astrojs/renderer-svelte" "0.2.2"
+    "@astrojs/renderer-svelte" "0.2.3"
     "@astrojs/renderer-vue" "0.2.1"
+    "@astropub/webapi" "^0.4.0"
     "@babel/core" "^7.15.8"
     "@babel/traverse" "^7.15.4"
     "@proload/core" "^0.2.1"
@@ -4743,17 +4749,17 @@ astro@^0.21.4:
     ci-info "^3.2.0"
     connect "^3.7.0"
     eol "^0.9.1"
-    es-module-lexer "^0.7.1"
+    es-module-lexer "^0.9.3"
     esbuild "0.13.7"
     estree-util-value-to-estree "^1.2.0"
     estree-walker "^3.0.0"
     fast-glob "^3.2.7"
-    fast-xml-parser "^3.19.0"
+    fast-xml-parser "^4.0.0-beta.3"
     html-entities "^2.3.2"
     htmlparser2 "^7.1.2"
     kleur "^4.1.4"
     magic-string "^0.25.7"
-    mime "^2.5.2"
+    mime "^3.0.0"
     morphdom "^2.6.1"
     node-fetch "^3.0.0"
     parse5 "^6.0.1"
@@ -4776,7 +4782,7 @@ astro@^0.21.4:
     supports-esm "^1.0.0"
     tsconfig-resolver "^3.0.1"
     vite "^2.6.10"
-    yargs-parser "^20.2.9"
+    yargs-parser "^21.0.0"
     zod "^3.8.1"
 
 async-each@^1.0.1:
@@ -6456,7 +6462,7 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.3:
+debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
@@ -7028,12 +7034,7 @@ es-get-iterator@^1.0.2:
     is-string "^1.0.5"
     isarray "^2.0.5"
 
-es-module-lexer@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-0.7.1.tgz#c2c8e0f46f2df06274cdaf0dd3f3b33e0a0b267d"
-  integrity sha512-MgtWFl5No+4S3TmhDmCz2ObFGm6lEpTnzbQi+Dd+pw4mlTIZTmM2iAs5gRlmx5zS9luzobCSBSI90JM/1/JgOw==
-
-es-module-lexer@^0.9.0:
+es-module-lexer@^0.9.0, es-module-lexer@^0.9.3:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-0.9.3.tgz#6f13db00cc38417137daf74366f535c8eb438f19"
   integrity sha512-1HQ2M2sPtxwnvOvT1ZClHyQDiggdNjURWpY2we6aMKCQiUVxTmVs2UYPLIrD84sS+kMdUwfBSylbJPwNnBrnHQ==
@@ -8010,12 +8011,12 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
-fast-xml-parser@^3.19.0:
-  version "3.21.1"
-  resolved "https://registry.yarnpkg.com/fast-xml-parser/-/fast-xml-parser-3.21.1.tgz#152a1d51d445380f7046b304672dd55d15c9e736"
-  integrity sha512-FTFVjYoBOZTJekiUsawGsSYV9QL0A+zDYCRj7y34IO6Jg+2IMYEtQa+bbictpdpV8dHxXywqU7C0gRDEOFtBFg==
+fast-xml-parser@^4.0.0-beta.3:
+  version "4.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/fast-xml-parser/-/fast-xml-parser-4.0.0-beta.8.tgz#f0004e29f0eb105e45fbf3f69f2d206a6bfdc587"
+  integrity sha512-2QEZ/WRt6mfrguLsluhvpTWNxdKYgvdZx3dA+Tnx0pUmlEA4ZWt32qSmA1sR1jXscFozHIKqZrikUeiCYSe3ow==
   dependencies:
-    strnum "^1.0.4"
+    strnum "^1.0.5"
 
 fastq@^1.6.0:
   version "1.13.0"
@@ -12008,6 +12009,11 @@ mime@^2.0.3, mime@^2.4.4, mime@^2.5.2:
   resolved "https://registry.yarnpkg.com/mime/-/mime-2.6.0.tgz#a2a682a95cd4d0cb1d6257e28f83da7e35800367"
   integrity sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==
 
+mime@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-3.0.0.tgz#b374550dca3a0c18443b0c950a6a58f1931cf7a7"
+  integrity sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==
+
 mimic-fn@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
@@ -15166,7 +15172,7 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-strnum@^1.0.4:
+strnum@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/strnum/-/strnum-1.0.5.tgz#5c4e829fe15ad4ff0d20c3db5ac97b73c9b072db"
   integrity sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==
@@ -16885,7 +16891,7 @@ yaml@1.10.2, yaml@^1.10.0, yaml@^1.7.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-yargs-parser@20.x, yargs-parser@^20.2.2, yargs-parser@^20.2.7, yargs-parser@^20.2.9:
+yargs-parser@20.x, yargs-parser@^20.2.2, yargs-parser@^20.2.7:
   version "20.2.9"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
   integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
@@ -16897,6 +16903,11 @@ yargs-parser@^18.1.2:
   dependencies:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
+
+yargs-parser@^21.0.0:
+  version "21.0.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-21.0.0.tgz#a485d3966be4317426dd56bdb6a30131b281dc55"
+  integrity sha512-z9kApYUOCwoeZ78rfRYYWdiU/iNL6mwwYlkkZfJoyMR1xps+NEBX5X7XmRpxkZHhXJ6+Ey00IwKxBBSW9FIjyA==
 
 yargs@^15.4.1:
   version "15.4.1"
