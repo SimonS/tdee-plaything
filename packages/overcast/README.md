@@ -13,7 +13,7 @@ And then from there I should be able to implement logic VERY similar to the [fil
 - [x] implement XML file downloader
 - [x] hook downloader up to a lambda
   - [x] still need to write some tests for lambda
-  - [ ] figure out how to send overcast credentials in
+  - [x] figure out how to send overcast credentials in
 - [ ] implement listen poster
   - [x] get new listens
   - [ ] adjust wordpress schema/listener to store podcasts

@@ -4,10 +4,20 @@ import {
 } from "@tdee/overcast-functions/src/getOvercastListens";
 
 export const handler = async function (event: {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }) {
-  const result = await loginToOvercast(event.email, event.password);
+  const email = event.email ?? process.env.OVERCAST_EMAIL;
+  const password = event.password ?? process.env.OVERCAST_PASSWORD;
+
+  if (!email || !password) {
+    return {
+      statusCode: 401,
+      body: "email or password not provided",
+    };
+  }
+
+  const result = await loginToOvercast(email, password);
 
   if (!result) {
     return {

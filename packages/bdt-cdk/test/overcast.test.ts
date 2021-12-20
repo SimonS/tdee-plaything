@@ -38,6 +38,22 @@ test("login successful", async () => {
   expect(result.statusCode).toEqual(200);
 });
 
+test("login uses credentials from environment variables when credentials not passed", async () => {
+  const loginSpy = jest
+    .spyOn(overcast, "loginToOvercast")
+    .mockImplementation(async (email?: string, password?: string) => false);
+
+  const email = "email@email.com";
+  const pw = "password";
+
+  process.env.OVERCAST_EMAIL = email;
+  process.env.OVERCAST_PASSWORD = pw;
+
+  await handler({});
+
+  expect(loginSpy).toHaveBeenCalledWith(email, pw);
+});
+
 test("calls listen getter with yesterday's date", async () => {
   const mockDate = new Date("2020-01-02");
   jest
