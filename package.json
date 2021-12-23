@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test": "jest && yarn workspace @tdee/bdt-components test",
+    "test": "jest && yarn workspace @tdee/bdt-components test && yarn workspace @tdee/bdt-cdk test",
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
     "deploy-all": "yarn workspace @tdee/bdt-astro build && yarn workspace @tdee/bdt-components run build-storybook",
