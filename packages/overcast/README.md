@@ -16,7 +16,7 @@ And then from there I should be able to implement logic VERY similar to the [fil
   - [x] figure out how to send overcast credentials in
 - [ ] implement listen poster
   - [x] get new listens
-  - [ ] adjust wordpress schema/listener to store podcasts
+  - [x] adjust wordpress schema/listener to store podcasts
   - [ ] send new listens to BDT
     - [ ] guard against duplicates
     - [ ] may need an extra request to fetch podcast metadata/artwork
