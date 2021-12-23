@@ -8,7 +8,6 @@ module.exports = {
   testPathIgnorePatterns: [
     "/node_modules/",
     "/.cache/",
-    "/tdee-explorer/",
     "/bdt-components/",
     "/bdt-cdk/",
   ],
