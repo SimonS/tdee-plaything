@@ -17,7 +17,7 @@ And then from there I should be able to implement logic VERY similar to the [fil
 - [ ] implement listen poster
   - [x] get new listens
   - [x] adjust wordpress schema/listener to store podcasts
-  - [ ] send new listens to BDT
+  - [x] send new listens to BDT
     - [ ] guard against duplicates
     - [ ] may need an extra request to fetch podcast metadata/artwork
 - [ ] run poster daily
