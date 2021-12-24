@@ -79,7 +79,7 @@ test("calls listen getter with yesterday's date", async () => {
   expect(listenSpy).toHaveBeenCalledWith(new Date("2020-01-01"));
 });
 
-test("posts listens to wordpress", async () => {
+test("posts a listen to wordpress", async () => {
   mockLogin(true);
 
   const listens = [
@@ -127,4 +127,53 @@ test("posts listens to wordpress", async () => {
       },
     }
   );
+});
+
+test("posts all listens to wordpress", async () => {
+  mockLogin(true);
+
+  const listens = [
+    {
+      pubDate: new Date("2021-02-18T07:00:00-05:00"),
+      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
+      url: "https://url",
+      overcastUrl: "https://overcast.fm/+b1V0WLux0",
+      sourceUrl:
+        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
+      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
+      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
+    },
+    {
+      pubDate: new Date("2021-02-18T07:00:00-05:00"),
+      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
+      url: "https://url",
+      overcastUrl: "https://overcast.fm/+b1V0WLux0",
+      sourceUrl:
+        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
+      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
+      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
+    },
+    {
+      pubDate: new Date("2021-02-18T07:00:00-05:00"),
+      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
+      url: "https://url",
+      overcastUrl: "https://overcast.fm/+b1V0WLux0",
+      sourceUrl:
+        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
+      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
+      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
+    },
+  ];
+
+  mockListens(listens);
+  process.env.BDT_AUTH_TOKEN = "token";
+
+  const axiosSpy = mockAxios();
+
+  await handler({
+    email: "someemail@gmail.com",
+    password: "mypassword",
+  });
+
+  expect(axiosSpy).toHaveBeenCalledTimes(3);
 });
