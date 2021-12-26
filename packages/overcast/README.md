@@ -14,12 +14,12 @@ And then from there I should be able to implement logic VERY similar to the [fil
 - [x] hook downloader up to a lambda
   - [x] still need to write some tests for lambda
   - [x] figure out how to send overcast credentials in
-- [ ] implement listen poster
+- [x] implement listen poster
   - [x] get new listens
   - [x] adjust wordpress schema/listener to store podcasts
   - [x] send new listens to BDT
     - [x] guard against duplicates
-    - [ ] may need an extra request to fetch podcast metadata/artwork
+    - [x] may need an extra request to fetch podcast metadata/artwork
 - [ ] run poster daily
 - [ ] implement overcast fetcher
 - [ ] create podcasts page in astro
