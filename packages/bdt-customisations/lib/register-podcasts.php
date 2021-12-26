@@ -31,6 +31,8 @@ function bdt_register_podcast_listen()
     register_post_meta('bdt_podcast', 'url', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_podcast', 'listen_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
     register_post_meta('bdt_podcast', 'feed_url', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_podcast', 'feed_title', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_podcast', 'feed_image', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
 add_action('init', 'bdt_register_podcast_listen', 0, 9);
 
@@ -56,4 +58,13 @@ function is_duplicate_podcast ($response, $handler, $request) {
     return $response;
 }
 
-add_filter('rest_request_before_callbacks', 'is_duplicate_podcast', 0, 3);
+add_filter('rest_request_before_callbacks', 'is_duplicate_podcast', 10, 3);
+
+function new_podcast($post, $request, $update) {
+    $feed_url = get_post_meta($post->ID, 'feed_url', true);
+
+    add_post_meta($post->ID, "feed_title", fetch_feed($feed_url)->get_title());
+    add_post_meta($post->ID, "feed_image", fetch_feed($feed_url)->get_image_url());
+}
+
+add_action( 'rest_after_insert_bdt_podcast', 'new_podcast', 10, 3 );
