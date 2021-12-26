@@ -4,6 +4,7 @@
  *
  * @package Bdt_Customisations
  */
+require_once 'vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 $_tests_dir = getenv('WP_TESTS_DIR');
 
