@@ -33,3 +33,27 @@ function bdt_register_podcast_listen()
     register_post_meta('bdt_podcast', 'feed_url', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
 }
 add_action('init', 'bdt_register_podcast_listen', 0, 9);
+
+function is_duplicate_podcast ($response, $handler, $request) {
+    if($request->get_route() === "/wp/v2/bdt_podcast_listen") {
+        $sourceUrl = json_decode($request->get_body(), true)["meta"]["source_url"];
+
+        if((new \WP_Query([
+                'post_type'=>'bdt_podcast',
+                'meta_key' => 'source_url',
+                'meta_value' => $sourceUrl
+        ]))->have_posts()) {
+            return new WP_Error(
+                'duplicate_podcast',
+                'Podcast already exists',
+                array(
+                    'status' => 409,
+                )
+            );
+        }
+    }
+
+    return $response;
+}
+
+add_filter('rest_request_before_callbacks', 'is_duplicate_podcast', 0, 3);
