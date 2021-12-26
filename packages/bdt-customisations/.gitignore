@@ -25,3 +25,8 @@ node_modules/
 wordpress-stubs.php
 wp-graphql-stubs.php
 build/
+
+vendor
+composer.lock
+composer.phar
+composer-setup.php
