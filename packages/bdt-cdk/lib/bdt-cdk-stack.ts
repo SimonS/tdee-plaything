@@ -16,7 +16,7 @@ export class BdtCdkStack extends cdk.Stack {
     });
 
     const eventRule = new events.Rule(this, "scheduleRule", {
-      schedule: events.Schedule.cron({ minute: "4", hour: "14" }),
+      schedule: events.Schedule.cron({ minute: "4", hour: "3" }),
     });
 
     eventRule.addTarget(new targets.LambdaFunction(overcastLambda));
