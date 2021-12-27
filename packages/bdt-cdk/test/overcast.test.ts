@@ -17,7 +17,12 @@ const mockListens = (listens: overcast.OvercastListen[]) =>
     .mockImplementation(async () => listens);
 
 const mockAxios = () =>
-  jest.spyOn(axios, "post").mockImplementation(async () => {});
+  jest.spyOn(axios, "post").mockImplementation(async () => {
+    return {
+      status: 200,
+      data: { link: "", meta: { podcast_title: "title" } },
+    };
+  });
 
 test("login failed", async () => {
   mockLogin(false);
@@ -79,11 +84,7 @@ test("calls listen getter with yesterday's date", async () => {
   expect(listenSpy).toHaveBeenCalledWith(new Date("2020-01-01"));
 });
 
-<<<<<<< HEAD
-test("posts a listen to wordpress", async () => {
-=======
 test("posts listens to wordpress", async () => {
->>>>>>> 13afc2b (feat(overcast): posts 1st new listen to wordpress)
   mockLogin(true);
 
   const listens = [
