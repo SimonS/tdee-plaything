@@ -20,7 +20,7 @@ And then from there I should be able to implement logic VERY similar to the [fil
   - [x] send new listens to BDT
     - [x] guard against duplicates
     - [x] may need an extra request to fetch podcast metadata/artwork
-- [ ] run poster daily
+- [x] run poster daily
 - [ ] implement overcast fetcher
 - [ ] create podcasts page in astro
 - [ ] should I wire all of this CDK stuff into GH actions?
