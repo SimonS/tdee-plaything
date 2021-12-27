@@ -2,6 +2,7 @@ import {
   loginToOvercast,
   getOvercastListens,
 } from "@tdee/overcast-functions/src/getOvercastListens";
+import axios from "axios";
 
 export const handler = async function (event: {
   email?: string;
@@ -32,9 +33,66 @@ export const handler = async function (event: {
   yesterday.setHours(0, 0, 0, 0);
   const listens = await getOvercastListens(yesterday);
 
+  if (listens.length === 0) {
+    return {
+      statusCode: 200,
+      headers: { "content-type": "text/plain" },
+      body: "no new listens",
+    };
+  }
+
+  const results = await Promise.allSettled(
+    listens.map(
+      ({
+        title,
+        overcastUrl,
+        sourceUrl,
+        url,
+        userUpdatedDate,
+        pubDate,
+        feedUrl,
+      }) =>
+        axios.post(
+          "https://breakfastdinnertea.co.uk/wp-json/wp/v2/bdt_podcast_listen",
+          {
+            meta: {
+              podcast_title: title,
+              publish_date: pubDate.toISOString(),
+              overcast_url: overcastUrl,
+              source_url: sourceUrl,
+              url,
+              listen_date: userUpdatedDate.toISOString(),
+              feed_url: feedUrl,
+            },
+            status: "publish",
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${process.env.BDT_AUTH_TOKEN}`,
+            },
+          }
+        )
+    )
+  );
+
+  const statuses = results.map((result) => {
+    if (result.status === "fulfilled") {
+      return {
+        status: result.value.status,
+        post_link: result.value.data.link,
+        title: result.value.data.meta.podcast_title,
+      };
+    }
+
+    return {
+      reason: result.reason,
+    };
+  });
+
   return {
     statusCode: 200,
-    headers: { "content-type": "text/plain" },
-    body: JSON.stringify(listens),
+    headers: { "content-type": "text/json" },
+    body: statuses,
   };
 };
