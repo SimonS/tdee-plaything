@@ -22,5 +22,11 @@ And then from there I should be able to implement logic VERY similar to the [fil
     - [x] may need an extra request to fetch podcast metadata/artwork
 - [x] run poster daily
 - [ ] implement overcast fetcher
+  - [ ] WordPress bits
+    - [ ] Need to fix admin, get some titles in there so can debug
+    - [ ] Implement graphql schema
+  - [ ] Astro side
+    - [ ] basic fetcher/graphql query
+    - [ ] should we optimise images?
 - [ ] create podcasts page in astro
 - [ ] should I wire all of this CDK stuff into GH actions?
