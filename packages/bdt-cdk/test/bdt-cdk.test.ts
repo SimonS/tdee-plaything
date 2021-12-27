@@ -32,7 +32,7 @@ test("adds a rule to run lambda on cronjob", () => {
 
   expectCDK(stack).to(
     haveResourceLike("AWS::Events::Rule", {
-      ScheduleExpression: "cron(10 3 * * ? *)",
+      ScheduleExpression: "cron(4 14 * * ? *)",
       Targets: [
         {
           Arn: {
