@@ -4,9 +4,10 @@ A little self-rolled WP plugin to customise my rubbish blog in a non-themey way.
 
 ## Custom Post Types -> GraphQL
 
-- defines custom types for both Weight and Film Watches.
-  - Weight is pushed in by an IFTTT hook from Withings API
-  - Film watches are pulled in from letterboxd's RSS feed, before being furnished with some extra metadata using TMDB
+- defines custom types for Weight, Film Watches, and Podcast Listens.
+  - an IFTTT hook pushes weight data in from Withings API
+  - Pulls in Film watches are using letterboxd's RSS feed, before furnishing it with extra metadata using TMDB
+  - a Lambda function in bdt-cdk sends in the most recent podcast listens. The plugin downloads data about the podcast feed using its feed URL.
 
 An example film query might look like:
 

@@ -1,5 +1,14 @@
 # BDT Playground
 
-At this time, the results of everything in here are built to [playground.breakfastdinnertea.co.uk](https://playground.breakfastdinnertea.co.uk/).
+A place for me to play around without having to worry about multiple repositories and versioning. If I get the urge to play with something new technically (or something not that new - WordPress, I'm looking at you 👀), it lives here until I get bored and delete it.
 
-It is all massively overengineered and takes data from a few different places that I should probably document a bit better as I go. But essentially, it's a little area for me to play with different technologies without necessarily needing to justify it in some arse-backwards manner.
+I try to build using decent (not best) practices - testing, not storing credentials, etc. Any artefacts it produces generally live at [playground.breakfastdinnertea.co.uk](https://playground.breakfastdinnertea.co.uk/).
+
+## Features/technology I've been playing with
+
+* TypeScript - the predominant language I use.
+* Wordpress - the main intermediary store for most of this data. [bdt-customisations](https://github.com/SimonS/tdee-plaything/tree/master/packages/bdt-customisations) is where the tweaks I've made live.
+* GraphQL - the main method of exposing wordpress data to the outside world.
+* AWS CDK - for orchestrating quick/dirty serverless functions.
+* AstroJS - powerful little static site generator to publish the main website.
+ 
