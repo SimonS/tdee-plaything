@@ -21,12 +21,13 @@ And then from there I should be able to implement logic VERY similar to the [fil
     - [x] guard against duplicates
     - [x] may need an extra request to fetch podcast metadata/artwork
 - [x] run poster daily
-- [ ] implement overcast fetcher
+- [x] implement overcast fetcher
   - [x] WordPress bits
     - [x] Need to fix admin, get some titles in there so can debug
     - [x] Implement graphql schema
-  - [ ] Astro side
-    - [ ] basic fetcher/graphql query
-    - [ ] should we optimise images?
+  - [x] Astro side
+    - [x] basic fetcher/graphql query
 - [ ] create podcasts page in astro
-- [ ] should I wire all of this CDK stuff into GH actions?
+Deferred for now:
+  - [ ] ~~should I wire CDK into GH actions?~~ - for now, no. It's unnecessary complexity.
+  - [ ] ~~should we optimise images?~~ - leaving this one as bigger piece of up-next work
