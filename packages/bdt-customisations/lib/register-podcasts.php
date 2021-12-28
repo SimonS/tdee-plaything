@@ -210,4 +210,30 @@ add_action('graphql_register_types', function () {
             return get_post_meta($post->ID, 'feed_image', true);
         },
     ]);
+
+
+    add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
+        $values['LISTEN_DATE'] = [
+            'value'       => 'listen_date',
+            'description' => __('Order by podcast listen date', 'bdt'),
+        ];
+        return $values;
+    });
+
+    add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $input) {
+        if (isset($input['where']['orderby']) && is_array($input['where']['orderby'])) {
+            foreach ($input['where']['orderby'] as $orderby) {
+                if (!isset($orderby['field']) || 'listen_date' !== $orderby['field']) {
+                    continue;
+                }
+
+                $query_args['meta_key'] = 'listen_date';
+                $query_args['meta_type'] = 'DATE';
+                $query_args['orderby'] = 'meta_value';
+                $query_args['order'] = $orderby['order'];
+            }
+        }
+
+        return $query_args;
+    }, 10, 3);
 });
