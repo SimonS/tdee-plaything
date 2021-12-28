@@ -1,0 +1,22 @@
+{
+  "name": "@tdee/podcast-fetcher",
+  "version": "0.0.1",
+  "description": "retrieve data from graphql api representing podcasts I've consumed",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/nock": "^11.1.0",
+    "graphql": "^16.2.0",
+    "graphql-request": "^3.7.0",
+    "jest": "^27.4.3",
+    "nock": "^13.2.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
+  }
+}
