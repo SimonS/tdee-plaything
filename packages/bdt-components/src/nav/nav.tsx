@@ -14,6 +14,11 @@ export const Nav = ({ url = "" }: { url?: string }): JSX.Element => (
           Films
         </a>
       </li>
+      <li>
+        <a className={/^\/podcasts/.test(url) ? current : ""} href="/podcasts">
+          Podcasts
+        </a>
+      </li>
     </ul>
   </nav>
 );
