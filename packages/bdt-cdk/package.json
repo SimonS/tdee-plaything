@@ -19,7 +19,7 @@
     "@aws-cdk/aws-lambda-nodejs": "1.137.0",
     "@aws-cdk/core": "1.137.0",
     "@tdee/overcast-functions": "*",
-    "@types/aws-lambda": "^8.10.88",
+    "@types/aws-lambda": "^8.10.89",
     "@types/axios": "^0.14.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
