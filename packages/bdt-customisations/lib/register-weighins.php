@@ -20,8 +20,8 @@ function bdt_register_weighin()
         'has_archive'           => false,
         'public'                => true,
         'hierarchical'          => false,
-        'supports'              => array( 'custom-fields' ),
-        'rewrite'               => array( 'slug' => 'weighin' ),
+        'supports'              => array('custom-fields'),
+        'rewrite'               => array('slug' => 'weighin'),
         'show_in_rest'          => true,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
         'rest_base' => 'bdt_weighin',
@@ -30,9 +30,9 @@ function bdt_register_weighin()
         'graphql_plural_name' => 'weighins',
     );
     register_post_type('bdt_weighin', $args);
-    register_post_meta('bdt_weighin', 'weight', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_weighin', 'body_fat_percentage', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_weighin', 'weighin_time', array('type'=> 'string', 'show_in_rest' => true, 'single' => true, 'sanitize_callback' => 'bdt_withingsdate_to_time'));
+    register_post_meta('bdt_weighin', 'weight', array('type' => 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_weighin', 'body_fat_percentage', array('type' => 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_weighin', 'weighin_time', array('type' => 'string', 'show_in_rest' => true, 'single' => true, 'sanitize_callback' => 'bdt_withingsdate_to_time'));
 }
 add_action('init', 'bdt_register_weighin', 0);
 
@@ -56,11 +56,10 @@ function show_weighins_columns($name)
                 $parsedDate = new DateTime($date);
                 echo $parsedDate->format('Y/m/d H:i:s');
             }
-        break;
+            break;
         case 'weight':
             echo get_post_meta($post->ID, 'weight', true);
-        break;
-            
+            break;
     }
 }
 
@@ -74,11 +73,11 @@ function sortable_by_weighin_date($columns)
 add_action('pre_get_posts', 'bdt_orderby_weighin_date');
 function bdt_orderby_weighin_date($query)
 {
-    if (! is_admin() || ! $query->is_main_query()) {
+    if (!is_admin() || !$query->is_main_query() || $query->get('post_type') !== 'bdt_weighin') {
         return;
     }
 
-    if ('weighin_time' === $query->get('orderby')) {
+    if ('weighin_time' === $query->get('orderby') || $query->get('orderby') === '') {
         $query->set('orderby', 'meta_value');
         $query->set('meta_key', 'weighin_time');
         $query->set('meta_type', 'DATE');
@@ -116,9 +115,9 @@ add_action('graphql_register_types', function () {
 
     add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
         $values['WEIGHIN_TIME'] = [
-        'value'       => 'weighin_time',
-        'description' => __('Order by weighin_time', 'bdt'),
-    ];
+            'value'       => 'weighin_time',
+            'description' => __('Order by weighin_time', 'bdt'),
+        ];
         return $values;
     });
 });
@@ -126,7 +125,7 @@ add_action('graphql_register_types', function () {
 add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $input) {
     if (isset($input['where']['orderby']) && is_array($input['where']['orderby'])) {
         foreach ($input['where']['orderby'] as $orderby) {
-            if (! isset($orderby['field']) || 'weighin_time' !== $orderby['field']) {
+            if (!isset($orderby['field']) || 'weighin_time' !== $orderby['field']) {
                 continue;
             }
 

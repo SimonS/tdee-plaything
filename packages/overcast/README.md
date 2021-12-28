@@ -23,7 +23,7 @@ And then from there I should be able to implement logic VERY similar to the [fil
 - [x] run poster daily
 - [ ] implement overcast fetcher
   - [ ] WordPress bits
-    - [ ] Need to fix admin, get some titles in there so can debug
+    - [x] Need to fix admin, get some titles in there so can debug
     - [ ] Implement graphql schema
   - [ ] Astro side
     - [ ] basic fetcher/graphql query
