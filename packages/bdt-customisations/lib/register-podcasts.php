@@ -68,3 +68,66 @@ function new_podcast($post, $request, $update) {
 }
 
 add_action( 'rest_after_insert_bdt_podcast', 'new_podcast', 10, 3 );
+
+add_filter( 'manage_bdt_podcast_posts_columns', 'bdt_podcast_filter_posts_columns' );
+
+function bdt_podcast_filter_posts_columns( $columns ) {
+    $columns = array(
+        'cb' => $columns['cb'],
+        'image' => __( 'Image' ),
+        'podcast_title' => __( 'Podcast Title' ),
+        'listen_date' => __( 'Listen Date')
+    );
+
+    return $columns;
+}
+
+add_action( 'manage_bdt_podcast_posts_custom_column', 'bdt_podcast_column', 10, 2);
+function bdt_podcast_column( $column, $post_id ) {
+  if ( 'image' === $column ) {
+    $img = get_post_meta( $post_id, 'feed_image', true );
+
+    echo '<img src="' . $img . '" style="max-width:100px;">';
+  }
+
+  if ( $column === 'podcast_title' ) {
+    $title = get_post_meta( $post_id, 'podcast_title', true );
+
+    echo $title;
+  }
+
+  if ( $column === 'listen_date' ) {
+    $listen_date = get_post_meta( $post_id, 'listen_date', true );
+
+    echo $listen_date;
+  }
+}
+
+add_filter( 'manage_edit-bdt_podcast_sortable_columns', 'bdt_podcast_sortable_columns');
+function bdt_podcast_sortable_columns( $columns ) {
+  $columns['podcast_title'] = 'podcast_title';
+  $columns['listen_date'] = 'listen_date';
+  return $columns;
+}
+
+add_action( 'pre_get_posts', 'bdt_posts_orderby' );
+function bdt_posts_orderby( $query ) {
+  if( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== 'bdt_podcast' ) {
+    return;
+  }
+
+  if ( $query->get( 'orderby') === 'podcast_title' ) {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'podcast_title' );
+  }
+
+  if ( $query->get( 'orderby') === 'listen_date' || $query->get( 'orderby') === '') {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'listen_date' );
+    $query->set( 'meta_type', 'DATE' );
+  }
+}
+
+// ---- GraphQL set-up
+
+
