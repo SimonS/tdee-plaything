@@ -148,7 +148,7 @@ add_action('graphql_register_types', function () {
     ]);
 
     register_graphql_field($type_name, 'publishDate', [
-        'type' => 'date',
+        'type' => 'string',
         'description' => __('Publish date of podcast episode'),
         'resolve' => function ($post) {
             return get_post_meta($post->ID, 'publish_date', true);
