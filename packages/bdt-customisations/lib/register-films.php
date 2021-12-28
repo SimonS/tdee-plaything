@@ -1,4 +1,5 @@
 <?php
+
 use function bdt\fetchMovieMetaData;
 use function bdt\get_updated_feeds;
 
@@ -18,8 +19,8 @@ function bdt_register_film_watch()
         'has_archive'           => false,
         'public'                => true,
         'hierarchical'          => false,
-        'supports'              => array( 'editor', 'thumbnail', 'custom-fields' ),
-        'rewrite'               => array( 'slug' => 'film_watch' ),
+        'supports'              => array('editor', 'thumbnail', 'custom-fields'),
+        'rewrite'               => array('slug' => 'film_watch'),
         'show_in_rest'          => true,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
         'rest_base' => 'bdt_film_watch',
@@ -28,11 +29,11 @@ function bdt_register_film_watch()
         'graphql_plural_name' => 'films',
     );
     register_post_type('bdt_film', $args);
-    register_post_meta('bdt_film', 'film_title', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'year', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'rating', array('type'=> 'number', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'watched_date', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
-    register_post_meta('bdt_film', 'review_link', array('type'=> 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'film_title', array('type' => 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'year', array('type' => 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'rating', array('type' => 'number', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'watched_date', array('type' => 'string', 'show_in_rest' => true, 'single' => true));
+    register_post_meta('bdt_film', 'review_link', array('type' => 'string', 'show_in_rest' => true, 'single' => true));
 }
 add_action('init', 'bdt_register_film_watch', 0, 9);
 
@@ -56,11 +57,11 @@ function show_film_watch_columns($name)
                 $parsedDate = new DateTime($date);
                 echo $parsedDate->format('Y/m/d');
             }
-        break;
+            break;
 
         case 'rating':
             echo get_post_meta($post->ID, 'rating', true);
-        break;
+            break;
     }
 }
 
@@ -74,7 +75,7 @@ function sortable_by_film($columns)
 add_action('pre_get_posts', 'bdt_orderby_watch_date');
 function bdt_orderby_watch_date($query)
 {
-    if (! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== 'bdt_film') {
+    if (!is_admin() || !$query->is_main_query() || $query->get('post_type') !== 'bdt_film') {
         return;
     }
 
@@ -198,9 +199,9 @@ add_action('graphql_register_types', function () {
 
     add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
         $values['DATE_WATCHED'] = [
-        'value'       => 'watched_date',
-        'description' => __('Order by watched_date', 'bdt'),
-    ];
+            'value'       => 'watched_date',
+            'description' => __('Order by watched_date', 'bdt'),
+        ];
         return $values;
     });
 });
@@ -208,7 +209,7 @@ add_action('graphql_register_types', function () {
 add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $input) {
     if (isset($input['where']['orderby']) && is_array($input['where']['orderby'])) {
         foreach ($input['where']['orderby'] as $orderby) {
-            if (! isset($orderby['field']) || 'watched_date' !== $orderby['field']) {
+            if (!isset($orderby['field']) || 'watched_date' !== $orderby['field']) {
                 continue;
             }
 
