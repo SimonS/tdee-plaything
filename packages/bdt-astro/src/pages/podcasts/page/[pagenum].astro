@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import Pagination from "@components/pagination/pagination.tsx";
+import getPodcasts, {getAllPages} from "@podcast-fetcher/getPodcasts.ts";
+
+export async function getStaticPaths() {
+  return await getAllPages(10);
+}
+
+const {after} = Astro.props;
+const {pagenum} = Astro.request.params;
+
+const {podcasts, meta} = await getPodcasts(after);
+
+---
+<BaseLayout>
+  <div class="stack">
+    <h1>Podcasts: Page {pagenum}</h1>
+    {podcasts.map(podcast => (
+      <article class="sidebar right">
+      <div>
+        <div>
+          <div class="h-entry stack compressed">
+            <header>
+              <h2>{podcast.podcastTitle}</h2>
+            </header>
+            <dl>
+              <dt>Listened</dt>
+              <dd>
+                <time class="dt-published" dateTime={podcast.listenDate}>
+                  {new Date(podcast.listenDate).toDateString()}
+                </time>
+              </dd>
+              <dt>Podcast</dt>
+              <dd><a href={podcast.episodeURL}>{podcast.feedTitle}</a></dd>
+            </dl>      
+          </div>
+        </div>
+        <div style="max-width: 154px">
+          <img src={podcast.feedImage} alt={podcast.feedTitle} class="poster-image" />
+        </div>
+      </div>
+    </article>
+    ))}
+    <Pagination pageNumber={parseInt(pagenum, 10)} urlRoot={`/podcasts/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+
+  </div>
+</BaseLayout>
