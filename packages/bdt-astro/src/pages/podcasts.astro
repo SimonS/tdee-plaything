@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
-import getFilms from "@film-fetcher/getFilms.ts";
 import getPodcasts from "@podcast-fetcher/getPodcasts.ts";
 
 const {podcasts, meta} = await getPodcasts();
