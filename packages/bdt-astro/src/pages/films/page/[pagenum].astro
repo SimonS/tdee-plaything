@@ -31,8 +31,10 @@ const {films, meta} = await getFilms(after);
                     {new Date(film.watchedDate).toDateString()}
                   </time>
                 </dd>
+                {film.rating && (
                 <dt>Rated</dt>
                 <dd>{film.rating}/5</dd>
+                )}
               </dl>
             {film.content && (
               <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
