@@ -74,7 +74,7 @@ function sortable_by_film($columns)
 add_action('pre_get_posts', 'bdt_orderby_watch_date');
 function bdt_orderby_watch_date($query)
 {
-    if (! is_admin() || ! $query->is_main_query()) {
+    if (! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== 'bdt_film') {
         return;
     }
 
