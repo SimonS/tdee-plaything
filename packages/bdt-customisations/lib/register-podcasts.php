@@ -66,7 +66,8 @@ function new_podcast($post, $request, $update)
     $feed_url = get_post_meta($post->ID, 'feed_url', true);
 
     add_post_meta($post->ID, "feed_title", fetch_feed($feed_url)->get_title());
-    add_post_meta($post->ID, "feed_image", fetch_feed($feed_url)->get_image_url());
+    // upgrade http to https links (coverville - I'm mostly looking at you)
+    add_post_meta($post->ID, "feed_image", preg_replace("/^http:/i", "https:", fetch_feed($feed_url)->get_image_url()));
 }
 
 add_action('rest_after_insert_bdt_podcast', 'new_podcast', 10, 3);
