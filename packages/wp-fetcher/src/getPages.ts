@@ -1,6 +1,7 @@
 import { request, gql } from "graphql-request";
 
 interface WPPage {
+  id: string;
   title: string;
   content: string;
   slug: string;
@@ -22,6 +23,7 @@ const getPages = async (
       after ? after : ""
     }") {
       nodes {
+        id
         title
         content(format: RENDERED)
         slug
@@ -49,53 +51,20 @@ const getPages = async (
   };
 };
 
-export const getAllPages = async (
-  pageSize: number
-): Promise<{ params: { pagenum: string }; props?: { after: string } }[]> => {
+export const getPage = async (id: string): Promise<WPPage> => {
   const query = gql`
-    query nextPage($first: Int, $after: String) {
-      pages(
-        where: { orderby: { field: LISTEN_DATE, order: DESC } }
-        first: $first
-        after: $after
-      ) {
-        pageInfo {
-          endCursor
-          startCursor
-          hasNextPage
-          hasPreviousPage
-        }
-      }
+  {page(id: "${id}") {
+    id
+    title
+    content
+    slug
+  }}`;
+
+  return await request("https://breakfastdinnertea.co.uk/graphql", query).then(
+    (data: { page: WPPage }) => {
+      return data.page;
     }
-  `;
-
-  const getNextPage = async (after?: string) =>
-    await request("https://breakfastdinnertea.co.uk/graphql", query, {
-      first: pageSize,
-      after: after ? after : "",
-    }).then((data) => {
-      return { meta: data.pages.pageInfo };
-    });
-
-  const countToObject = (count: number, meta: { endCursor: string }) => {
-    return {
-      params: { pagenum: count.toString() },
-      props: { after: meta.endCursor },
-    };
-  };
-
-  let count = 2;
-  let { meta } = await getNextPage();
-
-  const paths = [];
-  paths.push({ params: { pagenum: "1" } });
-
-  while (meta.hasNextPage) {
-    paths.push(countToObject(count++, meta));
-    ({ meta } = await getNextPage(meta.endCursor));
-  }
-
-  return paths;
+  );
 };
 
 export default getPages;

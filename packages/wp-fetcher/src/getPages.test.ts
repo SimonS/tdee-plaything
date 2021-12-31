@@ -1,4 +1,4 @@
-import getPages, { getAllPages } from "./getPages";
+import getPages, { getPage } from "./getPages";
 import * as nock from "nock";
 
 beforeAll(() => nock.disableNetConnect());
@@ -14,16 +14,19 @@ test("with no additional parameters, returns any pages where playground is 'true
         pages: {
           nodes: [
             {
+              id: "1",
               title: "page 1",
               content: "page 1 contents",
               slug: "page1",
             },
             {
+              id: "2",
               title: "page 2",
               content: "page 2 contents",
               slug: "page2",
             },
             {
+              id: "3",
               title: "page 3",
               content: "page 3 contents",
               slug: "page3",
@@ -70,61 +73,19 @@ test("accepts 'after' as a parameter and sends it to graphql", async () => {
   expect(meta.hasPreviousPage).toBeTruthy();
 });
 
-test("getAllPages accepts a parameter and returns paginated object", async () => {
+test("getPage takes an id and returns a single page", async () => {
   nock("https://breakfastdinnertea.co.uk")
     .post("/graphql")
     .reply(200, {
       data: {
-        pages: {
-          nodes: [],
-          pageInfo: {
-            endCursor: "123",
-            startCursor: "321",
-            hasNextPage: false,
-            hasPreviousPage: true,
-          },
+        page: {
+          id: "id",
+          title: "title",
+          content: "content",
         },
       },
     });
+  const page = await getPage("id");
 
-  const result = await getAllPages(10);
-
-  expect(result).toHaveLength(1);
-});
-
-test("when more pages available, getAllPages returns them with the relevant after prop", async () => {
-  nock("https://breakfastdinnertea.co.uk")
-    .post("/graphql")
-    .reply(200, {
-      data: {
-        pages: {
-          nodes: [],
-          pageInfo: {
-            endCursor: "123",
-            startCursor: "321",
-            hasNextPage: true,
-            hasPreviousPage: true,
-          },
-        },
-      },
-    })
-    .post("/graphql")
-    .reply(200, {
-      data: {
-        pages: {
-          nodes: [],
-          pageInfo: {
-            endCursor: "456",
-            startCursor: "321",
-            hasNextPage: false,
-            hasPreviousPage: true,
-          },
-        },
-      },
-    });
-
-  const result = await getAllPages(10);
-
-  expect(result).toHaveLength(2);
-  expect(result[1].props.after).toBe("123");
+  expect(page.title).toEqual("title");
 });
