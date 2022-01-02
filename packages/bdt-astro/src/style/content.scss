@@ -1,0 +1,18 @@
+.content {
+  max-width: var(--measure);
+
+  h1,
+  h2,
+  h3 {
+    margin-top: var(--s3);
+  }
+
+  ul,
+  p {
+    margin-top: var(--s0);
+  }
+
+  li li {
+    margin-left: var(--s3);
+  }
+}

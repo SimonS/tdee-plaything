@@ -14,7 +14,7 @@ const {films, meta} = await getFilms(after);
 
 ---
 <BaseLayout>
-  <div class="stack">
+  <div class="stack listing">
     <h1>Films: Page {pagenum}</h1>
     {films.map(film => (
       <article class="sidebar right">

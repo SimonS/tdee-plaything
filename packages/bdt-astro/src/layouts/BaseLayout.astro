@@ -16,13 +16,14 @@ const path = Astro.request.canonicalURL.pathname;
         href="https://fonts.googleapis.com/css2?family=Actor&display=swap"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="/style/global.css">
+    <link rel="stylesheet" href="/style/global.scss">
     <style lang="scss" global>
       @use '../../../bdt-components/src/styles/style.scss';
     </style>
+    <slot name="head_after" />
 </head>
 <body>
-  <div class="centered">
+  <div class="shell">
     <div class="sidebar left">
       <div>
         <div>

@@ -15,6 +15,12 @@ const {title, content} = await getPage(id);
 ---
 
 <BaseLayout>
+    <style slot="head_after" lang="scss" global>
+        @use '../style/content.scss';
+    </style>
+    
     <h1>{title}</h1>
-    {content}
+    <div class="content">    
+        {content}
+    </div>
 </BaseLayout>

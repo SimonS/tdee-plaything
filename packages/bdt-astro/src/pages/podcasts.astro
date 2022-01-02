@@ -7,9 +7,11 @@ const {podcasts, meta} = await getPodcasts();
 ---
 
 <BaseLayout title="Podcasts I've been listening to">
-  <div class="stack">
+  <div class="stack listing">
     <h1>Podcasts</h1>
-    <p>These are the podcasts I've recently heard, it's all aggregated from <a href="https://overcast.fm">Overcast</a>.</p>
+    <div class="content">
+      <p>These are the podcasts I've recently heard, it's all aggregated from <a href="https://overcast.fm">Overcast</a>.</p>
+    </div>
     {podcasts.map(podcast => (
     <article class="sidebar right">
       <div>

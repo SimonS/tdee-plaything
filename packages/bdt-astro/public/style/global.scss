@@ -1,18 +1,18 @@
 :root {
-  --ratio: 1.25;
+  --ratio: 1.4;
   --s-5: calc(var(--s-4) / var(--ratio));
   --s-4: calc(var(--s-3) / var(--ratio));
   --s-3: calc(var(--s-2) / var(--ratio));
   --s-2: calc(var(--s-1) / var(--ratio));
   --s-1: calc(var(--s0) / var(--ratio));
-  --s0: 1rem;
+  --s0: 1.1rem;
   --s1: calc(var(--s0) * var(--ratio));
   --s2: calc(var(--s1) * var(--ratio));
   --s3: calc(var(--s2) * var(--ratio));
   --s4: calc(var(--s3) * var(--ratio));
   --s5: calc(var(--s4) * var(--ratio));
 
-  --measure: 75ch;
+  --measure: 70ch;
 }
 
 * {
@@ -30,6 +30,14 @@ body {
   padding: var(--s2);
 }
 
+.shell {
+  box-sizing: border-box;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
 img {
   width: 100%;
 }
@@ -43,19 +51,28 @@ a:visited {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: Actor;
   margin: 0;
   padding: 0;
 }
 
 h1 {
-  font-size: var(--s5);
+  font-size: var(--s3);
   line-height: 1;
 }
 
 h2 {
   font-size: var(--s2);
+}
+
+.listing h2 {
+  font-size: var(--s1);
+}
+
+h3 {
+  font-size: var(--s1);
 }
 
 p,
@@ -64,7 +81,11 @@ li {
 }
 
 li {
-  margin-bottom: var(--s-3);
+  margin-top: var(--s0);
+}
+
+li:first-of-type {
+  margin-top: 0;
 }
 
 dl {
