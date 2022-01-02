@@ -14,7 +14,7 @@ const {podcasts, meta} = await getPodcasts(after);
 
 ---
 <BaseLayout>
-  <div class="stack">
+  <div class="stack listing">
     <h1>Podcasts: Page {pagenum}</h1>
     {podcasts.map(podcast => (
       <article class="sidebar right">

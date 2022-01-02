@@ -7,7 +7,7 @@
 }
 
 .stack > * + * {
-  margin-top: var(--s4);
+  margin-top: var(--space);
 }
 
 .compressed > * + * {

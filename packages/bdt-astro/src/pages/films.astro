@@ -7,9 +7,11 @@ const {films, meta} = await getFilms();
 ---
 
 <BaseLayout title="Films I've seen recently">
-  <div class="stack">
+  <div class="stack listing">
     <h1>Films</h1>
-    <p>These are films I've watched recently, as logged in <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>.</p>
+    <div class="content">
+      <p>These are films I've watched recently, as logged in <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>.</p>
+    </div>
     {films.map(film => (
     <article class="sidebar right">
       <div>
