@@ -2,7 +2,7 @@ import React from "react";
 import { action } from "@storybook/addon-actions";
 import { addParameters } from "@storybook/react";
 import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
-import "../../bdt-astro/public/style/global.css";
+import "!style-loader!css-loader!sass-loader!../../bdt-astro/public/style/global.scss";
 
 import "!style-loader!css-loader!sass-loader!../src/styles/style.scss";
 
