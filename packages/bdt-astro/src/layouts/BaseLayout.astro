@@ -16,9 +16,9 @@ const path = Astro.request.canonicalURL.pathname;
         href="https://fonts.googleapis.com/css2?family=Actor&display=swap"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="/style/global.scss">
     <style lang="scss" global>
       @use '../../../bdt-components/src/styles/style.scss';
+      @use '../../public/style/global.scss';
     </style>
     <slot name="head_after" />
 </head>
