@@ -1,9 +1,9 @@
 ---
-import Logo from "@components/logo/logo";
 import Nav from "@components/nav/nav";
-
+import {AstroLogo} from '../components/AstroLogo';
 const {title} = Astro.props;
 const path = Astro.request.canonicalURL.pathname;
+
 ---
 <html lang="en">
 <head>
@@ -28,8 +28,8 @@ const path = Astro.request.canonicalURL.pathname;
       <div>
         <div>
           <div class="stack">
-              <Logo client:load />
-              <Nav url={path} />
+            <AstroLogo client:load />
+            <Nav url={path} />
           </div>
         </div>
         <div>
@@ -48,7 +48,7 @@ const path = Astro.request.canonicalURL.pathname;
                   </a>
               </span>
 
-              <span class="footer-item">&copy; Simon Scarfe 2007-2021</span>
+              <span class="footer-item">&copy; Simon Scarfe 2007-2022</span>
             </footer>
           </main>
         </div>
