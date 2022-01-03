@@ -1,14 +1,8 @@
 import { request, gql } from "graphql-request";
+import { PageInfo } from "@bdt-types/bdt";
 
 interface Film {
   title: string;
-}
-
-interface PageInfo {
-  endCursor: string;
-  startCursor: string;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
 }
 
 const getFilms = async (
