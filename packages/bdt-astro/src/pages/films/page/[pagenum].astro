@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
-import getFilms, {getAllPages} from "@film-fetcher/getFilms.ts";
+import getFilms from "@film-fetcher/getFilms.ts";
+import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
 export async function getStaticPaths() {
-  return await getAllPages(10);
+  return await getAllPages(10, 'films', '{ orderby: { field: DATE_WATCHED, order: DESC } }');
 }
 
 const {after} = Astro.props;

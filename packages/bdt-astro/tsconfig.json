@@ -4,6 +4,7 @@
     "paths": {
       "@components/*": ["../bdt-components/src/*"],
       "@bin-day-fetcher/*": ["../bin-day-fetcher/src/*"],
+      "@fetcher-paginator/*": ["../fetcher-paginator/src/*"],
       "@film-fetcher/*": ["../film-fetcher/src/*"],
       "@podcast-fetcher/*": ["../podcast-fetcher/src/*"],
       "@wp-fetcher/*": ["../wp-fetcher/src/*"]
