@@ -1,4 +1,4 @@
-import getPodcasts, { getAllPages } from "./getPodcasts";
+import getPodcasts from "./getPodcasts";
 import * as nock from "nock";
 
 beforeAll(() => nock.disableNetConnect());
@@ -80,63 +80,4 @@ test("accepts 'after' as a parameter and sends it to graphql", async () => {
   const { meta } = await getPodcasts(after);
 
   expect(meta.hasPreviousPage).toBeTruthy();
-});
-
-test("getAllPages accepts a parameter and returns paginated object", async () => {
-  nock("https://breakfastdinnertea.co.uk")
-    .post("/graphql")
-    .reply(200, {
-      data: {
-        podcasts: {
-          nodes: [],
-          pageInfo: {
-            endCursor: "123",
-            startCursor: "321",
-            hasNextPage: false,
-            hasPreviousPage: true,
-          },
-        },
-      },
-    });
-
-  const result = await getAllPages(10);
-
-  expect(result).toHaveLength(1);
-});
-
-test("when more pages available, getAllPages returns them with the relevant after prop", async () => {
-  nock("https://breakfastdinnertea.co.uk")
-    .post("/graphql")
-    .reply(200, {
-      data: {
-        podcasts: {
-          nodes: [],
-          pageInfo: {
-            endCursor: "123",
-            startCursor: "321",
-            hasNextPage: true,
-            hasPreviousPage: true,
-          },
-        },
-      },
-    })
-    .post("/graphql")
-    .reply(200, {
-      data: {
-        podcasts: {
-          nodes: [],
-          pageInfo: {
-            endCursor: "456",
-            startCursor: "321",
-            hasNextPage: false,
-            hasPreviousPage: true,
-          },
-        },
-      },
-    });
-
-  const result = await getAllPages(10);
-
-  expect(result).toHaveLength(2);
-  expect(result[1].props.after).toBe("123");
 });

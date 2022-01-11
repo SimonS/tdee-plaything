@@ -27,7 +27,7 @@ export const getAllPages = async (
       first: pageSize,
       after: after ? after : "",
     }).then((data) => {
-      return { meta: data.films.pageInfo };
+      return { meta: data[nodeName].pageInfo };
     });
 
   const countToObject = (count: number, meta: { endCursor: string }) => {
