@@ -1,5 +1,5 @@
 import { request, gql } from "graphql-request";
-import { PageInfo } from "@bdt-types/bdt";
+import { PageInfo } from "@tdee/types/src/bdt";
 
 interface Podcast {
   title: string;
