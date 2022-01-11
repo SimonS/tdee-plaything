@@ -1,19 +1,18 @@
 import { request, gql } from "graphql-request";
 import { PageInfo } from "@tdee/types/src/bdt";
-import { default as getAllPages2 } from "@tdee/fetcher-paginator/src/getAllPages";
 
 interface Film {
   title: string;
 }
+
+export const whereClause = "{orderby: {field: DATE_WATCHED, order: DESC}}";
 
 const getFilms = async (
   after?: string
 ): Promise<{ films: Film[]; meta: PageInfo }> => {
   const query = gql`
   {
-    films(where: {orderby: {field: DATE_WATCHED, order: DESC}}, first: 10, after: "${
-      after ? after : ""
-    }") {
+    films(where: ${whereClause}, first: 10, after: "${after ? after : ""}") {
       nodes {
         watchedDate
         filmTitle
