@@ -6,11 +6,5 @@
     "**/*.integration.ts",
     "**/*.spec.ts",
     "**/*.test.ts"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@bdt-types/*": ["../types/src/*"]
-    }
-  }
+  ]
 }

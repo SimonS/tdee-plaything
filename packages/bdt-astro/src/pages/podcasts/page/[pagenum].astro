@@ -1,11 +1,10 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
-import getPodcasts, {getAllPages} from "@podcast-fetcher/getPodcasts.ts";
+import getPodcasts, { whereClause } from "@podcast-fetcher/getPodcasts.ts";
+import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
-export async function getStaticPaths() {
-  return await getAllPages(10);
-}
+export const getStaticPaths = async () => await getAllPages(10, 'podcasts', whereClause);
 
 const {after} = Astro.props;
 const {pagenum} = Astro.request.params;

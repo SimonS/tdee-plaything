@@ -1,17 +1,11 @@
 import { request, gql } from "graphql-request";
+import { PageInfo } from "@tdee/types/src/bdt";
 
 interface WPPage {
   id: string;
   title: string;
   content: string;
   slug: string;
-}
-
-interface PageInfo {
-  endCursor: string;
-  startCursor: string;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
 }
 
 const getPages = async (

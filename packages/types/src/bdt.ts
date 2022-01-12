@@ -7,3 +7,10 @@ export type BDTRequest = {
   bdt_endpoint: string;
   [propName: string]: JSONValue;
 };
+
+export interface PageInfo {
+  endCursor: string;
+  startCursor: string;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
