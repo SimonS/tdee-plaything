@@ -8,12 +8,7 @@ const getPages = async (
   const nodeName = "pages";
   const fields = ["id", "title", "content", "slug"];
 
-  const { data: pages, meta } = await getData<WPPage>(
-    nodeName,
-    "",
-    fields,
-    after
-  );
+  const { data: pages, meta } = await getData<WPPage>(nodeName, fields, after);
 
   return {
     pages,

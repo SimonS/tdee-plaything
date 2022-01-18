@@ -3,15 +3,15 @@ import { PageInfo } from "@tdee/types/src/bdt";
 
 const getData = async <T>(
   nodeName: string,
-  whereClause: string,
   fields: string[],
+  whereClause?: string,
   after?: string
 ): Promise<{ data: T[]; meta: PageInfo }> => {
+  const where = whereClause ? `, where: ${whereClause},` : "";
+
   const query = gql`
   {
-    ${nodeName}(where: ${whereClause}, first: 10, after: "${
-    after ? after : ""
-  }") {
+    ${nodeName}(${where} first: 10, after: "${after ? after : ""}") {
       nodes {
         ${fields.join("\n")}
       }
