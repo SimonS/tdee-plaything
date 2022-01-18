@@ -4,8 +4,8 @@ import { PageInfo } from "@tdee/types/src/bdt";
 const getData = async <T>(
   nodeName: string,
   fields: string[],
-  whereClause?: string,
-  after?: string
+  after?: string,
+  whereClause?: string
 ): Promise<{ data: T[]; meta: PageInfo }> => {
   const where = whereClause ? `, where: ${whereClause},` : "";
 

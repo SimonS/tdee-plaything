@@ -21,8 +21,8 @@ const getPodcasts = async (
   const { data: podcasts, meta } = await getData<Podcast>(
     nodeName,
     fields,
-    whereClause,
-    after
+    after,
+    whereClause
   );
 
   return {

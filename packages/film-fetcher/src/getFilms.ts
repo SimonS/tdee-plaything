@@ -20,8 +20,8 @@ const getFilms = async (
   const { data: films, meta } = await getData<Film>(
     nodeName,
     fields,
-    whereClause,
-    after
+    after,
+    whereClause
   );
 
   return {
