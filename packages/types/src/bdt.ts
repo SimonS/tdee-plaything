@@ -32,3 +32,17 @@ export interface WPPage {
   content: string;
   slug: string;
 }
+
+export interface Film {
+  watchedDate: string;
+  filmTitle: string;
+  year: number;
+  rating: number;
+  reviewLink: string;
+  content: string;
+  meta: {
+    image: string;
+    runtime: number;
+    original_language: string;
+  };
+}
