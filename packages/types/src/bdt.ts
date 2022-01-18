@@ -50,5 +50,5 @@ export interface Film {
 export interface Weighin {
   weighinTime: string;
   weight: number;
-  bodyfatPercentage: number;
+  bodyFatPercentage: number;
 }
