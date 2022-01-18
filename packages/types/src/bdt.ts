@@ -46,3 +46,9 @@ export interface Film {
     original_language: string;
   };
 }
+
+export interface Weighin {
+  weighinTime: string;
+  weight: number;
+  bodyfatPercentage: number;
+}
