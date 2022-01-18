@@ -14,3 +14,41 @@ export interface PageInfo {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+
+export interface Podcast {
+  listenDate: string;
+  podcastTitle: string;
+  content: string;
+  overcastURL: string;
+  feedURL: string;
+  episodeURL: string;
+  feedTitle: string;
+  feedImage: string;
+}
+
+export interface WPPage {
+  id: string;
+  title: string;
+  content: string;
+  slug: string;
+}
+
+export interface Film {
+  watchedDate: string;
+  filmTitle: string;
+  year: number;
+  rating: number;
+  reviewLink: string;
+  content: string;
+  meta: {
+    image: string;
+    runtime: number;
+    original_language: string;
+  };
+}
+
+export interface Weighin {
+  weighinTime: string;
+  weight: number;
+  bodyFatPercentage: number;
+}

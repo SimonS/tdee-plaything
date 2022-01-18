@@ -1,7 +1,7 @@
 {
-  "name": "@tdee/podcast-fetcher",
+  "name": "@tdee/weight-fetcher",
   "version": "0.0.1",
-  "description": "retrieve data from graphql api representing podcasts I've consumed",
+  "description": "fetches and processes weight data for display",
   "main": "index.js",
   "license": "MIT",
   "private": true,

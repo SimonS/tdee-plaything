@@ -1,43 +1,14 @@
 import { request, gql } from "graphql-request";
-import { PageInfo } from "@tdee/types/src/bdt";
-
-interface WPPage {
-  id: string;
-  title: string;
-  content: string;
-  slug: string;
-}
+import { PageInfo, WPPage } from "@tdee/types/src/bdt";
+import getData from "@tdee/graphql-fetcher/src/getData";
 
 const getPages = async (
   after?: string
 ): Promise<{ pages: WPPage[]; meta: PageInfo }> => {
-  const query = gql`
-  {
-    pages(where: {playground: "true"}, first: 10, after: "${
-      after ? after : ""
-    }") {
-      nodes {
-        id
-        title
-        content(format: RENDERED)
-        slug
-      }
-      pageInfo {
-        endCursor
-        startCursor
-        hasNextPage
-        hasPreviousPage
-      }
-    }
-  }
-`;
+  const nodeName = "pages";
+  const fields = ["id", "title", "content", "slug"];
 
-  const { pages, meta } = await request(
-    "https://breakfastdinnertea.co.uk/graphql",
-    query
-  ).then((data: { pages: { nodes: WPPage[]; pageInfo: PageInfo } }) => {
-    return { pages: data.pages.nodes, meta: data.pages.pageInfo };
-  });
+  const { data: pages, meta } = await getData<WPPage>(nodeName, fields, after);
 
   return {
     pages,
