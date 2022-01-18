@@ -7,7 +7,7 @@ const getWeighins = async (
   after?: string
 ): Promise<{ weighins: Weighin[]; meta: PageInfo }> => {
   const nodeName = "weighins";
-  const fields = ["weighinTime", "weight", "bodyfatPercentage"];
+  const fields = ["weighinTime", "weight", "bodyFatPercentage"];
 
   const { data: weighins, meta } = await getData<Weighin>(
     nodeName,

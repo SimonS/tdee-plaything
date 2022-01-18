@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Pagination from "@components/pagination/pagination.tsx";
+import getWeighins from "@weight-fetcher/getWeighins.ts";
+
+const {weighins, meta} = await getWeighins();
+---
+
+<BaseLayout title="Weighins">
+  <div class="stack listing">
+    <h1>Weighins</h1>
+    <div class="content">
+      <p>This is how I'm currently doing weight-wise. This is a temporal space, while I load this data into a visualisation of some sort.</p>
+    </div>
+    {weighins.map(weighin => (
+    <article class="sidebar right">
+      <div>
+        <div>
+          <div class="h-entry stack compressed">
+            <header>
+              <h2>{new Date(weighin.weighinTime).toDateString()}</h2>
+            </header>
+            <dl>
+              <dt>Weight</dt>
+              <dd>
+                {weighin.weight}
+              </dd>
+              <dt>Bodyfat</dt>
+              <dd>{weighin.bodyFatPercentage}</dd>
+            </dl>
+            
+          </div>
+        </div>
+      </div>
+    </article>
+    ))}
+    <Pagination pageNumber={1} urlRoot={`/weighins/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+  </div>
+</BaseLayout>
+    

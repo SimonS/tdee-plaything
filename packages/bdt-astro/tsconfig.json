@@ -7,6 +7,7 @@
       "@fetcher-paginator/*": ["../fetcher-paginator/src/*"],
       "@film-fetcher/*": ["../film-fetcher/src/*"],
       "@podcast-fetcher/*": ["../podcast-fetcher/src/*"],
+      "@weight-fetcher/*": ["../weight-fetcher/src/*"],
       "@wp-fetcher/*": ["../wp-fetcher/src/*"]
     }
   }
