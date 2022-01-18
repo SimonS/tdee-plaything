@@ -1,17 +1,22 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
-import getWeighins from "@weight-fetcher/getWeighins.ts";
+import getWeighins, { whereClause } from "@weight-fetcher/getWeighins.ts";
+import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
-const {weighins, meta} = await getWeighins();
+export async function getStaticPaths() {
+  return await getAllPages(10, 'weighins', whereClause);
+}
+
+const {after} = Astro.props;
+const {pagenum} = Astro.request.params;
+
+const {weighins, meta} = await getWeighins(after);
+
 ---
-
-<BaseLayout title="Weighins">
+<BaseLayout>
   <div class="stack listing">
-    <h1>Weighins</h1>
-    <div class="content">
-      <p>This is how I'm currently doing weight-wise. This is a temporal space, while I load this data into a visualisation of some sort.</p>
-    </div>
+    <h1>Weigh Ins: Page {pagenum}</h1>
     {weighins.map(weighin => (
     <article class="sidebar right">
       <div>
@@ -34,7 +39,7 @@ const {weighins, meta} = await getWeighins();
       </div>
     </article>
     ))}
-    <Pagination pageNumber={1} urlRoot={`/weight/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+    <Pagination pageNumber={parseInt(pagenum, 10)} urlRoot={`/weight/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+
   </div>
 </BaseLayout>
-    
