@@ -14,3 +14,14 @@ export interface PageInfo {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+
+export interface Podcast {
+  listenDate: string;
+  podcastTitle: string;
+  content: string;
+  overcastURL: string;
+  feedURL: string;
+  episodeURL: string;
+  feedTitle: string;
+  feedImage: string;
+}
