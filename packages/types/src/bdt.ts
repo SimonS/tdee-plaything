@@ -25,3 +25,10 @@ export interface Podcast {
   feedTitle: string;
   feedImage: string;
 }
+
+export interface WPPage {
+  id: string;
+  title: string;
+  content: string;
+  slug: string;
+}
