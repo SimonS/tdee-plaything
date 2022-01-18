@@ -175,7 +175,7 @@ test("accepts 'after' as a parameter and sends it to graphql", async () => {
     "feedImage",
   ];
 
-  const { meta } = await getData(nodeName, whereClause, fields, after);
+  const { meta } = await getData(nodeName, fields, whereClause, after);
 
   expect(meta.hasPreviousPage).toBeTruthy();
 });
