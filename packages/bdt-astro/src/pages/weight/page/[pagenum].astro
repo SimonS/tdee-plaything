@@ -13,7 +13,7 @@ const {after} = Astro.props;
 const {pagenum} = Astro.request.params;
 
 const {weighins, meta} = await getWeighins(after);
-console.log(weighins)
+
 const graphData = [{
   id: "weight", 
   label: "Weight", 
