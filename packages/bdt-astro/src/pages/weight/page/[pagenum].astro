@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
 import getWeighins, { whereClause } from "@weight-fetcher/getWeighins.ts";
 import getAllPages from "@fetcher-paginator/getAllPages.ts";
+import WeightChart from '../../../components/WeightChart.tsx'
 
 export async function getStaticPaths() {
   return await getAllPages(10, 'weighins', whereClause);
@@ -12,11 +13,17 @@ const {after} = Astro.props;
 const {pagenum} = Astro.request.params;
 
 const {weighins, meta} = await getWeighins(after);
-
+console.log(weighins)
+const graphData = [{
+  id: "weight", 
+  label: "Weight", 
+  data: weighins.map(w => ({x: new Date(w.weighinTime).toISOString().split('T')[0], y: w.weight}))}];
 ---
 <BaseLayout>
   <div class="stack listing">
     <h1>Weigh Ins: Page {pagenum}</h1>
+    <WeightChart client:load data={graphData} />
+
     {weighins.map(weighin => (
     <article class="sidebar right">
       <div>
