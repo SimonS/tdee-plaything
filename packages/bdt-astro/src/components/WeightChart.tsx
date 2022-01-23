@@ -19,7 +19,7 @@ const WeightChart = ({ data }) => (
       }}
       axisBottom={{
         format: "%b %d",
-        tickValues: "every day",
+        tickValues: "every 2 days",
       }}
       curve="monotoneX"
     />
