@@ -6,16 +6,12 @@ import WeightChart from '@components/visualisations/weight-graph.tsx';
 
 const {weighins, meta} = await getWeighins();
 
-const graphData = [{
-  id: "weight", 
-  label: "Weight", 
-  data: weighins.map(w => ({x: new Date(w.weighinTime).toISOString().split('T')[0], y: w.weight}))}];
 ---
 
 <BaseLayout title="Weighins">
   <div class="stack listing">
     <h1>Weighins</h1>
-    <WeightChart client:load data={graphData} />
+    <WeightChart client:load weighins={weighins} />
     <div class="content">
       <p>This is how I'm currently doing weight-wise. This is a temporal space, while I load this data into a visualisation of some sort.</p>
     </div>
