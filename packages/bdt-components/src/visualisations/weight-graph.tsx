@@ -1,6 +1,6 @@
 import { ResponsiveLine } from "@nivo/line";
 
-const WeightChart = ({ data }) => (
+const WeightGraph = ({ data }) => (
   <div style={{ height: "400px", width: "100%" }}>
     <ResponsiveLine
       data={data}
@@ -26,4 +26,4 @@ const WeightChart = ({ data }) => (
   </div>
 );
 
-export default WeightChart;
+export default WeightGraph;

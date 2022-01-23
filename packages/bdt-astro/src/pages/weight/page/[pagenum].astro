@@ -3,7 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
 import getWeighins, { whereClause } from "@weight-fetcher/getWeighins.ts";
 import getAllPages from "@fetcher-paginator/getAllPages.ts";
-import WeightChart from '../../../components/WeightChart.tsx'
+import WeightChart from '@components/visualisations/weight-graph.tsx';
 
 export async function getStaticPaths() {
   return await getAllPages(10, 'weighins', whereClause);

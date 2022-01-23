@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
 import getWeighins from "@weight-fetcher/getWeighins.ts";
-import WeightChart from '../components/WeightChart.tsx'
+import WeightChart from '@components/visualisations/weight-graph.tsx';
 
 const {weighins, meta} = await getWeighins();
 
