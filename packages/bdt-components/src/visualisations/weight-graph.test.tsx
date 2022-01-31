@@ -4,13 +4,6 @@ import WeightGraph from "./weight-graph";
 import { Weighin } from "@tdee/types/src/bdt";
 
 describe("Weight Graph", () => {
-  /* things to test:
-   * ✅ the graph is rendered
-   * ✅ the graph renders the correct days
-   * ✅ the graph renders the correct weights on the y-axis
-   * - dare I say it, snapshots?
-   */
-
   const renderThreeDays = () => {
     const weighins: Weighin[] = [
       {
