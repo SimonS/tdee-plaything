@@ -4,11 +4,11 @@ import WeightGraph from "./weight-graph";
 import { Weighin } from "@tdee/types/src/bdt";
 
 describe("Weight Graph", () => {
-  const renderThreeDays = () => {
+  const renderThreeDays = (maxWeight = 100) => {
     const weighins: Weighin[] = [
       {
         weighinTime: "2020-01-01T00:00:00.000Z",
-        weight: 100,
+        weight: maxWeight,
         bodyFatPercentage: 25,
       },
       {
@@ -53,6 +53,26 @@ describe("Weight Graph", () => {
 
   it("displays correct maximum weight", () => {
     const { container } = renderThreeDays();
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "100"
+      ).length
+    ).toEqual(1);
+  });
+
+  it("adds a threshold of 1 for large numbers", () => {
+    const { container } = renderThreeDays();
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "101"
+      ).length
+    ).toEqual(1);
+  });
+
+  it("adds a threshold of 0.5 for smaller numbers", () => {
+    const { container } = renderThreeDays(99.6);
 
     expect(
       Array.from(container.querySelectorAll("text")).filter(
