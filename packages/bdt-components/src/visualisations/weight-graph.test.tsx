@@ -33,6 +33,11 @@ describe("Weight Graph", () => {
       <WeightGraph weighins={weighins} responsive={false} />
     );
 
+    /**
+     * getByText doesn't take into consideration SVG <text> elements (I'm guessing
+     * because they're not part of the Accessibility Tree), so do it the hard way.
+     * This is a bit of a hack, but it works.
+     */
     expect(
       Array.from(container.querySelectorAll("text")).filter(
         (e) => e.innerHTML === "Jan 01"

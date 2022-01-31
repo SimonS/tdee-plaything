@@ -43,6 +43,13 @@ const WeightGraph = ({
     },
   };
 
+  /**
+   * The following is horrible. In reality, we only use the Responsive version.
+   * However, JSDom doesn't like ResizeObserver, it's tightly coupled into the
+   * component, and so mocking doesn't really work either (it always sees the
+   * height & width as 0). Fortunately, ResponsiveLine is a wrapper around Line,
+   * so we use that in our tests, ensuring the props are always the same.
+   */
   return (
     <div style={{ height: "400px", width: "100%" }}>
       {responsive ? (
