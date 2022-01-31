@@ -1,7 +1,14 @@
-import { ResponsiveLine } from "@nivo/line";
+import React from "react";
+import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
 import { Weighin } from "@tdee/types/src/bdt";
 
-const WeightGraph = ({ weighins }: { weighins: Weighin[] }) => {
+const WeightGraph = ({
+  weighins,
+  responsive = true,
+}: {
+  weighins: Weighin[];
+  responsive?: boolean;
+}) => {
   const data = [
     {
       id: "weight",
@@ -13,29 +20,36 @@ const WeightGraph = ({ weighins }: { weighins: Weighin[] }) => {
     },
   ];
 
+  const graphProps: LineSvgProps = {
+    data,
+    margin: { top: 50, right: 110, bottom: 50, left: 60 },
+    xScale: {
+      type: "time",
+      format: "%Y-%m-%d",
+      useUTC: false,
+      precision: "day",
+    },
+    xFormat: "time:%Y-%m-%d",
+    yScale: {
+      type: "linear",
+      min: "auto",
+      max: "auto",
+    },
+    pointLabelYOffset: 0,
+    curve: "monotoneX",
+    axisBottom: {
+      format: "%b %d",
+      tickValues: "every 2 days",
+    },
+  };
+
   return (
     <div style={{ height: "400px", width: "100%" }}>
-      <ResponsiveLine
-        data={data}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{
-          type: "time",
-          format: "%Y-%m-%d",
-          useUTC: false,
-          precision: "day",
-        }}
-        xFormat="time:%Y-%m-%d"
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-        }}
-        axisBottom={{
-          format: "%b %d",
-          tickValues: "every 2 days",
-        }}
-        curve="monotoneX"
-      />
+      {responsive ? (
+        <ResponsiveLine {...graphProps} />
+      ) : (
+        <Line {...graphProps} height={300} width={300} />
+      )}
     </div>
   );
 };
