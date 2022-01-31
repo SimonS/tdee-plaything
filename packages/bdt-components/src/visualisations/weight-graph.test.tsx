@@ -1,16 +1,17 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import WeightGraph from "./weight-graph";
 import { Weighin } from "@tdee/types/src/bdt";
 
 describe("Weight Graph", () => {
   /* things to test:
-   * - the graph is rendered
-   * - the graph renders the correct days
-   * - the graph renders the correct weights on the y-axis
+   * ✅ the graph is rendered
+   * ✅ the graph renders the correct days
+   * ✅ the graph renders the correct weights on the y-axis
    * - dare I say it, snapshots?
    */
-  it("renders the graph", () => {
+
+  const renderThreeDays = () => {
     const weighins: Weighin[] = [
       {
         weighinTime: "2020-01-01T00:00:00.000Z",
@@ -29,9 +30,11 @@ describe("Weight Graph", () => {
       },
     ];
 
-    const { container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
-    );
+    return render(<WeightGraph weighins={weighins} responsive={false} />);
+  };
+
+  it("renders the graph", () => {
+    const { container } = renderThreeDays();
 
     /**
      * getByText doesn't take into consideration SVG <text> elements (I'm guessing
@@ -43,5 +46,25 @@ describe("Weight Graph", () => {
         (e) => e.innerHTML === "Jan 01"
       ).length
     ).toBeGreaterThan(0);
+  });
+
+  it("displays every other day", () => {
+    const { container } = renderThreeDays();
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "Jan 02"
+      ).length
+    ).toEqual(0);
+  });
+
+  it("displays correct maximum weight", () => {
+    const { container } = renderThreeDays();
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "100"
+      ).length
+    ).toEqual(1);
   });
 });
