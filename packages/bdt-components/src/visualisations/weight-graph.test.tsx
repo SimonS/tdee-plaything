@@ -26,6 +26,11 @@ describe("Weight Graph", () => {
     return render(<WeightGraph weighins={weighins} responsive={false} />);
   };
 
+  const getYVals = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("line + text"))
+      .map((val) => parseInt(val.textContent || ""))
+      .filter((val) => !isNaN(val));
+
   it("renders the graph", () => {
     const { container } = renderThreeDays();
 
@@ -51,33 +56,12 @@ describe("Weight Graph", () => {
     ).toEqual(0);
   });
 
-  it("displays correct maximum weight", () => {
+  it("adds an appropriate threshold to the y axis", () => {
     const { container } = renderThreeDays();
 
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "100"
-      ).length
-    ).toEqual(1);
-  });
+    const yNums = getYVals(container);
 
-  it("adds a threshold of 1 for large numbers", () => {
-    const { container } = renderThreeDays();
-
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "101"
-      ).length
-    ).toEqual(1);
-  });
-
-  it("adds a threshold of 0.5 for smaller numbers", () => {
-    const { container } = renderThreeDays(99.6);
-
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "100"
-      ).length
-    ).toEqual(1);
+    expect(yNums[yNums.length - 1]).toEqual(101);
+    expect(yNums[0]).toEqual(89);
   });
 });

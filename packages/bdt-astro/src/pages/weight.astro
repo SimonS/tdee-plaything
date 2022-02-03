@@ -11,23 +11,7 @@ const {weighins, meta} = await getWeighins();
 <BaseLayout title="Weighins">
   <div class="stack listing">
     <h1>Weighins</h1>
-    <WeightChart client:load weighins={[
-      {
-        weighinTime: "2020-01-01T00:00:00.000Z",
-        weight: 99.6,
-        bodyFatPercentage: 25,
-      },
-      {
-        weighinTime: "2020-01-02T00:00:00.000Z",
-        weight: 90,
-        bodyFatPercentage: 25,
-      },
-      {
-        weighinTime: "2020-01-03T00:00:00.000Z",
-        weight: 90,
-        bodyFatPercentage: 24,
-      },
-    ]} />
+    <WeightChart client:load weighins={weighins} />
     <div class="content">
       <p>This is how I'm currently doing weight-wise. This is a temporal space, while I load this data into a visualisation of some sort.</p>
     </div>

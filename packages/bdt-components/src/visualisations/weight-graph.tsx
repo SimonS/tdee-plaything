@@ -21,7 +21,10 @@ const WeightGraph = ({
   ];
 
   const maxWeight = Math.max(...data[0].data.map((d) => d.y));
-  const weightDiff = Math.ceil(maxWeight) >= 100 ? 1 : 0.5;
+  const minWeight = Math.min(...data[0].data.map((d) => d.y));
+  // 9 is a bit of a magic number, I don't want to reverse engineer
+  // yScale too much though, we'll see how it goes.
+  const weightDiff = (maxWeight - minWeight) / 9;
 
   const graphProps: LineSvgProps = {
     data,
@@ -35,7 +38,7 @@ const WeightGraph = ({
     xFormat: "time:%Y-%m-%d",
     yScale: {
       type: "linear",
-      min: "auto",
+      min: minWeight - weightDiff,
       max: maxWeight + weightDiff,
     },
     pointLabelYOffset: 0,
