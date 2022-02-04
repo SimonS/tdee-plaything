@@ -4,11 +4,11 @@ import WeightGraph from "./weight-graph";
 import { Weighin } from "@tdee/types/src/bdt";
 
 describe("Weight Graph", () => {
-  const renderThreeDays = () => {
+  const renderThreeDays = (maxWeight = 100) => {
     const weighins: Weighin[] = [
       {
         weighinTime: "2020-01-01T00:00:00.000Z",
-        weight: 100,
+        weight: maxWeight,
         bodyFatPercentage: 25,
       },
       {
@@ -25,6 +25,11 @@ describe("Weight Graph", () => {
 
     return render(<WeightGraph weighins={weighins} responsive={false} />);
   };
+
+  const getYVals = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("line + text"))
+      .map((val) => parseInt(val.textContent || ""))
+      .filter((val) => !isNaN(val));
 
   it("renders the graph", () => {
     const { container } = renderThreeDays();
@@ -51,13 +56,12 @@ describe("Weight Graph", () => {
     ).toEqual(0);
   });
 
-  it("displays correct maximum weight", () => {
+  it("adds an appropriate threshold to the y axis", () => {
     const { container } = renderThreeDays();
 
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "100"
-      ).length
-    ).toEqual(1);
+    const yNums = getYVals(container);
+
+    expect(yNums[yNums.length - 1]).toEqual(101);
+    expect(yNums[0]).toEqual(89);
   });
 });
