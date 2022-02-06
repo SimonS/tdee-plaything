@@ -31,6 +31,9 @@ describe("Weight Graph", () => {
       .map((val) => parseInt(val.textContent || ""))
       .filter((val) => !isNaN(val));
 
+  const getDots = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("circle"));
+
   it("renders the graph", () => {
     const { container } = renderThreeDays();
 
@@ -63,5 +66,46 @@ describe("Weight Graph", () => {
 
     expect(yNums[yNums.length - 1]).toEqual(101);
     expect(yNums[0]).toEqual(89);
+  });
+
+  it("renders correct number of weighin dots", () => {
+    const { container } = renderThreeDays();
+
+    const dots = getDots(container);
+
+    expect(dots).toHaveLength(3);
+  });
+
+  it("filters between dates", () => {
+    const weighins: Weighin[] = [
+      {
+        weighinTime: "2020-01-01T00:00:00.000Z",
+        weight: 100,
+        bodyFatPercentage: 25,
+      },
+      {
+        weighinTime: "2020-01-02T00:00:00.000Z",
+        weight: 90,
+        bodyFatPercentage: 25,
+      },
+      {
+        weighinTime: "2020-01-03T00:00:00.000Z",
+        weight: 90,
+        bodyFatPercentage: 24,
+      },
+    ];
+
+    const { container } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-02T00:00:00.000Z",
+          to: "2020-01-02T00:00:00.000Z",
+        }}
+      />
+    );
+
+    expect(getDots(container)).toHaveLength(1);
   });
 });

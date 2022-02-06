@@ -5,18 +5,27 @@ import { Weighin } from "@tdee/types/src/bdt";
 const WeightGraph = ({
   weighins,
   responsive = true,
+  filter,
 }: {
   weighins: Weighin[];
   responsive?: boolean;
+  filter?: { from?: string; to?: string };
 }) => {
   const data = [
     {
       id: "weight",
       label: "Weight",
-      data: weighins.map((w) => ({
-        x: new Date(w.weighinTime).toISOString().split("T")[0],
-        y: w.weight,
-      })),
+      data: weighins
+        .filter((weighin) => {
+          return filter?.from ? weighin.weighinTime >= filter.from : true;
+        })
+        .filter((weighin) => {
+          return filter?.to ? weighin.weighinTime <= filter.to : true;
+        })
+        .map((w) => ({
+          x: new Date(w.weighinTime).toISOString().split("T")[0],
+          y: w.weight,
+        })),
     },
   ];
 
