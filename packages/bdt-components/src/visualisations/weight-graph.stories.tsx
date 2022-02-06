@@ -64,4 +64,8 @@ weightGraph.args = {
       bodyFatPercentage: 18.64,
     },
   ],
+  filter: {
+    from: "2021-12-21T08:08:00+0000",
+    to: "2022-01-11T07:21:00+0000",
+  },
 };
