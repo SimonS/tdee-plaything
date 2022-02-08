@@ -38,7 +38,7 @@ const {podcasts, meta} = await getPodcasts();
       </div>
     </article>
     ))}
-    <Pagination pageNumber={1} urlRoot={`/podcasts/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+    <Pagination tag={`a`} pageNumber={1} urlRoot={`/podcasts/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
   </div>
 </BaseLayout>
     

@@ -42,7 +42,7 @@ const {weighins, meta} = await getWeighins(after);
       </div>
     </article>
     ))}
-    <Pagination pageNumber={parseInt(pagenum, 10)} urlRoot={`/weight/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+    <Pagination tag={`a`} pageNumber={parseInt(pagenum, 10)} urlRoot={`/weight/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
 
   </div>
 </BaseLayout>

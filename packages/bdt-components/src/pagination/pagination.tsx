@@ -1,18 +1,26 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import * as paginationStyles from "./pagination.module.css";
 
 type PageInfo = { hasNextPage?: boolean; hasPreviousPage?: boolean };
 
-export const Pagination = ({
-  pageInfo,
-  urlRoot,
-  pageNumber = 1,
-}: {
+type CommonProps = {
   pageInfo: PageInfo;
-  urlRoot: string;
   pageNumber?: number;
-}): JSX.Element => (
-  <nav className={paginationStyles.pagination}>
+};
+
+type LinkProps = CommonProps & {
+  tag: "a";
+  urlRoot: string;
+};
+
+type ButtonProps = CommonProps & {
+  tag: "button";
+  nextPageEvent: MouseEventHandler;
+  previousPageEvent: MouseEventHandler;
+};
+
+const getLinks = ({ pageInfo, urlRoot, pageNumber = 1 }: LinkProps) => (
+  <>
     {pageInfo.hasPreviousPage && (
       <a href={`${urlRoot}/${pageNumber - 1}`}>&lt; Previous</a>
     )}
@@ -24,6 +32,27 @@ export const Pagination = ({
         Next &gt;
       </a>
     )}
-  </nav>
+  </>
 );
+
+const getButtons = ({
+  pageInfo,
+  nextPageEvent,
+  previousPageEvent,
+}: ButtonProps) => (
+  <>
+    {pageInfo.hasPreviousPage && (
+      <button onClick={previousPageEvent}>&lt;</button>
+    )}
+    {pageInfo.hasNextPage && <button onClick={nextPageEvent}>&gt;</button>}
+  </>
+);
+
+export const Pagination = (props: LinkProps | ButtonProps): JSX.Element => {
+  return (
+    <nav className={paginationStyles.pagination}>
+      {props.tag === "a" ? getLinks(props) : getButtons(props)}
+    </nav>
+  );
+};
 export default Pagination;
