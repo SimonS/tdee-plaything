@@ -15,8 +15,8 @@ type LinkProps = CommonProps & {
 
 type ButtonProps = CommonProps & {
   tag: "button";
-  nextPageEvent: MouseEventHandler;
-  previousPageEvent: MouseEventHandler;
+  nextPageEvent?: MouseEventHandler;
+  previousPageEvent?: MouseEventHandler;
 };
 
 const getLinks = ({ pageInfo, urlRoot, pageNumber = 1 }: LinkProps) => (
@@ -37,8 +37,8 @@ const getLinks = ({ pageInfo, urlRoot, pageNumber = 1 }: LinkProps) => (
 
 const getButtons = ({
   pageInfo,
-  nextPageEvent,
-  previousPageEvent,
+  nextPageEvent = (e) => console.log(e),
+  previousPageEvent = (e) => console.log(e),
 }: ButtonProps) => (
   <>
     {pageInfo.hasPreviousPage && (

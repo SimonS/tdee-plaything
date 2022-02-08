@@ -1,15 +1,18 @@
 import React from "react";
 import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
+import { Pagination } from "../pagination/pagination";
 import { Weighin } from "@tdee/types/src/bdt";
 
 const WeightGraph = ({
   weighins,
   responsive = true,
   filter,
+  displayDatesAtATime = false,
 }: {
   weighins: Weighin[];
   responsive?: boolean;
   filter?: { from?: string; to?: string };
+  displayDatesAtATime?: boolean | number;
 }) => {
   const data = [
     {
@@ -21,6 +24,9 @@ const WeightGraph = ({
         })
         .filter((weighin) => {
           return filter?.to ? weighin.weighinTime <= filter.to : true;
+        })
+        .filter((_, i) => {
+          return displayDatesAtATime !== false ? i < displayDatesAtATime : true;
         })
         .map((w) => ({
           x: new Date(w.weighinTime).toISOString().split("T")[0],
@@ -58,6 +64,8 @@ const WeightGraph = ({
     },
   };
 
+  const isWindowed = data[0].data.length !== weighins.length;
+
   /**
    * The following is horrible. In reality, we only use the Responsive version.
    * However, JSDom doesn't like ResizeObserver, it's tightly coupled into the
@@ -71,6 +79,12 @@ const WeightGraph = ({
         <ResponsiveLine {...graphProps} />
       ) : (
         <Line {...graphProps} height={300} width={300} />
+      )}
+      {isWindowed && (
+        <Pagination
+          tag={`button`}
+          pageInfo={{ hasNextPage: true, hasPreviousPage: true }}
+        />
       )}
     </div>
   );
