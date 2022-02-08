@@ -44,7 +44,11 @@ const getButtons = ({
     {pageInfo.hasPreviousPage && (
       <button onClick={previousPageEvent}>&lt;</button>
     )}
-    {pageInfo.hasNextPage && <button onClick={nextPageEvent}>&gt;</button>}
+    {pageInfo.hasNextPage && (
+      <button className={paginationStyles.next} onClick={nextPageEvent}>
+        &gt;
+      </button>
+    )}
   </>
 );
 
