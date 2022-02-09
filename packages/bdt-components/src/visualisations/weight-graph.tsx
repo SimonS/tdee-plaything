@@ -11,7 +11,7 @@ const WeightGraph = ({
 }: {
   weighins: Weighin[];
   responsive?: boolean;
-  filter?: { from?: string; to?: string };
+  filter?: { from?: string };
   displayDatesAtATime?: boolean | number;
 }) => {
   const data = [
@@ -21,9 +21,6 @@ const WeightGraph = ({
       data: weighins
         .filter((weighin) => {
           return filter?.from ? weighin.weighinTime >= filter.from : true;
-        })
-        .filter((weighin) => {
-          return filter?.to ? weighin.weighinTime <= filter.to : true;
         })
         .filter((_, i) => {
           return displayDatesAtATime !== false ? i < displayDatesAtATime : true;
