@@ -100,12 +100,11 @@ it("filters between dates", () => {
       responsive={false}
       filter={{
         from: "2020-01-02T00:00:00.000Z",
-        to: "2020-01-02T00:00:00.000Z",
       }}
     />
   );
 
-  expect(getDots(container)).toHaveLength(1);
+  expect(getDots(container)).toHaveLength(2);
 });
 
 it("displays x dates at a time", () => {
