@@ -176,8 +176,8 @@ it("displays x dates at a time", () => {
       responsive={false}
       filter={{
         from: "2020-01-02T00:00:00.000Z",
+        displayDatesAtATime: 3,
       }}
-      displayDatesAtATime={3}
     />
   );
 
@@ -255,8 +255,8 @@ it("displays a nav when needed", () => {
       responsive={false}
       filter={{
         from: "2020-01-02T00:00:00.000Z",
+        displayDatesAtATime: 3,
       }}
-      displayDatesAtATime={3}
     />
   );
 
@@ -331,8 +331,8 @@ it("next button displays appropriately", () => {
       responsive={false}
       filter={{
         from: "2020-01-01T00:00:00.000Z",
+        displayDatesAtATime: 3,
       }}
-      displayDatesAtATime={3}
     />
   );
 
@@ -414,8 +414,8 @@ it("previous button displays appropriately", () => {
       responsive={false}
       filter={{
         from: "2020-01-08T00:00:00.000Z",
+        displayDatesAtATime: 3,
       }}
-      displayDatesAtATime={3}
     />
   );
 

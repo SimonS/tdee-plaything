@@ -7,12 +7,10 @@ const WeightGraph = ({
   weighins,
   responsive = true,
   filter,
-  displayDatesAtATime = false,
 }: {
   weighins: Weighin[];
   responsive?: boolean;
-  filter?: { from?: string };
-  displayDatesAtATime?: boolean | number;
+  filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
   weighins.sort((a, b) =>
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
@@ -28,7 +26,9 @@ const WeightGraph = ({
           return filter?.from ? weighin.weighinTime >= filter.from : true;
         })
         .filter((_, i) => {
-          return displayDatesAtATime !== false ? i < displayDatesAtATime : true;
+          return filter?.displayDatesAtATime !== undefined
+            ? i < filter?.displayDatesAtATime
+            : true;
         })
         .map((w) => ({
           x: formatTime(w.weighinTime),
