@@ -65,6 +65,8 @@ const WeightGraph = ({
       tickValues: "every 2 days",
     },
   };
+
+  // Nav Logic:
   const weighinData = data[0].data;
   const isWindowed = weighinData.length !== weighins.length;
   const hasNext =
@@ -73,7 +75,7 @@ const WeightGraph = ({
   const hasPrevious = weighinData[0].x !== formatTime(weighins[0].weighinTime);
 
   /**
-   * The following is horrible. In reality, we only use the Responsive version.
+   * `responsive` is horrible. In reality, we only ever use the Responsive version.
    * However, JSDom doesn't like ResizeObserver, it's tightly coupled into the
    * component, and so mocking doesn't really work either (it always sees the
    * height & width as 0). Fortunately, ResponsiveLine is a wrapper around Line,
