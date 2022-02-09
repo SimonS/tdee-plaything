@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import WeightGraph from "./weight-graph";
 import { Weighin } from "@tdee/types/src/bdt";
 
@@ -173,4 +174,49 @@ it("previous button displays appropriately", () => {
   );
 
   expect(getByText("<")).toBeVisible();
+});
+
+it("clicking previous shows earlier dates", () => {
+  const weighins = generateWeighins(12);
+
+  const { getByText, container } = render(
+    <WeightGraph
+      weighins={weighins}
+      responsive={false}
+      filter={{
+        from: "2020-01-02T00:00:00.000Z",
+        displayDatesAtATime: 3,
+      }}
+    />
+  );
+
+  userEvent.click(getByText("<"));
+  expect(
+    Array.from(container.querySelectorAll("text")).filter(
+      (e) => e.innerHTML === "Jan 01"
+    )
+  ).toHaveLength(1);
+});
+
+it("clicking next shows later dates", () => {
+  const weighins = generateWeighins(12);
+
+  const { getByText, container } = render(
+    <WeightGraph
+      weighins={weighins}
+      responsive={false}
+      filter={{
+        from: "2020-01-11T00:00:00.000Z",
+        displayDatesAtATime: 1,
+      }}
+    />
+  );
+
+  userEvent.click(getByText(">"));
+
+  expect(
+    Array.from(container.querySelectorAll("text")).filter(
+      (e) => e.innerHTML === "12"
+    )
+  ).toHaveLength(1);
 });

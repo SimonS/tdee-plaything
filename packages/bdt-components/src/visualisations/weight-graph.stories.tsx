@@ -65,7 +65,7 @@ weightGraph.args = {
     },
   ],
   filter: {
-    from: "2021-12-21T08:08:00+0000",
+    from: "2021-12-23T08:08:00+0000",
     displayDatesAtATime: 5,
   },
 };

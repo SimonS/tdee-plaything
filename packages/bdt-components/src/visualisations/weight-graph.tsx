@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
 import { Weighin } from "@tdee/types/src/bdt";
@@ -15,6 +15,9 @@ const WeightGraph = ({
   weighins.sort((a, b) =>
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );
+
+  const [from, setFrom] = useState(filter?.from);
+
   const formatTime = (time: string) =>
     new Date(time).toISOString().split("T")[0];
   const data = [
@@ -23,7 +26,7 @@ const WeightGraph = ({
       label: "Weight",
       data: weighins
         .filter((weighin) => {
-          return filter?.from ? weighin.weighinTime >= filter.from : true;
+          return from ? weighin.weighinTime >= from : true;
         })
         .filter((_, i) => {
           return filter?.displayDatesAtATime !== undefined
@@ -69,10 +72,27 @@ const WeightGraph = ({
   // Nav Logic:
   const weighinData = data[0].data;
   const isWindowed = weighinData.length !== weighins.length;
+
   const hasNext =
     weighinData[weighinData.length - 1].x !==
     formatTime(weighins[weighins.length - 1].weighinTime);
   const hasPrevious = weighinData[0].x !== formatTime(weighins[0].weighinTime);
+
+  const changeFromBy = (days: number) => {
+    if (from) {
+      let newDate = new Date(from);
+      newDate.setDate(newDate.getDate() + days);
+      setFrom(newDate.toISOString());
+    }
+  };
+
+  const showEarlier = () => {
+    changeFromBy(0 - (filter?.displayDatesAtATime || 7));
+  };
+
+  const showLater = () => {
+    changeFromBy(filter?.displayDatesAtATime || 7);
+  };
 
   /**
    * `responsive` is horrible. In reality, we only ever use the Responsive version.
@@ -92,6 +112,8 @@ const WeightGraph = ({
         <Pagination
           tag={`button`}
           pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
+          previousPageEvent={showEarlier}
+          nextPageEvent={showLater}
         />
       )}
     </div>
