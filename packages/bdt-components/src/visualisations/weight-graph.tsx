@@ -14,6 +14,11 @@ const WeightGraph = ({
   filter?: { from?: string };
   displayDatesAtATime?: boolean | number;
 }) => {
+  weighins.sort((a, b) =>
+    new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
+  );
+  const formatTime = (time: string) =>
+    new Date(time).toISOString().split("T")[0];
   const data = [
     {
       id: "weight",
@@ -26,7 +31,7 @@ const WeightGraph = ({
           return displayDatesAtATime !== false ? i < displayDatesAtATime : true;
         })
         .map((w) => ({
-          x: new Date(w.weighinTime).toISOString().split("T")[0],
+          x: formatTime(w.weighinTime),
           y: w.weight,
         })),
     },
@@ -60,8 +65,12 @@ const WeightGraph = ({
       tickValues: "every 2 days",
     },
   };
-
-  const isWindowed = data[0].data.length !== weighins.length;
+  const weighinData = data[0].data;
+  const isWindowed = weighinData.length !== weighins.length;
+  const hasNext =
+    weighinData[weighinData.length - 1].x !==
+    formatTime(weighins[weighins.length - 1].weighinTime);
+  const hasPrevious = weighinData[0].x !== formatTime(weighins[0].weighinTime);
 
   /**
    * The following is horrible. In reality, we only use the Responsive version.
@@ -80,7 +89,7 @@ const WeightGraph = ({
       {isWindowed && (
         <Pagination
           tag={`button`}
-          pageInfo={{ hasNextPage: true, hasPreviousPage: true }}
+          pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
         />
       )}
     </div>

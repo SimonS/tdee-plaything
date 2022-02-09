@@ -262,3 +262,162 @@ it("displays a nav when needed", () => {
 
   expect(getByRole("navigation")).toBeVisible();
 });
+it("next button displays appropriately", () => {
+  const weighins: Weighin[] = [
+    {
+      weighinTime: "2020-01-01T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-02T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-03T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-04T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-05T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-03T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-01T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-06T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-07T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-08T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-09T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-10T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+  ];
+  const { getByText } = render(
+    <WeightGraph
+      weighins={weighins}
+      responsive={false}
+      filter={{
+        from: "2020-01-01T00:00:00.000Z",
+      }}
+      displayDatesAtATime={3}
+    />
+  );
+
+  expect(getByText(">")).toBeVisible();
+});
+
+it("previous button displays appropriately", () => {
+  // important to have an unsorted array go in so as not to falsely rely on nivo's implicit sort.
+  const weighins: Weighin[] = [
+    {
+      weighinTime: "2020-01-10T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-01T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-02T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-03T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-04T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-05T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-03T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-01T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-06T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-07T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+    {
+      weighinTime: "2020-01-08T00:00:00.000Z",
+      weight: 100,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-09T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 25,
+    },
+    {
+      weighinTime: "2020-01-10T00:00:00.000Z",
+      weight: 90,
+      bodyFatPercentage: 24,
+    },
+  ];
+  const { getByText } = render(
+    <WeightGraph
+      weighins={weighins}
+      responsive={false}
+      filter={{
+        from: "2020-01-08T00:00:00.000Z",
+      }}
+      displayDatesAtATime={3}
+    />
+  );
+
+  expect(getByText("<")).toBeVisible();
+});
