@@ -75,24 +75,22 @@ it("renders correct number of weighin dots", () => {
   expect(dots).toHaveLength(3);
 });
 
+const generateWeighins = (n: number) => {
+  let weighins: Weighin[] = [];
+  for (let i = 0; i < n; i++) {
+    weighins.push({
+      weighinTime: `2020-01-${(i + 1)
+        .toString()
+        .padStart(2, "0")}T00:00:00.000Z`,
+      weight: i + 1,
+      bodyFatPercentage: 25,
+    });
+  }
+  return weighins;
+};
+
 it("filters between dates", () => {
-  const weighins: Weighin[] = [
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-02T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-  ];
+  const weighins = generateWeighins(3);
 
   const { container } = render(
     <WeightGraph
@@ -108,68 +106,8 @@ it("filters between dates", () => {
 });
 
 it("displays x dates at a time", () => {
-  const weighins: Weighin[] = [
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-02T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-04T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-05T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-06T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-07T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-08T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-09T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-10T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-  ];
+  const weighins: Weighin[] = generateWeighins(12);
+
   const { container } = render(
     <WeightGraph
       weighins={weighins}
@@ -187,68 +125,8 @@ it("displays x dates at a time", () => {
 });
 
 it("displays a nav when needed", () => {
-  const weighins: Weighin[] = [
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-02T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-04T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-05T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-06T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-07T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-08T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-09T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-10T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-  ];
+  const weighins = generateWeighins(12);
+
   const { getByRole } = render(
     <WeightGraph
       weighins={weighins}
@@ -263,68 +141,8 @@ it("displays a nav when needed", () => {
   expect(getByRole("navigation")).toBeVisible();
 });
 it("next button displays appropriately", () => {
-  const weighins: Weighin[] = [
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-02T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-04T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-05T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-06T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-07T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-08T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-09T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-10T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-  ];
+  const weighins = generateWeighins(12);
+
   const { getByText } = render(
     <WeightGraph
       weighins={weighins}
@@ -341,73 +159,8 @@ it("next button displays appropriately", () => {
 
 it("previous button displays appropriately", () => {
   // important to have an unsorted array go in so as not to falsely rely on nivo's implicit sort.
-  const weighins: Weighin[] = [
-    {
-      weighinTime: "2020-01-10T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-02T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-04T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-05T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-03T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-01T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-06T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-07T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-    {
-      weighinTime: "2020-01-08T00:00:00.000Z",
-      weight: 100,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-09T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 25,
-    },
-    {
-      weighinTime: "2020-01-10T00:00:00.000Z",
-      weight: 90,
-      bodyFatPercentage: 24,
-    },
-  ];
+  const weighins = generateWeighins(12).reverse();
+
   const { getByText } = render(
     <WeightGraph
       weighins={weighins}
