@@ -14,7 +14,7 @@ weekAgo.setDate(new Date().getDate() - 7);
 <BaseLayout title="Weighins">
   <div class="stack listing">
     <h1>Weighins</h1>
-    <WeightChart client:load weighins={weighins} filter={{from: weekAgo.toISOString()}} />
+    <WeightChart client:load weighins={weighins} filter={{from: weekAgo.toISOString(), displayDatesAtATime: 7}} />
     <div class="content">
       <p>This is how I'm currently doing weight-wise. This is a temporal space, while I load this data into a visualisation of some sort.</p>
     </div>
