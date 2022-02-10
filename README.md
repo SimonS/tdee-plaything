@@ -4,7 +4,7 @@ A place for me to play around without having to worry about multiple repositorie
 
 I try to build using decent (not best) practices - testing, not storing credentials, etc. Any artefacts it produces generally live at [playground.breakfastdinnertea.co.uk](https://playground.breakfastdinnertea.co.uk/).
 
-## Features/technology I've been playing with
+## Features/technology I've been playing with
 
 * TypeScript - the predominant language I use.
 * Wordpress - the main intermediary store for most of this data. [bdt-customisations](https://github.com/SimonS/tdee-plaything/tree/master/packages/bdt-customisations) is where the tweaks I've made live.
