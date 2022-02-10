@@ -23,6 +23,7 @@ export const Nav = ({ url = "" }: { url?: string }): JSX.Element => {
         {[
           ["films", "Films"],
           ["podcasts", "Podcasts"],
+          ["weight", "Weigh ins"],
           ["now", "Now"],
         ].map(([href, text], i) => makeLink(href, text, i))}
       </ul>

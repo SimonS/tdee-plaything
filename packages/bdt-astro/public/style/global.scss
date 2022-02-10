@@ -42,12 +42,18 @@ img {
   width: 100%;
 }
 
-a {
+a,
+button {
   color: #b81007;
 }
 
 a:visited {
   color: #345693;
+}
+
+nav button {
+  border: 0;
+  cursor: pointer;
 }
 
 h1,

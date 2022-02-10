@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
+import { Pagination } from "../pagination/pagination";
 import { Weighin } from "@tdee/types/src/bdt";
 
 const WeightGraph = ({
@@ -9,21 +10,31 @@ const WeightGraph = ({
 }: {
   weighins: Weighin[];
   responsive?: boolean;
-  filter?: { from?: string; to?: string };
+  filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
+  weighins.sort((a, b) =>
+    new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
+  );
+
+  const [from, setFrom] = useState(filter?.from);
+
+  const formatTime = (time: string) =>
+    new Date(time).toISOString().split("T")[0];
   const data = [
     {
       id: "weight",
       label: "Weight",
       data: weighins
         .filter((weighin) => {
-          return filter?.from ? weighin.weighinTime >= filter.from : true;
+          return from ? weighin.weighinTime >= from : true;
         })
-        .filter((weighin) => {
-          return filter?.to ? weighin.weighinTime <= filter.to : true;
+        .filter((_, i) => {
+          return filter?.displayDatesAtATime !== undefined
+            ? i < filter?.displayDatesAtATime
+            : true;
         })
         .map((w) => ({
-          x: new Date(w.weighinTime).toISOString().split("T")[0],
+          x: formatTime(w.weighinTime),
           y: w.weight,
         })),
     },
@@ -58,8 +69,33 @@ const WeightGraph = ({
     },
   };
 
+  // Nav Logic:
+  const weighinData = data[0].data;
+  const isWindowed = weighinData.length !== weighins.length;
+
+  const hasNext =
+    weighinData[weighinData.length - 1].x !==
+    formatTime(weighins[weighins.length - 1].weighinTime);
+  const hasPrevious = weighinData[0].x !== formatTime(weighins[0].weighinTime);
+
+  const changeFromBy = (days: number) => {
+    if (from) {
+      let newDate = new Date(from);
+      newDate.setDate(newDate.getDate() + days);
+      setFrom(newDate.toISOString());
+    }
+  };
+
+  const showEarlier = () => {
+    changeFromBy(0 - (filter?.displayDatesAtATime || 7));
+  };
+
+  const showLater = () => {
+    changeFromBy(filter?.displayDatesAtATime || 7);
+  };
+
   /**
-   * The following is horrible. In reality, we only use the Responsive version.
+   * `responsive` is horrible. In reality, we only ever use the Responsive version.
    * However, JSDom doesn't like ResizeObserver, it's tightly coupled into the
    * component, and so mocking doesn't really work either (it always sees the
    * height & width as 0). Fortunately, ResponsiveLine is a wrapper around Line,
@@ -71,6 +107,14 @@ const WeightGraph = ({
         <ResponsiveLine {...graphProps} />
       ) : (
         <Line {...graphProps} height={300} width={300} />
+      )}
+      {isWindowed && (
+        <Pagination
+          tag={`button`}
+          pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
+          previousPageEvent={showEarlier}
+          nextPageEvent={showLater}
+        />
       )}
     </div>
   );
