@@ -1,4 +1,4 @@
-import { PageInfo, Weighin } from "@tdee/types/src/bdt";
+import { Weighin } from "@tdee/types/src/bdt";
 import getWeighins from "./getWeighins";
 
 const getAllWeighins = async () => {
