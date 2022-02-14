@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
-import { Weighin } from "@tdee/types/src/bdt";
+import { CalculatedWeighin } from "@tdee/types/src/bdt";
 
 const WeightGraph = ({
   weighins,
   responsive = true,
   filter,
 }: {
-  weighins: Weighin[];
+  weighins: CalculatedWeighin[];
   responsive?: boolean;
   filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
