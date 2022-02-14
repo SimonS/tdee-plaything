@@ -2,8 +2,7 @@
  * calculates a weighted moving average day to day, with a 10% noise factor
  */
 
-import { Weighin } from "@tdee/types/src/bdt";
-type CalculatedWeighIn = Weighin & { weightTrend: number };
+import { Weighin, CalculatedWeighin } from "@tdee/types/src/bdt";
 
 /* floating point arithmetic is the worst */
 const precisionRound = (number: number, precision: number) => {
@@ -13,7 +12,7 @@ const precisionRound = (number: number, precision: number) => {
 };
 
 const calculateTrends = (weighins: Weighin[]) =>
-  weighins.reduce((acc: CalculatedWeighIn[], today: Weighin, i) => {
+  weighins.reduce((acc: CalculatedWeighin[], today: Weighin, i) => {
     const newAcc = [...acc];
     const yesterday = i > 0 ? acc[i - 1].weightTrend : today.weight;
 
