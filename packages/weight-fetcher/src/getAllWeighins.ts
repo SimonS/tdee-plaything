@@ -14,6 +14,10 @@ const getAllWeighins = async (processWeights = false) => {
     next = meta.endCursor;
   }
 
+  allWeighins.sort((a, b) =>
+    new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
+  );
+
   return processWeights ? calculateTrends(allWeighins) : allWeighins;
 };
 
