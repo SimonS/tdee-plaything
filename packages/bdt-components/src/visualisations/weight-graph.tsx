@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
-import { CalculatedWeighin } from "@tdee/types/src/bdt";
+import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
 
 const WeightGraph = ({
   weighins,
@@ -20,34 +20,87 @@ const WeightGraph = ({
 
   const formatTime = (time: string) =>
     new Date(time).toISOString().split("T")[0];
-  const data = [
+
+  const filterDates = (weighins: CalculatedWeighin[]) =>
+    weighins
+      .filter((weighin) => {
+        return from ? weighin.weighinTime >= from : true;
+      })
+      .filter((_, i) => {
+        return filter?.displayDatesAtATime !== undefined
+          ? i < filter?.displayDatesAtATime
+          : true;
+      });
+
+  const weightData = [
     {
       id: "weight",
       label: "Weight",
-      data: weighins
-        .filter((weighin) => {
-          return from ? weighin.weighinTime >= from : true;
-        })
-        .filter((_, i) => {
-          return filter?.displayDatesAtATime !== undefined
-            ? i < filter?.displayDatesAtATime
-            : true;
-        })
-        .map((w) => ({
-          x: formatTime(w.weighinTime),
-          y: w.weight,
-        })),
+      data: filterDates(weighins).map((w) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weight,
+      })),
+    },
+    {
+      id: "weightTrend",
+      label: "Weight (trend)",
+      data: filterDates(weighins).map((w) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weightTrend,
+      })),
     },
   ];
 
-  const maxWeight = Math.max(...data[0].data.map((d) => d.y));
-  const minWeight = Math.min(...data[0].data.map((d) => d.y));
+  const weightTrendData = [
+    {
+      id: "weightTrend",
+      label: "Weight (trend)",
+      data: filterDates(weighins).map((w) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weightTrend,
+      })),
+    },
+  ];
+
+  const maxWeight = Math.max(
+    ...weightData[0].data.map((d) => d.y),
+    ...weightData[1].data.map((d) => d.y)
+  );
+  const minWeight = Math.min(
+    ...weightData[0].data.map((d) => d.y),
+    ...weightData[1].data.map((d) => d.y)
+  );
   // 9 is a bit of a magic number, I don't want to reverse engineer
   // yScale too much though, we'll see how it goes.
   const weightDiff = (maxWeight - minWeight) / 9;
+  const styleById = {
+    weightTrend: {
+      strokeDasharray: "12, 6",
+      strokeWidth: 2,
+    },
 
-  const graphProps: LineSvgProps = {
-    data,
+    default: {
+      strokeWidth: 1,
+    },
+  };
+  const DashedLine = ({ series, lineGenerator, xScale, yScale }) => {
+    return series.map(({ id, data, color }) => (
+      <path
+        key={id}
+        d={lineGenerator(
+          data.map((d) => ({
+            x: xScale(d.data.x),
+            y: yScale(d.data.y),
+          }))
+        )}
+        fill="none"
+        stroke={color}
+        style={styleById[id] || styleById.default}
+      />
+    ));
+  };
+  const weightProps: LineSvgProps = {
+    data: weightData,
     margin: { top: 50, right: 110, bottom: 50, left: 60 },
     xScale: {
       type: "time",
@@ -67,10 +120,19 @@ const WeightGraph = ({
       format: "%b %d",
       tickValues: "every 2 days",
     },
+    layers: [
+      "grid",
+      "markers",
+      "areas",
+      DashedLine,
+      "slices",
+      "points",
+      "axes",
+    ],
   };
 
   // Nav Logic:
-  const weighinData = data[0].data;
+  const weighinData = weightData[0].data;
   const isWindowed = weighinData.length !== weighins.length;
 
   const hasNext =
@@ -104,9 +166,9 @@ const WeightGraph = ({
   return (
     <div style={{ height: "400px", width: "100%" }}>
       {responsive ? (
-        <ResponsiveLine {...graphProps} />
+        <ResponsiveLine {...weightProps} />
       ) : (
-        <Line {...graphProps} height={300} width={300} />
+        <Line {...weightProps} height={300} width={300} />
       )}
       {isWindowed && (
         <Pagination
