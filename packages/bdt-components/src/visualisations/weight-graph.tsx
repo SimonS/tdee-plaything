@@ -3,6 +3,11 @@ import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
 import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
 
+// things to add:
+// - plot additional trend line
+// - adjust max and min weights if trend line present
+// - style trend line
+
 const WeightGraph = ({
   weighins,
   responsive = true,
