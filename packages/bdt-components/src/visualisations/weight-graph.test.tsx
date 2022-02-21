@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import WeightGraph from "./weight-graph";
-import { Weighin } from "@tdee/types/src/bdt";
+import { Weighin, CalculatedWeighin } from "@tdee/types/src/bdt";
 
 const getYVals = (container: HTMLElement) =>
   Array.from(container.querySelectorAll("line + text"))
@@ -124,6 +124,39 @@ describe("basic weight graph rendering", () => {
     const dots = getDots(container);
 
     expect(dots).toHaveLength(3);
+  });
+});
+
+describe("trend lines", () => {
+  it("renders a trend line with extra dots", () => {
+    const weighins: CalculatedWeighin[] = [
+      {
+        weighinTime: "2020-01-01T00:00:00.000Z",
+        weight: 100,
+        bodyFatPercentage: 25,
+        weightTrend: 100,
+      },
+      {
+        weighinTime: "2020-01-02T00:00:00.000Z",
+        weight: 95,
+        bodyFatPercentage: 25,
+        weightTrend: 90,
+      },
+      {
+        weighinTime: "2020-01-03T00:00:00.000Z",
+        weight: 90,
+        bodyFatPercentage: 24,
+        weightTrend: 90,
+      },
+    ];
+
+    const { container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    const dots = getDots(container);
+
+    expect(dots).toHaveLength(6);
   });
 });
 

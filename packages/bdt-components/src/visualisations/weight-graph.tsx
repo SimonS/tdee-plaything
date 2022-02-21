@@ -4,7 +4,7 @@ import { Pagination } from "../pagination/pagination";
 import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
 
 // things to add:
-// - plot additional trend line
+// - ✅ plot additional trend line
 // - adjust max and min weights if trend line present
 // - style trend line
 
@@ -21,29 +21,50 @@ const WeightGraph = ({
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );
 
+  const isCalculated = (
+    weighins: Weighin[] | CalculatedWeighin[]
+  ): weighins is CalculatedWeighin[] =>
+    (weighins[0] as CalculatedWeighin).weightTrend !== undefined;
+
   const [from, setFrom] = useState(filter?.from);
 
   const formatTime = (time: string) =>
     new Date(time).toISOString().split("T")[0];
+
+  const filterDates = (
+    weighins: Weighin[] | CalculatedWeighin[]
+  ): Weighin[] | CalculatedWeighin[] =>
+    weighins
+      .filter((weighin) => {
+        return from ? weighin.weighinTime >= from : true;
+      })
+      .filter((_, i) => {
+        return filter?.displayDatesAtATime !== undefined
+          ? i < filter?.displayDatesAtATime
+          : true;
+      });
+
   const data = [
     {
       id: "weight",
       label: "Weight",
-      data: weighins
-        .filter((weighin) => {
-          return from ? weighin.weighinTime >= from : true;
-        })
-        .filter((_, i) => {
-          return filter?.displayDatesAtATime !== undefined
-            ? i < filter?.displayDatesAtATime
-            : true;
-        })
-        .map((w) => ({
-          x: formatTime(w.weighinTime),
-          y: w.weight,
-        })),
+      data: filterDates(weighins).map((w) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weight,
+      })),
     },
   ];
+
+  if (isCalculated(weighins)) {
+    data.push({
+      id: "weightTrend",
+      label: "Weight Trend",
+      data: filterDates(weighins).map((w: CalculatedWeighin) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weightTrend,
+      })),
+    });
+  }
 
   const maxWeight = Math.max(...data[0].data.map((d) => d.y));
   const minWeight = Math.min(...data[0].data.map((d) => d.y));
