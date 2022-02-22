@@ -1,7 +1,19 @@
 import React, { useState } from "react";
-import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
+import {
+  Line,
+  ResponsiveLine,
+  LineSvgProps,
+  CustomLayerProps,
+  DatumValue,
+} from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
 import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
+
+interface FixedCustomLayerProps
+  extends Omit<CustomLayerProps, "xScale" | "yScale"> {
+  xScale: (x: DatumValue) => DatumValue;
+  yScale: (y: DatumValue) => DatumValue;
+}
 
 const WeightGraph = ({
   weighins,
@@ -80,14 +92,19 @@ const WeightGraph = ({
     },
   };
 
-  const DashedLine = ({ series, lineGenerator, xScale, yScale }) => {
+  const DashedLine = ({
+    series,
+    lineGenerator,
+    xScale,
+    yScale,
+  }: FixedCustomLayerProps) => {
     return series.map(({ id, data, color }) => (
       <path
         key={id}
         d={lineGenerator(
           data.map((d) => ({
-            x: xScale(d.data.x),
-            y: yScale(d.data.y),
+            x: xScale(d.data.x ?? 1),
+            y: yScale(d.data.y ?? 1),
           }))
         )}
         fill="none"
