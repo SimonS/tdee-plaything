@@ -158,6 +158,38 @@ describe("trend lines", () => {
 
     expect(dots).toHaveLength(6);
   });
+
+  it("adjust thresholds for trend line", () => {
+    const weighins: CalculatedWeighin[] = [
+      {
+        weighinTime: "2020-01-01T00:00:00.000Z",
+        weight: 100,
+        bodyFatPercentage: 25,
+        weightTrend: 110,
+      },
+      {
+        weighinTime: "2020-01-02T00:00:00.000Z",
+        weight: 95,
+        bodyFatPercentage: 25,
+        weightTrend: 90,
+      },
+      {
+        weighinTime: "2020-01-03T00:00:00.000Z",
+        weight: 90,
+        bodyFatPercentage: 24,
+        weightTrend: 80,
+      },
+    ];
+
+    const { container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    const yNums = getYVals(container);
+
+    expect(yNums[yNums.length - 1]).toEqual(110);
+    expect(yNums[0]).toEqual(80);
+  });
 });
 
 describe("weight navigation", () => {
