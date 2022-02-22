@@ -3,11 +3,6 @@ import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
 import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
 
-// things to add:
-// - ✅ plot additional trend line
-// - adjust max and min weights if trend line present
-// - style trend line
-
 const WeightGraph = ({
   weighins,
   responsive = true,
@@ -75,6 +70,33 @@ const WeightGraph = ({
   // yScale too much though, we'll see how it goes.
   const weightDiff = (maxWeight - minWeight) / 9;
 
+  const styleById = {
+    weightTrend: {
+      strokeDasharray: "12, 6",
+      strokeWidth: 2,
+    },
+    default: {
+      strokeWidth: 2,
+    },
+  };
+
+  const DashedLine = ({ series, lineGenerator, xScale, yScale }) => {
+    return series.map(({ id, data, color }) => (
+      <path
+        key={id}
+        d={lineGenerator(
+          data.map((d) => ({
+            x: xScale(d.data.x),
+            y: yScale(d.data.y),
+          }))
+        )}
+        fill="none"
+        stroke={color}
+        style={styleById[id] || styleById.default}
+      />
+    ));
+  };
+
   const graphProps: LineSvgProps = {
     data,
     margin: { top: 50, right: 110, bottom: 50, left: 60 },
@@ -96,6 +118,16 @@ const WeightGraph = ({
       format: "%b %d",
       tickValues: "every 2 days",
     },
+    layers: [
+      "grid",
+      "markers",
+      "areas",
+      DashedLine,
+      "slices",
+      "points",
+      "axes",
+    ],
+    colors: { scheme: "set1" },
   };
 
   // Nav Logic:
