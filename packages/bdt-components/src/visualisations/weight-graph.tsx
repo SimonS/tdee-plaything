@@ -53,7 +53,7 @@ const WeightGraph = ({
 
   const data = [
     {
-      id: "weight",
+      id: "Weight",
       label: "Weight",
       data: filterDates(weighins).map((w) => ({
         x: formatTime(w.weighinTime),
@@ -64,7 +64,7 @@ const WeightGraph = ({
 
   if (isCalculated(weighins)) {
     data.push({
-      id: "weightTrend",
+      id: "Weight Trend",
       label: "Weight Trend",
       data: filterDates(weighins).map((w: CalculatedWeighin) => ({
         x: formatTime(w.weighinTime),
@@ -83,7 +83,7 @@ const WeightGraph = ({
   const weightDiff = (maxWeight - minWeight) / 9;
 
   const styleById = {
-    weightTrend: {
+    "Weight Trend": {
       strokeDasharray: "12, 6",
       strokeWidth: 2,
     },
@@ -143,8 +143,30 @@ const WeightGraph = ({
       "slices",
       "points",
       "axes",
+      isCalculated(weighins) ? "legends" : "mesh",
     ],
     colors: { scheme: "set1" },
+    legends: [
+      {
+        anchor: "bottom-right",
+        direction: "column",
+        justify: false,
+        translateX: 120,
+        translateY: 0,
+        itemWidth: 100,
+        itemHeight: 20,
+        itemsSpacing: 2,
+        itemTextColor: "#000",
+        effects: [
+          {
+            on: "hover",
+            style: {
+              itemTextColor: "#000",
+            },
+          },
+        ],
+      },
+    ],
   };
 
   // Nav Logic:

@@ -128,6 +128,20 @@ describe("basic weight graph rendering", () => {
 
     expect(dots).toHaveLength(3);
   });
+
+  test("doesn't display a legend by default", () => {
+    const weighins: Weighin[] = generateWeighins(12);
+
+    const { container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "Weight"
+      ).length
+    ).toBe(0);
+  });
 });
 
 describe("trend lines", () => {
@@ -223,6 +237,39 @@ describe("trend lines", () => {
     const paths = getPaths(container);
 
     expect(paths.filter((path) => path.style.strokeDasharray)).toHaveLength(1);
+  });
+
+  test("adds a legend when weight trend present", () => {
+    const weighins: CalculatedWeighin[] = [
+      {
+        weighinTime: "2020-01-01T00:00:00.000Z",
+        weight: 100,
+        bodyFatPercentage: 25,
+        weightTrend: 110,
+      },
+      {
+        weighinTime: "2020-01-02T00:00:00.000Z",
+        weight: 95,
+        bodyFatPercentage: 25,
+        weightTrend: 90,
+      },
+      {
+        weighinTime: "2020-01-03T00:00:00.000Z",
+        weight: 90,
+        bodyFatPercentage: 24,
+        weightTrend: 80,
+      },
+    ];
+
+    const { container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "Weight Trend"
+      ).length
+    ).toBeGreaterThan(0);
   });
 });
 
