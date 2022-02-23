@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import getAllWeighins from "@weight-fetcher/getAllWeighins.ts";
 import WeightChart from '@components/visualisations/weight-graph.tsx';
 
-const weighins = await getAllWeighins();
+const weighins = await getAllWeighins(true);
 let weekAgo = new Date();
 weekAgo.setDate(new Date().getDate() - 7);
 ---

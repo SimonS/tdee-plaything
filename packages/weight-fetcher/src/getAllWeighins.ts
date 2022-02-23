@@ -1,9 +1,10 @@
-import { PageInfo, Weighin } from "@tdee/types/src/bdt";
+import { Weighin, CalculatedWeighin } from "@tdee/types/src/bdt";
 import getWeighins from "./getWeighins";
+import calculateTrends from "./calculateTrends";
 
-const getAllWeighins = async () => {
+const getAllWeighins = async (processWeights = false) => {
   let morePages = true;
-  let allWeighins: Weighin[] = [];
+  let allWeighins: Weighin[] | CalculatedWeighin[] = [];
   let next;
 
   while (morePages) {
@@ -13,7 +14,11 @@ const getAllWeighins = async () => {
     next = meta.endCursor;
   }
 
-  return allWeighins;
+  allWeighins.sort((a, b) =>
+    new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
+  );
+
+  return processWeights ? calculateTrends(allWeighins) : allWeighins;
 };
 
 export default getAllWeighins;

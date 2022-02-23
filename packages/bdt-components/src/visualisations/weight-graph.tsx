@@ -1,14 +1,26 @@
 import React, { useState } from "react";
-import { Line, ResponsiveLine, LineSvgProps } from "@nivo/line";
+import {
+  Line,
+  ResponsiveLine,
+  LineSvgProps,
+  CustomLayerProps,
+  DatumValue,
+} from "@nivo/line";
 import { Pagination } from "../pagination/pagination";
-import { Weighin } from "@tdee/types/src/bdt";
+import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
+
+interface FixedCustomLayerProps
+  extends Omit<CustomLayerProps, "xScale" | "yScale"> {
+  xScale: (x: DatumValue) => DatumValue;
+  yScale: (y: DatumValue) => DatumValue;
+}
 
 const WeightGraph = ({
   weighins,
   responsive = true,
   filter,
 }: {
-  weighins: Weighin[];
+  weighins: Weighin[] | CalculatedWeighin[];
   responsive?: boolean;
   filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
@@ -16,35 +28,91 @@ const WeightGraph = ({
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );
 
+  const isCalculated = (
+    weighins: Weighin[] | CalculatedWeighin[]
+  ): weighins is CalculatedWeighin[] =>
+    (weighins[0] as CalculatedWeighin).weightTrend !== undefined;
+
   const [from, setFrom] = useState(filter?.from);
 
   const formatTime = (time: string) =>
     new Date(time).toISOString().split("T")[0];
+
+  const filterDates = (
+    weighins: Weighin[] | CalculatedWeighin[]
+  ): Weighin[] | CalculatedWeighin[] =>
+    weighins
+      .filter((weighin) => {
+        return from ? weighin.weighinTime >= from : true;
+      })
+      .filter((_, i) => {
+        return filter?.displayDatesAtATime !== undefined
+          ? i < filter?.displayDatesAtATime
+          : true;
+      });
+
   const data = [
     {
-      id: "weight",
+      id: "Weight",
       label: "Weight",
-      data: weighins
-        .filter((weighin) => {
-          return from ? weighin.weighinTime >= from : true;
-        })
-        .filter((_, i) => {
-          return filter?.displayDatesAtATime !== undefined
-            ? i < filter?.displayDatesAtATime
-            : true;
-        })
-        .map((w) => ({
-          x: formatTime(w.weighinTime),
-          y: w.weight,
-        })),
+      data: filterDates(weighins).map((w) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weight,
+      })),
     },
   ];
 
-  const maxWeight = Math.max(...data[0].data.map((d) => d.y));
-  const minWeight = Math.min(...data[0].data.map((d) => d.y));
+  if (isCalculated(weighins)) {
+    data.push({
+      id: "Weight Trend",
+      label: "Weight Trend",
+      data: filterDates(weighins).map((w: CalculatedWeighin) => ({
+        x: formatTime(w.weighinTime),
+        y: w.weightTrend,
+      })),
+    });
+  }
+
+  const allWeights = data.flatMap((d) => d.data.map((d) => d.y));
+
+  const maxWeight = Math.max(...allWeights);
+  const minWeight = Math.min(...allWeights);
+
   // 9 is a bit of a magic number, I don't want to reverse engineer
   // yScale too much though, we'll see how it goes.
   const weightDiff = (maxWeight - minWeight) / 9;
+
+  const styleById = {
+    "Weight Trend": {
+      strokeDasharray: "12, 6",
+      strokeWidth: 2,
+    },
+    default: {
+      strokeWidth: 2,
+    },
+  };
+
+  const DashedLine = ({
+    series,
+    lineGenerator,
+    xScale,
+    yScale,
+  }: FixedCustomLayerProps) => {
+    return series.map(({ id, data, color }) => (
+      <path
+        key={id}
+        d={lineGenerator(
+          data.map((d) => ({
+            x: xScale(d.data.x ?? 1),
+            y: yScale(d.data.y ?? 1),
+          }))
+        )}
+        fill="none"
+        stroke={color}
+        style={styleById[id] || styleById.default}
+      />
+    ));
+  };
 
   const graphProps: LineSvgProps = {
     data,
@@ -67,6 +135,38 @@ const WeightGraph = ({
       format: "%b %d",
       tickValues: "every 2 days",
     },
+    layers: [
+      "grid",
+      "markers",
+      "areas",
+      DashedLine,
+      "slices",
+      "points",
+      "axes",
+      isCalculated(weighins) ? "legends" : "mesh",
+    ],
+    colors: { scheme: "set1" },
+    legends: [
+      {
+        anchor: "bottom-right",
+        direction: "column",
+        justify: false,
+        translateX: 120,
+        translateY: 0,
+        itemWidth: 100,
+        itemHeight: 20,
+        itemsSpacing: 2,
+        itemTextColor: "#000",
+        effects: [
+          {
+            on: "hover",
+            style: {
+              itemTextColor: "#000",
+            },
+          },
+        ],
+      },
+    ],
   };
 
   // Nav Logic:

@@ -52,3 +52,5 @@ export interface Weighin {
   weight: number;
   bodyFatPercentage: number;
 }
+
+export type CalculatedWeighin = Weighin & { weightTrend: number };
