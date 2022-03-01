@@ -21,6 +21,6 @@ const {title, content} = await getPage(id);
     
     <h1>{title}</h1>
     <div class="content">    
-        {content}
+        <Fragment set:html={content} />
     </div>
 </BaseLayout>
