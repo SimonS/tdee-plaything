@@ -34,10 +34,10 @@
     vscode-languageserver-types "^3.16.0"
     vscode-uri "^3.0.2"
 
-"@astrojs/markdown-remark@^0.6.2":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-0.6.2.tgz#adcd0dcb93849bb19badd177d0af9f6c28243ca1"
-  integrity sha512-hC2WNACapgW5P/18NWUndFYFa4CNtIGYU3xuvLiDgyZNp8nCyt7CJkc1lBC+xh2JFaV/sIQEyB24KyCICMiJyw==
+"@astrojs/markdown-remark@^0.6.3":
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-0.6.3.tgz#0dbbbcb5e544cd57980bb311c029eeea6dd4d833"
+  integrity sha512-WyPECD5iSE92DhaEonAehcSO/fD04gfSXDE9mrerfHwkFSUML2l85DCk+s1wfxRO/kbZUT31mk0nWJUK4Tk+Jg==
   dependencies:
     "@astrojs/prism" "^0.4.0"
     assert "^2.0.0"
@@ -4996,14 +4996,14 @@ astral-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-astro@^0.23.3:
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-0.23.3.tgz#58a633f46aa17cad121a9a41e221d6ffa76ebfb8"
-  integrity sha512-IoeP2jsp/Z52UsgyMh/l/EZD8n1HYA6ZUD+rVnbRnWZfWdrGSU5C4TMhuVwXdEIE7KVysRJSvBcIBrMlU5qbGQ==
+astro@^0.23.4:
+  version "0.23.4"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-0.23.4.tgz#4f51cc9c6c96322116a5c63e12a1189db4769d9b"
+  integrity sha512-yFW4B+Oe+vNEZvcvTZFdGGQOnuVYxhzmCSz6dwm7X61WkBe9yY2AEtR8oRJznjQGT3DckxvB4NHdjdy5TnpA3A==
   dependencies:
     "@astrojs/compiler" "^0.11.4"
     "@astrojs/language-server" "^0.8.6"
-    "@astrojs/markdown-remark" "^0.6.2"
+    "@astrojs/markdown-remark" "^0.6.3"
     "@astrojs/prism" "0.4.0"
     "@astrojs/renderer-preact" "^0.5.0"
     "@astrojs/renderer-react" "0.5.0"
@@ -5051,7 +5051,7 @@ astro@^0.23.3:
     strip-ansi "^7.0.1"
     supports-esm "^1.0.0"
     tsconfig-resolver "^3.0.1"
-    vite "^2.8.0"
+    vite "^2.8.6"
     yargs-parser "^21.0.0"
     zod "^3.8.1"
 
@@ -15409,7 +15409,7 @@ vfile@^5.0.0:
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
 
-vite@^2.8.0:
+vite@^2.8.6:
   version "2.8.6"
   resolved "https://registry.yarnpkg.com/vite/-/vite-2.8.6.tgz#32d50e23c99ca31b26b8ccdc78b1d72d4d7323d3"
   integrity sha512-e4H0QpludOVKkmOsRyqQ7LTcMUDF3mcgyNU4lmi0B5JUbe0ZxeBBl8VoZ8Y6Rfn9eFKYtdXNPcYK97ZwH+K2ug==
