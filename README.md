@@ -11,4 +11,3 @@ I try to build using decent (not best) practices - testing, not storing credenti
 * GraphQL - the main method of exposing wordpress data to the outside world.
 * AWS CDK - for orchestrating quick/dirty serverless functions.
 * AstroJS - powerful little static site generator to publish the main website.
- 

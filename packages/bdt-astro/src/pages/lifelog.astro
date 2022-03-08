@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Pagination from "@components/pagination/pagination.tsx";
+---
+
+<BaseLayout title="LifeLog">
+  <div class="stack listing">
+    <h1>LifeLog</h1>
+    <div class="content">
+      <p>This is an aggregation of everything I log on this site. Like my own personal <a href="https://en.wikipedia.org/wiki/FriendFeed">FriendFeed</a>.</p>
+    </div>
+
+    <article class="sidebar right">
+      <div>
+        <div>
+          <div class="h-entry stack compressed">
+            <header>
+              <h2>Log Entry</h2>
+            </header>
+            <dl>
+              <dt>Viewed</dt>
+              <dd>
+                <time class="dt-published" dateTime={''}>
+                  {new Date().toDateString()}
+                </time>
+              </dd>
+            </dl>
+            
+          </div>
+        </div>
+        <div style="max-width: 154px">
+          <img src="https://www.placecage.com/c/150/100" alt="" class="poster-image" />
+        </div>
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+    
