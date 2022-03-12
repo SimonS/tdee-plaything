@@ -1,8 +1,10 @@
 import { Podcast } from "@bdt-types/bdt";
 
-export const PodcastEntry = (props: { podcast: Podcast }): JSX.Element => {
-  const { podcast } = props;
+interface PodcastProps {
+  podcast: Podcast;
+}
 
+export const PodcastEntry = ({ podcast }: PodcastProps): JSX.Element => {
   return (
     <article className="sidebar right">
       <div>
