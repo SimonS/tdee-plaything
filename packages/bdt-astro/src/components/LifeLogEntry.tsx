@@ -1,4 +1,5 @@
 import { Film, Podcast, Weighin } from "@bdt-types/bdt";
+import { FilmEntry } from "./FilmEntry";
 import { PodcastEntry } from "./PodcastEntry";
 import { WeighinEntry } from "./WeighinEntry";
 
@@ -16,7 +17,7 @@ const isWeighin = (entry: Weighin | Podcast | Film): entry is Weighin =>
   (entry as Weighin).weighinTime !== undefined;
 
 export const LifeLogEntry = ({ entry }: LifeLogProps): JSX.Element => {
-  if (isFilm(entry)) return <div>Film</div>;
+  if (isFilm(entry)) return <FilmEntry film={entry} />;
   if (isPodcast(entry)) return <PodcastEntry podcast={entry} />;
   if (isWeighin(entry)) return <WeighinEntry weighin={entry} />;
 };
