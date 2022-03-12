@@ -8,5 +8,5 @@ WIP - LifeLog
 
 - [x] Create stub page for lifelog to temporarily live on
 - [x] Fetch a page of the latest posts, aggregated and ordered by date
-- [ ] Display posts on page
+- [x] Display posts on page
 - [ ] Add pagination
