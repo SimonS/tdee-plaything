@@ -8,6 +8,7 @@ const getAll = async (
     {
       contentNodes(
         where: { contentTypes: [BDT_WEIGHIN, BDT_FILM, BDT_PODCAST] }
+        first: 10, after: "${after ? after : ""}"
       ) {
         nodes {
           ... on Weighin {

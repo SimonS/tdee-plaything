@@ -17,5 +17,7 @@ const { data, meta } = await getAll();
     </div>
 
     {data.map(entry => <LifeLogEntry entry={entry} />)}
+
+    <Pagination tag={`a`} pageNumber={1} urlRoot={`/lifelog/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
   </div>
 </BaseLayout>
