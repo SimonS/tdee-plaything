@@ -11,7 +11,7 @@ export const WeighinEntry = ({ weighin }: WeighinProps): JSX.Element => {
         <div>
           <div className="h-entry stack compressed">
             <header>
-              <h2>Weighed in</h2>
+              <h2>Weighed in at {weighin.weight} kg</h2>
             </header>
             <dl>
               <dt>Weigh in time</dt>
