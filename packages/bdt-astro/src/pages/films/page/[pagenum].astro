@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Pagination from "@components/pagination/pagination.tsx";
+import { FilmEntry } from "../../../components/FilmEntry.tsx";
+
 import getFilms, { whereClause } from "@film-fetcher/getFilms.ts";
 import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
@@ -17,38 +19,9 @@ const {films, meta} = await getFilms(after);
 <BaseLayout>
   <div class="stack listing">
     <h1>Films: Page {pagenum}</h1>
-    {films.map(film => (
-      <article class="sidebar right">
-        <div>
-          <div>
-            <div class="h-entry stack compressed">
-              <header>
-                <h2>{film.filmTitle} ({film.year})</h2>
-              </header>
-              <dl>
-                <dt>Viewed</dt>
-                <dd>
-                  <time class="dt-published" dateTime={film.watchedDate}>
-                    {new Date(film.watchedDate).toDateString()}
-                  </time>
-                </dd>
-                {film.rating && (
-                <dt>Rated</dt>
-                <dd>{film.rating}/5</dd>
-                )}
-              </dl>
-            {film.content && (
-              <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
-            )}
-            </div>
-          </div>
-          <div style="max-width: 154px">
-            <img src={film.meta.image} alt={`Poster for '${film.filmTitle}'`} class="poster-image" />
-          </div>
-        </div>
-      </article>
-    ))}
-    <Pagination tag={`a`} pageNumber={parseInt(pagenum, 10)} urlRoot={`/films/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
 
+    {films.map(film => <FilmEntry film={film} />)}
+
+    <Pagination tag={`a`} pageNumber={parseInt(pagenum, 10)} urlRoot={`/films/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
   </div>
 </BaseLayout>

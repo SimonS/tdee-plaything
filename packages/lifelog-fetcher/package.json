@@ -1,0 +1,22 @@
+{
+  "name": "@tdee/lifelog-fetcher",
+  "version": "0.0.1",
+  "description": "get all data to display in a 'lifelog'",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/nock": "^11.1.0",
+    "jest": "^27.4.3",
+    "nock": "^13.2.1",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.2",
+    "graphql": "^16.2.0",
+    "graphql-request": "^4.0.0"
+  }
+}

@@ -21,6 +21,7 @@ export const Nav = ({ url = "" }: { url?: string }): JSX.Element => {
           </a>
         </li>
         {[
+          ["lifelog", "Everything"],
           ["films", "Films"],
           ["podcasts", "Podcasts"],
           ["weight", "Weigh ins"],
