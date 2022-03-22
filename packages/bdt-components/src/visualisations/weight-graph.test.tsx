@@ -152,6 +152,27 @@ describe("basic weight graph rendering", () => {
 
     expect(getByText("No data to display")).toBeTruthy();
   });
+
+  test("works with no date in range", () => {
+    const weighins: Weighin[] = generateWeighins(10);
+
+    const { container } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-13T00:00:00.000Z",
+          displayDatesAtATime: 3,
+        }}
+      />
+    );
+
+    expect(
+      Array.from(container.querySelectorAll("text")).filter(
+        (e) => e.innerHTML === "Jan 02"
+      ).length
+    ).toBeGreaterThan(0);
+  });
 });
 
 describe("trend lines", () => {
