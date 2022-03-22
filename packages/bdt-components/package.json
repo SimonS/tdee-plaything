@@ -14,7 +14,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
@@ -29,11 +29,11 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.3",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^17.0.41",
+    "@types/react-dom": "^17.0.14",
     "assert-browserify": "^2.0.0",
     "babel-jest": "^27.4.2",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.2.4",
     "css-loader": "^6.5.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
