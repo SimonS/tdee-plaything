@@ -24,6 +24,8 @@ const WeightGraph = ({
   responsive?: boolean;
   filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
+  if (weighins.length === 0) return <div>No data to display</div>;
+
   weighins.sort((a, b) =>
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );

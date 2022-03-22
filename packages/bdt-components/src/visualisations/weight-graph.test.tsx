@@ -142,6 +142,16 @@ describe("basic weight graph rendering", () => {
       ).length
     ).toBe(0);
   });
+
+  test("handles empty datasets gracefully", () => {
+    const weighins: Weighin[] = [];
+
+    const { getByText } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    expect(getByText("No data to display")).toBeTruthy();
+  });
 });
 
 describe("trend lines", () => {
