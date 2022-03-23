@@ -24,6 +24,8 @@ const WeightGraph = ({
   responsive?: boolean;
   filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
+  if (weighins.length === 0) return <div>No data to display</div>;
+
   weighins.sort((a, b) =>
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );
@@ -174,9 +176,15 @@ const WeightGraph = ({
   const isWindowed = weighinData.length !== weighins.length;
 
   const hasNext =
-    weighinData[weighinData.length - 1].x !==
-    formatTime(weighins[weighins.length - 1].weighinTime);
-  const hasPrevious = weighinData[0].x !== formatTime(weighins[0].weighinTime);
+    weighinData.length > 0
+      ? weighinData[weighinData.length - 1].x !==
+        formatTime(weighins[weighins.length - 1].weighinTime)
+      : false;
+
+  const hasPrevious =
+    weighinData.length > 0
+      ? weighinData[0].x !== formatTime(weighins[0].weighinTime)
+      : true;
 
   const changeFromBy = (days: number) => {
     if (from) {
