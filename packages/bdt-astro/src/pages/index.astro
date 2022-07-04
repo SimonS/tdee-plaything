@@ -1,23 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Bin from '@components/bin/bin.tsx'
-import {BinType, getNextBinDay} from '@bin-day-fetcher/getBinDays.ts'
-
-const { bins }: {bins: BinType[]} = await getNextBinDay();
 ---
 
 <BaseLayout title="playground.bdt">
   <div class="stack">
     <h1>Playground</h1>
     <div class="content">
-      <p>This mini project has evolved from a little spreadsheet/graph Gatsby experiment into a bit of an anything goes, "let's have some fun and lob some code up over there".</p>
-      <p>I recently migrated it over to <a href="https://astro.build">Astro</a> in an effort to simplify things. I'm hoping to bring more banality over here soon. For now, you can have a browse at what <a href="/films">films I've watched recently</a> (via <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>), or check out the bins I need to put out this week:</p>
-    </div>
-    <h2>Si's Next Bin Collection</h2>
-    <div>
-    {bins.map((bin: BinType, i) => (
-      <Bin key={`bin-${i}`} bin={bin} />
-    ))}
+      <p>This mini project has evolved from a little spreadsheet/graph Gatsby experiment into a bit of an anything goes,
+        "let's have some fun and lob some code up over there".</p>
+      <p>I recently migrated it over to <a href="https://astro.build">Astro</a> in an effort to simplify things. I'm
+        hoping to bring more banality over here soon. For now, you can have a browse at what <a href="/films">films I've
+          watched recently</a> (via <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>), or check out the bins
+        I need to put out this week:</p>
     </div>
   </div>
 </BaseLayout>
