@@ -169,7 +169,9 @@ add_action('graphql_register_types', function () {
         'type' => 'number',
         'description' => __('Rating out of 5'),
         'resolve' => function ($post) {
-            return get_post_meta($post->ID, 'rating', true);
+            $result = get_post_meta($post->ID, 'rating', true);
+            if ($result === "") return null;
+            return $result;
         },
     ]);
 
