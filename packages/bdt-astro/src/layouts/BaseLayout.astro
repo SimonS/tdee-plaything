@@ -2,7 +2,7 @@
 import Nav from "@components/nav/nav";
 import {AstroLogo} from '../components/AstroLogo';
 const {title} = Astro.props;
-const path = Astro.request.canonicalURL.pathname;
+const path = new URL(Astro.url.pathname, Astro.site);
 
 ---
 <html lang="en">
@@ -16,7 +16,7 @@ const path = Astro.request.canonicalURL.pathname;
         href="https://fonts.googleapis.com/css2?family=Actor&display=swap"
         rel="stylesheet"
     />
-    <style lang="scss" global>
+    <style lang="scss" is:global>
       @use '../../../bdt-components/src/styles/style.scss';
       @use '../../public/style/global.scss';
     </style>
