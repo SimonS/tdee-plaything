@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const {after} = Astro.props;
-const {pagenum} = Astro.request.params;
+const {pagenum} = Astro.params;
 
 const {films, meta} = await getFilms(after);
 

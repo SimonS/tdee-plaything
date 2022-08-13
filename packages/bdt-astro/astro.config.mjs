@@ -1,12 +1,8 @@
-export default {
-  projectRoot: ".", // Where to resolve all URLs relative to. Useful if you have a monorepo project.
-  buildOptions: {
-    site: "https://playground.breakfastdinnertea.co.uk", // Your public domain, e.g.: https://my-site.dev/. Used to generate sitemaps and canonical URLs.
-    sitemap: false, // Generate sitemap (set to "false" to disable)
-  },
-  devOptions: {
-    hostname: "localhost", // The hostname to run the dev server on.
-    port: 3000, // The port to run the dev server on.
-  },
-  renderers: ["@astrojs/renderer-react"],
-};
+import react from '@astrojs/react';
+import { defineConfig } from 'astro/config';
+
+export default defineConfig ({
+  root: ".", // Where to resolve all URLs relative to. Useful if you have a monorepo project.
+  site: "https://playground.breakfastdinnertea.co.uk", // Your public domain, e.g.: https://my-site.dev/. Used to generate sitemaps and canonical URLs.
+  integrations: [react()],
+});
