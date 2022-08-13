@@ -87,15 +87,6 @@
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
 
-"@astrojs/renderer-react@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/renderer-react/-/renderer-react-0.5.0.tgz#340a49b57bd6013059a8ad1d720c5012968ff8d4"
-  integrity sha512-9Ij1TjJbRuPTK7mwOylDdKW6rDUk1RaBFD6rcZkrHHrA0M6b6a6HQzjXCFjJMeZIDg10N1aqtIJWM6Fptwhz1g==
-  dependencies:
-    "@babel/plugin-transform-react-jsx" "^7.16.7"
-    react "^17.0.2"
-    react-dom "^17.0.2"
-
 "@astrojs/telemetry@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-1.0.0.tgz#425171610daa66702fe7b117b6dab82ed6bdf8db"
