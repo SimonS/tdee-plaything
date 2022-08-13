@@ -12,7 +12,7 @@ return await getAllPages(10, 'contentNodes', '{contentTypes: [BDT_WEIGHIN, BDT_F
 }
 
 const {after} = Astro.props;
-const {pagenum} = Astro.request.params;
+const {pagenum} = Astro.params;
 
 const { data, meta } = await getAll(after);
 ---

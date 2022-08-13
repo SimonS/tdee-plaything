@@ -9,7 +9,7 @@ import getAllPages from "@fetcher-paginator/getAllPages.ts";
 export const getStaticPaths = async () => await getAllPages(10, 'podcasts', whereClause);
 
 const {after} = Astro.props;
-const {pagenum} = Astro.request.params;
+const {pagenum} = Astro.params;
 
 const {podcasts, meta} = await getPodcasts(after);
 
