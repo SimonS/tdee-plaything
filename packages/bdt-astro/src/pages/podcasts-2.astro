@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Pagination from "@components/pagination/pagination.tsx";
+import { PodcastEntry } from '../components/PodcastEntry.tsx'
+import Calendar from '@components/visualisations/calendar.tsx';
+
+import getAllPodcasts from "@podcast-fetcher/getAllPodcasts.ts";
+
+console.log
+const podcasts = await getAllPodcasts();
+
+
+const groupedPods = podcasts.reduce((acc, podcast) => {
+  const date = podcast.listenDate.split('T')[0];
+
+  if (acc[date] === undefined) acc[date] = [];
+
+  acc[date].push({ ...podcast })
+  return acc
+}, {})
+
+const data = Object.entries(groupedPods).map(([day, pods]: [string, any[]]) => ({ day, value: pods.length }));
+data.sort((a, b) => a.day < b.day ? -1 : 1)
+
+const from = data[0].day;
+const to = data[data.length - 1].day;
+---
+
+<BaseLayout title="Podcasts I've been listening to">
+  <div class="stack listing">
+    <h1>Podcasts 2</h1>
+    <div class="content">
+      <Calendar client:load data={data} from={from} to={to} />
+    </div>
+  </div>
+</BaseLayout>

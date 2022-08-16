@@ -16,9 +16,18 @@ const Calendar = ({
   to: Date;
   responsive?: Boolean;
 }) => (
-  <div style={{ width: "100%", height: "100vh" }}>
+  <div style={{ height: "280px" }}>
     {responsive ? (
-      <ResponsiveCalendar data={data} from={from} to={to} />
+      <ResponsiveCalendar
+        margin={{ top: 20, right: 0, bottom: 20, left: 20 }}
+        monthBorderColor="#fff"
+        dayBorderWidth={2}
+        dayBorderColor="#ffffff"
+        emptyColor="#eeeeee"
+        data={data}
+        from={from}
+        to={to}
+      />
     ) : (
       <NivoCalendar data={data} from={from} to={to} height={600} width={600} />
     )}
