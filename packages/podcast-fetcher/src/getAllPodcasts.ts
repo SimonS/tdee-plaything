@@ -6,7 +6,7 @@ interface GraphQLMeta {
   endCursor: string;
 }
 
-const getAllPodcasts = async (processWeights = false) => {
+const getAllPodcasts = async (byDate = false) => {
   let morePages = true;
   let allPodcasts: Podcast[] = [];
   let next;
@@ -25,11 +25,25 @@ const getAllPodcasts = async (processWeights = false) => {
     next = meta.endCursor;
   }
 
-  allPodcasts.sort((a, b) =>
-    new Date(a.listenDate) < new Date(b.listenDate) ? -1 : 1
-  );
+  allPodcasts.sort((a, b) => (a.listenDate < b.listenDate ? -1 : 1));
 
   return allPodcasts;
 };
+
+type GroupedPodcasts = {
+  [key: string]: Podcast[];
+};
+
+const groupPodcastsByDate = (podcasts: Podcast[]) =>
+  podcasts.reduce<GroupedPodcasts>((acc, podcast) => {
+    const date = podcast.listenDate.split("T")[0];
+
+    if (acc[date] === undefined) acc[date] = [];
+    acc[date].push({ ...podcast });
+
+    return acc;
+  }, {});
+
+export { groupPodcastsByDate };
 
 export default getAllPodcasts;
