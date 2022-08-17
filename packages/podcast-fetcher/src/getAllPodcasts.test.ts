@@ -1,4 +1,7 @@
-import getAllPodcasts, { groupPodcastsByDate } from "./getAllPodcasts";
+import getAllPodcasts, {
+  groupPodcastsByDate,
+  aggregatePodcasts,
+} from "./getAllPodcasts";
 import * as nock from "nock";
 import { Podcast } from "@tdee/types/src/bdt";
 
@@ -73,4 +76,12 @@ test("groupByDate groups podcasts by date", () => {
   const grouped = groupPodcastsByDate(retrievedPodcasts);
 
   expect(grouped["2020-01-01"][0].podcastTitle).toEqual("Podcast title 0");
+});
+
+test("aggregatePodcasts gets listen counts for a day", () => {
+  const retrievedPodcasts = generatePodcastCollection(3);
+
+  const aggregated = aggregatePodcasts(groupPodcastsByDate(retrievedPodcasts));
+
+  expect(aggregated[0]).toMatchObject({ day: "2020-01-01", value: 1 });
 });

@@ -44,6 +44,12 @@ const groupPodcastsByDate = (podcasts: Podcast[]) =>
     return acc;
   }, {});
 
-export { groupPodcastsByDate };
+const aggregatePodcasts = (groupedPodcasts: GroupedPodcasts) =>
+  Object.entries(groupedPodcasts).map(([day, podcasts]) => ({
+    day,
+    value: podcasts.length,
+  }));
+
+export { groupPodcastsByDate, aggregatePodcasts };
 
 export default getAllPodcasts;
