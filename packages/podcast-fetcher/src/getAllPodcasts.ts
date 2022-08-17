@@ -25,6 +25,10 @@ const getAllPodcasts = async (processWeights = false) => {
     next = meta.endCursor;
   }
 
+  allPodcasts.sort((a, b) =>
+    new Date(a.listenDate) < new Date(b.listenDate) ? -1 : 1
+  );
+
   return allPodcasts;
 };
 
