@@ -50,10 +50,16 @@ test("getAllPodcasts works with a single page", async () => {
 
 test("getAllPodcasts returns aggregate of many pages", async () => {
   nock("https://breakfastdinnertea.co.uk")
+    .persist() // persist interceptor to catch infinite loops
     .post("/graphql")
-    .reply(200, buildPodcastsResponse(1, true))
-    .post("/graphql")
-    .reply(200, buildPodcastsResponse(1));
+    .reply(200, function (_, requestBody) {
+      const query: string = requestBody["query"];
+      const after = [...query.matchAll(/after: "(\w*)"/g)][0][1];
+
+      if (after === "") return buildPodcastsResponse(1, true);
+
+      return buildPodcastsResponse(1);
+    });
 
   const podcasts = await getAllPodcasts();
 
