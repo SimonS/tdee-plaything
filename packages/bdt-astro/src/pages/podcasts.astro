@@ -12,15 +12,12 @@ import getAllPodcasts, {
 
 const { podcasts, meta } = await getPodcasts();
 
-console.log("getting all podcasts");
 const allPodcasts = await getAllPodcasts();
-console.log("all podcasts completed");
 const grouped = groupPodcastsByDate(allPodcasts);
 const data = aggregatePodcasts(grouped);
 
 const from = data[0].day;
 const to = data[data.length - 1].day;
-console.log("build complete");
 ---
 
 <BaseLayout title="Podcasts I've been listening to">
