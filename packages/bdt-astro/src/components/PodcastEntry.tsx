@@ -32,10 +32,12 @@ export const PodcastEntry = ({ podcast }: PodcastProps): JSX.Element => {
             src={
               podcast.feedImage
                 ? podcast.feedImage
-                : "https://placekitten.com/154/154"
+                : `https://placekitten.com/154/154?pod=${podcast.episodeURL}`
             }
             alt={podcast.feedTitle}
             className="poster-image"
+            width={154}
+            height={154}
           />
         </div>
       </div>
