@@ -1,21 +1,49 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import BaseLayout from "../layouts/BaseLayout.astro";
 import Pagination from "@components/pagination/pagination.tsx";
-import { PodcastEntry } from '../components/PodcastEntry.tsx'
+import Calendar from "@components/visualisations/calendar.tsx";
+import { PodcastEntry } from "../components/PodcastEntry.tsx";
 
 import getPodcasts from "@podcast-fetcher/getPodcasts.ts";
+import getAllPodcasts, {
+  groupPodcastsByDate,
+  aggregatePodcasts,
+} from "@podcast-fetcher/getAllPodcasts.ts";
 
-const {podcasts, meta} = await getPodcasts();
+const { podcasts, meta } = await getPodcasts();
+
+console.log("getting all podcasts");
+const allPodcasts = await getAllPodcasts();
+console.log("all podcasts completed");
+const grouped = groupPodcastsByDate(allPodcasts);
+const data = aggregatePodcasts(grouped);
+
+const from = data[0].day;
+const to = data[data.length - 1].day;
+console.log("build complete");
 ---
 
 <BaseLayout title="Podcasts I've been listening to">
   <div class="stack listing">
     <h1>Podcasts</h1>
     <div class="content">
-      <p>These are the podcasts I've recently heard, it's all aggregated from <a href="https://overcast.fm">Overcast</a>.</p>
+      <Calendar client:load data={data} from={from} to={to} />
+      <p>
+        These are the podcasts I've recently heard, it's all aggregated from <a
+          href="https://overcast.fm"
+          >Overcast
+        </a>.
+      </p>
     </div>
-    {podcasts.map(podcast => <PodcastEntry podcast={podcast} />)}
-    <Pagination tag={`a`} pageNumber={1} urlRoot={`/podcasts/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} />
+    {podcasts.map((podcast) => <PodcastEntry podcast={podcast} />)}
+    <Pagination
+      tag={`a`}
+      pageNumber={1}
+      urlRoot={`/podcasts/page`}
+      pageInfo={{
+        hasNextPage: meta.hasNextPage,
+        hasPreviousPage: meta.hasPreviousPage,
+      }}
+    />
   </div>
 </BaseLayout>
-    
