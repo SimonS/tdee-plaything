@@ -18,7 +18,7 @@ const getAllPodcasts = async (byDate = false) => {
     }: {
       podcasts: Podcast[];
       meta: GraphQLMeta;
-    } = await getPodcasts();
+    } = await getPodcasts(next);
 
     allPodcasts = [...allPodcasts, ...podcasts];
     morePages = meta.hasNextPage;
