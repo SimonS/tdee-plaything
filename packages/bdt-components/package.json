@@ -29,7 +29,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.3",
-    "@types/react": "^17.0.41",
+    "@types/react": "^18.0.17",
     "@types/react-dom": "^17.0.14",
     "assert-browserify": "^2.0.0",
     "babel-jest": "^27.4.2",
@@ -37,7 +37,7 @@
     "css-loader": "^6.5.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-dom": "^17.0.2",
     "sass-loader": "^12.4.0",
     "storybook": "^6.4.9",
@@ -46,7 +46,7 @@
     "webpack": "^5.65.0"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-dom": "^17.0.2",
     "webpack": "*"
   },
