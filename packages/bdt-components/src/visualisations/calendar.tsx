@@ -16,7 +16,7 @@ const Calendar = ({
   to: Date;
   responsive?: Boolean;
 }) => (
-  <div style={{ width: "100%", height: "100vh" }}>
+  <div style={{ width: "100%", height: "280px" }}>
     {responsive ? (
       <ResponsiveCalendar
         data={data}
