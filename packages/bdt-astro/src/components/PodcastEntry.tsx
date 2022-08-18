@@ -29,7 +29,11 @@ export const PodcastEntry = ({ podcast }: PodcastProps): JSX.Element => {
         </div>
         <div style={{ maxWidth: "154px" }}>
           <img
-            src={podcast.feedImage}
+            src={
+              podcast.feedImage
+                ? podcast.feedImage
+                : "https://placekitten.com/154/154"
+            }
             alt={podcast.feedTitle}
             className="poster-image"
           />
