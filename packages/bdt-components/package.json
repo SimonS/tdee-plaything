@@ -60,8 +60,10 @@
     }
   },
   "dependencies": {
+    "@nanostores/react": "^0.3.0",
     "@nivo/calendar": "^0.79.1",
     "css-loader": "^6.5.1",
+    "nanostores": "^0.6.0",
     "webpack": "^5.65.0"
   }
 }
