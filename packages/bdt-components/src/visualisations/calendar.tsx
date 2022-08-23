@@ -3,6 +3,7 @@ import {
   CalendarDatum,
   ResponsiveCalendar,
   Calendar as NivoCalendar,
+  Datum,
 } from "@nivo/calendar";
 
 const Calendar = ({
@@ -10,11 +11,16 @@ const Calendar = ({
   from,
   to,
   responsive = true,
+  onClick,
 }: {
   data: CalendarDatum[];
   from: Date;
   to: Date;
   responsive?: Boolean;
+  onClick?: (
+    datum: Datum,
+    e: React.MouseEvent<SVGRectElement, MouseEvent>
+  ) => void;
 }) => (
   <div style={{ width: "100%", height: "280px" }}>
     {responsive ? (
@@ -27,6 +33,7 @@ const Calendar = ({
         dayBorderWidth={2}
         dayBorderColor="#ffffff"
         emptyColor="#eeeeee"
+        onClick={onClick}
       />
     ) : (
       <NivoCalendar
@@ -40,6 +47,7 @@ const Calendar = ({
         dayBorderWidth={2}
         dayBorderColor="#ffffff"
         emptyColor="#eeeeee"
+        onClick={onClick}
       />
     )}
   </div>
