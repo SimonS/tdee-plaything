@@ -14,8 +14,8 @@ const Calendar = ({
   onClick,
 }: {
   data: CalendarDatum[];
-  from: Date;
-  to: Date;
+  from: Date | string;
+  to: Date | string;
   responsive?: Boolean;
   onClick?: (
     datum: Datum,

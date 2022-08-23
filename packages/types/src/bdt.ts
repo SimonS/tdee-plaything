@@ -26,6 +26,10 @@ export interface Podcast {
   feedImage: string;
 }
 
+export type GroupedPodcasts = {
+  [key: string]: Podcast[];
+};
+
 export interface WPPage {
   id: string;
   title: string;
