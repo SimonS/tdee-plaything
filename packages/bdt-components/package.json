@@ -57,7 +57,10 @@
     ],
     "moduleNameMapper": {
       "\\.css$": "identity-obj-proxy"
-    }
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!nanostores).*/"
+    ]
   },
   "dependencies": {
     "@nanostores/react": "^0.3.0",

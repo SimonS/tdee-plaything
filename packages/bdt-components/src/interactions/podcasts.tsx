@@ -1,7 +1,8 @@
 import React from "react";
 import { CalendarDatum } from "@nivo/calendar";
-import { Podcast, GroupedPodcasts } from "@tdee/types/src/bdt";
+import { GroupedPodcasts } from "@tdee/types/src/bdt";
 import Calendar from "../visualisations/calendar";
+import { podcasts } from "../stores/podcasts";
 
 const PodcastCalendar = ({
   aggregated,
@@ -17,6 +18,9 @@ const PodcastCalendar = ({
     responsive={responsive}
     from={aggregated[0].day}
     to={aggregated[aggregated.length - 1].day}
+    onClick={(datum) => {
+      podcasts.set(grouped[datum.day] ? grouped[datum.day] : []);
+    }}
   />
 );
 
