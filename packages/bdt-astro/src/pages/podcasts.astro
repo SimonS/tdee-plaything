@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Pagination from "@components/pagination/pagination.tsx";
-import Calendar from "@components/visualisations/calendar.tsx";
+import PodcastCalendar from "@components/interactions/podcasts.tsx";
+import Podcasts from "@components/media/podcasts.tsx";
 import { PodcastEntry } from "../components/PodcastEntry.tsx";
 
 import getPodcasts from "@podcast-fetcher/getPodcasts.ts";
@@ -15,32 +16,22 @@ const { podcasts, meta } = await getPodcasts();
 const allPodcasts = await getAllPodcasts();
 const grouped = groupPodcastsByDate(allPodcasts);
 const data = aggregatePodcasts(grouped);
-
-const from = data[0].day;
-const to = data[data.length - 1].day;
 ---
 
 <BaseLayout title="Podcasts I've been listening to">
   <div class="stack listing">
     <h1>Podcasts</h1>
-    <div class="content">
-      <Calendar client:load data={data} from={from} to={to} />
-      <p>
-        These are the podcasts I've recently heard, it's all aggregated from <a
-          href="https://overcast.fm"
-          >Overcast
-        </a>.
-      </p>
-    </div>
-    {podcasts.map((podcast) => <PodcastEntry podcast={podcast} />)}
-    <Pagination
-      tag={`a`}
-      pageNumber={1}
-      urlRoot={`/podcasts/page`}
-      pageInfo={{
-        hasNextPage: meta.hasNextPage,
-        hasPreviousPage: meta.hasPreviousPage,
-      }}
-    />
+    <p>
+      These are the podcasts I've recently heard, it's all aggregated from <a
+        href="https://overcast.fm"
+        >Overcast
+      </a>.
+    </p>
+    <PodcastCalendar client:load aggregated={data} grouped={grouped} />
+    <Podcasts client:load />
+    <p>
+      If my gratuitous calendar nav isn't working for you, feel free to check
+      out <a href="/podcasts/page/1">my entire podcast stream in list form</a>
+    </p>
   </div>
 </BaseLayout>

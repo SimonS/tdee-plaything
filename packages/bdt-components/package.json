@@ -59,7 +59,7 @@
       "\\.css$": "identity-obj-proxy"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!nanostores).*/"
+      "node_modules/(?!nanostores|@nanostores).*/"
     ]
   },
   "dependencies": {
