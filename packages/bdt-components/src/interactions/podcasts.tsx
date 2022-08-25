@@ -21,6 +21,7 @@ const PodcastCalendar = ({
     onClick={(datum) => {
       podcasts.set({
         ...podcasts.get(),
+        selected: datum.day,
         podcasts: grouped[datum.day] ? grouped[datum.day] : [],
       });
     }}

@@ -29,7 +29,7 @@ describe("Podcasts", () => {
 
   beforeEach(() => podcastsStore.set({ podcasts: [] }));
 
-  it("highlights the correct word when appropriate", () => {
+  it("shows instructional text before selection", () => {
     const { container } = render(<Podcasts />);
     expect(container).toHaveTextContent(
       "Click a date to show listened podcasts for that day"
@@ -38,7 +38,13 @@ describe("Podcasts", () => {
 
   it("removes default text when stores populated", () => {
     const { container } = render(<Podcasts />);
-    act(() => podcastsStore.set({ ...podcastsStore, podcasts: pods }));
+    act(() =>
+      podcastsStore.set({
+        ...podcastsStore,
+        podcasts: pods,
+        selected: "2022-01-01",
+      })
+    );
     expect(container).not.toHaveTextContent(
       "Click a date to show listened podcasts for that day"
     );
@@ -46,8 +52,34 @@ describe("Podcasts", () => {
 
   it("displays contents of stores as podcasts", () => {
     const { container } = render(<Podcasts />);
-    act(() => podcastsStore.set({ ...podcastsStore, podcasts: pods }));
+    act(() =>
+      podcastsStore.set({
+        ...podcastsStore.get(),
+        podcasts: pods,
+        selected: "2022-01-01",
+      })
+    );
     expect(container).toHaveTextContent("Podcast #1");
     expect(container).toHaveTextContent("Podcast #2");
+  });
+
+  it("displays message when no podcasts listened to", () => {
+    const { container } = render(<Podcasts />);
+    act(() =>
+      podcastsStore.set({
+        ...podcastsStore.get(),
+        podcasts: [],
+        selected: "2022-01-01",
+      })
+    );
+    expect(container).toHaveTextContent("No listens recorded");
+  });
+
+  it("displays current date", () => {
+    const { container } = render(<Podcasts />);
+    act(() =>
+      podcastsStore.set({ ...podcastsStore.get(), selected: "2022-01-01" })
+    );
+    expect(container).toHaveTextContent("Date: Sat Jan 01 2022");
   });
 });

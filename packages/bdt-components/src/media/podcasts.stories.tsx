@@ -14,14 +14,39 @@ export default {
 
 export const DefaultPodcasts = ({
   podcasts,
+  selected,
 }: {
   podcasts: Podcast[];
+  selected?: string;
 }): JSX.Element => {
-  podcastsStore.set({ ...podcastsStore.get(), podcasts });
+  podcastsStore.set({
+    ...podcastsStore.get(),
+    podcasts,
+    selected,
+  });
+  return <Podcasts />;
+};
+
+export const NoPodcastListens = (): JSX.Element => {
+  podcastsStore.set({
+    ...podcastsStore.get(),
+    podcasts: [],
+    selected: "2022-01-01",
+  });
+  return <Podcasts />;
+};
+
+export const NoDateSelected = (): JSX.Element => {
+  podcastsStore.set({
+    ...podcastsStore.get(),
+    podcasts: [],
+    selected: undefined,
+  });
   return <Podcasts />;
 };
 
 DefaultPodcasts.args = {
+  selected: "2022-01-01",
   podcasts: [
     {
       listenDate: "2022-01-01",
