@@ -17,7 +17,7 @@ export const DefaultPodcasts = ({
 }: {
   podcasts: Podcast[];
 }): JSX.Element => {
-  podcastsStore.set(podcasts);
+  podcastsStore.set({ ...podcastsStore.get(), podcasts });
   return <Podcasts />;
 };
 

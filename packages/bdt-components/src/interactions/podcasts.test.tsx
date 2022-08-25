@@ -54,7 +54,7 @@ it("populates state store with podcast list", () => {
 
   if (firstDate) fireEvent.click(firstDate);
 
-  const storeContents = podcasts.get();
+  const { podcasts: storeContents } = podcasts.get();
   expect(storeContents).toHaveLength(2);
   expect(storeContents[0].podcastTitle).toEqual("Podcast #1");
 });

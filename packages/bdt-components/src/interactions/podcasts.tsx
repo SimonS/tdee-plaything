@@ -19,7 +19,10 @@ const PodcastCalendar = ({
     from={aggregated[0].day}
     to={aggregated[aggregated.length - 1].day}
     onClick={(datum) => {
-      podcasts.set(grouped[datum.day] ? grouped[datum.day] : []);
+      podcasts.set({
+        ...podcasts.get(),
+        podcasts: grouped[datum.day] ? grouped[datum.day] : [],
+      });
     }}
   />
 );

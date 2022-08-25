@@ -27,7 +27,7 @@ describe("Podcasts", () => {
     },
   ];
 
-  beforeEach(() => podcastsStore.set([]));
+  beforeEach(() => podcastsStore.set({ podcasts: [] }));
 
   it("highlights the correct word when appropriate", () => {
     const { container } = render(<Podcasts />);
@@ -38,7 +38,7 @@ describe("Podcasts", () => {
 
   it("removes default text when stores populated", () => {
     const { container } = render(<Podcasts />);
-    act(() => podcastsStore.set(pods));
+    act(() => podcastsStore.set({ ...podcastsStore, podcasts: pods }));
     expect(container).not.toHaveTextContent(
       "Click a date to show listened podcasts for that day"
     );
@@ -46,7 +46,7 @@ describe("Podcasts", () => {
 
   it("displays contents of stores as podcasts", () => {
     const { container } = render(<Podcasts />);
-    act(() => podcastsStore.set(pods));
+    act(() => podcastsStore.set({ ...podcastsStore, podcasts: pods }));
     expect(container).toHaveTextContent("Podcast #1");
     expect(container).toHaveTextContent("Podcast #2");
   });

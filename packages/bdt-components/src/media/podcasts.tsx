@@ -5,7 +5,7 @@ import { useStore } from "@nanostores/react";
 import { podcasts as podcastsStore } from "../stores/podcasts";
 
 export const Podcasts = (): JSX.Element => {
-  const podcasts = useStore(podcastsStore);
+  const { podcasts } = useStore(podcastsStore);
   if (podcasts.length === 0)
     return <div>Click a date to show listened podcasts for that day</div>;
 
