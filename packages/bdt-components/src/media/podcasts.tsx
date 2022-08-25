@@ -11,7 +11,7 @@ export const Podcasts = (): JSX.Element => {
     return <p>Click a date to show listened podcasts for that day</p>;
 
   return (
-    <>
+    <div className="stack selected-media">
       <h2>Date: {new Date(selected).toDateString()}</h2>
       {podcasts.length ? (
         podcasts.map((podcast, i) => (
@@ -20,7 +20,7 @@ export const Podcasts = (): JSX.Element => {
       ) : (
         <p>No listens recorded</p>
       )}
-    </>
+    </div>
   );
 };
 
