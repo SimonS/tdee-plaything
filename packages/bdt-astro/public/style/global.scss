@@ -77,6 +77,18 @@ h2 {
   font-size: var(--s1);
 }
 
+.selected-media h2 {
+  border-bottom: 2px #dfcc4c solid;
+  padding-bottom: var(--s0);
+}
+
+.selected-media .h-entry {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
 h3 {
   font-size: var(--s1);
 }
