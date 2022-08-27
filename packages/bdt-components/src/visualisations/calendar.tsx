@@ -6,6 +6,8 @@ import {
   Datum,
 } from "@nivo/calendar";
 
+const gradients = ["#b81007", "#c75100", "#d27d01", "#daa525", "#dfcc4c"];
+
 const Calendar = ({
   data,
   from,
@@ -33,6 +35,7 @@ const Calendar = ({
         dayBorderWidth={2}
         dayBorderColor="#ffffff"
         emptyColor="#eeeeee"
+        colors={gradients}
         onClick={onClick}
       />
     ) : (
@@ -47,6 +50,7 @@ const Calendar = ({
         dayBorderWidth={2}
         dayBorderColor="#ffffff"
         emptyColor="#eeeeee"
+        colors={gradients}
         onClick={onClick}
       />
     )}
