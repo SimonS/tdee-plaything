@@ -11,7 +11,7 @@ const generateFilmCollection = (num, reverse = false) =>
   Array(num)
     .fill("")
     .map((_, i) => ({
-      watchedDate: `2020-01-0${i}`,
+      watchedDate: `2020-01-0${reverse ? num - i : i + 1}`,
       filmTitle: "Don't Tell Mom The Babysitter's Dead",
       year: "2020",
       rating: "4",
@@ -64,4 +64,14 @@ test("getAllFilms returns aggregate of many pages", async () => {
   const films = await getAllFilms();
 
   expect(films).toHaveLength(2);
+});
+
+test("getAllFilms sorts fils", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql")
+    .reply(200, buildFilmsResponse(4, false, true));
+
+  const films = await getAllFilms();
+
+  expect(films[1].watchedDate).toEqual("2020-01-02");
 });

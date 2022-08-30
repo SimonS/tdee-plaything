@@ -25,6 +25,8 @@ const getAllFilms = async () => {
     next = meta.endCursor;
   }
 
+  allFilms.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
+
   return allFilms;
 };
 
