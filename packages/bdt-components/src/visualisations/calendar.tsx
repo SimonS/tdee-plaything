@@ -6,7 +6,7 @@ import {
   Datum,
 } from "@nivo/calendar";
 
-const gradients = ["#b81007", "#c75100", "#d27d01", "#daa525", "#dfcc4c"];
+const gradients = ["#dfcc4c", "#daa525", "#d27d01", "#c75100", "#b81007"];
 
 const Calendar = ({
   data,
