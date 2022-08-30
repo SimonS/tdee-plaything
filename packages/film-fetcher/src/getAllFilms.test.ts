@@ -1,4 +1,4 @@
-import getAllFilms from "./getAllFilms";
+import getAllFilms, { groupFilmsByDate } from "./getAllFilms";
 import * as nock from "nock";
 import { Film } from "@tdee/types/src/bdt";
 
@@ -12,12 +12,12 @@ const generateFilmCollection = (num, reverse = false) =>
     .fill("")
     .map((_, i) => ({
       watchedDate: `2020-01-0${reverse ? num - i : i + 1}`,
-      filmTitle: "Don't Tell Mom The Babysitter's Dead",
-      year: "2020",
-      rating: "4",
+      filmTitle: `Film #${i}`,
+      year: 2020,
+      rating: 4,
       meta: {
         image: "img/dont-tell-mom-the-babysitters-dead.jpg",
-        runtime: "1h 30m",
+        runtime: 90,
         original_language: "en",
       },
       reviewLink: "",
@@ -74,4 +74,12 @@ test("getAllFilms sorts fils", async () => {
   const films = await getAllFilms();
 
   expect(films[1].watchedDate).toEqual("2020-01-02");
+});
+
+test("groupFilmsByDate groups podcasts by date", () => {
+  const retrievedFilms = generateFilmCollection(3);
+
+  const grouped = groupFilmsByDate(retrievedFilms);
+
+  expect(grouped["2020-01-01"][0].filmTitle).toEqual("Film #0");
 });

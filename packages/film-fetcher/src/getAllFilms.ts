@@ -30,4 +30,20 @@ const getAllFilms = async () => {
   return allFilms;
 };
 
+type GroupedFilms = {
+  [key: string]: Film[];
+};
+
+const groupFilmsByDate = (films: Film[]) =>
+  films.reduce<GroupedFilms>((acc, film) => {
+    const date = film.watchedDate.split("T")[0];
+
+    if (acc[date] === undefined) acc[date] = [];
+    acc[date].push({ ...film });
+
+    return acc;
+  }, {});
+
+export { groupFilmsByDate };
+
 export default getAllFilms;
