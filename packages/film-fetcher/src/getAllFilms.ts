@@ -44,6 +44,12 @@ const groupFilmsByDate = (films: Film[]) =>
     return acc;
   }, {});
 
-export { groupFilmsByDate };
+const aggregateFilms = (groupedFilms: GroupedFilms) =>
+  Object.entries(groupedFilms).map(([day, films]) => ({
+    day,
+    value: films.length,
+  }));
+
+export { groupFilmsByDate, aggregateFilms };
 
 export default getAllFilms;

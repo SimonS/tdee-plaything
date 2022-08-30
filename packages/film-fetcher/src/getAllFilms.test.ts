@@ -1,4 +1,4 @@
-import getAllFilms, { groupFilmsByDate } from "./getAllFilms";
+import getAllFilms, { groupFilmsByDate, aggregateFilms } from "./getAllFilms";
 import * as nock from "nock";
 import { Film } from "@tdee/types/src/bdt";
 
@@ -76,10 +76,18 @@ test("getAllFilms sorts fils", async () => {
   expect(films[1].watchedDate).toEqual("2020-01-02");
 });
 
-test("groupFilmsByDate groups podcasts by date", () => {
+test("groupFilmsByDate groups Films by date", () => {
   const retrievedFilms = generateFilmCollection(3);
 
   const grouped = groupFilmsByDate(retrievedFilms);
 
   expect(grouped["2020-01-01"][0].filmTitle).toEqual("Film #0");
+});
+
+test("aggregateFilms gets listen counts for a day", () => {
+  const retrievedFilms = generateFilmCollection(3);
+
+  const aggregated = aggregateFilms(groupFilmsByDate(retrievedFilms));
+
+  expect(aggregated[0]).toMatchObject({ day: "2020-01-01", value: 1 });
 });
