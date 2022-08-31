@@ -8,4 +8,10 @@ const groupBy = <T, K extends keyof T>(arr: T[], field: K) =>
     return acc;
   }, {});
 
-export { groupBy };
+const aggregateData = <T>(data: { [key: string]: T[] }) =>
+  Object.entries(data).map(([day, items]) => ({
+    day,
+    value: items.length,
+  }));
+
+export { groupBy, aggregateData };

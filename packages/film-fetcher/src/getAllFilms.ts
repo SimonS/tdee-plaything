@@ -1,6 +1,6 @@
 import { Film } from "@tdee/types/src/bdt";
 import getFilms from "./getFilms";
-import { groupBy } from "@tdee/data-wranglers/src/collections";
+import { groupBy, aggregateData } from "@tdee/data-wranglers/src/collections";
 
 interface GraphQLMeta {
   hasNextPage: boolean;
@@ -38,10 +38,7 @@ type GroupedFilms = {
 const groupFilmsByDate = (films: Film[]) => groupBy(films, "watchedDate");
 
 const aggregateFilms = (groupedFilms: GroupedFilms) =>
-  Object.entries(groupedFilms).map(([day, films]) => ({
-    day,
-    value: films.length,
-  }));
+  aggregateData(groupedFilms);
 
 export { groupFilmsByDate, aggregateFilms };
 

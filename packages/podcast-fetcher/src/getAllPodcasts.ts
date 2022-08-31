@@ -44,11 +44,14 @@ const groupPodcastsByDate = (podcasts: Podcast[]) =>
     "listenDate"
   );
 
-const aggregatePodcasts = (groupedPodcasts: GroupedPodcasts) =>
-  Object.entries(groupedPodcasts).map(([day, podcasts]) => ({
+const aggregateData = <T>(data: { [key: string]: T[] }) =>
+  Object.entries(data).map(([day, items]) => ({
     day,
-    value: podcasts.length,
+    value: items.length,
   }));
+
+const aggregatePodcasts = (groupedPodcasts: GroupedPodcasts) =>
+  aggregateData(groupedPodcasts);
 
 export { groupPodcastsByDate, aggregatePodcasts };
 
