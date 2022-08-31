@@ -1,5 +1,6 @@
 import { Podcast } from "@tdee/types/src/bdt";
 import getPodcasts from "./getPodcasts";
+import { groupBy } from "@tdee/data-wranglers/src/collections";
 
 interface GraphQLMeta {
   hasNextPage: boolean;
@@ -35,20 +36,22 @@ type GroupedPodcasts = {
 };
 
 const groupPodcastsByDate = (podcasts: Podcast[]) =>
-  podcasts.reduce<GroupedPodcasts>((acc, podcast) => {
-    const date = podcast.listenDate.split("T")[0];
+  groupBy(
+    podcasts.map((pod) => ({
+      ...pod,
+      listenDate: pod.listenDate.split("T")[0],
+    })),
+    "listenDate"
+  );
 
-    if (acc[date] === undefined) acc[date] = [];
-    acc[date].push({ ...podcast });
-
-    return acc;
-  }, {});
+const aggregateData = <T>(data: { [key: string]: T[] }) =>
+  Object.entries(data).map(([day, items]) => ({
+    day,
+    value: items.length,
+  }));
 
 const aggregatePodcasts = (groupedPodcasts: GroupedPodcasts) =>
-  Object.entries(groupedPodcasts).map(([day, podcasts]) => ({
-    day,
-    value: podcasts.length,
-  }));
+  aggregateData(groupedPodcasts);
 
 export { groupPodcastsByDate, aggregatePodcasts };
 
