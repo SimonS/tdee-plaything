@@ -1,0 +1,18 @@
+{
+  "name": "@tdee/data-wranglers",
+  "version": "0.0.1",
+  "description": "general purpose data manipulators for massaging data",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.3",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.2"
+  }
+}
