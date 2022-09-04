@@ -12,4 +12,18 @@ describe("Films content", () => {
       "Click a date to show films watched that day"
     );
   });
+
+  it("removes default text when stores populated", () => {
+    const { container } = render(<Films />);
+    act(() =>
+      filmsStore.set({
+        ...filmsStore,
+        films: [],
+        selected: "2022-01-01",
+      })
+    );
+    expect(container).not.toHaveTextContent(
+      "Click a date to show films watched that day"
+    );
+  });
 });
