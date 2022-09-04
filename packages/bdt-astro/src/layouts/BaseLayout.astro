@@ -1,59 +1,61 @@
 ---
 import Nav from "@components/nav/nav";
-import {AstroLogo} from '../components/AstroLogo';
-const {title} = Astro.props;
+import { AstroLogo } from "../components/AstroLogo";
+const { title } = Astro.props;
 const path = new URL(Astro.url.pathname, Astro.site);
-
 ---
+
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Actor&display=swap"
-        rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Actor&display=swap"
+      rel="stylesheet"
     />
     <style lang="scss" is:global>
-      @use '../../../bdt-components/src/styles/style.scss';
-      @use '../../public/style/global.scss';
+      @use "../../../bdt-components/src/styles/style.scss";
+      @use "../../public/style/global.scss";
     </style>
     <slot name="head_after" />
-</head>
-<body>
-  <div class="shell">
-    <div class="sidebar left">
-      <div>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="sidebar left">
         <div>
-          <div class="stack">
-            <AstroLogo client:load />
-            <Nav url={path} />
+          <div>
+            <div class="stack">
+              <AstroLogo client:load />
+              <Nav url={path} />
+            </div>
           </div>
-        </div>
-        <div>
-          <main class="stack">
-            <slot />
-            <footer>
-              <span class="footer-item">
+          <div>
+            <main class="stack">
+              <slot />
+              <footer>
+                <span class="footer-item">
                   <a
-                  rel="license"
-                  href="http://creativecommons.org/licenses/by-sa/3.0/"
+                    rel="license"
+                    href="http://creativecommons.org/licenses/by-sa/3.0/"
                   >
-                  <img
+                    <img
                       alt="This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"
                       src="https://i.creativecommons.org/l/by-sa/3.0/80x15.png"
-                  />
+                      width="80"
+                      height="15"
+                    />
                   </a>
-              </span>
+                </span>
 
-              <span class="footer-item">&copy; Simon Scarfe 2007-2022</span>
-            </footer>
-          </main>
+                <span class="footer-item">&copy; Simon Scarfe 2007-2022</span>
+              </footer>
+            </main>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
