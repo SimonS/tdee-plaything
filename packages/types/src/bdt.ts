@@ -30,6 +30,10 @@ export type GroupedPodcasts = {
   [key: string]: Podcast[];
 };
 
+export type GroupedFilms = {
+  [key: string]: Film[];
+};
+
 export interface WPPage {
   id: string;
   title: string;
