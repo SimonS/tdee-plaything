@@ -12,6 +12,22 @@ test("groupBy groups by key", () => {
   expect(result["1"]).toHaveLength(2);
 });
 
+test("groupBy handles non-string keys", () => {
+  const data = [
+    { a: {}, val: "foo" },
+    { a: {}, val: "foo2" },
+    { a: "2", val: "foo" },
+    { a: "1", val: "bar" },
+  ];
+
+  const result = groupBy(data, "a");
+
+  expect(result).toStrictEqual({
+    "1": [{ a: "1", val: "bar" }],
+    "2": [{ a: "2", val: "foo" }],
+  });
+});
+
 test("aggregateData maps array length to value", () => {
   const data = { "1": ["foo", "bar"], "2": ["foo"] };
 
