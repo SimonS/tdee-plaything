@@ -69,4 +69,22 @@ describe("Films content", () => {
     expect(container).toHaveTextContent("Film #1");
     expect(container).toHaveTextContent("Film #2");
   });
+
+  it("displays message when no films watched", () => {
+    const { container } = render(<Films />);
+    act(() =>
+      filmsStore.set({
+        ...filmsStore.get(),
+        films: [],
+        selected: "2022-01-01",
+      })
+    );
+    expect(container).toHaveTextContent("No films watched");
+  });
+
+  it("displays current date", () => {
+    const { container } = render(<Films />);
+    act(() => filmsStore.set({ ...filmsStore.get(), selected: "2022-01-01" }));
+    expect(container).toHaveTextContent("Date: Sat Jan 01 2022");
+  });
 });

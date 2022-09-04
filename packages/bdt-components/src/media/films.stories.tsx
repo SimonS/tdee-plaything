@@ -36,6 +36,15 @@ export const NoDateSelected = (): JSX.Element => {
   return <Films />;
 };
 
+export const NoFilmsWatched = (): JSX.Element => {
+  filmsStore.set({
+    ...filmsStore.get(),
+    films: [],
+    selected: "2022-01-01",
+  });
+  return <Films />;
+};
+
 DefaultFilms.args = {
   selected: "2022-01-01",
   films: [
