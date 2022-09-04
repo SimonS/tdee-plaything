@@ -1,17 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Pagination from "@components/pagination/pagination.tsx";
 import PodcastCalendar from "@components/interactions/podcasts.tsx";
 import Podcasts from "@components/media/podcasts.tsx";
-import { PodcastEntry } from "../components/PodcastEntry.tsx";
 
-import getPodcasts from "@podcast-fetcher/getPodcasts.ts";
 import getAllPodcasts, {
   groupPodcastsByDate,
   aggregatePodcasts,
 } from "@podcast-fetcher/getAllPodcasts.ts";
-
-const { podcasts, meta } = await getPodcasts();
 
 const allPodcasts = await getAllPodcasts();
 const grouped = groupPodcastsByDate(allPodcasts);
