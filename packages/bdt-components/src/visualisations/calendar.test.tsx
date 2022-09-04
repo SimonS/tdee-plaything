@@ -32,3 +32,27 @@ it("fires onclick event", () => {
   if (firstDate) fireEvent.click(firstDate);
   expect(mockFn).toHaveBeenCalled();
 });
+
+const data = [
+  [1, 145],
+  [2, 280],
+  [3, 415],
+];
+it.each(data)(
+  "when there are %i years in the calendar, height is %ipx",
+  (years, height) => {
+    const { getByTestId } = render(
+      <Calendar
+        data={[]}
+        from={new Date("2020-01-01")}
+        to={new Date(`${2019 + years}-12-31`)}
+        responsive={false}
+      />
+    );
+
+    expect(getByTestId("calendar-root")).toHaveStyle({
+      height: `${height}px`,
+      width: "100%",
+    });
+  }
+);
