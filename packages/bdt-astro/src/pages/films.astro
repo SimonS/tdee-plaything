@@ -1,17 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FilmCalendar from "@components/interactions/films.tsx";
+import Films from "@components/media/films.tsx";
 
 import getAllFilms, {
   groupFilmsByDate,
   aggregateFilms,
 } from "@film-fetcher/getAllFilms.ts";
-
-import Pagination from "@components/pagination/pagination.tsx";
-import { FilmEntry } from "../components/FilmEntry.tsx";
-import getFilms from "@film-fetcher/getFilms.ts";
-
-const { films, meta } = await getFilms();
 
 const allFilms = await getAllFilms();
 const grouped = groupFilmsByDate(allFilms);
@@ -28,16 +23,10 @@ const data = aggregateFilms(grouped);
     </p>
     <FilmCalendar client:load aggregated={data} grouped={grouped} />
 
-    {films.map((film) => <FilmEntry film={film} />)}
-
-    <Pagination
-      tag={`a`}
-      pageNumber={1}
-      urlRoot={`/films/page`}
-      pageInfo={{
-        hasNextPage: meta.hasNextPage,
-        hasPreviousPage: meta.hasPreviousPage,
-      }}
-    />
+    <Films client:load />
+    <p>
+      If my gratuitous calendar nav isn't working for you, feel free to check
+      out <a href="/films/page/1">my entire film stream in list form</a>
+    </p>
   </div>
 </BaseLayout>
