@@ -30,13 +30,13 @@ const Calendar = ({
   const baseSize = 145;
   // this gives a crude approximation of the height. It's not perfect.
   // will need adjusting if and when we modify the sizing.
-  const width = yearsToDisplay * baseSize - (yearsToDisplay - 1) * 10;
+  const height = yearsToDisplay * baseSize - (yearsToDisplay - 1) * 10;
 
   return (
     <div
       style={{
         width: "100%",
-        height: `${width}px`,
+        height: `${height}px`,
       }}
       data-testid="calendar-root"
     >
