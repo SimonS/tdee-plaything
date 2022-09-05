@@ -32,7 +32,7 @@
     "@types/react": "^17.0.41",
     "@types/react-dom": "^17.0.14",
     "assert-browserify": "^2.0.0",
-    "babel-jest": "^27.4.2",
+    "babel-jest": "^29.0.2",
     "babel-loader": "^8.2.4",
     "css-loader": "^6.5.1",
     "identity-obj-proxy": "^3.0.0",
