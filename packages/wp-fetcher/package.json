@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/nock": "^11.1.0",
-    "graphql": "^16.5.0",
+    "graphql": "^16.6.0",
     "graphql-request": "^4.3.0",
     "jest": "^27.4.3",
     "nock": "^13.2.1",
