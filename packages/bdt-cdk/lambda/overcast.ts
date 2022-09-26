@@ -90,8 +90,10 @@ export const handler = async function (event: {
     };
   });
 
+  const hasErrors = statuses.filter((status) => status.reason).length > 0;
+
   return {
-    statusCode: 200,
+    statusCode: hasErrors ? 500 : 200,
     headers: { "content-type": "text/json" },
     body: statuses,
   };

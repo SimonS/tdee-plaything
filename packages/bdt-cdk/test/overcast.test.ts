@@ -182,3 +182,35 @@ test("posts all listens to wordpress", async () => {
 
   expect(axiosSpy).toHaveBeenCalledTimes(3);
 });
+
+test("returns a 500 with the logs if any posts to BDT fail", async () => {
+  mockLogin(true);
+
+  const listens = [
+    {
+      pubDate: new Date("2021-02-18T07:00:00-05:00"),
+      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
+      url: "https://url",
+      overcastUrl: "https://overcast.fm/+b1V0WLux0",
+      sourceUrl:
+        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
+      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
+      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
+    },
+  ];
+
+  mockListens(listens);
+
+  jest
+    .spyOn(axios, "post")
+    .mockImplementation(async () =>
+      Promise.reject(new Error("Connection refused"))
+    );
+
+  const result = await handler({
+    email: "someemail@gmail.com",
+    password: "mypassword",
+  });
+
+  expect(result.statusCode).toEqual(500);
+});
