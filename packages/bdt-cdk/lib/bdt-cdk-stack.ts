@@ -1,24 +1,24 @@
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda-nodejs";
-import * as targets from "@aws-cdk/aws-events-targets";
-import * as events from "@aws-cdk/aws-events";
+import { Stack, App, StackProps, Duration } from "aws-cdk-lib";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Rule, Schedule } from "aws-cdk-lib/aws-events";
+import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 
-export class BdtCdkStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+export class BdtCdkStack extends Stack {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const overcastLambda = new lambda.NodejsFunction(this, "OvercastLambda", {
+    const overcastLambda = new NodejsFunction(this, "OvercastLambda", {
       entry: "./lambda/overcast.ts",
       functionName: "overcastLambda",
       handler: "handler",
       memorySize: 512,
-      timeout: cdk.Duration.seconds(30),
+      timeout: Duration.seconds(30),
     });
 
-    const eventRule = new events.Rule(this, "scheduleRule", {
-      schedule: events.Schedule.cron({ minute: "4", hour: "3" }),
+    const eventRule = new Rule(this, "scheduleRule", {
+      schedule: Schedule.cron({ minute: "4", hour: "3" }),
     });
 
-    eventRule.addTarget(new targets.LambdaFunction(overcastLambda));
+    eventRule.addTarget(new LambdaFunction(overcastLambda));
   }
 }
