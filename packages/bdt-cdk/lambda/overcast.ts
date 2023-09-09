@@ -4,12 +4,21 @@ import {
 } from "@tdee/overcast-functions/src/getOvercastListens";
 import axios from "axios";
 
+const getYesterday = () => {
+  const since = new Date();
+  since.setDate(since.getDate() - 1);
+  since.setHours(0, 0, 0, 0);
+  return since;
+};
+
 export const handler = async function (event: {
   email?: string;
   password?: string;
+  since?: string;
 }) {
   const email = event.email ?? process.env.OVERCAST_EMAIL;
   const password = event.password ?? process.env.OVERCAST_PASSWORD;
+  const since = event.since ? new Date(event.since) : getYesterday();
 
   if (!email || !password) {
     return {
@@ -27,11 +36,7 @@ export const handler = async function (event: {
     };
   }
 
-  // get listens since yesterday, play it safe, I'll dedupe on the data's side
-  let yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  yesterday.setHours(0, 0, 0, 0);
-  const listens = await getOvercastListens(yesterday);
+  const listens = await getOvercastListens(since);
 
   if (listens.length === 0) {
     return {

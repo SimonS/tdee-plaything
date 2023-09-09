@@ -68,7 +68,7 @@ test("login uses credentials from environment variables when credentials not pas
 
 test("calls listen getter with yesterday's date", async () => {
   const mockDate = new Date("2020-01-02");
-  const dateMock = jest
+  jest
     .spyOn(global, "Date")
     .mockImplementation(() => mockDate as unknown as string);
 
@@ -82,6 +82,20 @@ test("calls listen getter with yesterday's date", async () => {
   });
 
   expect(listenSpy).toHaveBeenCalledWith(new Date("2020-01-01"));
+});
+
+test("calls listen getter with custom date", async () => {
+  mockLogin(true);
+  mockAxios();
+  const listenSpy = mockListens([]);
+
+  await handler({
+    email: "someemail@gmail.com",
+    password: "mypassword",
+    since: "2019-01-01",
+  });
+
+  expect(listenSpy).toHaveBeenCalledWith(new Date("2019-01-01"));
 });
 
 test("posts listens to wordpress", async () => {

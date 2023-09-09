@@ -1,10 +1,6 @@
-import {
-  expect as expectCDK,
-  haveResource,
-  haveResourceLike,
-} from "@aws-cdk/assert";
-import { CfnFunction } from "@aws-cdk/aws-lambda";
-import * as cdk from "@aws-cdk/core";
+import { Template } from "aws-cdk-lib/assertions";
+import * as cdk from "aws-cdk-lib";
+
 import * as BdtCdk from "../lib/bdt-cdk-stack";
 
 test("creates and wires up a lambda", () => {
@@ -12,13 +8,13 @@ test("creates and wires up a lambda", () => {
 
   const stack = new BdtCdk.BdtCdkStack(app, "MyTestStack");
 
-  expectCDK(stack).to(
-    haveResource("AWS::Lambda::Function", {
-      FunctionName: "overcastLambda",
-      MemorySize: 512,
-      Runtime: "nodejs14.x",
-    })
-  );
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "overcastLambda",
+    MemorySize: 512,
+    Runtime: "nodejs16.x",
+  });
 });
 
 test("adds a rule to run lambda on cronjob", () => {
@@ -27,19 +23,19 @@ test("adds a rule to run lambda on cronjob", () => {
   const stack = new BdtCdk.BdtCdkStack(app, "MyTestStack");
 
   const lambdaId = stack.getLogicalId(
-    stack.node.findChild("OvercastLambda").node.defaultChild as CfnFunction
+    stack.node.findChild("OvercastLambda").node.defaultChild as cdk.CfnElement
   );
 
-  expectCDK(stack).to(
-    haveResourceLike("AWS::Events::Rule", {
-      ScheduleExpression: "cron(4 3 * * ? *)",
-      Targets: [
-        {
-          Arn: {
-            "Fn::GetAtt": [lambdaId, "Arn"],
-          },
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::Events::Rule", {
+    ScheduleExpression: "cron(4 3 * * ? *)",
+    Targets: [
+      {
+        Arn: {
+          "Fn::GetAtt": [lambdaId, "Arn"],
         },
-      ],
-    })
-  );
+      },
+    ],
+  });
 });
