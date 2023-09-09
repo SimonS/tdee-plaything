@@ -10,8 +10,8 @@
     "prepack": "yarn compile"
   },
   "dependencies": {
-    "axios": "^0.26.1",
-    "axios-cookiejar-support": "^2.0.4",
+    "axios": "^1.5.0",
+    "axios-cookiejar-support": "^4.0.7",
     "cheerio": "^1.0.0-rc.10",
     "mock-fs": "^5.1.2",
     "tough-cookie": "^4.0.0"
