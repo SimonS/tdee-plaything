@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import getPages, {getPage} from "@wp-fetcher/getPages.ts";
 
 export async function getStaticPaths() {
-  const {pages} = await getPages(10);
+  const {pages} = await getPages("10");
 
   return pages.map(page => ({params: {pageslug: page.slug}, props: {id: page.id}}));
 }

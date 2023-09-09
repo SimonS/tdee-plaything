@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
-import { PodcastEntry } from '../../../components/PodcastEntry.tsx'
-import Pagination from "@components/pagination/pagination.tsx";
+import { PodcastEntry } from '../../../components/PodcastEntry'
+import Pagination from "@components/pagination/pagination";
 
-import getPodcasts, { whereClause } from "@podcast-fetcher/getPodcasts.ts";
-import getAllPages from "@fetcher-paginator/getAllPages.ts";
+import getPodcasts, { whereClause } from "@podcast-fetcher/getPodcasts";
+import getAllPages from "@fetcher-paginator/getAllPages";
 
-export const getStaticPaths = async () => await getAllPages(10, 'podcasts', whereClause);
+export async function getStaticPaths() {
+  return await getAllPages(10, 'podcasts', whereClause);
+}
 
 const {after} = Astro.props;
 const {pagenum} = Astro.params;

@@ -22,8 +22,8 @@ const data = aggregatePodcasts(grouped);
         >Overcast
       </a>.
     </p>
-    <PodcastCalendar client:load aggregated={data} grouped={grouped} />
-    <Podcasts client:load />
+    <PodcastCalendar client:only="react" aggregated={data} grouped={grouped} />
+    <Podcasts client:only="react" />
     <p>
       If my gratuitous calendar nav isn't working for you, feel free to check
       out <a href="/podcasts/page/1">my entire podcast stream in list form</a>
