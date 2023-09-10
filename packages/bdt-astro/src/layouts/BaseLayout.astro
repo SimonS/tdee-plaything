@@ -29,7 +29,7 @@ const path = new URL(Astro.url.pathname, Astro.site);
     <div class="shell">
       <div class="sidebar left">
         <div>
-          <div transition:persist>
+          <div>
             <div class="stack" >
               <AstroLogo client:load />
               <Nav url={path} />
