@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro'
-import Pagination from "@components/pagination/pagination.tsx";
-import { FilmEntry } from "../../../components/FilmEntry.tsx";
+import Pagination from "@components/pagination/pagination";
+import { FilmEntry } from "../../../components/FilmEntry";
 
-import getFilms, { whereClause } from "@film-fetcher/getFilms.ts";
-import getAllPages from "@fetcher-paginator/getAllPages.ts";
+import getFilms, { whereClause } from "@film-fetcher/getFilms";
+import getAllPages from "@fetcher-paginator/getAllPages";
 
 export async function getStaticPaths() {
   return await getAllPages(10, 'films', whereClause);

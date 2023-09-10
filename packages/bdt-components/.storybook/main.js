@@ -1,13 +1,19 @@
+import { dirname, join } from "path";
 module.exports = {
-  core: {
-    builder: "webpack5",
+  
+  framework: {
+    name: "@storybook/react-webpack5",
+    options: {},
   },
+
   stories: ["../src/**/*.stories.@(tsx|mdx)"],
+
   addons: [
-    "@storybook/addon-actions",
-    "@storybook/addon-docs",
-    "@storybook/addon-controls",
+    getAbsolutePath("@storybook/addon-actions"),
+    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook/addon-controls"),
   ],
+
   webpackFinal: async (config, { configType }) => {
     const ruleCssIndex = config.module.rules.findIndex(
       (rule) => rule.test.toString() === "/\\.css$/"
@@ -41,4 +47,12 @@ module.exports = {
     };
     return config;
   },
+
+  docs: {
+    autodocs: true
+  }
 };
+
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, "package.json")));
+}

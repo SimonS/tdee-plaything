@@ -1,0 +1,5 @@
+yarn add v1.18.0
+[1/4] Resolving packages...
+warning Lockfile has incorrect entry for "@types/jest@^29.6.0". Ignoring it.
+error Couldn't find any versions for "@types/jest" that matches "^29.6.0"
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.

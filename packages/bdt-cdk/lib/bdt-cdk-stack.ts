@@ -13,6 +13,9 @@ export class BdtCdkStack extends Stack {
       handler: "handler",
       memorySize: 512,
       timeout: Duration.seconds(30),
+      bundling: {
+        externalModules: ["deasync"],
+      },
     });
 
     const eventRule = new Rule(this, "scheduleRule", {

@@ -9,13 +9,13 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "^1.0.5",
+    "astro": "^3.0.5",
     "graphql-request": "^4.3.0",
     "sass": "^1.49.9"
   },
   "dependencies": {
-    "@astrojs/react": "^1.0.0",
-    "@nivo/core": "^0.79.0",
-    "@nivo/line": "^0.79.1"
+    "@astrojs/react": "^3.0.2",
+    "@nivo/core": "0.79.0",
+    "@nivo/line": "0.79.0"
   }
 }

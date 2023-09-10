@@ -356,10 +356,10 @@ describe("weight navigation", () => {
     expect(getByText("<")).toBeVisible();
   });
 
-  it("clicking previous shows earlier dates", () => {
+  it("clicking previous shows earlier dates", async () => {
     const weighins = generateWeighins(12);
 
-    const { getByText, container } = render(
+    const { getByText, findAllByText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
@@ -371,17 +371,17 @@ describe("weight navigation", () => {
     );
 
     userEvent.click(getByText("<"));
+
+    const jans = await findAllByText("Jan 01")
     expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "Jan 01"
-      )
+      jans
     ).toHaveLength(1);
   });
 
-  it("clicking next shows later dates", () => {
+  it("clicking next shows later dates", async () => {
     const weighins = generateWeighins(12);
 
-    const { getByText, container } = render(
+    const { getByText, findAllByText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
@@ -394,10 +394,7 @@ describe("weight navigation", () => {
 
     userEvent.click(getByText(">"));
 
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "12"
-      )
-    ).toHaveLength(1);
+    const twelves = await findAllByText("12")
+    expect(twelves).toHaveLength(1);
   });
 });

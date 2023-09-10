@@ -21,9 +21,9 @@ const data = aggregateFilms(grouped);
         href="https://letterboxd.com/simonscarfe/">Letterboxd</a
       >.
     </p>
-    <FilmCalendar client:load aggregated={data} grouped={grouped} />
+    <FilmCalendar client:only aggregated={data} grouped={grouped} />
 
-    <Films client:load />
+    <Films client:only />
     <p>
       If my gratuitous calendar nav isn't working for you, feel free to check
       out <a href="/films/page/1">my entire film stream in list form</a>

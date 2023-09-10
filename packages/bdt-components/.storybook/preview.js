@@ -1,6 +1,5 @@
 import React from "react";
 import { action } from "@storybook/addon-actions";
-import { addParameters } from "@storybook/react";
 import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
 import "!style-loader!css-loader!sass-loader!../../bdt-astro/public/style/global.scss";
 
@@ -26,9 +25,9 @@ window.___navigate = (pathname) => {
   action("NavigateTo:")(pathname);
 };
 
-addParameters({
+export const parameters = {
   docs: {
     container: DocsContainer,
     page: DocsPage,
   },
-});
+};

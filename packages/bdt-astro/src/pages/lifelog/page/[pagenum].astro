@@ -7,8 +7,7 @@ import getAll from "@lifelog-fetcher/getAll.ts";
 import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
 export async function getStaticPaths() {
-
-return await getAllPages(10, 'contentNodes', '{contentTypes: [BDT_WEIGHIN, BDT_FILM, BDT_PODCAST]}');
+  return await getAllPages(10, 'contentNodes', '{contentTypes: [BDT_WEIGHIN, BDT_FILM, BDT_PODCAST]}');
 }
 
 const {after} = Astro.props;
