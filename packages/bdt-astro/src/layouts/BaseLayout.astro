@@ -1,6 +1,8 @@
 ---
 import Nav from "@components/nav/nav";
 import { AstroLogo } from "../components/AstroLogo";
+import { ViewTransitions } from 'astro:transitions';
+
 const { title } = Astro.props;
 const path = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -10,6 +12,7 @@ const path = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
+    <ViewTransitions />
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link
@@ -27,7 +30,7 @@ const path = new URL(Astro.url.pathname, Astro.site);
       <div class="sidebar left">
         <div>
           <div>
-            <div class="stack">
+            <div class="stack" >
               <AstroLogo client:load />
               <Nav url={path} />
             </div>
