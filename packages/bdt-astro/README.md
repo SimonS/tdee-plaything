@@ -9,6 +9,7 @@ I find the mental-model of something simpler like astro easier to understand (it
     - [ ] Podcasts
     - [ ] Films
     - [ ] Lifelog
+- [ ] remove singular get<T>s calls
 - [ ] ensure there are some rudimentary tests for now public exported functions for getAll<T>() calls
     - [ ] Podcasts
     - [ ] Films
