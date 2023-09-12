@@ -7,7 +7,7 @@ interface GraphQLMeta {
   endCursor: string;
 }
 
-const getAllFilms = async () => {
+const getAllFilms = async (sort = true) => {
   let morePages = true;
   let allFilms: Film[] = [];
   let next;
@@ -26,7 +26,9 @@ const getAllFilms = async () => {
     next = meta.endCursor;
   }
 
-  allFilms.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
+  if (sort) {
+    allFilms.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
+  }
 
   return allFilms;
 };

@@ -66,7 +66,7 @@ test("getAllFilms returns aggregate of many pages", async () => {
   expect(films).toHaveLength(2);
 });
 
-test("getAllFilms sorts fils", async () => {
+test("getAllFilms sorts films", async () => {
   nock("https://breakfastdinnertea.co.uk")
     .post("/graphql")
     .reply(200, buildFilmsResponse(4, false, true));
@@ -74,6 +74,16 @@ test("getAllFilms sorts fils", async () => {
   const films = await getAllFilms();
 
   expect(films[1].watchedDate).toEqual("2020-01-02");
+});
+
+test("getAllFilms can override sort", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql")
+    .reply(200, buildFilmsResponse(4, false, true));
+
+  const films = await getAllFilms(false);
+
+  expect(films[0].watchedDate).toEqual("2020-01-04");
 });
 
 test("groupFilmsByDate groups Films by date", () => {
