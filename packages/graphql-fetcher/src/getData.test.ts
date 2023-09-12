@@ -179,3 +179,43 @@ test("accepts 'after' as a parameter and sends it to graphql", async () => {
 
   expect(meta.hasPreviousPage).toBeTruthy();
 });
+
+test("accepts 'first' as a parameter and sends it to graphql", async () => {
+  const first = "100";
+
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql", (body) => {
+      return body.query.indexOf(first) !== -1;
+    })
+    .reply(200, {
+      data: {
+        podcasts: {
+          nodes: [],
+          pageInfo: {
+            endCursor: "123",
+            startCursor: "321",
+            hasNextPage: true,
+            hasPreviousPage: true,
+          },
+        },
+      },
+    });
+
+  const after = "123";
+  const nodeName = "podcasts";
+  const whereClause = "{ orderby: { field: LISTEN_DATE, order: DESC } }";
+  const fields = [
+    "listenDate",
+    "podcastTitle",
+    "content(format: RENDERED)",
+    "overcastURL",
+    "feedURL",
+    "episodeURL",
+    "feedTitle",
+    "feedImage",
+  ];
+
+  const { meta } = await getData(nodeName, fields, after, whereClause, first);
+
+  expect(meta.hasPreviousPage).toBeTruthy();
+});

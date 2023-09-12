@@ -7,7 +7,7 @@ afterAll(() => nock.enableNetConnect());
 
 afterEach(() => nock.cleanAll());
 
-const generateFilmCollection = (num, reverse = false) =>
+const generateFilmCollection = (num: number, reverse = false) =>
   Array(num)
     .fill("")
     .map((_, i) => ({
@@ -24,7 +24,11 @@ const generateFilmCollection = (num, reverse = false) =>
       content: "",
     }));
 
-const buildFilmsResponse = (num, hasNextPage = false, reverse = false) => ({
+const buildFilmsResponse = (
+  num: number,
+  hasNextPage = false,
+  reverse = false
+) => ({
   data: {
     films: {
       nodes: generateFilmCollection(num, reverse),
@@ -64,6 +68,25 @@ test("getAllFilms returns aggregate of many pages", async () => {
   const films = await getAllFilms();
 
   expect(films).toHaveLength(2);
+});
+
+test("getAllFilms forces pagination of 100", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .persist() // persist interceptor to catch infinite loops
+    .post("/graphql")
+    .reply(200, function (_, requestBody) {
+      const query: string = requestBody["query"];
+      const after = [...query.matchAll(/after: "(\w*)"/g)][0][1];
+      const first = [...query.matchAll(/first: "(\w*)"/g)][0][1];
+
+      if (after === "") return buildFilmsResponse(parseInt(first, 10), true);
+
+      return buildFilmsResponse(parseInt(first, 10));
+    });
+
+  const films = await getAllFilms();
+
+  expect(films).toHaveLength(200);
 });
 
 test("getAllFilms sorts films", async () => {

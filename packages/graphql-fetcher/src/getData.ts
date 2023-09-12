@@ -5,13 +5,16 @@ const getData = async <T>(
   nodeName: string,
   fields: string[],
   after?: string,
-  whereClause?: string
+  whereClause?: string,
+  first?: string
 ): Promise<{ data: T[]; meta: PageInfo }> => {
   const where = whereClause ? `, where: ${whereClause},` : "";
 
   const query = gql`
   {
-    ${nodeName}(${where} first: 10, after: "${after ? after : ""}") {
+    ${nodeName}(${where} first: "${first ?? ""}", after: "${
+      after ? after : ""
+    }") {
       nodes {
         ${fields.join("\n")}
       }

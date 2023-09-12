@@ -19,7 +19,7 @@ const getAllFilms = async (sort = true) => {
     }: {
       films: Film[];
       meta: GraphQLMeta;
-    } = await getFilms(next);
+    } = await getFilms(next, "100");
 
     allFilms = [...allFilms, ...films];
     morePages = meta.hasNextPage;
