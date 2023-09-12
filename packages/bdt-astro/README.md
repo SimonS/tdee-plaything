@@ -6,12 +6,12 @@ I find the mental-model of something simpler like astro easier to understand (it
 
 ## Build optimisation checklist
 - [ ] for each data type, change getStaticPaths to return all data, rather than just pagination data
-    - [ ] Podcasts
+    - [X] Podcasts
     - [ ] Films
     - [ ] Lifelog
 - [ ] remove singular get<T>s calls
 - [ ] ensure there are some rudimentary tests for now public exported functions for getAll<T>() calls
-    - [ ] Podcasts
+    - [X] Podcasts
     - [ ] Films
     - [ ] Lifelog
 - [ ] change pagination component to work with new format

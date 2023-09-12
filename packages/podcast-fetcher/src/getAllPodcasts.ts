@@ -7,7 +7,7 @@ interface GraphQLMeta {
   endCursor: string;
 }
 
-const getAllPodcasts = async (byDate = false) => {
+export const getAllPodcasts = async (byDate = false, sort = true) => {
   let morePages = true;
   let allPodcasts: Podcast[] = [];
   let next;
@@ -26,7 +26,9 @@ const getAllPodcasts = async (byDate = false) => {
     next = meta.endCursor;
   }
 
-  allPodcasts.sort((a, b) => (a.listenDate < b.listenDate ? -1 : 1));
+  if (sort) {
+    allPodcasts.sort((a, b) => (a.listenDate < b.listenDate ? -1 : 1));
+  }
 
   return allPodcasts;
 };

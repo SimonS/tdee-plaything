@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { PodcastEntry } from "../../../components/PodcastEntry";
+import { getAllPodcasts } from "@podcast-fetcher/getAllPodcasts";
+
+export async function getStaticPaths({ paginate }) {
+  const pods = await getAllPodcasts();
+  return paginate(pods, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout>
+  <div class="stack listing">
+    <h1>Podcasts: Page {page.currentPage}</h1>
+
+    {page.data.map((podcast) => <PodcastEntry podcast={podcast} />)}
+
+    <!-- <Pagination tag={`a`} pageNumber={parseInt(pagenum, 10)} urlRoot={`/podcasts/page`} pageInfo={{hasNextPage: meta.hasNextPage, hasPreviousPage: meta.hasPreviousPage}} /> -->
+  </div>
+</BaseLayout>

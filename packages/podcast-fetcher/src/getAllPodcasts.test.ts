@@ -76,6 +76,16 @@ test("getAllPodcasts sorts podcasts", async () => {
   expect(podcasts[1].listenDate).toEqual("2020-01-02T000000");
 });
 
+test("getAllPodcasts has option not to sort podcasts", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql")
+    .reply(200, buildPodcastsResponse(4, false, true));
+
+  const podcasts = await getAllPodcasts(false, false);
+
+  expect(podcasts[0].listenDate).toEqual("2020-01-04T000000");
+});
+
 test("groupByDate groups podcasts by date", () => {
   const retrievedPodcasts = generatePodcastCollection(3);
 
