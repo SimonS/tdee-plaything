@@ -1,17 +1,46 @@
 import { request, gql } from "graphql-request";
+import { PageInfo, Film, Podcast, Weighin } from "@tdee/types/src/bdt";
 
 export const getAllPages = async (
-  pageSize: number,
-  nodeName: string,
-  whereClause: string
-): Promise<{ params: { pagenum: string }; props?: { after: string } }[]> => {
+  pageSize: number
+): Promise<(Film | Podcast | Weighin)[]> => {
   const query = gql`
     query nextPage($first: Int, $after: String) {
-      ${nodeName}(
-        where: ${whereClause}
+      contentNodes(
+        where: { contentTypes: [BDT_WEIGHIN, BDT_FILM, BDT_PODCAST] }
         first: $first
         after: $after
       ) {
+        nodes {
+          ... on Weighin {
+            weighinTime
+            weight
+            bodyFatPercentage
+          }
+          ... on Podcast {
+            listenDate
+            podcastTitle
+            content(format: RENDERED)
+            overcastURL
+            feedURL
+            episodeURL
+            feedTitle
+            feedImage
+          }
+          ... on Film {
+            watchedDate
+            filmTitle
+            year
+            rating
+            reviewLink
+            content
+            meta {
+              image
+              runtime
+              original_language
+            }
+          }
+        }
         pageInfo {
           endCursor
           startCursor
@@ -26,29 +55,31 @@ export const getAllPages = async (
     await request("https://breakfastdinnertea.co.uk/graphql", query, {
       first: pageSize,
       after: after ? after : "",
-    }).then((data) => {
-      return { meta: data[nodeName].pageInfo };
-    });
+    }).then(
+      (data: {
+        contentNodes: {
+          nodes: (Film | Podcast | Weighin)[];
+          pageInfo: PageInfo;
+        };
+      }) => {
+        return {
+          data: data.contentNodes?.nodes,
+          meta: data.contentNodes?.pageInfo,
+        };
+      }
+    );
 
-  const countToObject = (count: number, meta: { endCursor: string }) => {
-    return {
-      params: { pagenum: count.toString() },
-      props: { after: meta.endCursor },
-    };
-  };
+  let { data, meta } = await getNextPage();
 
-  let count = 2;
-  let { meta } = await getNextPage();
-
-  const paths = [];
-  paths.push({ params: { pagenum: "1" } });
+  let results: (Film | Podcast | Weighin)[] = [...data];
 
   while (meta.hasNextPage) {
-    paths.push(countToObject(count++, meta));
-    ({ meta } = await getNextPage(meta.endCursor));
+    const next = await getNextPage(meta.endCursor);
+    results = results.concat(...next.data);
+    meta = next.meta;
   }
 
-  return paths;
+  return results;
 };
 
 export default getAllPages;

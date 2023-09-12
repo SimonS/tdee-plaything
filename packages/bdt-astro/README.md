@@ -7,12 +7,12 @@ I find the mental-model of something simpler like astro easier to understand (it
 ## Build optimisation checklist
 - [ ] for each data type, change getStaticPaths to return all data, rather than just pagination data
     - [X] Podcasts
-    - [ ] Films
-    - [ ] Lifelog
+    - [X] Films
+    - [X] Lifelog
 - [ ] remove singular get<T>s calls
 - [ ] ensure there are some rudimentary tests for now public exported functions for getAll<T>() calls
     - [X] Podcasts
-    - [ ] Films
-    - [ ] Lifelog
+    - [X] Films
+    - [X] Lifelog
 - [ ] change pagination component to work with new format
 - [ ] memoise relevant getAll<T>() calls (they won't be expected to change between builds)
