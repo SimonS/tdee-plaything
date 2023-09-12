@@ -8,11 +8,11 @@ const getData = async <T>(
   whereClause?: string,
   first?: string
 ): Promise<{ data: T[]; meta: PageInfo }> => {
-  const where = whereClause ? `, where: ${whereClause},` : "";
+  const where = whereClause ? `where: ${whereClause},` : "";
 
   const query = gql`
   {
-    ${nodeName}(${where} first: "${first ?? ""}", after: "${
+    ${nodeName}(${where} first: ${first ?? "10"}, after: "${
       after ? after : ""
     }") {
       nodes {

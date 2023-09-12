@@ -19,7 +19,7 @@ export const getAllPodcasts = async (byDate = false, sort = true) => {
     }: {
       podcasts: Podcast[];
       meta: GraphQLMeta;
-    } = await getPodcasts(next);
+    } = await getPodcasts(next, "100");
 
     allPodcasts = [...allPodcasts, ...podcasts];
     morePages = meta.hasNextPage;

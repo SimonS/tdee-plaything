@@ -77,7 +77,7 @@ test("getAllFilms forces pagination of 100", async () => {
     .reply(200, function (_, requestBody) {
       const query: string = requestBody["query"];
       const after = [...query.matchAll(/after: "(\w*)"/g)][0][1];
-      const first = [...query.matchAll(/first: "(\w*)"/g)][0][1];
+      const first = [...query.matchAll(/first: (\d*)/g)][0][1];
 
       if (after === "") return buildFilmsResponse(parseInt(first, 10), true);
 

@@ -10,7 +10,7 @@ afterAll(() => nock.enableNetConnect());
 
 afterEach(() => nock.cleanAll());
 
-const generatePodcastCollection = (num, reverse = false): Podcast[] =>
+const generatePodcastCollection = (num: number, reverse = false): Podcast[] =>
   Array(num)
     .fill("")
     .map((_, i) => ({
@@ -24,7 +24,11 @@ const generatePodcastCollection = (num, reverse = false): Podcast[] =>
       content: "",
     }));
 
-const buildPodcastsResponse = (num, hasNextPage = false, reverse = false) => ({
+const buildPodcastsResponse = (
+  num: number,
+  hasNextPage = false,
+  reverse = false
+) => ({
   data: {
     podcasts: {
       nodes: generatePodcastCollection(num, reverse),
@@ -64,6 +68,25 @@ test("getAllPodcasts returns aggregate of many pages", async () => {
   const podcasts = await getAllPodcasts();
 
   expect(podcasts).toHaveLength(2);
+});
+
+test("getAllPodcasts paginates 100 at a time", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .persist() // persist interceptor to catch infinite loops
+    .post("/graphql")
+    .reply(200, function (_, requestBody) {
+      const query: string = requestBody["query"];
+      const after = [...query.matchAll(/after: "(\w*)"/g)][0][1];
+      const first = [...query.matchAll(/first: (\d*)/g)][0][1];
+
+      if (after === "") return buildPodcastsResponse(parseInt(first, 10), true);
+
+      return buildPodcastsResponse(parseInt(first, 10));
+    });
+
+  const podcasts = await getAllPodcasts();
+
+  expect(podcasts).toHaveLength(200);
 });
 
 test("getAllPodcasts sorts podcasts", async () => {
