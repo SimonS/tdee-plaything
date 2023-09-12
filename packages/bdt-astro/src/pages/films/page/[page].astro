@@ -4,7 +4,7 @@ import { FilmEntry } from "../../../components/FilmEntry";
 import getAllFilms from "@film-fetcher/getAllFilms";
 
 export async function getStaticPaths({ paginate }) {
-  const films = await getAllFilms();
+  const films = await getAllFilms(false);
   return paginate(films, { pageSize: 10 });
 }
 

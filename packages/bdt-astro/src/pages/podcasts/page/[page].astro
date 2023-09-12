@@ -4,7 +4,7 @@ import { PodcastEntry } from "../../../components/PodcastEntry";
 import { getAllPodcasts } from "@podcast-fetcher/getAllPodcasts";
 
 export async function getStaticPaths({ paginate }) {
-  const pods = await getAllPodcasts();
+  const pods = await getAllPodcasts(false);
   return paginate(pods, { pageSize: 10 });
 }
 
