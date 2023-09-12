@@ -2,6 +2,7 @@
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "baseUrl": ".",
+    "jsx": "react",
     "paths": {
       "@bdt-types/*": ["../types/src/*"],
       "@components/*": ["../bdt-components/src/*"],
