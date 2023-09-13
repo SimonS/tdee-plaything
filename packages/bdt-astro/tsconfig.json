@@ -6,7 +6,6 @@
     "paths": {
       "@bdt-types/*": ["../types/src/*"],
       "@components/*": ["../bdt-components/src/*"],
-      "@fetcher-paginator/*": ["../fetcher-paginator/src/*"],
       "@film-fetcher/*": ["../film-fetcher/src/*"],
       "@lifelog-fetcher/*": ["../lifelog-fetcher/src/*"],
       "@podcast-fetcher/*": ["../podcast-fetcher/src/*"],

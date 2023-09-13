@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { LifeLogEntry } from "../components/LifeLogEntry.tsx";
 // import Pagination from "@components/pagination/pagination.tsx";
-import getAllPages from "@fetcher-paginator/getAllPages.ts";
+import getAllPages from "@lifelog-fetcher/getAllPages.ts";
 
 global.lifelog = global.lifelog ?? (await getAllPages(100));
 const data = global.lifelog.slice(10);
