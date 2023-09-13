@@ -1,13 +1,16 @@
-import getAllFilms, { groupFilmsByDate, aggregateFilms } from "./getAllFilms";
+import getAllFilms, {
+  groupFilmsByDate,
+  aggregateFilms,
+  sortFilms,
+} from "./getAllFilms";
 import * as nock from "nock";
-import { Film } from "@tdee/types/src/bdt";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 
 afterEach(() => nock.cleanAll());
 
-const generateFilmCollection = (num, reverse = false) =>
+const generateFilmCollection = (num: number, reverse = false) =>
   Array(num)
     .fill("")
     .map((_, i) => ({
@@ -24,7 +27,11 @@ const generateFilmCollection = (num, reverse = false) =>
       content: "",
     }));
 
-const buildFilmsResponse = (num, hasNextPage = false, reverse = false) => ({
+const buildFilmsResponse = (
+  num: number,
+  hasNextPage = false,
+  reverse = false
+) => ({
   data: {
     films: {
       nodes: generateFilmCollection(num, reverse),
@@ -66,14 +73,31 @@ test("getAllFilms returns aggregate of many pages", async () => {
   expect(films).toHaveLength(2);
 });
 
-test("getAllFilms sorts fils", async () => {
+test("getAllFilms forces pagination of 100", async () => {
   nock("https://breakfastdinnertea.co.uk")
+    .persist() // persist interceptor to catch infinite loops
     .post("/graphql")
-    .reply(200, buildFilmsResponse(4, false, true));
+    .reply(200, function (_, requestBody) {
+      const query: string = requestBody["query"];
+      const after = [...query.matchAll(/after: "(\w*)"/g)][0][1];
+      const first = [...query.matchAll(/first: (\d*)/g)][0][1];
+
+      if (after === "") return buildFilmsResponse(parseInt(first, 10), true);
+
+      return buildFilmsResponse(parseInt(first, 10));
+    });
 
   const films = await getAllFilms();
 
-  expect(films[1].watchedDate).toEqual("2020-01-02");
+  expect(films).toHaveLength(200);
+});
+
+test("sortFilms sorts films", () => {
+  const retrievedFilms = generateFilmCollection(3, true);
+
+  const sorted = sortFilms(retrievedFilms);
+
+  expect(sorted[0].watchedDate).toEqual("2020-01-01");
 });
 
 test("groupFilmsByDate groups Films by date", () => {

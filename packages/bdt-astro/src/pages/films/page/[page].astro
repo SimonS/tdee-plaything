@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { FilmEntry } from "../../../components/FilmEntry";
+import Pagination from "@components/pagination/pagination.tsx";
+import getAllFilms from "@film-fetcher/getAllFilms";
+
+export async function getStaticPaths({ paginate }) {
+  global.films = global.films ?? (await getAllFilms());
+
+  return paginate(global.films, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout>
+  <div class="stack listing">
+    <h1>Films: Page {page.currentPage}</h1>
+
+    {page.data.map((film) => <FilmEntry film={film} />)}
+
+    <Pagination
+      tag={`a`}
+      pageNumber={parseInt(page.currentPage, 10)}
+      urlRoot={`/films/page`}
+      pageInfo={{
+        hasNextPage: page.url.next ? true : false,
+        hasPreviousPage: page.url.prev ? true : false,
+      }}
+    />
+  </div>
+</BaseLayout>

@@ -6,10 +6,13 @@ import Podcasts from "@components/media/podcasts.tsx";
 import getAllPodcasts, {
   groupPodcastsByDate,
   aggregatePodcasts,
+  sortPodcasts,
 } from "@podcast-fetcher/getAllPodcasts.ts";
 
-const allPodcasts = await getAllPodcasts();
-const grouped = groupPodcastsByDate(allPodcasts);
+global.podcasts = global.podcasts ?? (await getAllPodcasts(false));
+
+const sorted = sortPodcasts([...global.podcasts]);
+const grouped = groupPodcastsByDate(sorted);
 const data = aggregatePodcasts(grouped);
 ---
 

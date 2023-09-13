@@ -1,4 +1,5 @@
-import { Film, Podcast, Weighin } from "@bdt-types/bdt";
+import React from "react";
+import { type Film, type Podcast, type Weighin } from "@bdt-types/bdt";
 import { FilmEntry } from "./FilmEntry";
 import { PodcastEntry } from "./PodcastEntry";
 import { WeighinEntry } from "./WeighinEntry";

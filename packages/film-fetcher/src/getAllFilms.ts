@@ -19,16 +19,19 @@ const getAllFilms = async () => {
     }: {
       films: Film[];
       meta: GraphQLMeta;
-    } = await getFilms(next);
+    } = await getFilms(next, "100");
 
     allFilms = [...allFilms, ...films];
     morePages = meta.hasNextPage;
     next = meta.endCursor;
   }
 
-  allFilms.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
-
   return allFilms;
+};
+
+const sortFilms = (films: Film[]) => {
+  films.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
+  return films;
 };
 
 type GroupedFilms = {
@@ -40,6 +43,6 @@ const groupFilmsByDate = (films: Film[]) => groupBy(films, "watchedDate");
 const aggregateFilms = (groupedFilms: GroupedFilms) =>
   aggregateData(groupedFilms);
 
-export { groupFilmsByDate, aggregateFilms };
+export { groupFilmsByDate, aggregateFilms, sortFilms };
 
 export default getAllFilms;

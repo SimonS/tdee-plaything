@@ -111,6 +111,32 @@ test("getAllWeighins returns aggregate of many pages", async () => {
   expect(weighins).toHaveLength(2);
 });
 
+test("getAllWeighins paginates by 100", async () => {
+  let first = "";
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql")
+    .reply(200, function (_, requestBody) {
+      const query: string = requestBody["query"];
+
+      first = [...query.matchAll(/first: (\d*)/g)][0][1];
+
+      return buildGraphQLResponse(
+        [
+          {
+            bodyFatPercentage: 18.37,
+            weighinTime: "2022-01-18T07:38:00+0000",
+            weight: 76.642,
+          },
+        ],
+        false
+      );
+    });
+
+  await getAllWeighins();
+
+  expect(first).toEqual("100");
+});
+
 test("optionally calculate trends", async () => {
   nock("https://breakfastdinnertea.co.uk")
     .post("/graphql")

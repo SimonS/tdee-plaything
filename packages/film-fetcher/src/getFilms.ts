@@ -4,7 +4,8 @@ import getData from "@tdee/graphql-fetcher/src/getData";
 export const whereClause = "{orderby: {field: DATE_WATCHED, order: DESC}}";
 
 const getFilms = async (
-  after?: string
+  after?: string,
+  first?: string
 ): Promise<{ films: Film[]; meta: PageInfo }> => {
   const nodeName = "films";
   const fields = [
@@ -21,7 +22,8 @@ const getFilms = async (
     nodeName,
     fields,
     after,
-    whereClause
+    whereClause,
+    first ?? "10"
   );
 
   return {

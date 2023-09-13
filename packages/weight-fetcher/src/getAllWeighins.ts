@@ -8,7 +8,7 @@ const getAllWeighins = async (processWeights = false) => {
   let next;
 
   while (morePages) {
-    const { weighins, meta } = await getWeighins(next);
+    const { weighins, meta } = await getWeighins(next, "100");
     allWeighins = [...allWeighins, ...weighins];
     morePages = meta.hasNextPage;
     next = meta.endCursor;

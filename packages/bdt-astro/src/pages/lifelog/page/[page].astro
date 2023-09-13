@@ -1,17 +1,22 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { LifeLogEntry } from "../components/LifeLogEntry.tsx";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LifeLogEntry } from "../../../components/LifeLogEntry.tsx";
 import Pagination from "@components/pagination/pagination.tsx";
+
 import getAllPages from "@lifelog-fetcher/getAllPages.ts";
 
-global.lifelog = global.lifelog ?? (await getAllPages(100));
-const data = global.lifelog.slice(0, 10);
-console.log(data.length);
+export async function getStaticPaths({ paginate }) {
+  global.lifelog = global.lifelog ?? (await getAllPages(100));
+
+  return paginate(global.lifelog, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
 ---
 
 <BaseLayout title="LifeLog">
   <div class="stack listing">
-    <h1>LifeLog!</h1>
+    <h1>LifeLog: Page {page.currentPage}</h1>
 
     <div class="content">
       <p>
@@ -23,15 +28,15 @@ console.log(data.length);
       </p>
     </div>
 
-    {data.map((entry) => <LifeLogEntry entry={entry} />)}
+    {page.data.map((entry) => <LifeLogEntry entry={entry} />)}
 
     <Pagination
       tag={`a`}
-      pageNumber={1}
+      pageNumber={parseInt(page.currentPage, 10)}
       urlRoot={`/lifelog/page`}
       pageInfo={{
-        hasNextPage: true,
-        hasPreviousPage: false,
+        hasNextPage: page.url.next ? true : false,
+        hasPreviousPage: page.url.prev ? true : false,
       }}
     />
   </div>

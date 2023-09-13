@@ -6,9 +6,13 @@ import Films from "@components/media/films.tsx";
 import getAllFilms, {
   groupFilmsByDate,
   aggregateFilms,
+  sortFilms,
 } from "@film-fetcher/getAllFilms.ts";
 
+global.films = global.films ?? (await getAllFilms());
+
 const allFilms = await getAllFilms();
+sortFilms(allFilms);
 const grouped = groupFilmsByDate(allFilms);
 const data = aggregateFilms(grouped);
 ---
@@ -23,7 +27,7 @@ const data = aggregateFilms(grouped);
     </p>
     <FilmCalendar client:only aggregated={data} grouped={grouped} />
 
-    <Films client:only />
+    <Films client:load />
     <p>
       If my gratuitous calendar nav isn't working for you, feel free to check
       out <a href="/films/page/1">my entire film stream in list form</a>
