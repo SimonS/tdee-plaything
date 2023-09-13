@@ -6,8 +6,9 @@ import { LifeLogEntry } from "../../../components/LifeLogEntry.tsx";
 import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
 export async function getStaticPaths({ paginate }) {
-  const all = await getAllPages(100);
-  return paginate(all, { pageSize: 10 });
+  global.lifelog = global.lifelog ?? (await getAllPages(100));
+
+  return paginate(global.lifelog, { pageSize: 10 });
 }
 
 const { page } = Astro.props;

@@ -4,8 +4,10 @@ import { PodcastEntry } from "../../../components/PodcastEntry";
 import { getAllPodcasts } from "@podcast-fetcher/getAllPodcasts";
 
 export async function getStaticPaths({ paginate }) {
-  const pods = await getAllPodcasts(false);
-  return paginate(pods, { pageSize: 10 });
+  global.podcasts = global.podcasts
+    ? global.podcasts
+    : await getAllPodcasts(false);
+  return paginate(global.podcasts, { pageSize: 10 });
 }
 
 const { page } = Astro.props;

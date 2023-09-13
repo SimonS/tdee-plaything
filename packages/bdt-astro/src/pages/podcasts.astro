@@ -8,7 +8,9 @@ import getAllPodcasts, {
   aggregatePodcasts,
 } from "@podcast-fetcher/getAllPodcasts.ts";
 
-const allPodcasts = await getAllPodcasts();
+global.podcasts = global.podcasts ?? (await getAllPodcasts(false));
+
+const allPodcasts = global.podcasts;
 const grouped = groupPodcastsByDate(allPodcasts);
 const data = aggregatePodcasts(grouped);
 ---

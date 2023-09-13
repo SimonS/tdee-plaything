@@ -4,8 +4,8 @@ import { LifeLogEntry } from "../components/LifeLogEntry.tsx";
 // import Pagination from "@components/pagination/pagination.tsx";
 import getAllPages from "@fetcher-paginator/getAllPages.ts";
 
-const data = await getAllPages(100);
-data.splice(10);
+global.lifelog = global.lifelog ?? (await getAllPages(100));
+const data = global.lifelog.slice(10);
 ---
 
 <BaseLayout title="LifeLog">

@@ -8,7 +8,9 @@ import getAllFilms, {
   aggregateFilms,
 } from "@film-fetcher/getAllFilms.ts";
 
-const allFilms = await getAllFilms();
+global.films = global.films ?? (await getAllFilms(false));
+
+const allFilms = global.films;
 const grouped = groupFilmsByDate(allFilms);
 const data = aggregateFilms(grouped);
 ---
