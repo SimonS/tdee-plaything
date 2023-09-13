@@ -5,7 +5,8 @@ import Pagination from "@components/pagination/pagination.tsx";
 import getAllPages from "@lifelog-fetcher/getAllPages.ts";
 
 global.lifelog = global.lifelog ?? (await getAllPages(100));
-const data = global.lifelog.slice(10);
+const data = global.lifelog.slice(0, 10);
+console.log(data.length);
 ---
 
 <BaseLayout title="LifeLog">
