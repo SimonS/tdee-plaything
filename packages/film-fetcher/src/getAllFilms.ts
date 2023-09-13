@@ -7,7 +7,7 @@ interface GraphQLMeta {
   endCursor: string;
 }
 
-const getAllFilms = async (sort = true) => {
+const getAllFilms = async () => {
   let morePages = true;
   let allFilms: Film[] = [];
   let next;
@@ -26,11 +26,12 @@ const getAllFilms = async (sort = true) => {
     next = meta.endCursor;
   }
 
-  if (sort) {
-    allFilms.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
-  }
-
   return allFilms;
+};
+
+const sortFilms = (films: Film[]) => {
+  films.sort((a, b) => (a.watchedDate < b.watchedDate ? -1 : 1));
+  return films;
 };
 
 type GroupedFilms = {
@@ -42,6 +43,6 @@ const groupFilmsByDate = (films: Film[]) => groupBy(films, "watchedDate");
 const aggregateFilms = (groupedFilms: GroupedFilms) =>
   aggregateData(groupedFilms);
 
-export { groupFilmsByDate, aggregateFilms };
+export { groupFilmsByDate, aggregateFilms, sortFilms };
 
 export default getAllFilms;

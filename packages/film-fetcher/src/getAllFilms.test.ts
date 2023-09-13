@@ -1,6 +1,9 @@
-import getAllFilms, { groupFilmsByDate, aggregateFilms } from "./getAllFilms";
+import getAllFilms, {
+  groupFilmsByDate,
+  aggregateFilms,
+  sortFilms,
+} from "./getAllFilms";
 import * as nock from "nock";
-import { Film } from "@tdee/types/src/bdt";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -89,24 +92,12 @@ test("getAllFilms forces pagination of 100", async () => {
   expect(films).toHaveLength(200);
 });
 
-test("getAllFilms sorts films", async () => {
-  nock("https://breakfastdinnertea.co.uk")
-    .post("/graphql")
-    .reply(200, buildFilmsResponse(4, false, true));
+test("sortFilms sorts films", () => {
+  const retrievedFilms = generateFilmCollection(3, true);
 
-  const films = await getAllFilms();
+  const sorted = sortFilms(retrievedFilms);
 
-  expect(films[1].watchedDate).toEqual("2020-01-02");
-});
-
-test("getAllFilms can override sort", async () => {
-  nock("https://breakfastdinnertea.co.uk")
-    .post("/graphql")
-    .reply(200, buildFilmsResponse(4, false, true));
-
-  const films = await getAllFilms(false);
-
-  expect(films[0].watchedDate).toEqual("2020-01-04");
+  expect(sorted[0].watchedDate).toEqual("2020-01-01");
 });
 
 test("groupFilmsByDate groups Films by date", () => {
