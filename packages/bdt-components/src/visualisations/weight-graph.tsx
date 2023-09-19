@@ -87,8 +87,8 @@ export default ({
     weighinTime: new Date(weighin.weighinTime).getTime(),
   }));
 
-  const startDate = window[0]?.weighinTime.split("T")[0];
-  const endDate = window[window.length - 1]?.weighinTime.split("T")[0];
+  const startDate = new Date(window[0]?.weighinTime).toLocaleDateString('en-gb');
+  const endDate = new Date(window[window.length - 1]?.weighinTime).toLocaleDateString('en-gb');
 
   return (
     <div className="stack">
@@ -119,7 +119,7 @@ export default ({
               domain={["dataMin-0.1", "dataMax+0.1"]}
               tickFormatter={tickWeightFormatter}
             />
-            <Tooltip />
+            <Tooltip labelFormatter={(value) => new Date(value as string).toLocaleDateString("en-gb")} />
             <Legend />
             <Line
               type="monotone"

@@ -160,7 +160,7 @@ describe("basic weight graph rendering", () => {
       />
     );
 
-    expect(getByRole("heading")).toHaveTextContent("2020-01-01 – 2020-01-03")
+    expect(getByRole("heading")).toHaveTextContent("01/01/2020 – 03/01/2020")
   });
 });
 
