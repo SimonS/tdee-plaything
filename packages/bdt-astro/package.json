@@ -14,8 +14,6 @@
     "sass": "^1.49.9"
   },
   "dependencies": {
-    "@astrojs/react": "^3.0.2",
-    "@nivo/core": "0.79.0",
-    "@nivo/line": "0.79.0"
+    "@astrojs/react": "^3.0.2"
   }
 }
