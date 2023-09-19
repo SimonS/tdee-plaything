@@ -24,14 +24,14 @@ const getDots = (container: HTMLElement) =>
 
 const generateWeighins = (n: number) => {
   let weighins: Weighin[] = [];
+  let date = new Date("2020-01-01")
   for (let i = 0; i < n; i++) {
     weighins.push({
-      weighinTime: `2020-01-${(i + 1)
-        .toString()
-        .padStart(2, "0")}T00:00:00.000Z`,
+      weighinTime: date.toISOString(), 
       weight: i + 1,
       bodyFatPercentage: 25,
     });
+    date.setDate(date.getDate() + 1);
   }
   return weighins;
 };
@@ -77,9 +77,9 @@ describe("basic weight graph rendering", () => {
 
   it("renders correct number of weighin dots", () => {
     const { container } = renderThreeDays();
-  
+
     const dots = getDots(container);
-    expect(dots).toHaveLength(3);    
+    expect(dots).toHaveLength(3);
   });
 
   it("filters between dates", () => {
@@ -146,7 +146,7 @@ describe("basic weight graph rendering", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("displays the dates rendered in a title", () =>{
+  it("displays the dates rendered in a title", () => {
     const weighins: Weighin[] = generateWeighins(10);
 
     const { getByRole } = render(
@@ -356,5 +356,84 @@ describe("weight navigation", () => {
 
     const twelves = await findAllByText("12/01")
     expect(twelves).toHaveLength(1);
+  });
+});
+
+describe("weight filtering", () => {
+  it("displays a radio selection to adjust the filter window", () => {
+    const weighins = generateWeighins(28);
+
+    const { getAllByRole } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-01T00:00:00.000Z",
+          displayDatesAtATime: 7,
+        }}
+      />
+    );
+    
+    expect(getAllByRole("radio").length).toBeGreaterThan(0);
+  });
+
+  it("changing the filter adjusts window to a month", async () => {
+    const weighins = generateWeighins(28);
+
+    const { findAllByText, getByText } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-01T00:00:00.000Z",
+          displayDatesAtATime: 7,
+        }}
+      />
+    );
+
+    userEvent.click(getByText("30 days"));
+
+    const twelves = await findAllByText("12/01")
+    expect(twelves).toHaveLength(1);
+  });
+
+  it("changing the filter adjusts window to 90 days", async () => {
+    const weighins = generateWeighins(95);
+
+    const { findByText, getByText } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-01T00:00:00.000Z",
+          displayDatesAtATime: 7,
+        }}
+      />
+    );
+
+    userEvent.click(getByText("90 days"));
+
+    const thirty = await findByText("30/03")
+    expect(thirty).toBeDefined();
+  });
+
+  it("changing the filter adjusts window to a 365 days", async () => {
+    const weighins = generateWeighins(400);
+
+    const { findByText, getByText } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-01T00:00:00.000Z",
+          displayDatesAtATime: 7,
+        }}
+      />
+    );
+
+    userEvent.click(getByText("Year"));
+
+    const thirty = await findByText("30/11")
+    expect(thirty).toBeDefined();
   });
 });

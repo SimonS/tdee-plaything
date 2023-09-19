@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Pagination } from "../pagination/pagination";
+import Filter from "./filter"
 
 export default ({
   weighins,
@@ -21,6 +22,8 @@ export default ({
   responsive?: boolean;
   filter?: { from?: string; displayDatesAtATime?: number | undefined };
 }) => {
+  const [dayCount, setDayCount] = useState(filter?.displayDatesAtATime ?? 7)
+
   if (weighins.length === 0) return <div>No data to display</div>;
 
   weighins.sort((a, b) =>
@@ -37,8 +40,8 @@ export default ({
         return from ? weighin.weighinTime >= from : true;
       })
       .filter((_, i) => {
-        return filter?.displayDatesAtATime !== undefined
-          ? i < filter?.displayDatesAtATime
+        return dayCount !== undefined
+          ? i < dayCount
           : true;
       });
 
@@ -75,11 +78,11 @@ export default ({
   };
 
   const showEarlier = () => {
-    changeFromBy(0 - (filter?.displayDatesAtATime || 7));
+    changeFromBy(0 - (dayCount || 7));
   };
 
   const showLater = () => {
-    changeFromBy(filter?.displayDatesAtATime || 7);
+    changeFromBy(dayCount || 7);
   };
 
   const formatted = window.map((weighin) => ({
@@ -87,14 +90,19 @@ export default ({
     weighinTime: new Date(weighin.weighinTime).getTime(),
   }));
 
-  const startDate = new Date(window[0]?.weighinTime).toLocaleDateString('en-gb');
-  const endDate = new Date(window[window.length - 1]?.weighinTime).toLocaleDateString('en-gb');
+  const startDate = new Date(window[0]?.weighinTime).toLocaleDateString(
+    "en-gb"
+  );
+  const endDate = new Date(
+    window[window.length - 1]?.weighinTime
+  ).toLocaleDateString("en-gb");
 
   return (
     <div className="stack">
       <h2>
         {startDate} – {endDate}
       </h2>
+      <Filter selected="7" onChange={(val?: number) => setDayCount(val ?? 10000)} />
       <div>
         <ResponsiveContainer
           minWidth={200}
@@ -119,7 +127,11 @@ export default ({
               domain={["dataMin-0.1", "dataMax+0.1"]}
               tickFormatter={tickWeightFormatter}
             />
-            <Tooltip labelFormatter={(value) => new Date(value as string).toLocaleDateString("en-gb")} />
+            <Tooltip
+              labelFormatter={(value) =>
+                new Date(value as string).toLocaleDateString("en-gb")
+              }
+            />
             <Legend />
             <Line
               type="monotone"
