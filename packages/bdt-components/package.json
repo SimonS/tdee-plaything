@@ -20,7 +20,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@storybook/addon-actions": "^7.4.0",
     "@storybook/addon-controls": "^7.4.0",
-    "@storybook/addon-docs": "^6.5.10",
+    "@storybook/addon-docs": "^7.4.2",
     "@storybook/addon-links": "^7.4.0",
     "@storybook/react": "^7.4.0",
     "@testing-library/jest-dom": "^6.1.3",
