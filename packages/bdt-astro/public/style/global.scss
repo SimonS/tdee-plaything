@@ -136,3 +136,9 @@ footer {
 footer * {
   font-size: var(--s-1);
 }
+
+/* SVG overrides for recharts */
+.recharts-cartesian-axis-tick-value tspan {
+  fill: #050704;
+  font-size: var(--s-1);
+}

@@ -13,13 +13,20 @@ const precisionRound = (number: number, precision: number) => {
 
 const calculateTrends = (weighins: Weighin[]) =>
   weighins.reduce((acc: CalculatedWeighin[], today: Weighin, i) => {
+    const sevenDaysAgo: Date = new Date(
+      new Date(today.weighinTime).getTime() - 7 * 24 * 60 * 60 * 1000
+    );
+
+    const window = weighins
+      .slice(i - 7 >= 0 ? i - 7 : 0, i + 1)
+      .filter((day) => new Date(day.weighinTime) >= sevenDaysAgo);
+
     const newAcc = [...acc];
-    const yesterday = i > 0 ? acc[i - 1].weightTrend : today.weight;
 
     newAcc.push({
       ...today,
       weightTrend: precisionRound(
-        yesterday + precisionRound(0.1 * (today.weight - yesterday), 1),
+        window.reduce((a, b) => a + b.weight, 0) / window.length,
         1
       ),
     });

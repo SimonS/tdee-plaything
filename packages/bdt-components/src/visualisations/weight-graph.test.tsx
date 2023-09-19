@@ -4,16 +4,23 @@ import userEvent from "@testing-library/user-event";
 import WeightGraph from "./weight-graph";
 import { Weighin, CalculatedWeighin } from "@tdee/types/src/bdt";
 
-const getYVals = (container: HTMLElement) =>
-  Array.from(container.querySelectorAll("line + text"))
-    .map((val) => parseInt(val.textContent || ""))
-    .filter((val) => !isNaN(val));
+jest.mock("recharts", () => {
+  const OriginalModule = jest.requireActual("recharts");
+  return {
+    ...OriginalModule,
+    ResponsiveContainer: ({ children }: any) => (
+      <OriginalModule.ResponsiveContainer width={800} height={800}>
+        {children}
+      </OriginalModule.ResponsiveContainer>
+    ),
+  };
+});
 
 const getPaths = (container: HTMLElement) =>
   Array.from(container.querySelectorAll("path"));
 
 const getDots = (container: HTMLElement) =>
-  Array.from(container.querySelectorAll("circle"));
+  Array.from(container.querySelectorAll(".recharts-dot"));
 
 const generateWeighins = (n: number) => {
   let weighins: Weighin[] = [];
@@ -55,43 +62,24 @@ describe("basic weight graph rendering", () => {
   it("renders the graph", () => {
     const { container } = renderThreeDays();
 
-    /**
-     * getByText doesn't take into consideration SVG <text> elements (I'm guessing
-     * because they're not part of the Accessibility Tree), so do it the hard way.
-     * This is a bit of a hack, but it works.
-     */
     expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "Jan 01"
-      ).length
+      container.getElementsByClassName("recharts-surface").length
     ).toBeGreaterThan(0);
   });
 
-  it("displays every other day", () => {
-    const { container } = renderThreeDays();
+  it("adds an appropriate threshold to the y axis", () => {
+    const { getAllByText } = renderThreeDays();
 
     expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "Jan 02"
-      ).length
-    ).toEqual(0);
-  });
-
-  it("adds an appropriate threshold to the y axis", () => {
-    const { container } = renderThreeDays();
-
-    const yNums = getYVals(container);
-
-    expect(yNums[yNums.length - 1]).toEqual(101);
-    expect(yNums[0]).toEqual(89);
+      getAllByText("100.1").length
+    ).toBeGreaterThan(0);
   });
 
   it("renders correct number of weighin dots", () => {
     const { container } = renderThreeDays();
-
+  
     const dots = getDots(container);
-
-    expect(dots).toHaveLength(3);
+    expect(dots).toHaveLength(3);    
   });
 
   it("filters between dates", () => {
@@ -129,20 +117,6 @@ describe("basic weight graph rendering", () => {
     expect(dots).toHaveLength(3);
   });
 
-  test("doesn't display a legend by default", () => {
-    const weighins: Weighin[] = generateWeighins(12);
-
-    const { container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
-    );
-
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "Weight"
-      ).length
-    ).toBe(0);
-  });
-
   test("handles empty datasets gracefully", () => {
     const weighins: Weighin[] = [];
 
@@ -156,7 +130,7 @@ describe("basic weight graph rendering", () => {
   test("works with no date in range", () => {
     const weighins: Weighin[] = generateWeighins(10);
 
-    const { container } = render(
+    const { getAllByText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
@@ -168,10 +142,25 @@ describe("basic weight graph rendering", () => {
     );
 
     expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "Jan 02"
-      ).length
+      getAllByText("weight").length
     ).toBeGreaterThan(0);
+  });
+
+  it("displays the dates rendered in a title", () =>{
+    const weighins: Weighin[] = generateWeighins(10);
+
+    const { getByRole } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-01T00:00:00.000Z",
+          displayDatesAtATime: 3,
+        }}
+      />
+    );
+
+    expect(getByRole("heading")).toHaveTextContent("01/01/2020 – 03/01/2020")
   });
 });
 
@@ -203,7 +192,6 @@ describe("trend lines", () => {
     );
 
     const dots = getDots(container);
-
     expect(dots).toHaveLength(6);
   });
 
@@ -229,14 +217,17 @@ describe("trend lines", () => {
       },
     ];
 
-    const { container } = render(
+    const { getAllByText } = render(
       <WeightGraph weighins={weighins} responsive={false} />
     );
 
-    const yNums = getYVals(container);
+    expect(
+      getAllByText("110.1").length
+    ).toBeGreaterThan(0);
 
-    expect(yNums[yNums.length - 1]).toEqual(110);
-    expect(yNums[0]).toEqual(80);
+    expect(
+      getAllByText("79.9").length
+    ).toBeGreaterThan(0);
   });
 
   test("trend line is dashed", () => {
@@ -266,41 +257,7 @@ describe("trend lines", () => {
     );
 
     const paths = getPaths(container);
-
-    expect(paths.filter((path) => path.style.strokeDasharray)).toHaveLength(1);
-  });
-
-  test("adds a legend when weight trend present", () => {
-    const weighins: CalculatedWeighin[] = [
-      {
-        weighinTime: "2020-01-01T00:00:00.000Z",
-        weight: 100,
-        bodyFatPercentage: 25,
-        weightTrend: 110,
-      },
-      {
-        weighinTime: "2020-01-02T00:00:00.000Z",
-        weight: 95,
-        bodyFatPercentage: 25,
-        weightTrend: 90,
-      },
-      {
-        weighinTime: "2020-01-03T00:00:00.000Z",
-        weight: 90,
-        bodyFatPercentage: 24,
-        weightTrend: 80,
-      },
-    ];
-
-    const { container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
-    );
-
-    expect(
-      Array.from(container.querySelectorAll("text")).filter(
-        (e) => e.innerHTML === "Weight Trend"
-      ).length
-    ).toBeGreaterThan(0);
+    expect(paths.filter((path) => path.getAttribute("stroke-dasharray"))).toHaveLength(1);
   });
 });
 
@@ -321,10 +278,11 @@ describe("weight navigation", () => {
 
     expect(getByRole("navigation")).toBeVisible();
   });
+
   it("next button displays appropriately", () => {
     const weighins = generateWeighins(12);
 
-    const { getByText } = render(
+    const { queryByText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
@@ -335,25 +293,27 @@ describe("weight navigation", () => {
       />
     );
 
-    expect(getByText(">")).toBeVisible();
+    expect(queryByText("<")).toBeNull();
+    expect(queryByText(">")).toBeVisible();
   });
 
   it("previous button displays appropriately", () => {
     // important to have an unsorted array go in so as not to falsely rely on nivo's implicit sort.
     const weighins = generateWeighins(12).reverse();
 
-    const { getByText } = render(
+    const { queryByText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
         filter={{
-          from: "2020-01-08T00:00:00.000Z",
+          from: "2020-01-10T00:00:00.000Z",
           displayDatesAtATime: 3,
         }}
       />
     );
 
-    expect(getByText("<")).toBeVisible();
+    expect(queryByText("<")).toBeVisible();
+    expect(queryByText(">")).toBeNull();
   });
 
   it("clicking previous shows earlier dates", async () => {
@@ -372,7 +332,7 @@ describe("weight navigation", () => {
 
     userEvent.click(getByText("<"));
 
-    const jans = await findAllByText("Jan 01")
+    const jans = await findAllByText("01/01")
     expect(
       jans
     ).toHaveLength(1);
@@ -394,7 +354,7 @@ describe("weight navigation", () => {
 
     userEvent.click(getByText(">"));
 
-    const twelves = await findAllByText("12")
+    const twelves = await findAllByText("12/01")
     expect(twelves).toHaveLength(1);
   });
 });

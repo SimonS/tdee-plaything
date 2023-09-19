@@ -1,21 +1,18 @@
+import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
 import React, { useState } from "react";
 import {
+  LineChart,
   Line,
-  ResponsiveLine,
-  LineSvgProps,
-  CustomLayerProps,
-  DatumValue,
-} from "@nivo/line";
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { Pagination } from "../pagination/pagination";
-import { CalculatedWeighin, Weighin } from "@tdee/types/src/bdt";
 
-interface FixedCustomLayerProps
-  extends Omit<CustomLayerProps, "xScale" | "yScale"> {
-  xScale: (x: DatumValue) => DatumValue;
-  yScale: (y: DatumValue) => DatumValue;
-}
-
-const WeightGraph = ({
+export default ({
   weighins,
   responsive = true,
   filter,
@@ -30,15 +27,7 @@ const WeightGraph = ({
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );
 
-  const isCalculated = (
-    weighins: Weighin[] | CalculatedWeighin[]
-  ): weighins is CalculatedWeighin[] =>
-    (weighins[0] as CalculatedWeighin).weightTrend !== undefined;
-
   const [from, setFrom] = useState(filter?.from);
-
-  const formatTime = (time: string) =>
-    new Date(time).toISOString().split("T")[0];
 
   const filterDates = (
     weighins: Weighin[] | CalculatedWeighin[]
@@ -53,137 +42,28 @@ const WeightGraph = ({
           : true;
       });
 
-  const data = [
-    {
-      id: "Weight",
-      label: "Weight",
-      data: filterDates(weighins).map((w) => ({
-        x: formatTime(w.weighinTime),
-        y: w.weight,
-      })),
-    },
-  ];
-
-  if (isCalculated(weighins)) {
-    data.push({
-      id: "Weight Trend",
-      label: "Weight Trend",
-      data: filterDates(weighins).map((w: CalculatedWeighin) => ({
-        x: formatTime(w.weighinTime),
-        y: w.weightTrend,
-      })),
-    });
-  }
-
-  const allWeights = data.flatMap((d) => d.data.map((d) => d.y));
-
-  const maxWeight = Math.max(...allWeights);
-  const minWeight = Math.min(...allWeights);
-
-  // 9 is a bit of a magic number, I don't want to reverse engineer
-  // yScale too much though, we'll see how it goes.
-  const weightDiff = (maxWeight - minWeight) / 9;
-
-  const styleById = {
-    "Weight Trend": {
-      strokeDasharray: "12, 6",
-      strokeWidth: 2,
-    },
-    default: {
-      strokeWidth: 2,
-    },
+  const tickWeightFormatter = (value: unknown) => {
+    return (value as number).toFixed(1);
   };
 
-  const DashedLine = ({
-    series,
-    lineGenerator,
-    xScale,
-    yScale,
-  }: FixedCustomLayerProps) => {
-    return series.map(({ id, data, color }) => (
-      <path
-        key={id}
-        d={lineGenerator(
-          data.map((d) => ({
-            x: xScale(d.data.x ?? 1),
-            y: yScale(d.data.y ?? 1),
-          }))
-        )}
-        fill="none"
-        stroke={color}
-        style={styleById[id] || styleById.default}
-      />
-    ));
+  const tickDateFormatter = (value: unknown) => {
+    const date = new Date(value as string);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    return `${day}/${month}`;
   };
 
-  const graphProps: LineSvgProps = {
-    data,
-    margin: { top: 50, right: 110, bottom: 50, left: 60 },
-    xScale: {
-      type: "time",
-      format: "%Y-%m-%d",
-      useUTC: false,
-      precision: "day",
-    },
-    xFormat: "time:%Y-%m-%d",
-    yScale: {
-      type: "linear",
-      min: minWeight - weightDiff,
-      max: maxWeight + weightDiff,
-    },
-    pointLabelYOffset: 0,
-    curve: "monotoneX",
-    axisBottom: {
-      format: "%b %d",
-      tickValues: "every 2 days",
-    },
-    layers: [
-      "grid",
-      "markers",
-      "areas",
-      DashedLine,
-      "slices",
-      "points",
-      "axes",
-      isCalculated(weighins) ? "legends" : "mesh",
-    ],
-    colors: { scheme: "set1" },
-    legends: [
-      {
-        anchor: "bottom-right",
-        direction: "column",
-        justify: false,
-        translateX: 120,
-        translateY: 0,
-        itemWidth: 100,
-        itemHeight: 20,
-        itemsSpacing: 2,
-        itemTextColor: "#000",
-        effects: [
-          {
-            on: "hover",
-            style: {
-              itemTextColor: "#000",
-            },
-          },
-        ],
-      },
-    ],
-  };
-
-  // Nav Logic:
-  const weighinData = data[0].data;
-  const isWindowed = weighinData.length !== weighins.length;
+  const window = filterDates(weighins);
 
   const hasNext =
-    weighinData.length > 0
-      ? weighinData[weighinData.length - 1].x !==
-        formatTime(weighins[weighins.length - 1].weighinTime)
+    window.length > 0
+      ? window[window.length - 1].weighinTime !==
+        weighins[weighins.length - 1].weighinTime
       : false;
 
   const hasPrevious =
-    weighinData.length > 0
-      ? weighinData[0].x !== formatTime(weighins[0].weighinTime)
+    window.length > 0
+      ? window[0].weighinTime !== weighins[0].weighinTime
       : true;
 
   const changeFromBy = (days: number) => {
@@ -202,30 +82,72 @@ const WeightGraph = ({
     changeFromBy(filter?.displayDatesAtATime || 7);
   };
 
-  /**
-   * `responsive` is horrible. In reality, we only ever use the Responsive version.
-   * However, JSDom doesn't like ResizeObserver, it's tightly coupled into the
-   * component, and so mocking doesn't really work either (it always sees the
-   * height & width as 0). Fortunately, ResponsiveLine is a wrapper around Line,
-   * so we use that in our tests, ensuring the props are always the same.
-   */
+  const formatted = window.map((weighin) => ({
+    ...weighin,
+    weighinTime: new Date(weighin.weighinTime).getTime(),
+  }));
+
+  const startDate = new Date(window[0]?.weighinTime).toLocaleDateString('en-gb');
+  const endDate = new Date(window[window.length - 1]?.weighinTime).toLocaleDateString('en-gb');
+
   return (
-    <div style={{ height: "400px", width: "100%" }}>
-      {responsive ? (
-        <ResponsiveLine {...graphProps} />
-      ) : (
-        <Line {...graphProps} height={300} width={300} />
-      )}
-      {isWindowed && (
+    <div className="stack">
+      <h2>
+        {startDate} – {endDate}
+      </h2>
+      <div>
+        <ResponsiveContainer
+          minWidth={200}
+          minHeight={200}
+          width="100%"
+          height={400}
+        >
+          <LineChart width={500} height={300} data={formatted}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="weighinTime"
+              domain={[
+                formatted[0]?.weighinTime,
+                formatted[formatted.length - 1]?.weighinTime,
+              ]}
+              type="number"
+              scale="time"
+              tickFormatter={tickDateFormatter}
+            />
+            <YAxis
+              type="number"
+              domain={["dataMin-0.1", "dataMax+0.1"]}
+              tickFormatter={tickWeightFormatter}
+            />
+            <Tooltip labelFormatter={(value) => new Date(value as string).toLocaleDateString("en-gb")} />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="weight"
+              stroke="#b81007"
+              activeDot={{ r: 8 }}
+              strokeWidth={2}
+              isAnimationActive={responsive}
+            />
+            <Line
+              type="monotone"
+              dataKey="weightTrend"
+              stroke="#345693"
+              activeDot={{ r: 8 }}
+              strokeWidth={2}
+              strokeDasharray="12 4"
+              dot={{ strokeDasharray: "" }}
+              isAnimationActive={responsive}
+            />
+          </LineChart>
+        </ResponsiveContainer>
         <Pagination
           tag={`button`}
           pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
           previousPageEvent={showEarlier}
           nextPageEvent={showLater}
         />
-      )}
+      </div>
     </div>
   );
 };
-
-export default WeightGraph;
