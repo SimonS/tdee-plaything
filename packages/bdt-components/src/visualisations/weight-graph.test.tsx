@@ -145,6 +145,23 @@ describe("basic weight graph rendering", () => {
       getAllByText("weight").length
     ).toBeGreaterThan(0);
   });
+
+  it("displays the dates rendered in a title", () =>{
+    const weighins: Weighin[] = generateWeighins(10);
+
+    const { getByRole } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-01T00:00:00.000Z",
+          displayDatesAtATime: 3,
+        }}
+      />
+    );
+
+    expect(getByRole("heading")).toHaveTextContent("2020-01-01 – 2020-01-03")
+  });
 });
 
 describe("trend lines", () => {

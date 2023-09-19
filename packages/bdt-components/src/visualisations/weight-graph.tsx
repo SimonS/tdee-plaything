@@ -82,63 +82,72 @@ export default ({
     changeFromBy(filter?.displayDatesAtATime || 7);
   };
 
-  const formatted = filterDates(weighins).map((weighin) => ({
+  const formatted = window.map((weighin) => ({
     ...weighin,
     weighinTime: new Date(weighin.weighinTime).getTime(),
   }));
+
+  const startDate = window[0]?.weighinTime.split("T")[0];
+  const endDate = window[window.length - 1]?.weighinTime.split("T")[0];
+
   return (
-    <>
-      <ResponsiveContainer
-        minWidth={200}
-        minHeight={200}
-        width="100%"
-        height={400}
-      >
-        <LineChart width={500} height={300} data={formatted}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="weighinTime"
-            domain={[
-              formatted[0]?.weighinTime,
-              formatted[formatted.length - 1]?.weighinTime,
-            ]}
-            type="number"
-            scale="time"
-            tickFormatter={tickDateFormatter}
-          />
-          <YAxis
-            type="number"
-            domain={["dataMin-0.1", "dataMax+0.1"]}
-            tickFormatter={tickWeightFormatter}
-          />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="weight"
-            stroke="#b81007"
-            activeDot={{ r: 8 }}
-            strokeWidth={2}
-            isAnimationActive={responsive}
-          />
-          <Line
-            type="monotone"
-            dataKey="weightTrend"
-            stroke="#345693"
-            activeDot={{ r: 8 }}
-            strokeWidth={2}
-            strokeDasharray="12 4"
-            dot={{ strokeDasharray: "" }}
-            isAnimationActive={responsive}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-      <Pagination
-        tag={`button`}
-        pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
-        previousPageEvent={showEarlier}
-        nextPageEvent={showLater}
-      />
-    </>
+    <div className="stack">
+      <h2>
+        {startDate} – {endDate}
+      </h2>
+      <div>
+        <ResponsiveContainer
+          minWidth={200}
+          minHeight={200}
+          width="100%"
+          height={400}
+        >
+          <LineChart width={500} height={300} data={formatted}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="weighinTime"
+              domain={[
+                formatted[0]?.weighinTime,
+                formatted[formatted.length - 1]?.weighinTime,
+              ]}
+              type="number"
+              scale="time"
+              tickFormatter={tickDateFormatter}
+            />
+            <YAxis
+              type="number"
+              domain={["dataMin-0.1", "dataMax+0.1"]}
+              tickFormatter={tickWeightFormatter}
+            />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="weight"
+              stroke="#b81007"
+              activeDot={{ r: 8 }}
+              strokeWidth={2}
+              isAnimationActive={responsive}
+            />
+            <Line
+              type="monotone"
+              dataKey="weightTrend"
+              stroke="#345693"
+              activeDot={{ r: 8 }}
+              strokeWidth={2}
+              strokeDasharray="12 4"
+              dot={{ strokeDasharray: "" }}
+              isAnimationActive={responsive}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+        <Pagination
+          tag={`button`}
+          pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
+          previousPageEvent={showEarlier}
+          nextPageEvent={showLater}
+        />
+      </div>
+    </div>
   );
 };

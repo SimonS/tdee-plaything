@@ -15,12 +15,16 @@ weekAgo.setHours(0,0,0,0)
   </style>
   <div class="stack listing">
     <h1>Weighins</h1>
-    <WeightChart client:only="react" weighins={weighins} filter={{from: weekAgo.toISOString(), displayDatesAtATime: 7}} />
-
+    
     <div class="content">
       <p>This is how I'm currently doing weight-wise. Consider it a first draft. The nav is funky, and it's a bit limited in what it shows. But it's a start.</p>
       <p>Speaking of nav - you can go forwards and backwards in time using those anonymous-look pagination arrows, just below the graph.</p>
     </div>
+
+    <div>
+      <WeightChart client:only="react" weighins={weighins} filter={{from: weekAgo.toISOString(), displayDatesAtATime: 7}} />
+    </div>
   </div>
+  
 </BaseLayout>
     
