@@ -1,6 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render } from "@testing-library/react";
 import WeightGraph from "./weight-graph";
 import { Weighin, CalculatedWeighin } from "@tdee/types/src/bdt";
 
@@ -27,7 +26,7 @@ const generateWeighins = (n: number) => {
   let date = new Date("2020-01-01")
   for (let i = 0; i < n; i++) {
     weighins.push({
-      weighinTime: date.toISOString(), 
+      weighinTime: date.toISOString(),
       weight: i + 1,
       bodyFatPercentage: 25,
     });
@@ -82,7 +81,7 @@ describe("basic weight graph rendering", () => {
     expect(dots).toHaveLength(3);
   });
 
-  it("filters between dates", () => {
+  it("filters using from", () => {
     const weighins = generateWeighins(3);
 
     const { container } = render(
@@ -90,7 +89,7 @@ describe("basic weight graph rendering", () => {
         weighins={weighins}
         responsive={false}
         filter={{
-          from: "2020-01-02T00:00:00.000Z",
+          from: "2020-01-02",
         }}
       />
     );
@@ -98,23 +97,20 @@ describe("basic weight graph rendering", () => {
     expect(getDots(container)).toHaveLength(2);
   });
 
-  it("displays x dates at a time", () => {
-    const weighins: Weighin[] = generateWeighins(12);
+  it("filters using to", () => {
+    const weighins = generateWeighins(5);
 
     const { container } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
         filter={{
-          from: "2020-01-02T00:00:00.000Z",
-          displayDatesAtATime: 3,
+          to: "2020-01-02",
         }}
       />
     );
 
-    const dots = getDots(container);
-
-    expect(dots).toHaveLength(3);
+    expect(getDots(container)).toHaveLength(2);
   });
 
   test("handles empty datasets gracefully", () => {
@@ -136,7 +132,6 @@ describe("basic weight graph rendering", () => {
         responsive={false}
         filter={{
           from: "2020-01-13T00:00:00.000Z",
-          displayDatesAtATime: 3,
         }}
       />
     );
@@ -146,22 +141,6 @@ describe("basic weight graph rendering", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("displays the dates rendered in a title", () => {
-    const weighins: Weighin[] = generateWeighins(10);
-
-    const { getByRole } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-01T00:00:00.000Z",
-          displayDatesAtATime: 3,
-        }}
-      />
-    );
-
-    expect(getByRole("heading")).toHaveTextContent("01/01/2020 – 03/01/2020")
-  });
 });
 
 describe("trend lines", () => {
@@ -262,178 +241,73 @@ describe("trend lines", () => {
 });
 
 describe("weight navigation", () => {
-  it("displays a nav when needed", () => {
-    const weighins = generateWeighins(12);
+  it("displays to and from fields", () => {
+    const weighins = generateWeighins(10);
 
-    const { getByRole } = render(
+    const { getByLabelText } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+      />
+    );
+
+    expect(getByLabelText("From")).toBeVisible();
+    expect(getByLabelText("To")).toBeVisible();
+  });
+
+  it("to and from are populated with the filter values", () => {
+    const weighins = generateWeighins(10);
+
+    const { getByLabelText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
         filter={{
-          from: "2020-01-02T00:00:00.000Z",
-          displayDatesAtATime: 3,
+          from: "2020-01-02",
+          to: "2020-01-05"
         }}
       />
     );
 
-    expect(getByRole("navigation")).toBeVisible();
+    expect(getByLabelText("From")).toHaveValue("02/01/2020");
+    expect(getByLabelText("To")).toHaveValue("05/01/2020");
   });
 
-  it("next button displays appropriately", () => {
-    const weighins = generateWeighins(12);
+  it("date selector focused on current month", () => {
+    const weighins = generateWeighins(10);
 
-    const { queryByText } = render(
+    const { getByText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
         filter={{
-          from: "2020-01-01T00:00:00.000Z",
-          displayDatesAtATime: 3,
+          from: "2020-01-02",
+          to: "2020-01-05"
         }}
       />
     );
 
-    expect(queryByText("<")).toBeNull();
-    expect(queryByText(">")).toBeVisible();
-  });
+    expect(getByText("January 2020")).toBeVisible();
+  })
 
-  it("previous button displays appropriately", () => {
-    // important to have an unsorted array go in so as not to falsely rely on nivo's implicit sort.
-    const weighins = generateWeighins(12).reverse();
+  it("date selector affects the graph", () => {
+    const weighins = generateWeighins(10);
 
-    const { queryByText } = render(
+    const { getByText, getByLabelText } = render(
       <WeightGraph
         weighins={weighins}
         responsive={false}
         filter={{
-          from: "2020-01-10T00:00:00.000Z",
-          displayDatesAtATime: 3,
+          from: "2020-01-02",
+          to: "2020-01-05"
         }}
       />
     );
 
-    expect(queryByText("<")).toBeVisible();
-    expect(queryByText(">")).toBeNull();
-  });
+    fireEvent.click(getByText("1"));
+    fireEvent.click(getByText("16"));
 
-  it("clicking previous shows earlier dates", async () => {
-    const weighins = generateWeighins(12);
-
-    const { getByText, findAllByText } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-02T00:00:00.000Z",
-          displayDatesAtATime: 3,
-        }}
-      />
-    );
-
-    userEvent.click(getByText("<"));
-
-    const jans = await findAllByText("01/01")
-    expect(
-      jans
-    ).toHaveLength(1);
-  });
-
-  it("clicking next shows later dates", async () => {
-    const weighins = generateWeighins(12);
-
-    const { getByText, findAllByText } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-11T00:00:00.000Z",
-          displayDatesAtATime: 1,
-        }}
-      />
-    );
-
-    userEvent.click(getByText(">"));
-
-    const twelves = await findAllByText("12/01")
-    expect(twelves).toHaveLength(1);
-  });
-});
-
-describe("weight filtering", () => {
-  it("displays a radio selection to adjust the filter window", () => {
-    const weighins = generateWeighins(28);
-
-    const { getAllByRole } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-01T00:00:00.000Z",
-          displayDatesAtATime: 7,
-        }}
-      />
-    );
-    
-    expect(getAllByRole("radio").length).toBeGreaterThan(0);
-  });
-
-  it("changing the filter adjusts window to a month", async () => {
-    const weighins = generateWeighins(28);
-
-    const { findAllByText, getByText } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-01T00:00:00.000Z",
-          displayDatesAtATime: 7,
-        }}
-      />
-    );
-
-    userEvent.click(getByText("30 days"));
-
-    const twelves = await findAllByText("12/01")
-    expect(twelves).toHaveLength(1);
-  });
-
-  it("changing the filter adjusts window to 90 days", async () => {
-    const weighins = generateWeighins(95);
-
-    const { findByText, getByText } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-01T00:00:00.000Z",
-          displayDatesAtATime: 7,
-        }}
-      />
-    );
-
-    userEvent.click(getByText("90 days"));
-
-    const thirty = await findByText("30/03")
-    expect(thirty).toBeDefined();
-  });
-
-  it("changing the filter adjusts window to a 365 days", async () => {
-    const weighins = generateWeighins(400);
-
-    const { findByText, getByText } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-        filter={{
-          from: "2020-01-01T00:00:00.000Z",
-          displayDatesAtATime: 7,
-        }}
-      />
-    );
-
-    userEvent.click(getByText("Year"));
-
-    const thirty = await findByText("30/11")
-    expect(thirty).toBeDefined();
-  });
-});
+    expect(getByLabelText("From")).toHaveValue("01/01/2020");
+    expect(getByLabelText("To")).toHaveValue("16/01/2020");
+  })
+})

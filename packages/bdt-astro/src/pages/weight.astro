@@ -3,7 +3,56 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import getAllWeighins from "@weight-fetcher/getAllWeighins.ts";
 import WeightChart from '@components/visualisations/weight-graph.tsx';
 
-const weighins = await getAllWeighins(true);
+const weighins = [{
+          weighinTime: '2020-01-01T00:00:00.000Z',
+          weight: 1,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-02T00:00:00.000Z',
+          weight: 2,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-03T00:00:00.000Z',
+          weight: 3,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-04T00:00:00.000Z',
+          weight: 4,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-05T00:00:00.000Z',
+          weight: 5,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-06T00:00:00.000Z',
+          weight: 6,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-07T00:00:00.000Z',
+          weight: 7,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-08T00:00:00.000Z',
+          weight: 8,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-09T00:00:00.000Z',
+          weight: 9,
+          bodyFatPercentage: 25
+        },
+        {
+          weighinTime: '2020-01-10T00:00:00.000Z',
+          weight: 10,
+          bodyFatPercentage: 25
+        }];//await getAllWeighins(true);
 let weekAgo = new Date();
 weekAgo.setDate(new Date().getDate() - 7);
 weekAgo.setHours(0,0,0,0)
@@ -22,7 +71,11 @@ weekAgo.setHours(0,0,0,0)
     </div>
 
     <div>
-      <WeightChart client:only="react" weighins={weighins} filter={{from: weekAgo.toISOString(), displayDatesAtATime: 7}} />
+      <WeightChart client:only="react" weighins={weighins} filter={{
+        from: "2020-01-02",
+        to: "2020-01-05"
+      }} />
+      <!-- filter={{from: weekAgo.toISOString().split("T")[0], to: new Date().toISOString().split("T")[0], }} /> -->
     </div>
   </div>
   
