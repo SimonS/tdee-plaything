@@ -1,30 +1,38 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import BaseLayout from "../layouts/BaseLayout.astro";
 import getAllWeighins from "@weight-fetcher/getAllWeighins.ts";
-import WeightChart from '@components/visualisations/weight-graph.tsx';
+import WeightChart from "@components/visualisations/weight-graph.tsx";
 
 const weighins = await getAllWeighins(true);
 let weekAgo = new Date();
 weekAgo.setDate(new Date().getDate() - 7);
-weekAgo.setHours(0,0,0,0)
+weekAgo.setHours(0, 0, 0, 0);
 ---
 
 <BaseLayout title="Weighins">
   <style slot="head_after" lang="scss" is:global>
-    @use '../style/content.scss';
+    @use "../style/content.scss";
   </style>
   <div class="stack listing">
-    <h1>Weighins</h1>
-    
+    <h1>Weigh ins</h1>
+
     <div class="content">
-      <p>This is how I'm currently doing weight-wise. Consider it a first draft. The nav is funky, and it's a bit limited in what it shows. But it's a start.</p>
-      <p>Speaking of nav - you can go forwards and backwards in time using those anonymous-look pagination arrows, just below the graph.</p>
+      <p>
+        Data from Withings, tracking my weight. It only displays dates with
+        data, so you might have to play about with the date selector to find
+        anything worth while - it goes back to November 2019.
+      </p>
     </div>
 
     <div>
-      <WeightChart client:only="react" weighins={weighins} filter={{from: weekAgo.toISOString(), displayDatesAtATime: 7}} />
+      <WeightChart
+        client:only="react"
+        weighins={weighins}
+        filter={{
+          from: weekAgo.toISOString().split("T")[0],
+          to: new Date().toISOString().split("T")[0],
+        }}
+      />
     </div>
   </div>
-  
 </BaseLayout>
-    

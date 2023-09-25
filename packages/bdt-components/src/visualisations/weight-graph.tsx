@@ -10,7 +10,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Pagination } from "../pagination/pagination";
+import { format } from "date-fns";
+import { DayPicker, DateRange } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 export default ({
   weighins,
@@ -19,7 +21,7 @@ export default ({
 }: {
   weighins: Weighin[] | CalculatedWeighin[];
   responsive?: boolean;
-  filter?: { from?: string; displayDatesAtATime?: number | undefined };
+  filter?: { from?: string; to?: string };
 }) => {
   if (weighins.length === 0) return <div>No data to display</div>;
 
@@ -27,19 +29,27 @@ export default ({
     new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
   );
 
-  const [from, setFrom] = useState(filter?.from);
+  const defaultSelected: DateRange = {
+    from: filter?.from ? new Date(filter?.from) : undefined,
+    to: filter?.to ? new Date(filter?.to) : undefined,
+  };
+
+  const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
+  const [showDatePicker, setShowDatePicker] = useState<Boolean>(false);
 
   const filterDates = (
     weighins: Weighin[] | CalculatedWeighin[]
   ): Weighin[] | CalculatedWeighin[] =>
     weighins
       .filter((weighin) => {
-        return from ? weighin.weighinTime >= from : true;
+        return range?.from ? new Date(weighin.weighinTime) >= range.from : true;
       })
-      .filter((_, i) => {
-        return filter?.displayDatesAtATime !== undefined
-          ? i < filter?.displayDatesAtATime
-          : true;
+      .filter((weighin) => {
+        let toDate = range?.to || new Date();
+        toDate.setHours(23);
+        toDate.setMinutes(59);
+        toDate.setSeconds(59);
+        return range?.to ? new Date(weighin.weighinTime) <= toDate : true;
       });
 
   const tickWeightFormatter = (value: unknown) => {
@@ -55,46 +65,48 @@ export default ({
 
   const window = filterDates(weighins);
 
-  const hasNext =
-    window.length > 0
-      ? window[window.length - 1].weighinTime !==
-        weighins[weighins.length - 1].weighinTime
-      : false;
-
-  const hasPrevious =
-    window.length > 0
-      ? window[0].weighinTime !== weighins[0].weighinTime
-      : true;
-
-  const changeFromBy = (days: number) => {
-    if (from) {
-      let newDate = new Date(from);
-      newDate.setDate(newDate.getDate() + days);
-      setFrom(newDate.toISOString());
-    }
-  };
-
-  const showEarlier = () => {
-    changeFromBy(0 - (filter?.displayDatesAtATime || 7));
-  };
-
-  const showLater = () => {
-    changeFromBy(filter?.displayDatesAtATime || 7);
-  };
-
   const formatted = window.map((weighin) => ({
     ...weighin,
     weighinTime: new Date(weighin.weighinTime).getTime(),
   }));
 
-  const startDate = new Date(window[0]?.weighinTime).toLocaleDateString('en-gb');
-  const endDate = new Date(window[window.length - 1]?.weighinTime).toLocaleDateString('en-gb');
-
   return (
     <div className="stack">
-      <h2>
-        {startDate} – {endDate}
-      </h2>
+      <form className="dp-form">
+        <div className="dp-input">
+          <label htmlFor="date-from">From</label>
+          <input
+            type="text"
+            id="date-from"
+            value={range?.from ? format(range?.from, "dd/MM/yyyy") : ""}
+            readOnly
+          />
+        </div>
+        <div className="dp-input">
+          <label htmlFor="date-to">To</label>
+          <input
+            type="text"
+            id="date-to"
+            value={range?.to ? format(range?.to, "dd/MM/yyyy") : ""}
+            readOnly
+          />
+        </div>
+        <div className="picker">
+          <input
+            type="button"
+            value="Change dates"
+            onClick={() => setShowDatePicker(!showDatePicker)}
+          />
+          {showDatePicker && (
+            <DayPicker
+              mode="range"
+              selected={range}
+              onSelect={setRange}
+              defaultMonth={range?.from}
+            />
+          )}
+        </div>
+      </form>
       <div>
         <ResponsiveContainer
           minWidth={200}
@@ -119,7 +131,11 @@ export default ({
               domain={["dataMin-0.1", "dataMax+0.1"]}
               tickFormatter={tickWeightFormatter}
             />
-            <Tooltip labelFormatter={(value) => new Date(value as string).toLocaleDateString("en-gb")} />
+            <Tooltip
+              labelFormatter={(value) =>
+                new Date(value as string).toLocaleDateString("en-gb")
+              }
+            />
             <Legend />
             <Line
               type="monotone"
@@ -141,12 +157,6 @@ export default ({
             />
           </LineChart>
         </ResponsiveContainer>
-        <Pagination
-          tag={`button`}
-          pageInfo={{ hasNextPage: hasNext, hasPreviousPage: hasPrevious }}
-          previousPageEvent={showEarlier}
-          nextPageEvent={showLater}
-        />
       </div>
     </div>
   );
