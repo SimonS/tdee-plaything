@@ -11,8 +11,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { format } from "date-fns";
-import { DayPicker, DateRange } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
+import { DayPicker, DateRange } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 export default ({
   weighins,
@@ -21,7 +21,7 @@ export default ({
 }: {
   weighins: Weighin[] | CalculatedWeighin[];
   responsive?: boolean;
-  filter?: { from?: string; to?: string; };
+  filter?: { from?: string; to?: string };
 }) => {
   if (weighins.length === 0) return <div>No data to display</div>;
 
@@ -31,10 +31,11 @@ export default ({
 
   const defaultSelected: DateRange = {
     from: filter?.from ? new Date(filter?.from) : undefined,
-    to: filter?.to ? new Date(filter?.to)  : undefined
+    to: filter?.to ? new Date(filter?.to) : undefined,
   };
 
   const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
+  const [showDatePicker, setShowDatePicker] = useState<Boolean>(false);
 
   const filterDates = (
     weighins: Weighin[] | CalculatedWeighin[]
@@ -71,10 +72,40 @@ export default ({
 
   return (
     <div className="stack">
-      <form>
-        <label htmlFor="date-from">From</label><input type="text" id="date-from" value={range?.from ? format(range?.from, "dd/MM/yyyy") : ""} readOnly />
-        <label htmlFor="date-to">To</label><input type="text" id="date-to" value={range?.to ? format(range?.to, "dd/MM/yyyy") : ""} readOnly />
-        <DayPicker mode="range" selected={range} onSelect={setRange} defaultMonth={range?.from} />
+      <form className="dp-form">
+        <div className="dp-input">
+          <label htmlFor="date-from">From</label>
+          <input
+            type="text"
+            id="date-from"
+            value={range?.from ? format(range?.from, "dd/MM/yyyy") : ""}
+            readOnly
+          />
+        </div>
+        <div className="dp-input">
+          <label htmlFor="date-to">To</label>
+          <input
+            type="text"
+            id="date-to"
+            value={range?.to ? format(range?.to, "dd/MM/yyyy") : ""}
+            readOnly
+          />
+        </div>
+        <div className="picker">
+          <input
+            type="button"
+            value="Change dates"
+            onClick={() => setShowDatePicker(!showDatePicker)}
+          />
+          {showDatePicker && (
+            <DayPicker
+              mode="range"
+              selected={range}
+              onSelect={setRange}
+              defaultMonth={range?.from}
+            />
+          )}
+        </div>
       </form>
       <div>
         <ResponsiveContainer

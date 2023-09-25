@@ -142,3 +142,39 @@ footer * {
   fill: #050704;
   font-size: var(--s-1);
 }
+
+/* datepicker form */
+.dp-form input {
+  padding: var(--s-4);
+}
+
+.dp-input {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-grow: 1;
+  margin-bottom: var(--s-1);
+}
+
+.dp-input label {
+  padding: var(--s-4);
+  width: var(--s3);
+}
+
+.dp-input input {
+  flex-grow: 1;
+}
+
+.rdp {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  right: -15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.picker {
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+}

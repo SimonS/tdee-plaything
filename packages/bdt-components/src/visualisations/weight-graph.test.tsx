@@ -23,7 +23,7 @@ const getDots = (container: HTMLElement) =>
 
 const generateWeighins = (n: number) => {
   let weighins: Weighin[] = [];
-  let date = new Date("2020-01-01")
+  let date = new Date("2020-01-01");
   for (let i = 0; i < n; i++) {
     weighins.push({
       weighinTime: date.toISOString(),
@@ -69,9 +69,7 @@ describe("basic weight graph rendering", () => {
   it("adds an appropriate threshold to the y axis", () => {
     const { getAllByText } = renderThreeDays();
 
-    expect(
-      getAllByText("100.1").length
-    ).toBeGreaterThan(0);
+    expect(getAllByText("100.1").length).toBeGreaterThan(0);
   });
 
   it("renders correct number of weighin dots", () => {
@@ -136,11 +134,8 @@ describe("basic weight graph rendering", () => {
       />
     );
 
-    expect(
-      getAllByText("weight").length
-    ).toBeGreaterThan(0);
+    expect(getAllByText("weight").length).toBeGreaterThan(0);
   });
-
 });
 
 describe("trend lines", () => {
@@ -200,13 +195,9 @@ describe("trend lines", () => {
       <WeightGraph weighins={weighins} responsive={false} />
     );
 
-    expect(
-      getAllByText("110.1").length
-    ).toBeGreaterThan(0);
+    expect(getAllByText("110.1").length).toBeGreaterThan(0);
 
-    expect(
-      getAllByText("79.9").length
-    ).toBeGreaterThan(0);
+    expect(getAllByText("79.9").length).toBeGreaterThan(0);
   });
 
   test("trend line is dashed", () => {
@@ -236,7 +227,9 @@ describe("trend lines", () => {
     );
 
     const paths = getPaths(container);
-    expect(paths.filter((path) => path.getAttribute("stroke-dasharray"))).toHaveLength(1);
+    expect(
+      paths.filter((path) => path.getAttribute("stroke-dasharray"))
+    ).toHaveLength(1);
   });
 });
 
@@ -245,10 +238,7 @@ describe("weight navigation", () => {
     const weighins = generateWeighins(10);
 
     const { getByLabelText } = render(
-      <WeightGraph
-        weighins={weighins}
-        responsive={false}
-      />
+      <WeightGraph weighins={weighins} responsive={false} />
     );
 
     expect(getByLabelText("From")).toBeVisible();
@@ -264,7 +254,7 @@ describe("weight navigation", () => {
         responsive={false}
         filter={{
           from: "2020-01-02",
-          to: "2020-01-05"
+          to: "2020-01-05",
         }}
       />
     );
@@ -282,13 +272,15 @@ describe("weight navigation", () => {
         responsive={false}
         filter={{
           from: "2020-01-02",
-          to: "2020-01-05"
+          to: "2020-01-05",
         }}
       />
     );
 
+    fireEvent.click(getByText("Change dates"));
+
     expect(getByText("January 2020")).toBeVisible();
-  })
+  });
 
   it("date selector affects the graph", () => {
     const weighins = generateWeighins(10);
@@ -299,15 +291,53 @@ describe("weight navigation", () => {
         responsive={false}
         filter={{
           from: "2020-01-02",
-          to: "2020-01-05"
+          to: "2020-01-05",
         }}
       />
     );
+
+    fireEvent.click(getByText("Change dates"));
 
     fireEvent.click(getByText("1"));
     fireEvent.click(getByText("16"));
 
     expect(getByLabelText("From")).toHaveValue("01/01/2020");
     expect(getByLabelText("To")).toHaveValue("16/01/2020");
-  })
-})
+  });
+
+  it("hides date selector initially", () => {
+    const weighins = generateWeighins(10);
+
+    const { queryAllByText } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-02",
+          to: "2020-01-05",
+        }}
+      />
+    );
+
+    expect(queryAllByText("January 2020")).toHaveLength(0);
+  });
+
+  it("clicking change dates opens the datepicker", () => {
+    const weighins = generateWeighins(10);
+
+    const { getByText } = render(
+      <WeightGraph
+        weighins={weighins}
+        responsive={false}
+        filter={{
+          from: "2020-01-02",
+          to: "2020-01-05",
+        }}
+      />
+    );
+
+    fireEvent.click(getByText("Change dates"));
+
+    expect(getByText("January 2020")).toBeVisible();
+  });
+});
