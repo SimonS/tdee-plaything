@@ -17,12 +17,6 @@ class Test_Weighin_Filter extends \WP_UnitTestCase
      */
     private $user_id;
 
-    /**
-     * Holds post id.
-     *
-     * @var int
-     */
-    private $post_id;
 
     /**
      * Create a user and a post for our test.
@@ -72,5 +66,25 @@ class Test_Weighin_Filter extends \WP_UnitTestCase
         $post = get_post($weighin_id);
 
         $this->assertEquals('bdt_weighin', $post->post_type);
+    }
+
+    public function test_weighin_filter_rejects_bad_data()
+    {
+        $request = new \WP_REST_Request('POST', '/wp/v2/bdt_weighin');
+        $request->set_body_params(
+            array(
+                "meta" => array(
+                    "weight" => "10"
+                ),
+                "status" => "publish"
+            )
+        );
+        $response = $this->server->dispatch($request);
+        $data = $response->get_data();
+
+        $this->assertArrayHasKey('data', $data);
+        $this->assertIsArray($data['data']);
+        $this->assertArrayHasKey('status', $data['data']);
+        $this->assertEquals(400, $data['data']['status']);
     }
 }
