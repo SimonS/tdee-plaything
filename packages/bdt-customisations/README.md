@@ -34,3 +34,14 @@ An example film query might look like:
 ## Building
 
 To build, run `yarn build`. And then upload to WP blog manually.
+
+## PHPUnit Tests
+
+The lowest friction route to running the PHPUnit tests is in the [local by Flywheel](https://localwp.com/) shell. Go to the plugin folder in a test instance and run:
+
+```
+composer update
+bash bin/install-wp-tests.sh wordpress_test root root localhost latest true
+```
+
+After that you should have a working environment. Run `phpunit` and they should execute fine.
