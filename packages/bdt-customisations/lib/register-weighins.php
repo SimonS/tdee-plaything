@@ -11,18 +11,18 @@ function bdt_withingsdate_to_time($date)
 function bdt_register_weighin()
 {
     $labels = array(
-        'name'                  => 'Weigh Ins',
-        'singular_name'         => 'Weigh In',
-        'add_new_item'          => 'Add New Weigh In',
+        'name' => 'Weigh Ins',
+        'singular_name' => 'Weigh In',
+        'add_new_item' => 'Add New Weigh In',
     );
     $args = array(
-        'labels'                => $labels,
-        'has_archive'           => false,
-        'public'                => true,
-        'hierarchical'          => false,
-        'supports'              => array('custom-fields'),
-        'rewrite'               => array('slug' => 'weighin'),
-        'show_in_rest'          => true,
+        'labels' => $labels,
+        'has_archive' => false,
+        'public' => true,
+        'hierarchical' => false,
+        'supports' => array('custom-fields'),
+        'rewrite' => array('slug' => 'weighin'),
+        'show_in_rest' => true,
         'rest_controller_class' => 'WP_REST_Posts_Controller',
         'rest_base' => 'bdt_weighin',
         'show_in_graphql' => true,
@@ -35,6 +35,19 @@ function bdt_register_weighin()
     register_post_meta('bdt_weighin', 'weighin_time', array('type' => 'string', 'show_in_rest' => true, 'single' => true, 'sanitize_callback' => 'bdt_withingsdate_to_time'));
 }
 add_action('init', 'bdt_register_weighin', 0);
+
+add_filter('rest_pre_insert_bdt_weighin', 'check_required_metadata', 10, 2);
+function check_required_metadata($prepared_post, $request)
+{
+    // If the necessary metadata isn't set, return an error
+    $meta_data = $request->get_param('meta');
+
+    if (!isset($meta_data['weight']) || !isset($meta_data['body_fat_percentage']) || !isset($meta_data['weighin_time'])) {
+        return new WP_Error('rest_missing_metadata', __('Missing required metadata, data needs to require a weight, a body_fat_percentage, and a weighin_time.'), array('status' => 400));
+    }
+
+    return $prepared_post; // Return the original data if everything's in order
+}
 
 add_filter('manage_edit-bdt_weighin_columns', 'weighins_columns');
 function weighins_columns($columns)
@@ -115,7 +128,7 @@ add_action('graphql_register_types', function () {
 
     add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
         $values['WEIGHIN_TIME'] = [
-            'value'       => 'weighin_time',
+            'value' => 'weighin_time',
             'description' => __('Order by weighin_time', 'bdt'),
         ];
         return $values;

@@ -30,3 +30,5 @@ vendor
 composer.lock
 composer.phar
 composer-setup.php
+
+.phpunit.result.cache

@@ -1,6 +1,7 @@
 {
-    "require-dev": {
-        "yoast/phpunit-polyfills": "^1.0",
-        "wp-graphql/wp-graphql": "*"
-    }
+  "require-dev": {
+    "yoast/phpunit-polyfills": "^1.0",
+    "wp-graphql/wp-graphql": "*",
+    "dms/phpunit-arraysubset-asserts": "^0.5.0"
+  }
 }
