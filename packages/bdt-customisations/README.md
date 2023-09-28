@@ -44,4 +44,4 @@ composer update
 bash bin/install-wp-tests.sh wordpress_test root root localhost latest true
 ```
 
-After that you should have a working environment. Run `phpunit` and they should execute fine.
+After that you should have a working environment. Run `phpunit` to execute.
