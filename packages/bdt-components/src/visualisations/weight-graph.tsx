@@ -130,6 +130,14 @@ export default ({
               type="number"
               domain={["dataMin-0.1", "dataMax+0.1"]}
               tickFormatter={tickWeightFormatter}
+              yAxisId="weight"
+            />
+            <YAxis
+              type="number"
+              domain={["dataMin-0.1", "dataMax+0.1"]}
+              tickFormatter={tickWeightFormatter}
+              yAxisId="bfp"
+              orientation="right"
             />
             <Tooltip
               labelFormatter={(value) =>
@@ -137,13 +145,14 @@ export default ({
               }
             />
             <Legend />
-            <Line
+            {/* <Line
               type="monotone"
               dataKey="weight"
               stroke="#b81007"
               activeDot={{ r: 8 }}
               strokeWidth={2}
               isAnimationActive={responsive}
+              yAxisId="weight"
             />
             <Line
               type="monotone"
@@ -154,6 +163,18 @@ export default ({
               strokeDasharray="12 4"
               dot={{ strokeDasharray: "" }}
               isAnimationActive={responsive}
+              yAxisId="weight"
+            /> */}
+            <Line
+              type="monotone"
+              dataKey="bodyFatPercentage"
+              stroke="#050704"
+              activeDot={{ r: 8 }}
+              strokeWidth={2}
+              // strokeDasharray="12 4"
+              dot={{ strokeDasharray: "" }}
+              isAnimationActive={responsive}
+              yAxisId="bfp"
             />
           </LineChart>
         </ResponsiveContainer>
