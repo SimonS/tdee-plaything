@@ -10,17 +10,8 @@ class Test_Weighin_Filter extends \WP_UnitTestCase
      */
     private $server;
 
-    /**
-     * Holds user id.
-     *
-     * @var int
-     */
     private $user_id;
 
-
-    /**
-     * Create a user and a post for our test.
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -86,5 +77,29 @@ class Test_Weighin_Filter extends \WP_UnitTestCase
         $this->assertIsArray($data['data']);
         $this->assertArrayHasKey('status', $data['data']);
         $this->assertEquals(400, $data['data']['status']);
+    }
+
+    public function test_weighin_filter_rejects_nulls()
+    {
+        $request = new \WP_REST_Request('POST', '/wp/v2/bdt_weighin');
+        $request->set_body_params(
+            array(
+                "meta" => array(
+                    "weight" => "10",
+                    "weighin_time" => "November 30, 2024 at 05:49AM",
+                    "body_fat_percentage" => ""
+                ),
+                "status" => "publish"
+            )
+        );
+        $response = $this->server->dispatch($request);
+        $data = $response->get_data();
+
+        $this->assertArrayHasKey('data', $data);
+        $this->assertIsArray($data['data']);
+        $this->assertArrayHasKey('status', $data['data']);
+        $this->assertEquals(400, $data['data']['status']);
+        $this->assertArrayHasKey('code', $data);
+        $this->assertEquals('rest_missing_metadata', $data['code']);
     }
 }
