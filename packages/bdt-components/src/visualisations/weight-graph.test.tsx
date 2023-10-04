@@ -233,7 +233,7 @@ describe("trend lines", () => {
   });
 });
 
-describe("weight navigation", () => {
+describe("date selector", () => {
   it("displays to and from fields", () => {
     const weighins = generateWeighins(10);
 
@@ -339,5 +339,78 @@ describe("weight navigation", () => {
     fireEvent.click(getByText("Change dates"));
 
     expect(getByText("January 2020")).toBeVisible();
+  });
+});
+
+describe("line picker", () => {
+  it("displays checkboxes for line controls", () => {
+    const weighins = generateWeighins(10);
+
+    const { getByLabelText } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    expect(getByLabelText("Weight")).toBeVisible();
+    expect(getByLabelText("Weight Trend")).toBeVisible();
+    expect(getByLabelText("Bodyfat")).toBeVisible();
+  });
+
+  const hasLegendText = (container: HTMLElement, text: string) =>
+    [...container.querySelectorAll(".recharts-legend-item-text")].filter(
+      (i) => i.textContent === text
+    ).length > 0;
+
+  it("sets expected initial state", () => {
+    const weighins = generateWeighins(10);
+
+    const { getByLabelText, container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    expect(getByLabelText("Weight")).toBeChecked();
+    expect(getByLabelText("Weight Trend")).toBeChecked();
+    expect(getByLabelText("Bodyfat")).not.toBeChecked();
+
+    expect(
+      container.querySelectorAll(".recharts-line path.recharts-line-curve")
+    ).toHaveLength(2);
+
+    expect(hasLegendText(container, "weight")).toBeTruthy();
+    expect(hasLegendText(container, "weightTrend")).toBeTruthy();
+    expect(hasLegendText(container, "bodyFatPercentage")).toBeFalsy();
+  });
+
+  it("checking the bodyfat box shows the bfp line", () => {
+    const weighins = generateWeighins(10);
+
+    const { getByLabelText, container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    fireEvent.click(getByLabelText("Bodyfat"));
+
+    expect(
+      container.querySelectorAll(".recharts-line path.recharts-line-curve")
+    ).toHaveLength(3);
+
+    expect(hasLegendText(container, "bodyFatPercentage")).toBeTruthy();
+  });
+
+  it("unchecking the weight and trend boxes hides the respective lines", () => {
+    const weighins = generateWeighins(10);
+
+    const { getByLabelText, container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    fireEvent.click(getByLabelText("Weight"));
+    fireEvent.click(getByLabelText("Weight Trend"));
+
+    expect(
+      container.querySelectorAll(".recharts-line path.recharts-line-curve")
+    ).toHaveLength(0);
+
+    expect(hasLegendText(container, "weight")).toBeFalsy();
+    expect(hasLegendText(container, "weightTrend")).toBeFalsy();
   });
 });
