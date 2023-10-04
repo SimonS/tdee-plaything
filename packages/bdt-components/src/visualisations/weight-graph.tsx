@@ -34,8 +34,19 @@ export default ({
     to: filter?.to ? new Date(filter?.to) : undefined,
   };
 
+  type Filters = {
+    weight: boolean;
+    weightTrend: boolean;
+    bodyFatPercentage: boolean;
+  };
+
   const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
   const [showDatePicker, setShowDatePicker] = useState<Boolean>(false);
+  const [filters, setFilters] = useState<Filters>({
+    weight: true,
+    weightTrend: true,
+    bodyFatPercentage: false,
+  });
 
   const filterDates = (
     weighins: Weighin[] | CalculatedWeighin[]
@@ -107,6 +118,53 @@ export default ({
           )}
         </div>
       </form>
+      <form className="line-selector-form">
+        <div className="line-selector-cb">
+          <input
+            type="checkbox"
+            name="show-weight"
+            id="show-weight"
+            checked={filters.weight}
+            onChange={() =>
+              setFilters({
+                ...filters,
+                weight: !filters.weight,
+              })
+            }
+          />
+          <label htmlFor="show-weight">Weight</label>
+        </div>
+        <div className="line-selector-cb">
+          <input
+            type="checkbox"
+            name="show-weight-trend"
+            id="show-weight-trend"
+            checked={filters.weightTrend}
+            onChange={() =>
+              setFilters({
+                ...filters,
+                weightTrend: !filters.weightTrend,
+              })
+            }
+          />
+          <label htmlFor="show-weight-trend">Weight Trend</label>
+        </div>
+        <div className="line-selector-cb">
+          <input
+            type="checkbox"
+            name="show-bfp"
+            id="show-bfp"
+            checked={filters.bodyFatPercentage}
+            onChange={() =>
+              setFilters({
+                ...filters,
+                bodyFatPercentage: !filters.bodyFatPercentage,
+              })
+            }
+          />
+          <label htmlFor="show-bfp">Bodyfat</label>
+        </div>
+      </form>
       <div>
         <ResponsiveContainer
           minWidth={200}
@@ -130,6 +188,14 @@ export default ({
               type="number"
               domain={["dataMin-0.1", "dataMax+0.1"]}
               tickFormatter={tickWeightFormatter}
+              yAxisId="weight"
+            />
+            <YAxis
+              type="number"
+              domain={["dataMin-0.1", "dataMax+0.1"]}
+              tickFormatter={tickWeightFormatter}
+              yAxisId="bfp"
+              orientation="right"
             />
             <Tooltip
               labelFormatter={(value) =>
@@ -137,24 +203,44 @@ export default ({
               }
             />
             <Legend />
-            <Line
-              type="monotone"
-              dataKey="weight"
-              stroke="#b81007"
-              activeDot={{ r: 8 }}
-              strokeWidth={2}
-              isAnimationActive={responsive}
-            />
-            <Line
-              type="monotone"
-              dataKey="weightTrend"
-              stroke="#345693"
-              activeDot={{ r: 8 }}
-              strokeWidth={2}
-              strokeDasharray="12 4"
-              dot={{ strokeDasharray: "" }}
-              isAnimationActive={responsive}
-            />
+            {filters.weight && (
+              <Line
+                type="monotone"
+                dataKey="weight"
+                stroke="#b81007"
+                activeDot={{ r: 8 }}
+                strokeWidth={2}
+                isAnimationActive={responsive}
+                yAxisId="weight"
+                dot={formatted.length <= 31}
+              />
+            )}
+            {filters.weightTrend && (
+              <Line
+                type="monotone"
+                dataKey="weightTrend"
+                stroke="#345693"
+                activeDot={{ r: 8 }}
+                strokeWidth={2}
+                strokeDasharray="12 4"
+                dot={formatted.length <= 31 ? { strokeDasharray: "" } : false}
+                isAnimationActive={responsive}
+                yAxisId="weight"
+              />
+            )}
+            {filters.bodyFatPercentage && (
+              <Line
+                type="monotone"
+                dataKey="bodyFatPercentage"
+                stroke="#dfcc4c"
+                activeDot={{ r: 8 }}
+                strokeWidth={2}
+                dot={formatted.length <= 31}
+                isAnimationActive={responsive}
+                yAxisId="bfp"
+                data-testId="bfp-line"
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
       </div>

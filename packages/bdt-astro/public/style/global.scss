@@ -165,6 +165,23 @@ footer * {
   flex-grow: 1;
 }
 
+.line-selector-form {
+  display: flex;
+  align-items: center;
+}
+.line-selector-cb {
+  display: flex;
+  gap: 10px;
+  flex-grow: 1;
+  margin-bottom: var(--s-1);
+}
+
+.line-selector-cb label {
+  padding: var(--s-4);
+  width: var(--s3);
+  flex: 1;
+}
+
 .rdp {
   position: absolute;
   z-index: 1;
