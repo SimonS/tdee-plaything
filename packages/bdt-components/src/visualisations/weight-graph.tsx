@@ -212,6 +212,7 @@ export default ({
                 strokeWidth={2}
                 isAnimationActive={responsive}
                 yAxisId="weight"
+                dot={formatted.length <= 31}
               />
             )}
             {filters.weightTrend && (
@@ -222,7 +223,7 @@ export default ({
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
                 strokeDasharray="12 4"
-                dot={{ strokeDasharray: "" }}
+                dot={formatted.length <= 31 ? { strokeDasharray: "" } : false}
                 isAnimationActive={responsive}
                 yAxisId="weight"
               />
@@ -234,7 +235,7 @@ export default ({
                 stroke="#dfcc4c"
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
-                dot={{ strokeDasharray: "" }}
+                dot={formatted.length <= 31}
                 isAnimationActive={responsive}
                 yAxisId="bfp"
                 data-testId="bfp-line"

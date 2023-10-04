@@ -79,6 +79,17 @@ describe("basic weight graph rendering", () => {
     expect(dots).toHaveLength(3);
   });
 
+  it("renders renders no dots if there are more than 31", () => {
+    const weighins = generateWeighins(32);
+
+    const { container } = render(
+      <WeightGraph weighins={weighins} responsive={false} />
+    );
+
+    const dots = getDots(container);
+    expect(dots).toHaveLength(0);
+  });
+
   it("filters using from", () => {
     const weighins = generateWeighins(3);
 
