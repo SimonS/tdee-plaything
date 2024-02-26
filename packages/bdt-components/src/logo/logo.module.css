@@ -1,8 +1,6 @@
 .logo {
-  border-bottom: 4px #dfcc4c solid;
+  border-bottom: 4px var(--colour-accent-sub) solid;
   display: block;
-  max-width: 9.3rem; /* Yes, this is hacky as fuck (and probably brittle), 
-                        I just like the way the type falls. */
   padding-bottom: var(--s1);
   text-decoration: none;
 }
@@ -12,6 +10,10 @@
   font-size: var(--s2);
   line-height: 1;
   overflow-wrap: break-word;
+}
+
+.logo span {
+  display: block;
 }
 
 .logo .highlighted {
