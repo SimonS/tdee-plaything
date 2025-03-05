@@ -8,6 +8,7 @@ module.exports = {
   },
   "transformIgnorePatterns": [
     ".*node_modules/(?!axios|deasync|http-cookie-agent).*/"
-  ]
+  ],
+  setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
 
 };
