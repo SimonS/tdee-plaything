@@ -1,2 +1,5 @@
 [build]
     functions = "lambda"
+    
+[build.environment]
+    NODE_VERSION = "22.14.0"
