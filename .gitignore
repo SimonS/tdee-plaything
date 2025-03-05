@@ -9,3 +9,4 @@ dist
 
 # Local Netlify folder
 .netlify
+yarn-error.log
