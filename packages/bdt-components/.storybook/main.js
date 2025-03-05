@@ -1,8 +1,13 @@
 import { dirname, join } from "path";
+// import type { StorybookConfig } from "@storybook/react-webpack5";
+
+const getAbsolutePath = (packageName) =>
+  dirname(require.resolve(join(packageName, 'package.json')));
+
 module.exports = {
   
   framework: {
-    name: "@storybook/react-webpack5",
+    name: getAbsolutePath("@storybook/react-webpack5"),
     options: {},
   },
 
@@ -52,7 +57,3 @@ module.exports = {
     autodocs: true
   }
 };
-
-function getAbsolutePath(value) {
-  return dirname(require.resolve(join(value, "package.json")));
-}
