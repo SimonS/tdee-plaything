@@ -1,5 +1,3 @@
-// import 'web-streams-polyfill/ponyfill';
-
 import { loginToOvercast, getOvercastListens } from "./getOvercastListens";
 import * as nock from "nock";
 import { readFileSync } from "fs";
