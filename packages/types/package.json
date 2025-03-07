@@ -10,7 +10,7 @@
     "compile": "tsc"
   },
   "devDependencies": {
-    "typescript": "^4.1.3"
+    "typescript": "^5.8.2"
   },
   "dependencies": {}
 }
