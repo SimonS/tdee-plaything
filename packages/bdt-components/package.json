@@ -65,13 +65,13 @@
     ]
   },
   "dependencies": {
-    "@nanostores/react": "^0.7.1",
+    "@nanostores/react": "^0.8.4",
     "@nivo/calendar": "0.79.0",
     "@nivo/colors": "0.79.0",
     "@nivo/core": "0.79.0",
     "date-fns": "^2.30.0",
     "jest-environment-jsdom": "^29.6.4",
-    "nanostores": "^0.9.3",
+    "nanostores": "^0.11.4",
     "react-day-picker": "^8.8.2",
     "recharts": "^2.8.0"
   }
