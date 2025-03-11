@@ -1,4 +1,6 @@
 import * as overcast from "@tdee/overcast-functions/src/getOvercastListens";
+import { expect, jest, test, afterEach } from '@jest/globals';
+
 import { handler } from "../lambda/overcast";
 import axios from "axios";
 
@@ -70,7 +72,7 @@ test("calls listen getter with yesterday's date", async () => {
   const mockDate = new Date("2020-01-02");
   jest
     .spyOn(global, "Date")
-    .mockImplementation(() => mockDate as unknown as string);
+    .mockImplementation(() => mockDate as unknown as Date);
 
   mockLogin(true);
   mockAxios();

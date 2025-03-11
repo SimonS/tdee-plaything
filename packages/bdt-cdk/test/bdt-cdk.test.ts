@@ -1,5 +1,7 @@
 import { Template } from "aws-cdk-lib/assertions";
 import * as cdk from "aws-cdk-lib";
+import { test } from '@jest/globals';
+
 
 import * as BdtCdk from "../lib/bdt-cdk-stack";
 

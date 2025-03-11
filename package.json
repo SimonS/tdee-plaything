@@ -43,7 +43,7 @@
     "prettier": "^3.5.3",
     "prop-types": "^15.8.1",
     "ts-jest": "^29.2.6",
-    "typescript": "^5.8.2"
+    "typescript": "5.8.2"
   },
   "dependencies": {
     "webpack": "^5.65.0"
