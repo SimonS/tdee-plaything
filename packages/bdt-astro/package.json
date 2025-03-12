@@ -9,7 +9,7 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "^3.0.5",
+    "astro": "^5.4.3",
     "graphql-request": "^7.1.2",
     "sass": "^1.49.9"
   },
