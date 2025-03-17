@@ -1,4 +1,4 @@
-import fetch, { Response } from "node-fetch";
+import fetch, { Response } from "cross-fetch";
 
 const postToBDT = async (
   body: string,
