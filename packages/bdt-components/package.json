@@ -61,14 +61,14 @@
       "\\.css$": "identity-obj-proxy"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!nanostores|@nanostores|@nivo|d3-color).*/"
+      "node_modules/(?!nanostores|@nanostores|@nivo|d3-*|internmap|delaunator|robust-predicates).*/"
     ]
   },
   "dependencies": {
     "@nanostores/react": "^0.8.4",
-    "@nivo/calendar": "0.79.0",
-    "@nivo/colors": "0.79.0",
-    "@nivo/core": "0.79.0",
+    "@nivo/calendar": "^0.88.0",
+    "@nivo/colors": "^0.88.0",
+    "@nivo/core": "^0.88.0",
     "date-fns": "^2.30.0",
     "jest-environment-jsdom": "^29.6.4",
     "nanostores": "^0.11.4",
