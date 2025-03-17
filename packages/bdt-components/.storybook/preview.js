@@ -31,3 +31,4 @@ export const parameters = {
     page: DocsPage,
   },
 };
+export const tags = ["autodocs"];

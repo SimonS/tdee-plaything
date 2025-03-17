@@ -5,7 +5,6 @@ const getAbsolutePath = (packageName) =>
   dirname(require.resolve(join(packageName, 'package.json')));
 
 module.exports = {
-  
   framework: {
     name: getAbsolutePath("@storybook/react-webpack5"),
     options: {},
@@ -17,6 +16,7 @@ module.exports = {
     getAbsolutePath("@storybook/addon-actions"),
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-controls"),
+    getAbsolutePath("@storybook/addon-webpack5-compiler-babel")
   ],
 
   webpackFinal: async (config, { configType }) => {
@@ -53,7 +53,9 @@ module.exports = {
     return config;
   },
 
-  docs: {
-    autodocs: true
+  docs: {},
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript"
   }
 };
