@@ -1,3 +1,4 @@
+import React from "react";
 import { Meta } from "@storybook/react";
 import { GroupedFilms } from "@tdee/types/src/bdt";
 import FilmCalendar from "./films";
