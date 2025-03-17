@@ -11,7 +11,7 @@
   "devDependencies": {
     "astro": "^3.0.5",
     "graphql-request": "^7.1.2",
-    "sass": "^1.49.9"
+    "sass": "^1.86.0"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.2"
