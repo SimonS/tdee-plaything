@@ -1,3 +1,4 @@
+import React from "react";
 import { Meta } from "@storybook/react";
 import WeightGraph from "./weight-graph";
 import { Weighin } from "@tdee/types/src/bdt";
