@@ -70,7 +70,7 @@
     "@nivo/calendar": "^0.88.0",
     "@nivo/colors": "^0.88.0",
     "@nivo/core": "^0.88.0",
-    "date-fns": "^2.30.0",
+    "date-fns": "^4.1.0",
     "jest-environment-jsdom": "^29.6.4",
     "nanostores": "^0.11.4",
     "react-day-picker": "^9.6.2",
