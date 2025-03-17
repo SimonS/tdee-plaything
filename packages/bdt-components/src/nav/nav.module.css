@@ -1,11 +1,14 @@
 .mainMenu a {
-  color: #345693;
-  text-decoration-color: #b81007;
-  text-underline-offset: var(--s-4);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.mainMenu a:visited {
+  color: var(--colour-accent-main);
 }
 
 .current::before {
-  color: #050704;
+  color: var(--colour-shade-dark);
   content: "\2192";
   margin-left: calc(var(--s1) * -1);
   position: absolute;
@@ -13,4 +16,10 @@
 
 .mainMenu li {
   list-style: none;
+  display: inline-block;
+  padding: 0 20px;
+}
+
+.mainMenu li:first-child {
+  padding-left: 0;
 }
