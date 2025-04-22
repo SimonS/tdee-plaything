@@ -2,15 +2,16 @@ import { Template } from "aws-cdk-lib/assertions";
 import * as cdk from "aws-cdk-lib";
 import { test } from '@jest/globals';
 
-
 import * as BdtCdk from "../lib/bdt-cdk-stack";
 
-test("creates and wires up a lambda", () => {
+const synthesiseTestStack = (): Template => {
   const app = new cdk.App();
+  const stack = new BdtCdk.BdtCdkStack(app, "TestStack");
+  return Template.fromStack(stack);
+};
 
-  const stack = new BdtCdk.BdtCdkStack(app, "MyTestStack");
-
-  const template = Template.fromStack(stack);
+test("creates and wires up a lambda", () => {
+  const template = synthesiseTestStack();
 
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "overcastLambda",
@@ -21,7 +22,6 @@ test("creates and wires up a lambda", () => {
 
 test("adds a rule to run lambda on cronjob", () => {
   const app = new cdk.App();
-
   const stack = new BdtCdk.BdtCdkStack(app, "MyTestStack");
 
   const lambdaId = stack.getLogicalId(
@@ -39,5 +39,13 @@ test("adds a rule to run lambda on cronjob", () => {
         },
       },
     ],
+  });
+});
+
+test("creates an HTTP API Gateway resource", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::ApiGatewayV2::Api", {
+    ProtocolType: "HTTP",
   });
 });

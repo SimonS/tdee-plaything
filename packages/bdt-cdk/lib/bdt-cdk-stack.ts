@@ -2,6 +2,7 @@ import { Stack, App, StackProps, Duration } from "aws-cdk-lib";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
+import { HttpApi } from 'aws-cdk-lib/aws-apigatewayv2';
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -23,5 +24,9 @@ export class BdtCdkStack extends Stack {
     });
 
     eventRule.addTarget(new LambdaFunction(overcastLambda));
+
+    const httpApi = new HttpApi(this, 'StravaWebhookApi', {
+      apiName: 'StravaWebhookApi'
+    });
   }
 }
