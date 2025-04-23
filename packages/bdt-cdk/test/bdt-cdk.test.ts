@@ -16,7 +16,7 @@ test("creates and wires up a lambda", () => {
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "overcastLambda",
     MemorySize: 512,
-    Runtime: "nodejs16.x",
+    Runtime: "nodejs18.x",
   });
 });
 

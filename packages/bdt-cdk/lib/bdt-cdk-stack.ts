@@ -3,6 +3,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { HttpApi } from 'aws-cdk-lib/aws-apigatewayv2';
+import { Runtime } from "aws-cdk-lib/aws-lambda";
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -13,7 +14,8 @@ export class BdtCdkStack extends Stack {
       functionName: "overcastLambda",
       handler: "handler",
       memorySize: 512,
-      timeout: Duration.seconds(30),
+      runtime: Runtime.NODEJS_18_X,
+      timeout: Duration.seconds(60),
       bundling: {
         externalModules: ["deasync"],
       },
