@@ -34,6 +34,10 @@ export class BdtCdkStack extends Stack {
       apiName: "StravaWebhookApi",
     });
 
+    const webhookQueue = new Queue(this, "StravaWebhookQueue", {
+      queueName: "strava-webhook-queue",
+    });
+    
     const receiverLambda = new NodejsFunction(
       this,
       "StravaWebhookReceiverLambda",
@@ -42,23 +46,22 @@ export class BdtCdkStack extends Stack {
         functionName: "stravaWebhookReceiverLambda",
         runtime: Runtime.NODEJS_22_X,
         handler: "handler",
+        environment: {
+          QUEUE_URL: webhookQueue.queueUrl,
+        },
       }
     );
-
-    const webhookQueue = new Queue(this, "StravaWebhookQueue", {
-      queueName: "strava-webhook-queue",
-    });
 
     webhookQueue.grantSendMessages(receiverLambda);
 
     const stravaWebhookIntegration = new HttpLambdaIntegration(
-      'StravaWebhookIntegration',
+      "StravaWebhookIntegration",
       receiverLambda
     );
 
     httpApi.addRoutes({
-      path: '/strava/webhook',
-      methods: [ HttpMethod.POST ],
+      path: "/strava/webhook",
+      methods: [HttpMethod.POST],
       integration: stravaWebhookIntegration,
     });
   }

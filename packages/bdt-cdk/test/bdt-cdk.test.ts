@@ -58,6 +58,13 @@ test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
     FunctionName: "stravaWebhookReceiverLambda",
     Runtime: Runtime.NODEJS_22_X.name,
     Handler: "index.handler",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        QUEUE_URL: {
+          Ref: Match.stringLikeRegexp("StravaWebhookQueue*"),
+        },
+      }),
+    }),
   });
 });
 
