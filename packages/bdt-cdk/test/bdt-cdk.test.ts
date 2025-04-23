@@ -1,6 +1,6 @@
-import { Template } from "aws-cdk-lib/assertions";
+import { Template, Match } from "aws-cdk-lib/assertions";
 import * as cdk from "aws-cdk-lib";
-import { test } from '@jest/globals';
+import { test } from "@jest/globals";
 
 import * as BdtCdk from "../lib/bdt-cdk-stack";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
@@ -56,8 +56,38 @@ test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
 
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "stravaWebhookReceiverLambda",
-    Runtime: Runtime.NODEJS_22_X.name, 
-    Handler: "index.handler", 
+    Runtime: Runtime.NODEJS_22_X.name,
+    Handler: "index.handler",
+  });
+});
+
+test("point the Strava Webhook API Gateway to the Strava Receiver Lambda", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
+    ApiId: { Ref: Match.stringLikeRegexp("StravaWebhookApi*") },
+    IntegrationType: "AWS_PROXY",
+    IntegrationUri: Match.objectLike({
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp("StravaWebhookReceiverLambda*"),
+        "Arn",
+      ],
+    }),
+    PayloadFormatVersion: "2.0",
+  });
+
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: { Ref: Match.stringLikeRegexp("StravaWebhookApi*") },
+    RouteKey: "POST /strava/webhook",
+    Target: Match.objectLike({
+      "Fn::Join": [
+        "",
+        [
+          "integrations/",
+          { Ref: Match.stringLikeRegexp("StravaWebhookIntegration*") },
+        ],
+      ],
+    }),
   });
 });
 
@@ -66,5 +96,35 @@ test("Stack should contain the Strava Webhook SQS Queue", () => {
 
   template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "strava-webhook-queue",
+  });
+});
+
+test("Receiver Lambda Role should have SendMessage permission for Webhook Queue", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Action: Match.arrayWith([
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl",
+          ]),
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              Match.stringLikeRegexp("StravaWebhookQueue*"),
+              "Arn",
+            ],
+          },
+        }),
+      ]),
+    },
+    Roles: Match.arrayWith([
+      {
+        Ref: Match.stringLikeRegexp("StravaWebhookReceiverLambdaServiceRole*"),
+      },
+    ]),
   });
 });
