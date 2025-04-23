@@ -4,6 +4,7 @@ import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { HttpApi } from 'aws-cdk-lib/aws-apigatewayv2';
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import path = require("path");
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -29,6 +30,13 @@ export class BdtCdkStack extends Stack {
 
     const httpApi = new HttpApi(this, 'StravaWebhookApi', {
       apiName: 'StravaWebhookApi'
+    });
+
+    const receiverLambda = new NodejsFunction(this, 'StravaWebhookReceiverLambda', {
+      entry: path.join(__dirname, '../lambda/strava-receiver/index.ts'),
+      functionName: 'stravaWebhookReceiverLambda',
+      runtime: Runtime.NODEJS_22_X, 
+      handler: 'handler'
     });
   }
 }

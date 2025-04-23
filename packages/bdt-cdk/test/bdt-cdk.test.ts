@@ -3,6 +3,7 @@ import * as cdk from "aws-cdk-lib";
 import { test } from '@jest/globals';
 
 import * as BdtCdk from "../lib/bdt-cdk-stack";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
 
 const synthesiseTestStack = (): Template => {
   const app = new cdk.App();
@@ -10,7 +11,7 @@ const synthesiseTestStack = (): Template => {
   return Template.fromStack(stack);
 };
 
-test("creates and wires up a lambda", () => {
+test("creates and wires up an overcast lambda", () => {
   const template = synthesiseTestStack();
 
   template.hasResourceProperties("AWS::Lambda::Function", {
@@ -47,5 +48,15 @@ test("creates an HTTP API Gateway resource", () => {
 
   template.hasResourceProperties("AWS::ApiGatewayV2::Api", {
     ProtocolType: "HTTP",
+  });
+});
+
+test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaWebhookReceiverLambda",
+    Runtime: Runtime.NODEJS_22_X.name, 
+    Handler: "index.handler", 
   });
 });
