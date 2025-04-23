@@ -2,8 +2,9 @@ import { Stack, App, StackProps, Duration } from "aws-cdk-lib";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
-import { HttpApi } from 'aws-cdk-lib/aws-apigatewayv2';
+import { HttpApi } from "aws-cdk-lib/aws-apigatewayv2";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { Queue } from "aws-cdk-lib/aws-sqs";
 import path = require("path");
 
 export class BdtCdkStack extends Stack {
@@ -28,15 +29,23 @@ export class BdtCdkStack extends Stack {
 
     eventRule.addTarget(new LambdaFunction(overcastLambda));
 
-    const httpApi = new HttpApi(this, 'StravaWebhookApi', {
-      apiName: 'StravaWebhookApi'
+    const httpApi = new HttpApi(this, "StravaWebhookApi", {
+      apiName: "StravaWebhookApi",
     });
 
-    const receiverLambda = new NodejsFunction(this, 'StravaWebhookReceiverLambda', {
-      entry: path.join(__dirname, '../lambda/strava-receiver/index.ts'),
-      functionName: 'stravaWebhookReceiverLambda',
-      runtime: Runtime.NODEJS_22_X, 
-      handler: 'handler'
+    const receiverLambda = new NodejsFunction(
+      this,
+      "StravaWebhookReceiverLambda",
+      {
+        entry: path.join(__dirname, "../lambda/strava-receiver/index.ts"),
+        functionName: "stravaWebhookReceiverLambda",
+        runtime: Runtime.NODEJS_22_X,
+        handler: "handler",
+      }
+    );
+
+    const webhookQueue = new Queue(this, "StravaWebhookQueue", {
+      queueName: "strava-webhook-queue",
     });
   }
 }

@@ -60,3 +60,11 @@ test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
     Handler: "index.handler", 
   });
 });
+
+test("Stack should contain the Strava Webhook SQS Queue", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: "strava-webhook-queue",
+  });
+});
