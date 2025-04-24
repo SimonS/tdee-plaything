@@ -2,6 +2,9 @@ import {
   APIGatewayProxyEventV2,
   APIGatewayProxyStructuredResultV2,
 } from "aws-lambda";
+import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
+
+const sqsClient = new SQSClient({});
 
 export const handler = async (
   event: APIGatewayProxyEventV2
@@ -10,7 +13,7 @@ export const handler = async (
 
   const queueUrl = process.env.QUEUE_URL;
 
-  if (!queueUrl || queueUrl === undefined) {
+  if (!queueUrl) {
     console.error(
       "Configuration Error: QUEUE_URL environment variable not set."
     );
@@ -19,11 +22,33 @@ export const handler = async (
       body: "Internal configuration error.",
     };
   }
-  
-  const response: APIGatewayProxyStructuredResultV2 = {
-    statusCode: 200,
-    body: "OK",
-  };
 
-  return response;
+  try {
+    const messageBody =
+      event.body ??
+      JSON.stringify({
+        warning: "Received event with no body",
+        receivedAt: new Date().toISOString(),
+      });
+
+    const command = new SendMessageCommand({
+      QueueUrl: queueUrl,
+      MessageBody: messageBody,
+    });
+
+    const sqsResult = await sqsClient.send(command);
+    console.log("Successfully sent message to SQS:", sqsResult.MessageId);
+
+    return {
+      statusCode: 200,
+      body: "Message received and queued.",
+    };
+  } catch (error) {
+    console.error("Error sending message to SQS:", error);
+
+    return {
+      statusCode: 500,
+      body: "Failed to queue message.",
+    };
+  }
 };
