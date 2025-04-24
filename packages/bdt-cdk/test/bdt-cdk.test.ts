@@ -68,6 +68,32 @@ test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
   });
 });
 
+test("Stack should contain the Strava Event Processor Lambda function", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaEventProcessorLambda",
+    Runtime: Runtime.NODEJS_22_X.name,
+    Handler: "index.handler",
+  });
+});
+
+test("Event source mapping between Queue and Processor", () => {
+  const template = synthesiseTestStack();
+
+  template.hasResourceProperties("AWS::Lambda::EventSourceMapping", {
+    EventSourceArn: { 
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp("StravaWebhookQueue*"),
+        "Arn"
+      ]
+    },
+    FunctionName: {
+      "Ref": Match.stringLikeRegexp("StravaEventProcessorLambda*")
+    },
+  });
+});
+
 test("point the Strava Webhook API Gateway to the Strava Receiver Lambda", () => {
   const template = synthesiseTestStack();
 

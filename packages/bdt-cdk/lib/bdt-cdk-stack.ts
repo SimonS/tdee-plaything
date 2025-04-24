@@ -3,10 +3,12 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { HttpApi, HttpMethod } from "aws-cdk-lib/aws-apigatewayv2";
+import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { Queue } from "aws-cdk-lib/aws-sqs";
 import path = require("path");
-import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -64,5 +66,14 @@ export class BdtCdkStack extends Stack {
       methods: [HttpMethod.POST],
       integration: stravaWebhookIntegration,
     });
+
+    const processorLambda = new NodejsFunction(this, 'StravaEventProcessorLambda', {
+      entry: path.join(__dirname, '../lambda/strava-processor/index.ts'),
+      functionName: 'stravaEventProcessorLambda',
+      runtime: Runtime.NODEJS_22_X,
+      handler: 'index.handler',
+    });
+
+    processorLambda.addEventSource(new SqsEventSource(webhookQueue));
   }
 }
