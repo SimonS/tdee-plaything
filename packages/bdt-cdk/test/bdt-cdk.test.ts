@@ -1,19 +1,22 @@
 import { Template, Match } from "aws-cdk-lib/assertions";
 import * as cdk from "aws-cdk-lib";
-import { test } from "@jest/globals";
-
+import { test, beforeAll } from "@jest/globals";
 import * as BdtCdk from "../lib/bdt-cdk-stack";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 
-const synthesiseTestStack = (): Template => {
-  const app = new cdk.App();
+let template: Template;
+
+beforeAll(() => {
+  const app = new cdk.App({
+    context: {
+      "aws:cdk:bundling-stacks": [],
+    },
+  });
   const stack = new BdtCdk.BdtCdkStack(app, "TestStack");
-  return Template.fromStack(stack);
-};
+  template = Template.fromStack(stack);
+});
 
 test("creates and wires up an overcast lambda", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "overcastLambda",
     MemorySize: 512,
@@ -22,8 +25,12 @@ test("creates and wires up an overcast lambda", () => {
 });
 
 test("adds a rule to run lambda on cronjob", () => {
-  const app = new cdk.App();
-  const stack = new BdtCdk.BdtCdkStack(app, "MyTestStack");
+  const app = new cdk.App({
+    context: {
+      "aws:cdk:bundling-stacks": [],
+    },
+  });
+  const stack = new BdtCdk.BdtCdkStack(app, "TestStack");
 
   const lambdaId = stack.getLogicalId(
     stack.node.findChild("OvercastLambda").node.defaultChild as cdk.CfnElement
@@ -44,16 +51,12 @@ test("adds a rule to run lambda on cronjob", () => {
 });
 
 test("creates an HTTP API Gateway resource", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::ApiGatewayV2::Api", {
     ProtocolType: "HTTP",
   });
 });
 
 test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "stravaWebhookReceiverLambda",
     Runtime: Runtime.NODEJS_22_X.name,
@@ -69,8 +72,6 @@ test("Stack should contain the Strava Webhook Receiver Lambda function", () => {
 });
 
 test("Stack should contain the Strava Event Processor Lambda function", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "stravaEventProcessorLambda",
     Runtime: Runtime.NODEJS_22_X.name,
@@ -79,24 +80,17 @@ test("Stack should contain the Strava Event Processor Lambda function", () => {
 });
 
 test("Event source mapping between Queue and Processor", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::Lambda::EventSourceMapping", {
-    EventSourceArn: { 
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp("StravaWebhookQueue*"),
-        "Arn"
-      ]
+    EventSourceArn: {
+      "Fn::GetAtt": [Match.stringLikeRegexp("StravaWebhookQueue*"), "Arn"],
     },
     FunctionName: {
-      "Ref": Match.stringLikeRegexp("StravaEventProcessorLambda*")
+      Ref: Match.stringLikeRegexp("StravaEventProcessorLambda*"),
     },
   });
 });
 
 test("point the Strava Webhook API Gateway to the Strava Receiver Lambda", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
     ApiId: { Ref: Match.stringLikeRegexp("StravaWebhookApi*") },
     IntegrationType: "AWS_PROXY",
@@ -125,16 +119,12 @@ test("point the Strava Webhook API Gateway to the Strava Receiver Lambda", () =>
 });
 
 test("Stack should contain the Strava Webhook SQS Queue", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "strava-webhook-queue",
   });
 });
 
 test("Receiver Lambda Role should have SendMessage permission for Webhook Queue", () => {
-  const template = synthesiseTestStack();
-
   template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: Match.arrayWith([

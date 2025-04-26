@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: "node",
   roots: ["./packages"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": ["ts-jest", { diagnostics: { ignoreCodes: ['TS151001'] }}],
     "^.+\\.jsx?$": "babel-jest",
   },
   testPathIgnorePatterns: [
