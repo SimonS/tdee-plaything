@@ -74,13 +74,32 @@ test("returns 500 error if SQS send fails", async () => {
   expect(sqsMock.calls()).toHaveLength(1);
 });
 
+test('should return 405 Method Not Allowed for non-POST/GET methods', async () => {
+  const mockEvent = createMockApiGatewayEvent(null, 'PUT');
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(405);
+  expect(sqsMock.calls()).toHaveLength(0);
+});
+
+test('should NOT attempt to send to SQS for GET requests (initially)', async () => {
+  const mockEvent = createMockApiGatewayEvent(null, 'GET');
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(sqsMock.calls()).toHaveLength(0);
+  expect(result.statusCode).toBe(200);
+});
+
+
 function createMockApiGatewayEvent(
-  eventBody: any
+  eventBody: any, method: string = "POST"
 ): Partial<APIGatewayProxyEventV2> {
   return {
     requestContext: {
       http: {
-        method: "POST",
+        method,
         path: "/strava/webhook",
       },
     } as any,
