@@ -50,6 +50,7 @@ export class BdtCdkStack extends Stack {
         handler: "handler",
         environment: {
           QUEUE_URL: webhookQueue.queueUrl,
+          STRAVA_VERIFY_TOKEN: "a very secure token",
         },
       }
     );

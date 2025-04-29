@@ -14,7 +14,31 @@ export const handler = async (
   const httpMethod = event.requestContext.http.method;
 
   if (httpMethod === "GET") {
-    return { statusCode: 200, body: "GET received - verification pending" };
+    console.log(
+      "Strava webhook verification successful. Responding with challenge."
+    );
+
+    const queryParams = event.queryStringParameters || {};
+    const challenge = queryParams["hub.challenge"];
+    const verifyToken = queryParams["hub.verify_token"];
+
+    const expectedVerifyToken = process.env.STRAVA_VERIFY_TOKEN;
+
+    if (verifyToken === expectedVerifyToken) {
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "hub.challenge": challenge }),
+      };
+    } else {
+      console.error(
+        "Strava webhook verification failed. Invalid verify token."
+      );
+      return {
+        statusCode: 403,
+        body: "Forbidden",
+      };
+    }
   } else if (httpMethod === "POST") {
     const queueUrl = process.env.QUEUE_URL;
 
