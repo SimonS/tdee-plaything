@@ -14,26 +14,42 @@ export const handler = async (
   const httpMethod = event.requestContext.http.method;
 
   if (httpMethod === "GET") {
-    console.log(
-      "Strava webhook verification successful. Responding with challenge."
+    return verifySubscription(event);
+  } 
+  if (httpMethod === "POST") {
+    return receiveEvent(event);
+  }
+
+  return respondWith(405, "Method Not Allowed");
+};
+
+const respondWith = (statusCode: number, body: string) => {
+  return { statusCode, body, headers: { "Content-Type": "application/json" } };
+};
+
+const verifySubscription = (event: APIGatewayProxyEventV2) => {
+  console.log(
+    "Strava webhook verification successful. Responding with challenge."
+  );
+
+  const queryParams = event.queryStringParameters || {};
+  const challenge = queryParams["hub.challenge"];
+  const verifyToken = queryParams["hub.verify_token"];
+
+  const expectedVerifyToken = process.env.STRAVA_VERIFY_TOKEN;
+
+  if (verifyToken === expectedVerifyToken) {
+    return respondWith(200, JSON.stringify({ "hub.challenge": challenge }));
+  } else {
+    console.error(
+      "Strava webhook verification failed. Invalid verify token."
     );
+    return respondWith(403, "Forbidden");
+  }
+}
 
-    const queryParams = event.queryStringParameters || {};
-    const challenge = queryParams["hub.challenge"];
-    const verifyToken = queryParams["hub.verify_token"];
-
-    const expectedVerifyToken = process.env.STRAVA_VERIFY_TOKEN;
-
-    if (verifyToken === expectedVerifyToken) {
-      return respondWith(200, JSON.stringify({ "hub.challenge": challenge }));
-    } else {
-      console.error(
-        "Strava webhook verification failed. Invalid verify token."
-      );
-      return respondWith(403, "Forbidden");
-    }
-  } else if (httpMethod === "POST") {
-    const queueUrl = process.env.QUEUE_URL;
+const receiveEvent = async (event: APIGatewayProxyEventV2) => {
+  const queueUrl = process.env.QUEUE_URL;
 
     if (!queueUrl) {
       console.error(
@@ -51,17 +67,26 @@ export const handler = async (
     }
     console.log("Successfully parsed body:", parsedBody);
 
-    try {
-      const messageBody =
-        event.body ??
-        JSON.stringify({
-          warning: "Received event with no body",
-          receivedAt: new Date().toISOString(),
-        });
+    const { object_type, object_id, aspect_type, owner_id } = parsedBody || {};
 
+    type StravaEvent = {
+      object_type: string;
+      object_id: string;
+      aspect_type: string;
+      owner_id: string;
+    };
+    
+    const messageForQueue: StravaEvent = {
+      object_type,
+      object_id,
+      aspect_type,
+      owner_id,
+    };
+
+    try {
       const command = new SendMessageCommand({
         QueueUrl: queueUrl,
-        MessageBody: messageBody,
+        MessageBody: JSON.stringify(messageForQueue),
       });
 
       const sqsResult = await sqsClient.send(command);
@@ -72,11 +97,4 @@ export const handler = async (
       console.error("Error sending message to SQS:", error);
       return respondWith(500, "Failed to queue message.");
     }
-  }
-
-  return respondWith(405, "Method Not Allowed");
-};
-
-const respondWith = (statusCode: number, body: string) => {
-  return { statusCode, body, headers: { "Content-Type": "application/json" } };
-};
+}
