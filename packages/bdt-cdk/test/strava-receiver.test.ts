@@ -76,9 +76,19 @@ test("should parse webhook, extract IDs, and send structured message to SQS", as
 });
 
 test("return 200 OK but NOT queue message for non-activity events", async () => {
-  process.env.QUEUE_URL = "https://some-queue-url";
   const athleteEventPayload = makeStravaEvent("update", "athlete");
   const mockEvent = createMockApiGatewayEvent(athleteEventPayload);
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(200);
+  expect(result.body).toContain("Event received but not processed");
+  expect(sqsMock.calls()).toHaveLength(0);
+});
+
+test("return 200 OK but NOT queue message for deletes", async () => {
+  const deleteEvent = makeStravaEvent("delete");
+  const mockEvent = createMockApiGatewayEvent(deleteEvent);
 
   const result = await handler(mockEvent as APIGatewayProxyEventV2);
 

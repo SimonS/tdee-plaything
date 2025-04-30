@@ -67,11 +67,13 @@ const receiveEvent = async (event: APIGatewayProxyEventV2) => {
 
   const { object_type, object_id, aspect_type, owner_id } = parsedBody || {};
 
-  if (object_type !== 'activity') {
-    console.log(`Ignoring non-activity event: ${object_type}`);
-    return respondWith(200, 'Event received but not processed (non-activity).');
-}
-  
+  if ((aspect_type !== "create" && aspect_type !== "update") || object_type !== "activity") {
+    console.log(
+      `Ignoring event: ${object_type} / ${aspect_type}`
+    );
+    return respondWith(200, "Event received but not processed (delete/other).");
+  }
+
   type StravaEvent = {
     object_type: string;
     object_id: string;
