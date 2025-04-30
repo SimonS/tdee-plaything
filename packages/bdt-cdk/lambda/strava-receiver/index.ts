@@ -25,19 +25,12 @@ export const handler = async (
     const expectedVerifyToken = process.env.STRAVA_VERIFY_TOKEN;
 
     if (verifyToken === expectedVerifyToken) {
-      return {
-        statusCode: 200,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "hub.challenge": challenge }),
-      };
+      return respondWith(200, JSON.stringify({ "hub.challenge": challenge }));
     } else {
       console.error(
         "Strava webhook verification failed. Invalid verify token."
       );
-      return {
-        statusCode: 403,
-        body: "Forbidden",
-      };
+      return respondWith(403, "Forbidden");
     }
   } else if (httpMethod === "POST") {
     const queueUrl = process.env.QUEUE_URL;
@@ -46,11 +39,17 @@ export const handler = async (
       console.error(
         "Configuration Error: QUEUE_URL environment variable not set."
       );
-      return {
-        statusCode: 500,
-        body: "Internal configuration error.",
-      };
+      return respondWith(500, "Internal configuration error");
     }
+
+    let parsedBody;
+    try {
+      parsedBody = JSON.parse(event.body ? event.body : "");
+    } catch (error) {
+      console.error("Error parsing JSON body:", error);
+      return respondWith(400, "Invalid JSON body.");
+    }
+    console.log("Successfully parsed body:", parsedBody);
 
     try {
       const messageBody =
@@ -66,24 +65,18 @@ export const handler = async (
       });
 
       const sqsResult = await sqsClient.send(command);
-      console.log("Successfully sent message to SQS:", sqsResult.MessageId);
 
-      return {
-        statusCode: 200,
-        body: "Message received and queued.",
-      };
+      console.log("Successfully sent message to SQS:", sqsResult.MessageId);
+      return respondWith(200, "Message received and queued.");
     } catch (error) {
       console.error("Error sending message to SQS:", error);
-
-      return {
-        statusCode: 500,
-        body: "Failed to queue message.",
-      };
+      return respondWith(500, "Failed to queue message.");
     }
   }
 
-  return {
-    statusCode: 405,
-    body: "Method Not Allowed",
-  };
+  return respondWith(405, "Method Not Allowed");
+};
+
+const respondWith = (statusCode: number, body: string) => {
+  return { statusCode, body, headers: { "Content-Type": "application/json" } };
 };

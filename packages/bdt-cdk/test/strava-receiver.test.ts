@@ -134,6 +134,17 @@ test("invalid verification GET request should return hub.challenge", async () =>
   expect(result.headers).toEqual({ 'Content-Type': 'application/json' });
 });
 
+test('should return 400 Bad Request if POST body is not valid JSON', async () => {
+  const invalidJsonBody = "{ not valid json '";
+  const mockEvent = createMockApiGatewayEvent(invalidJsonBody, 'POST');
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(400);
+  expect(sqsMock.calls()).toHaveLength(0);
+});
+
+
 function createMockApiGatewayEvent(
   eventBody: any,
   method: string = "POST"
@@ -145,6 +156,6 @@ function createMockApiGatewayEvent(
         path: "/strava/webhook",
       },
     } as any,
-    body: JSON.stringify(eventBody),
+    body: typeof eventBody === "string" ? eventBody : JSON.stringify(eventBody),
   };
 }
