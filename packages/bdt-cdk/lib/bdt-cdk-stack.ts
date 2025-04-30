@@ -50,6 +50,7 @@ export class BdtCdkStack extends Stack {
         handler: "handler",
         environment: {
           QUEUE_URL: webhookQueue.queueUrl,
+          STRAVA_VERIFY_TOKEN: "averysecuretokenwithnospaces",
         },
       }
     );
@@ -63,7 +64,7 @@ export class BdtCdkStack extends Stack {
 
     httpApi.addRoutes({
       path: "/strava/webhook",
-      methods: [HttpMethod.POST],
+      methods: [HttpMethod.POST, HttpMethod.GET],
       integration: stravaWebhookIntegration,
     });
 

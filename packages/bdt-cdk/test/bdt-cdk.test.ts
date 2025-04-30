@@ -116,6 +116,20 @@ test("point the Strava Webhook API Gateway to the Strava Receiver Lambda", () =>
       ],
     }),
   });
+
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: { Ref: Match.stringLikeRegexp("StravaWebhookApi*") },
+    RouteKey: "GET /strava/webhook",
+    Target: Match.objectLike({
+      "Fn::Join": [
+        "",
+        [
+          "integrations/",
+          { Ref: Match.stringLikeRegexp("StravaWebhookIntegration*") },
+        ],
+      ],
+    }),
+  });
 });
 
 test("Stack should contain the Strava Webhook SQS Queue", () => {
