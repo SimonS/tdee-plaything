@@ -102,7 +102,7 @@ test("should NOT attempt to send to SQS for GET requests (initially)", async () 
 });
 
 test("invalid verification GET request should return 403", async () => {
-  const STRAVA_VERIFY_TOKEN = "a very secure token";
+  const STRAVA_VERIFY_TOKEN = "aaverysecuretokenwithnospaces";
   const challenge = `challenge_${Date.now()}`;
   process.env.STRAVA_VERIFY_TOKEN = STRAVA_VERIFY_TOKEN;
 
@@ -118,7 +118,7 @@ test("invalid verification GET request should return 403", async () => {
 });
 
 test("invalid verification GET request should return hub.challenge", async () => {
-  const STRAVA_VERIFY_TOKEN = "a very secure token";
+  const STRAVA_VERIFY_TOKEN = "averysecuretokenwithnospaces";
   const challenge = `challenge_${Date.now()}`;
   process.env.STRAVA_VERIFY_TOKEN = STRAVA_VERIFY_TOKEN;
 
