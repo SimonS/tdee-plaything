@@ -50,19 +50,9 @@ test("return 500 error if QUEUE_URL environment variable is not set", async () =
 });
 
 test("should parse webhook, extract IDs, and send structured message to SQS", async () => {
-  const stravaEventPayload = {
-    aspect_type: "update",
-    event_time: Date.now() / 1000,
-    object_id: 1234567890,
-    object_type: "activity",
-    owner_id: 987654,
-    subscription_id: 281030,
-    updates: { title: "New Test Title" },
-  };
+  const stravaEventPayload = makeStravaEvent();
 
-  const mockEvent = createMockApiGatewayEvent(
-    JSON.stringify(stravaEventPayload)
-  );
+  const mockEvent = createMockApiGatewayEvent(stravaEventPayload);
   sqsMock.on(SendMessageCommand).resolves({
     $metadata: { httpStatusCode: 200 },
     MessageId: "mock-message-id-abc-123",
@@ -85,10 +75,21 @@ test("should parse webhook, extract IDs, and send structured message to SQS", as
   });
 });
 
+test("return 200 OK but NOT queue message for non-activity events", async () => {
+  process.env.QUEUE_URL = "https://some-queue-url";
+  const athleteEventPayload = makeStravaEvent("update", "athlete");
+  const mockEvent = createMockApiGatewayEvent(athleteEventPayload);
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(200);
+  expect(result.body).toContain("Event received but not processed");
+  expect(sqsMock.calls()).toHaveLength(0);
+});
+
 test("returns 500 error if SQS send fails", async () => {
-  const mockEvent = createMockApiGatewayEvent({
-    message: "trigger SQS failure",
-  });
+  const straveEventPayload = makeStravaEvent("update");
+  const mockEvent = createMockApiGatewayEvent(straveEventPayload);
 
   const sqsError = new Error("AWS SQS simulated error");
   sqsMock.on(SendMessageCommand).rejects(sqsError);
@@ -173,5 +174,17 @@ function createMockApiGatewayEvent(
       },
     } as any,
     body: typeof eventBody === "string" ? eventBody : JSON.stringify(eventBody),
+  };
+}
+
+function makeStravaEvent(aspect_type: string = "update", object_type: string = "activity") {
+  return {
+    aspect_type,
+    event_time: Date.now() / 1000,
+    object_id: 1234567890,
+    object_type,
+    owner_id: 987654,
+    subscription_id: 281030,
+    updates: { title: "New Test Title" },
   };
 }
