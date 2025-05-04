@@ -76,6 +76,11 @@ export class BdtCdkStack extends Stack {
         functionName: "stravaEventProcessorLambda",
         runtime: Runtime.NODEJS_22_X,
         handler: "index.handler",
+        environment: {
+          STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
+          STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
+          STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
+        },
       }
     );
 

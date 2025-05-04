@@ -187,3 +187,16 @@ test("Processor Lambda Role should have permissions to read Strava creds from SS
     },
   });
 });
+
+test("Processor Lambda use environment variables for SSM parameter names", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaEventProcessorLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
+        STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
+        STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
+      }),
+    }),
+  });
+});
