@@ -2,6 +2,85 @@ import { expect, test, afterEach, jest, afterAll } from "@jest/globals";
 
 import { handler } from "../lambda/strava-processor/index";
 import { SQSEvent, SQSRecord } from "aws-lambda";
+import {
+  SSMClient,
+  GetParametersCommand,
+  Parameter,
+} from "@aws-sdk/client-ssm";
+
+import axios from "axios";
+import { mockClient } from "aws-sdk-client-mock";
+import "aws-sdk-client-mock-jest";
+import { beforeEach } from "node:test";
+
+jest.mock("axios", () => {
+  const mockPost = jest.fn();
+  return {
+    __esModule: true,
+
+    default: { post: mockPost },
+    post: mockPost,
+  };
+});
+const mockedAxiosPost = axios.post as jest.Mock;
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
+const dummyCredentials = {
+  clientId: "TEST_CLIENT_ID",
+  clientSecret: "TEST_CLIENT_SECRET",
+  refreshToken: "TEST_REFRESH_TOKEN",
+};
+
+const mockStravaAuth = () => {
+  const paramNames = {
+    clientId: "/strava/client_id",
+    clientSecret: "/strava/client_secret",
+    refreshToken: "/strava/refresh_token",
+  };
+  
+  process.env.STRAVA_CLIENT_ID_PARAM_NAME = paramNames.clientId;
+  process.env.STRAVA_SECRET_PARAM_NAME = paramNames.clientSecret;
+  process.env.STRAVA_REFRESH_TOKEN_PARAM_NAME = paramNames.refreshToken;
+  
+  const dummyAccessToken = "DUMMY_ACCESS_TOKEN_456";
+
+  mockedAxiosPost.mockImplementation(async () => {
+    return Promise.resolve({
+      data: { access_token: dummyAccessToken },
+      status: 200,
+      statusText: "OK",
+      headers: { "content-type": "application/json" },
+      config: {} as any,
+    });
+  });
+
+  const ssmMock = mockClient(SSMClient);
+  ssmMock.on(GetParametersCommand).resolves({
+    Parameters: [
+      {
+        Name: paramNames.clientId,
+        Value: dummyCredentials.clientId,
+        Type: "String",
+      },
+      {
+        Name: paramNames.clientSecret,
+        Value: dummyCredentials.clientSecret,
+        Type: "SecureString",
+      },
+      {
+        Name: paramNames.refreshToken,
+        Value: dummyCredentials.refreshToken,
+        Type: "SecureString",
+      },
+    ] as Parameter[],
+    InvalidParameters: [],
+  });
+};
+
+mockStravaAuth();
 
 const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
@@ -40,7 +119,32 @@ test("log the body of each received SQS message", async () => {
   expect(consoleLogSpy).toHaveBeenCalledWith("Body:", testBody1);
   expect(consoleLogSpy).toHaveBeenCalledWith("Body:", testBody2);
 
-  expect(consoleLogSpy).toHaveBeenCalledWith('Processing SQS message:', expect.any(String));
+  expect(consoleLogSpy).toHaveBeenCalledWith(
+    "Processing SQS message:",
+    expect.any(String)
+  );
   expect(consoleLogSpy).toHaveBeenCalledWith("Processing complete.");
+});
 
+test("Processor Lambda attempts Strava token refresh using credentials from SSM", async () => {
+  const mockEvent = createPartialSqsEventWithBodies([
+    '{"message":"trigger auth"}',
+  ]);
+
+  await handler(mockEvent as SQSEvent);
+
+  const expectedTokenUrl = "https://www.strava.com/oauth/token";
+  const expectedFormData = new URLSearchParams();
+  expectedFormData.append("client_id", dummyCredentials.clientId);
+  expectedFormData.append("client_secret", dummyCredentials.clientSecret);
+  expectedFormData.append("refresh_token", dummyCredentials.refreshToken);
+  expectedFormData.append("grant_type", "refresh_token");
+
+  expect(mockedAxiosPost).toHaveBeenCalledWith(
+    expectedTokenUrl,
+    expectedFormData,
+    expect.objectContaining({
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    })
+  );
 });
