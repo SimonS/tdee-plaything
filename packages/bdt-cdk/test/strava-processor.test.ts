@@ -1,4 +1,4 @@
-import { expect, test, afterEach, jest, afterAll } from "@jest/globals";
+import { expect, test, afterEach, jest, afterAll, beforeEach } from "@jest/globals";
 
 import { handler } from "../lambda/strava-processor/index";
 import { SQSEvent, SQSRecord } from "aws-lambda";
@@ -11,8 +11,6 @@ import {
 import axios from "axios";
 import { mockClient } from "aws-sdk-client-mock";
 import "aws-sdk-client-mock-jest";
-import { beforeEach } from "node:test";
-import { get } from "http";
 
 jest.mock("axios", () => {
   const mockPost = jest.fn();
