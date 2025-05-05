@@ -44,7 +44,9 @@ export const handler = async (event: SQSEvent): Promise<void> => {
           `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(`Error processing SQS message ${record.messageId}:`, error);
+    }
   }
 
   console.log("Processing complete.");
