@@ -1,8 +1,5 @@
 import { SQSEvent, SQSRecord } from "aws-lambda";
-import {
-  SSMClient,
-  GetParametersCommand,
-} from "@aws-sdk/client-ssm";
+import { SSMClient, GetParametersCommand } from "@aws-sdk/client-ssm";
 
 import axios from "axios";
 
@@ -17,9 +14,9 @@ interface StravaCredentials {
 export const handler = async (event: SQSEvent): Promise<void> => {
   console.log(`Processor Lambda invoked with ${event.Records.length} record.`);
 
-  let access_token: string;
+  let accessToken: string;
   try {
-    access_token = await getStravaAccessToken();
+    accessToken = await getStravaAccessToken();
     console.log("Access token refreshed.");
   } catch (error) {
     console.error("Error refreshing access token:", error);
@@ -29,6 +26,25 @@ export const handler = async (event: SQSEvent): Promise<void> => {
   for (const record of event.Records) {
     console.log("Processing SQS message:", record.messageId);
     console.log("Body:", record.body);
+
+    try {
+      const messageData = JSON.parse(record.body);
+      const { object_type, object_id, aspect_type } = messageData;
+
+      if (
+        object_type === "activity" &&
+        (aspect_type === "create" || aspect_type === "update")
+      ) {
+        console.log(`Processing activity ${object_id} (${aspect_type})`);
+
+        const data = await getStravaActivity(accessToken, object_id);
+        console.log("Fetched Strava activity data:", data);
+      } else {
+        console.log(
+          `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`
+        );
+      }
+    } catch (error) {}
   }
 
   console.log("Processing complete.");
@@ -87,7 +103,7 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
     Names: ssmParameterNames,
     WithDecryption: true,
   });
-  
+
   const { Parameters: params, InvalidParameters } =
     await ssmClient.send(command);
   if (InvalidParameters && InvalidParameters.length > 0) {
@@ -110,4 +126,24 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
   }
   console.log("Successfully fetched Strava credentials from SSM.");
   return credentials;
+}
+
+async function getStravaActivity(
+  accessToken: string,
+  activityId: string
+): Promise<any> {
+  const activityUrl = `https://www.strava.com/api/v3/activities/${activityId}`;
+  try {
+    const response = await axios.get(activityUrl, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    console.log("Fetched Strava activity data:", response.data);
+    return response.data;
+  } catch (apiError: any) {
+    console.error(
+      `Error fetching activity ${activityId} from Strava:`,
+      apiError.response?.data || apiError.message
+    );
+    throw apiError;
+  }
 }

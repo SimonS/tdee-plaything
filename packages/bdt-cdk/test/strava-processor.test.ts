@@ -12,17 +12,21 @@ import axios from "axios";
 import { mockClient } from "aws-sdk-client-mock";
 import "aws-sdk-client-mock-jest";
 import { beforeEach } from "node:test";
+import { get } from "http";
 
 jest.mock("axios", () => {
   const mockPost = jest.fn();
+  const mockGet = jest.fn();
   return {
     __esModule: true,
 
-    default: { post: mockPost },
+    default: { post: mockPost, get: mockGet },
     post: mockPost,
+    get: mockGet,
   };
 });
 const mockedAxiosPost = axios.post as jest.Mock;
+const mockedAxiosGet = axios.get as jest.Mock;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -40,11 +44,11 @@ const mockStravaAuth = () => {
     clientSecret: "/strava/client_secret",
     refreshToken: "/strava/refresh_token",
   };
-  
+
   process.env.STRAVA_CLIENT_ID_PARAM_NAME = paramNames.clientId;
   process.env.STRAVA_SECRET_PARAM_NAME = paramNames.clientSecret;
   process.env.STRAVA_REFRESH_TOKEN_PARAM_NAME = paramNames.refreshToken;
-  
+
   const dummyAccessToken = "DUMMY_ACCESS_TOKEN_456";
 
   mockedAxiosPost.mockImplementation(async () => {
@@ -147,4 +151,42 @@ test("Processor Lambda attempts Strava token refresh using credentials from SSM"
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     })
   );
+});
+
+test("fetches activity details from Strava API", async () => {
+  const activityId = 9876543210;
+  const dummyActivityData = {
+    id: activityId,
+    name: "Test Activity for Logging",
+    distance: 1609,
+    moving_time: 300,
+    type: "Run",
+    start_date_local: new Date().toISOString(),
+  };
+
+  mockedAxiosGet.mockImplementation(async (url, config) => {
+    console.log(`--- MOCK GET returning data for ${url} ---`);
+    return Promise.resolve({
+      data: dummyActivityData,
+      status: 200,
+      statusText: "OK",
+      headers: {},
+      config: {},
+    });
+  });
+
+  const sqsMessageBody = JSON.stringify({
+    object_type: "activity",
+    object_id: activityId,
+    aspect_type: "update",
+    owner_id: 12345
+  });
+  const mockEvent = createPartialSqsEventWithBodies([sqsMessageBody]);
+
+  await handler(mockEvent as SQSEvent);
+
+  expect(consoleLogSpy).toHaveBeenCalledWith("Fetched Strava activity data:", dummyActivityData);
+
+  expect(consoleLogSpy).toHaveBeenCalledWith("Processing complete.");
+
 });
