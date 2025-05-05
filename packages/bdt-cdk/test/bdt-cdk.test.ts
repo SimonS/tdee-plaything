@@ -5,6 +5,7 @@ import * as BdtCdk from "../lib/bdt-cdk-stack";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 
 let template: Template;
+let stack: BdtCdk.BdtCdkStack;
 
 beforeAll(() => {
   const app = new cdk.App({
@@ -12,7 +13,7 @@ beforeAll(() => {
       "aws:cdk:bundling-stacks": [],
     },
   });
-  const stack = new BdtCdk.BdtCdkStack(app, "TestStack");
+  stack = new BdtCdk.BdtCdkStack(app, "TestStack");
   template = Template.fromStack(stack);
 });
 
@@ -163,5 +164,39 @@ test("Receiver Lambda Role should have SendMessage permission for Webhook Queue"
         Ref: Match.stringLikeRegexp("StravaWebhookReceiverLambdaServiceRole*"),
       },
     ]),
+  });
+});
+
+test("Processor Lambda Role should have permissions to read Strava creds from SSM", () => {
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    Roles: Match.arrayWith([
+      { Ref: Match.stringLikeRegexp("StravaEventProcessorLambdaServiceRole*") },
+    ]),
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: "Allow",
+          Action: Match.arrayWith(["ssm:GetParameter", "ssm:GetParameters"]),
+        }),
+        Match.objectLike({
+          Effect: "Allow",
+          Action: "kms:Decrypt",
+          Resource: "*",
+        }),
+      ]),
+    },
+  });
+});
+
+test("Processor Lambda use environment variables for SSM parameter names", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaEventProcessorLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
+        STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
+        STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
+      }),
+    }),
   });
 });

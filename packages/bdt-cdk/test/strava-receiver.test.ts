@@ -49,9 +49,10 @@ test("return 500 error if QUEUE_URL environment variable is not set", async () =
   expect(result.body).toContain("Internal configuration error");
 });
 
-test("attempt to send event body to SQS queue specified by env var", async () => {
-  const testBody = { webhook_id: 123, data: "some Strava data" };
-  const mockEvent = createMockApiGatewayEvent(testBody);
+test("should parse webhook, extract IDs, and send structured message to SQS", async () => {
+  const stravaEventPayload = makeStravaEvent();
+
+  const mockEvent = createMockApiGatewayEvent(stravaEventPayload);
   sqsMock.on(SendMessageCommand).resolves({
     $metadata: { httpStatusCode: 200 },
     MessageId: "mock-message-id-abc-123",
@@ -62,16 +63,43 @@ test("attempt to send event body to SQS queue specified by env var", async () =>
   expect(result.statusCode).toBe(200);
   expect(result.body).toBe("Message received and queued.");
   expect(sqsMock.calls()).toHaveLength(1);
+
   expect(sqsMock).toHaveReceivedCommandWith(SendMessageCommand, {
     QueueUrl: testQueueUrl,
-    MessageBody: JSON.stringify(testBody),
+    MessageBody: JSON.stringify({
+      object_type: stravaEventPayload.object_type,
+      object_id: stravaEventPayload.object_id,
+      aspect_type: stravaEventPayload.aspect_type,
+      owner_id: stravaEventPayload.owner_id,
+    }),
   });
 });
 
+test("return 200 OK but NOT queue message for non-activity events", async () => {
+  const athleteEventPayload = makeStravaEvent("update", "athlete");
+  const mockEvent = createMockApiGatewayEvent(athleteEventPayload);
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(200);
+  expect(result.body).toContain("Event received but not processed");
+  expect(sqsMock.calls()).toHaveLength(0);
+});
+
+test("return 200 OK but NOT queue message for deletes", async () => {
+  const deleteEvent = makeStravaEvent("delete");
+  const mockEvent = createMockApiGatewayEvent(deleteEvent);
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(200);
+  expect(result.body).toContain("Event received but not processed");
+  expect(sqsMock.calls()).toHaveLength(0);
+});
+
 test("returns 500 error if SQS send fails", async () => {
-  const mockEvent = createMockApiGatewayEvent({
-    message: "trigger SQS failure",
-  });
+  const straveEventPayload = makeStravaEvent("update");
+  const mockEvent = createMockApiGatewayEvent(straveEventPayload);
 
   const sqsError = new Error("AWS SQS simulated error");
   sqsMock.on(SendMessageCommand).rejects(sqsError);
@@ -130,8 +158,18 @@ test("invalid verification GET request should return hub.challenge", async () =>
   };
 
   const result = await handler(mockEvent as APIGatewayProxyEventV2);
-  expect(result.body).toBe(JSON.stringify({ 'hub.challenge': challenge }));
-  expect(result.headers).toEqual({ 'Content-Type': 'application/json' });
+  expect(result.body).toBe(JSON.stringify({ "hub.challenge": challenge }));
+  expect(result.headers).toEqual({ "Content-Type": "application/json" });
+});
+
+test("should return 400 Bad Request if POST body is not valid JSON", async () => {
+  const invalidJsonBody = "{ not valid json '";
+  const mockEvent = createMockApiGatewayEvent(invalidJsonBody, "POST");
+
+  const result = await handler(mockEvent as APIGatewayProxyEventV2);
+
+  expect(result.statusCode).toBe(400);
+  expect(sqsMock.calls()).toHaveLength(0);
 });
 
 function createMockApiGatewayEvent(
@@ -145,6 +183,18 @@ function createMockApiGatewayEvent(
         path: "/strava/webhook",
       },
     } as any,
-    body: JSON.stringify(eventBody),
+    body: typeof eventBody === "string" ? eventBody : JSON.stringify(eventBody),
+  };
+}
+
+function makeStravaEvent(aspect_type: string = "update", object_type: string = "activity") {
+  return {
+    aspect_type,
+    event_time: Date.now() / 1000,
+    object_id: 1234567890,
+    object_type,
+    owner_id: 987654,
+    subscription_id: 281030,
+    updates: { title: "New Test Title" },
   };
 }

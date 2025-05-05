@@ -4,11 +4,11 @@ import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { HttpApi, HttpMethod } from "aws-cdk-lib/aws-apigatewayv2";
 import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
-import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { Queue } from "aws-cdk-lib/aws-sqs";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import path = require("path");
-
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -39,7 +39,7 @@ export class BdtCdkStack extends Stack {
     const webhookQueue = new Queue(this, "StravaWebhookQueue", {
       queueName: "strava-webhook-queue",
     });
-    
+
     const receiverLambda = new NodejsFunction(
       this,
       "StravaWebhookReceiverLambda",
@@ -68,13 +68,52 @@ export class BdtCdkStack extends Stack {
       integration: stravaWebhookIntegration,
     });
 
-    const processorLambda = new NodejsFunction(this, 'StravaEventProcessorLambda', {
-      entry: path.join(__dirname, '../lambda/strava-processor/index.ts'),
-      functionName: 'stravaEventProcessorLambda',
-      runtime: Runtime.NODEJS_22_X,
-      handler: 'index.handler',
-    });
+    const processorLambda = new NodejsFunction(
+      this,
+      "StravaEventProcessorLambda",
+      {
+        entry: path.join(__dirname, "../lambda/strava-processor/index.ts"),
+        functionName: "stravaEventProcessorLambda",
+        runtime: Runtime.NODEJS_22_X,
+        handler: "index.handler",
+        environment: {
+          STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
+          STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
+          STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
+        },
+      }
+    );
 
     processorLambda.addEventSource(new SqsEventSource(webhookQueue));
+
+    const clientIdParamName = "/strava/client_id";
+    const clientSecretParamName = "/strava/client_secret";
+    const refreshTokenParamName = "/strava/refresh_token";
+
+    const clientIdParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${clientIdParamName}`;
+    const clientSecretParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${clientSecretParamName}`;
+    const refreshTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${refreshTokenParamName}`;
+
+    processorLambda.addToRolePolicy(
+      new PolicyStatement({
+        sid: "ReadStravaSSMParams",
+        effect: Effect.ALLOW,
+        actions: ["ssm:GetParameter", "ssm:GetParameters"],
+        resources: [
+          clientIdParamArn,
+          clientSecretParamArn,
+          refreshTokenParamArn,
+        ],
+      })
+    );
+
+    processorLambda.addToRolePolicy(
+      new PolicyStatement({
+        sid: "DecryptStravaSecureParams",
+        effect: Effect.ALLOW,
+        actions: ["kms:Decrypt"],
+        resources: ["*"],
+      })
+    );
   }
 }
