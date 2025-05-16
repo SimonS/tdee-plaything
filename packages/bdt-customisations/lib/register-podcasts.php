@@ -1,6 +1,5 @@
 <?php
 
-// ---- Register Podcast Listen Post Type
 function bdt_register_podcast_listen()
 {
     $labels = array(
@@ -10,6 +9,7 @@ function bdt_register_podcast_listen()
     );
     $args = array(
         'labels'                => $labels,
+        'menu_icon'          => 'dashicons-microphone',
         'has_archive'           => false,
         'public'                => true,
         'hierarchical'          => false,

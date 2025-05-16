@@ -6,7 +6,6 @@ use function bdt\get_updated_feeds;
 require dirname(__FILE__) . '/tmdb-fetcher.php';
 require dirname(__FILE__) . '/letterboxd-fetcher.php';
 
-// ---- Register Film Watch Post Type
 function bdt_register_film_watch()
 {
     $labels = array(
@@ -16,6 +15,7 @@ function bdt_register_film_watch()
     );
     $args = array(
         'labels'                => $labels,
+        'menu_icon'          => 'dashicons-tickets-alt',
         'has_archive'           => false,
         'public'                => true,
         'hierarchical'          => false,
