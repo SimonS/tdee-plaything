@@ -11,6 +11,7 @@
  */
 
 require_once dirname(__FILE__) . '/lib/register-films.php';
+require_once dirname(__FILE__) . '/lib/register-exercises.php';
 require_once dirname(__FILE__) . '/lib/register-weighins.php';
 require_once dirname(__FILE__) . '/lib/register-podcasts.php';
 
