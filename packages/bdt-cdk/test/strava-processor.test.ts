@@ -1,4 +1,11 @@
-import { expect, test, afterEach, jest, afterAll, beforeEach } from "@jest/globals";
+import {
+  expect,
+  test,
+  afterEach,
+  jest,
+  afterAll,
+  beforeEach,
+} from "@jest/globals";
 
 import { handler } from "../lambda/strava-processor/index";
 import { SQSEvent, SQSRecord } from "aws-lambda";
@@ -153,16 +160,29 @@ test("Processor Lambda attempts Strava token refresh using credentials from SSM"
 
 test("fetches activity details from Strava API", async () => {
   const activityId = 9876543210;
+  const activityStartDate = new Date(); // Use a real date object for consistent formatting
+  const activityStartDateISO = activityStartDate.toISOString(); // e.g., "2025-05-19T21:45:00.000Z"
+  const activityStartDateWP = activityStartDateISO.slice(0, 19); // "2025-05-19T21:45:00"
+
   const dummyActivityData = {
     id: activityId,
-    name: "Test Activity for Logging",
-    distance: 1609,
-    moving_time: 300,
+    name: "Evening Jog with Data",
+    description: "A bit of data for testing.",
     type: "Run",
-    start_date_local: new Date().toISOString(),
+    start_date: activityStartDateISO,
+    start_date_local: "2025-05-19T22:45:00+01:00",
+    timezone: "(GMT+00:00) Europe/London",
+    distance: 5010.5,
+    moving_time: 1830,
+    elapsed_time: 1900,
+    total_elevation_gain: 55.2,
+    map: {
+      id: "map123",
+      summary_polyline: "encoded_polyline_string_here_for_wp",
+    },
   };
 
-  mockedAxiosGet.mockImplementation(async (url, config) => {
+  mockedAxiosGet.mockImplementation(async (url, _) => {
     console.log(`--- MOCK GET returning data for ${url} ---`);
     return Promise.resolve({
       data: dummyActivityData,
@@ -177,14 +197,31 @@ test("fetches activity details from Strava API", async () => {
     object_type: "activity",
     object_id: activityId,
     aspect_type: "update",
-    owner_id: 12345
+    owner_id: 12345,
   });
   const mockEvent = createPartialSqsEventWithBodies([sqsMessageBody]);
 
+  const expectedWpPayload = {
+    title: dummyActivityData.name,
+    content: dummyActivityData.description,
+    status: "publish",
+    date_gmt: activityStartDateWP,
+    meta: {
+      source_platform: "strava",
+      source_id: dummyActivityData.id,
+      activity_type: dummyActivityData.type,
+      distance_meters: dummyActivityData.distance,
+      moving_time_seconds: dummyActivityData.moving_time,
+      elapsed_time_seconds: dummyActivityData.elapsed_time,
+      total_elevation_gain_meters: dummyActivityData.total_elevation_gain,
+      start_date_local_iso: dummyActivityData.start_date_local,
+      map_summary_polyline: dummyActivityData.map.summary_polyline,
+      _raw_data_json: JSON.stringify(dummyActivityData),
+    },
+  };
+
   await handler(mockEvent as SQSEvent);
 
-  expect(consoleLogSpy).toHaveBeenCalledWith("Fetched Strava activity data:", dummyActivityData);
-
+  expect(consoleLogSpy).toHaveBeenCalledWith("WordPress data prepared:", expectedWpPayload);
   expect(consoleLogSpy).toHaveBeenCalledWith("Processing complete.");
-
 });

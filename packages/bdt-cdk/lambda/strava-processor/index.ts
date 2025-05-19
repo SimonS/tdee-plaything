@@ -36,9 +36,11 @@ export const handler = async (event: SQSEvent): Promise<void> => {
         (aspect_type === "create" || aspect_type === "update")
       ) {
         console.log(`Processing activity ${object_id} (${aspect_type})`);
-
-        const data = await getStravaActivity(accessToken, object_id);
-        console.log("Fetched Strava activity data:", data);
+        
+        const stravaData = await getStravaActivity(accessToken, object_id);
+        const wpPayload = stravaToWordpress(stravaData);
+        
+        console.log("WordPress data prepared:", wpPayload);
       } else {
         console.log(
           `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`
@@ -51,6 +53,29 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 
   console.log("Processing complete.");
 };
+
+function stravaToWordpress(stravaData: any) {
+  return {
+    title: stravaData.name || `Strava Activity ${stravaData.id}`,
+    content: stravaData.description || "",
+    status: "publish",
+    date_gmt: stravaData.start_date
+      ? new Date(stravaData.start_date).toISOString().slice(0, 19)
+      : undefined,
+    meta: {
+      source_platform: "strava",
+      source_id: stravaData.id,
+      activity_type: stravaData.type || null,
+      distance_meters: stravaData.distance || null,
+      moving_time_seconds: stravaData.moving_time || null,
+      elapsed_time_seconds: stravaData.elapsed_time || null,
+      total_elevation_gain_meters: stravaData.total_elevation_gain || null,
+      start_date_local_iso: stravaData.start_date_local || null,
+      map_summary_polyline: stravaData.map?.summary_polyline || null,
+      _raw_data_json: JSON.stringify(stravaData),
+    },
+  };
+}
 
 async function getStravaAccessToken(): Promise<string> {
   const credentials = await getStravaCredentials();
