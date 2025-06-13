@@ -31,12 +31,14 @@ export const Logo = ({ highlight }: LogoProps): JSX.Element => {
   return (
     <a href="/" className={logo}>
       <span className={highlightedMeal === "Breakfast" ? highlighted : ""}>
-        Breakfast
+        🥣 Breakfast
       </span>
       <span className={highlightedMeal === "Dinner" ? highlighted : ""}>
-        Dinner
+        🍴 Dinner
       </span>
-      <span className={highlightedMeal === "Tea" ? highlighted : ""}>Tea</span>
+      <span className={highlightedMeal === "Tea" ? highlighted : ""}>
+        🫖 Tea
+      </span>
     </a>
   );
 };

@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import Nav from "./nav";
 
+/* TODO: FIX THESE TESTS */
 describe("Nav component", () => {
   it("displays some links that link to the right place", () => {
     const { getByText } = render(<Nav />);
