@@ -1857,10 +1857,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@date-fns/tz@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@date-fns/tz/-/tz-1.2.0.tgz#81cb3211693830babaf3b96aff51607e143030a6"
-  integrity sha512-LBrd7MiJZ9McsOgxqWX7AaxrDjcFVjWH/tIKJd7pnR7McaslGYOP1QmmiBXdJH/H/yLCT+rcQ7FaPBUxRGUtrg==
+"@date-fns/tz@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@date-fns/tz/-/tz-1.4.1.tgz#2d905f282304630e07bef6d02d2e7dbf3f0cc4e4"
+  integrity sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==
 
 "@emnapi/core@^1.4.0":
   version "1.4.3"
@@ -9975,12 +9975,12 @@ range-parser@^1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-react-day-picker@^9.6.2:
-  version "9.6.2"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-9.6.2.tgz#1007d9acc6244869716455f3e6b8ebdc5e441b3a"
-  integrity sha512-HVrTpDUYGKbi9scU9v2N3BPGMnL5jwekGFXcyyrvpamZdgYGfzVcovsBD4/yNGxhpCIX5X/5IoLDEAayNv1EqA==
+react-day-picker@^9.10.0:
+  version "9.10.0"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-9.10.0.tgz#1470f59ebeaf1a41659d9d65c736efeb72394db0"
+  integrity sha512-tedecLSd+fpSN+J08601MaMsf122nxtqZXxB6lwX37qFoLtuPNuRJN8ylxFjLhyJS1kaLfAqL1GUkSLd2BMrpQ==
   dependencies:
-    "@date-fns/tz" "^1.2.0"
+    "@date-fns/tz" "^1.4.1"
     date-fns "^4.1.0"
     date-fns-jalali "^4.1.0-0"
 
