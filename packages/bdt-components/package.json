@@ -62,7 +62,7 @@
       "\\.css$": "identity-obj-proxy"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!nanostores|@nanostores|@nivo|d3-*|internmap|delaunator|robust-predicates).*/"
+      "node_modules/(?!\\.pnpm/|nanostores|@nanostores|@nivo|d3-*|internmap|delaunator|robust-predicates).*/"
     ]
   },
   "dependencies": {
