@@ -1,6 +1,54 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        ":separateMajorReleases",
+        ":combinePatchMinorReleases",
+        ":ignoreUnstable",
+        ":prImmediately",
+        ":renovatePrefix",
+        "group:monorepos",
+        "group:recommended"
+    ],
+    "packageRules": [
+        {
+            "matchPackageNames": [
+                "react",
+                "react-dom",
+                "@types/react",
+                "@types/react-dom"
+            ],
+            "groupName": "react"
+        },
+        {
+            "matchPackagePatterns": [
+                "^@aws-sdk/"
+            ],
+            "groupName": "aws-sdk"
+        },
+        {
+            "matchPackagePatterns": [
+                "^@storybook/"
+            ],
+            "groupName": "storybook"
+        },
+        {
+            "matchPackagePatterns": [
+                "^eslint",
+                "prettier"
+            ],
+            "groupName": "linting"
+        },
+        {
+            "matchPackagePatterns": [
+                "^jest",
+                "ts-jest",
+                "@types/jest"
+            ],
+            "groupName": "testing"
+        }
+    ],
+    "rangeStrategy": "bump",
+    "separateMinorPatch": true,
+    "dependencyDashboard": true
 }
