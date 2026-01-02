@@ -7,18 +7,16 @@
   "author": "Simon Scarfe",
   "license": "MIT",
   "private": true,
+  "packageManager": "pnpm@10.27.0",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test": "jest && yarn workspace @tdee/bdt-components test && yarn workspace @tdee/bdt-cdk test",
+    "test": "jest && pnpm --filter @tdee/bdt-components test && pnpm --filter @tdee/bdt-cdk test",
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
-    "deploy-all": "yarn workspace @tdee/bdt-astro build && yarn workspace @tdee/bdt-components run build-storybook",
+    "deploy-all": "pnpm --filter @tdee/bdt-astro build && pnpm --filter @tdee/bdt-components run build-storybook",
     "compile": "tsc",
     "build:lambda": "netlify-lambda build packages/netlify-functions"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.22.15",

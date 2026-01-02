@@ -33,7 +33,7 @@ An example film query might look like:
 
 ## Building
 
-To build, run `yarn build`. And then upload to WP blog manually.
+To build, run `pnpm build`. And then upload to WP blog manually.
 
 ## PHPUnit Tests
 

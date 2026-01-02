@@ -1,17 +1,15 @@
 import {
   jest,
-  expect,
   test,
   afterEach,
-  beforeEach,
   afterAll,
+  beforeEach,
 } from "@jest/globals";
 
 import { handler } from "../lambda/strava-receiver/index";
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { mockClient } from "aws-sdk-client-mock";
-import "aws-sdk-client-mock-jest";
 
 const sqsMock = mockClient(SQSClient);
 
@@ -19,10 +17,10 @@ const originalQueueUrl = process.env.QUEUE_URL;
 const testQueueUrl =
   "https://sqs.eu-west-2.amazonaws.com/123456789012/strava-webhook-queue-test";
 
-const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => { });
 const consoleErrorSpy = jest
   .spyOn(console, "error")
-  .mockImplementation(() => {});
+  .mockImplementation(() => { });
 
 afterAll(() => {
   consoleLogSpy.mockRestore();

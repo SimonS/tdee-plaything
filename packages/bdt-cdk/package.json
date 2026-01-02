@@ -13,7 +13,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.787.0",
     "@aws-sdk/client-ssm": "^3.799.0",
-    "@tdee/overcast-functions": "*",
+    "@tdee/overcast-functions": "workspace:*",
     "axios": "^1.8.4"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@
   "scripts": {
     "storybook": "storybook dev -c .storybook",
     "build-storybook": "storybook build -c .storybook -o ../bdt-astro/dist/storybook",
-    "build": "yarn build:esm && yarn build:cjs",
+    "build": "pnpm build:esm && pnpm build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs",
     "test": "jest"
@@ -62,7 +62,7 @@
       "\\.css$": "identity-obj-proxy"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!nanostores|@nanostores|@nivo|d3-*|internmap|delaunator|robust-predicates).*/"
+      "node_modules/(?!\\.pnpm/|nanostores|@nanostores|@nivo|d3-*|internmap|delaunator|robust-predicates).*/"
     ]
   },
   "dependencies": {
