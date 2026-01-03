@@ -135,7 +135,7 @@ importers:
         specifier: ^22.13.10
         version: 22.19.3
       aws-cdk-lib:
-        specifier: ^2.190.0
+        specifier: ^2.233.0
         version: 2.233.0(constructs@10.4.4)
       aws-sdk-client-mock:
         specifier: ^4.1.0
