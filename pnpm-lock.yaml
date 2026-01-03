@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       webpack:
-        specifier: ^5.65.0
+        specifier: ^5.104.1
         version: 5.104.1
     devDependencies:
       '@babel/core':
@@ -289,7 +289,7 @@ importers:
         specifier: ^5.2.2
         version: 5.8.2
       webpack:
-        specifier: ^5.65.0
+        specifier: ^5.104.1
         version: 5.104.1(esbuild@0.25.12)
 
   packages/bdt-customisations: {}

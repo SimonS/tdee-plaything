@@ -44,6 +44,6 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "webpack": "^5.65.0"
+    "webpack": "^5.104.1"
   }
 }
