@@ -113,8 +113,8 @@ importers:
         specifier: workspace:*
         version: link:../overcast
       axios:
-        specifier: ^1.8.4
-        version: 1.13.2
+        specifier: ^1.13.5
+        version: 1.13.5
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.22.15
@@ -400,11 +400,11 @@ importers:
   packages/overcast:
     dependencies:
       axios:
-        specifier: ^1.8.4
-        version: 1.13.2
+        specifier: ^1.13.5
+        version: 1.13.5
       axios-cookiejar-support:
         specifier: ^5.0.5
-        version: 5.0.5(axios@1.13.2)(tough-cookie@5.1.2)
+        version: 5.0.5(axios@1.13.5)(tough-cookie@5.1.2)
       cheerio:
         specifier: ^1.0.0-rc.10
         version: 1.1.2
@@ -3295,8 +3295,8 @@ packages:
       axios: '>=0.20.0'
       tough-cookie: '>=4.0.0'
 
-  axios@1.13.2:
-    resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
+  axios@1.13.5:
+    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -4469,7 +4469,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -9779,7 +9779,7 @@ snapshots:
 
   '@types/axios@0.14.4':
     dependencies:
-      axios: 1.13.2
+      axios: 1.13.5
     transitivePeerDependencies:
       - debug
 
@@ -10551,15 +10551,15 @@ snapshots:
 
   axe-core@4.11.0: {}
 
-  axios-cookiejar-support@5.0.5(axios@1.13.2)(tough-cookie@5.1.2):
+  axios-cookiejar-support@5.0.5(axios@1.13.5)(tough-cookie@5.1.2):
     dependencies:
-      axios: 1.13.2
+      axios: 1.13.5
       http-cookie-agent: 6.0.8(tough-cookie@5.1.2)
       tough-cookie: 5.1.2
     transitivePeerDependencies:
       - undici
 
-  axios@1.13.2:
+  axios@1.13.5:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
