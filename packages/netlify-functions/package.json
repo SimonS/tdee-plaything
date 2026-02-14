@@ -10,7 +10,7 @@
     "compile": "tsc"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.5.12",
+    "@types/node-fetch": "^2.6.13",
     "typescript": "5.8.2"
   },
   "dependencies": {
