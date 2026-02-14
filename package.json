@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-env": "^7.22.20",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/aws-lambda": "^8.10.147",
