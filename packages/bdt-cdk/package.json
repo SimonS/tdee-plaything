@@ -20,7 +20,7 @@
     "@babel/preset-env": "^7.22.20",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/aws-lambda": "^8.10.160",
-    "@types/axios": "^0.14.0",
+    "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.4",
     "@types/node": "^22.13.10",
     "aws-cdk-lib": "^2.233.0",
