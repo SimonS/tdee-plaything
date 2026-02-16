@@ -321,8 +321,8 @@ importers:
         specifier: ^29.6.4
         version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2))
       nock:
-        specifier: ^14.0.1
-        version: 14.0.10
+        specifier: ^14.0.11
+        version: 14.0.11
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.25.12)(jest-util@30.2.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2)))(typescript@5.8.2)
@@ -348,8 +348,8 @@ importers:
         specifier: ^29.6.4
         version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2))
       nock:
-        specifier: ^14.0.1
-        version: 14.0.10
+        specifier: ^14.0.11
+        version: 14.0.11
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.25.12)(jest-util@30.2.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2)))(typescript@5.8.2)
@@ -375,8 +375,8 @@ importers:
         specifier: ^29.6.4
         version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2))
       nock:
-        specifier: ^14.0.1
-        version: 14.0.10
+        specifier: ^14.0.11
+        version: 14.0.11
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.25.12)(jest-util@30.2.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2)))(typescript@5.8.2)
@@ -440,8 +440,8 @@ importers:
         specifier: ^29.6.4
         version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2))
       nock:
-        specifier: ^14.0.1
-        version: 14.0.10
+        specifier: ^14.0.11
+        version: 14.0.11
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.25.12)(jest-util@30.2.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2)))(typescript@5.8.2)
@@ -467,8 +467,8 @@ importers:
         specifier: ^29.5.4
         version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2))
       nock:
-        specifier: ^14.0.1
-        version: 14.0.10
+        specifier: ^14.0.11
+        version: 14.0.11
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.25.12)(jest-util@30.2.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2)))(typescript@5.8.2)
@@ -494,8 +494,8 @@ importers:
         specifier: ^29.6.4
         version: 29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2))
       nock:
-        specifier: ^14.0.1
-        version: 14.0.10
+        specifier: ^14.0.11
+        version: 14.0.11
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.28.5))(esbuild@0.25.12)(jest-util@30.2.0)(jest@29.7.0(@types/node@22.19.3)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.8.2)))(typescript@5.8.2)
@@ -1945,8 +1945,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@mswjs/interceptors@0.39.8':
-    resolution: {integrity: sha512-2+BzZbjRO7Ct61k8fMNHEtoKjeWI9pIlHFTqBwZ5icHpqszIgEZbjb1MW5Z0+bITTCTl3gk4PDBxs9tA/csXvA==}
+  '@mswjs/interceptors@0.41.3':
+    resolution: {integrity: sha512-cXu86tF4VQVfwz8W1SPbhoRyHJkti6mjH/XJIxp40jhO4j2k1m4KYrEykxqWPkFF3vrK4rgQppBh//AwyGSXPA==}
     engines: {node: '>=18'}
 
   '@nanostores/react@0.8.4':
@@ -5443,8 +5443,8 @@ packages:
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
 
-  nock@14.0.10:
-    resolution: {integrity: sha512-Q7HjkpyPeLa0ZVZC5qpxBt5EyLczFJ91MEewQiIi9taWuA0KB/MDJlUWtON+7dGouVdADTQsf9RA7TZk6D8VMw==}
+  nock@14.0.11:
+    resolution: {integrity: sha512-u5xUnYE+UOOBA6SpELJheMCtj2Laqx15Vl70QxKo43Wz/6nMHXS7PrEioXLjXAwhmawdEMNImwKCcPhBJWbKVw==}
     engines: {node: '>=18.20.0 <20 || >=20.12.1'}
 
   node-abort-controller@3.1.1:
@@ -8895,7 +8895,7 @@ snapshots:
       '@types/react': 19.2.7
       react: 19.2.3
 
-  '@mswjs/interceptors@0.39.8':
+  '@mswjs/interceptors@0.41.3':
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/logger': 0.3.0
@@ -9961,7 +9961,7 @@ snapshots:
 
   '@types/nock@11.1.0':
     dependencies:
-      nock: 14.0.10
+      nock: 14.0.11
 
   '@types/node-fetch@2.6.13':
     dependencies:
@@ -13391,9 +13391,9 @@ snapshots:
       lower-case: 2.0.2
       tslib: 2.8.1
 
-  nock@14.0.10:
+  nock@14.0.11:
     dependencies:
-      '@mswjs/interceptors': 0.39.8
+      '@mswjs/interceptors': 0.41.3
       json-stringify-safe: 5.0.1
       propagate: 2.0.1
 
