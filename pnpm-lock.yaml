@@ -339,7 +339,7 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       graphql:
-        specifier: ^16.5.0
+        specifier: ^16.12.0
         version: 16.12.0
       graphql-request:
         specifier: ^7.1.2
@@ -366,7 +366,7 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       graphql:
-        specifier: ^16.5.0
+        specifier: ^16.12.0
         version: 16.12.0
       graphql-request:
         specifier: ^7.1.2
@@ -485,7 +485,7 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       graphql:
-        specifier: ^16.5.0
+        specifier: ^16.12.0
         version: 16.12.0
       graphql-request:
         specifier: ^7.1.2
