@@ -406,7 +406,7 @@ importers:
         specifier: ^5.0.5
         version: 5.0.5(axios@1.13.5)(tough-cookie@5.1.2)
       cheerio:
-        specifier: ^1.0.0-rc.10
+        specifier: ^1.0.0
         version: 1.1.2
       mock-fs:
         specifier: ^5.1.2
