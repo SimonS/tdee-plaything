@@ -244,7 +244,7 @@ importers:
         specifier: ^19.0.6
         version: 19.2.3(@types/react@19.2.7)
       '@types/recharts':
-        specifier: ^1.8.24
+        specifier: ^1.8.29
         version: 1.8.29
       assert-browserify:
         specifier: ^2.0.0
