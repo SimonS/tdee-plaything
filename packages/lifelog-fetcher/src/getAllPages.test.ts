@@ -99,7 +99,7 @@ test("getAllPages returns every data type", async () => {
 
   expect((result[0] as Weighin).weight).toEqual(75.3);
   expect((result[1] as Podcast).podcastTitle).toEqual(
-    "Rangnick’s Manchester United, The ‘Michail Antonio Role’ & Can Arsenal Win the League in 4 years?"
+    "Rangnick’s Manchester United, The ‘Michail Antonio Role’ & Can Arsenal Win the League in 4 years?",
   );
   expect((result[2] as Film).filmTitle).toEqual("Hello, My Name Is Doris");
 });

@@ -14,7 +14,7 @@ const precisionRound = (number: number, precision: number) => {
 const calculateTrends = (weighins: Weighin[]) =>
   weighins.reduce((acc: CalculatedWeighin[], today: Weighin, i) => {
     const sevenDaysAgo: Date = new Date(
-      new Date(today.weighinTime).getTime() - 7 * 24 * 60 * 60 * 1000
+      new Date(today.weighinTime).getTime() - 7 * 24 * 60 * 60 * 1000,
     );
 
     const window = weighins
@@ -27,7 +27,7 @@ const calculateTrends = (weighins: Weighin[]) =>
       ...today,
       weightTrend: precisionRound(
         window.reduce((a, b) => a + b.weight, 0) / window.length,
-        1
+        1,
       ),
     });
 

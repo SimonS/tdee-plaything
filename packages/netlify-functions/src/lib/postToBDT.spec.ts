@@ -15,6 +15,6 @@ test("makes a request using the correct attributes", async () => {
         authorization: "Bearer letmein",
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 });

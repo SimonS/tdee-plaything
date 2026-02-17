@@ -41,7 +41,7 @@ it("renders the interaction", () => {
       aggregated={[{ day: "2022-01-01", value: 2 }]}
       grouped={{}}
       responsive={false}
-    />
+    />,
   );
 
   expect(container).toHaveTextContent("Jun");
@@ -53,7 +53,7 @@ it("populates state store with podcast list", () => {
       aggregated={[{ day: "2022-01-01", value: 2 }]}
       grouped={grouped}
       responsive={false}
-    />
+    />,
   );
 
   const firstDate = container.querySelector("g rect");
@@ -71,7 +71,7 @@ it("populates state store with selected date", () => {
       aggregated={[{ day: "2022-01-01", value: 2 }]}
       grouped={grouped}
       responsive={false}
-    />
+    />,
   );
 
   const firstDate = container.querySelector("g rect");

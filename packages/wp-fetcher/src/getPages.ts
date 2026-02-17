@@ -3,7 +3,7 @@ import { PageInfo, WPPage } from "@tdee/types/src/bdt";
 import getData from "@tdee/graphql-fetcher/src/getData";
 
 const getPages = async (
-  after?: string
+  after?: string,
 ): Promise<{ pages: WPPage[]; meta: PageInfo }> => {
   const nodeName = "pages";
   const fields = ["id", "title", "content", "slug"];
@@ -28,7 +28,7 @@ export const getPage = async (id: string): Promise<WPPage> => {
   return await request("https://breakfastdinnertea.co.uk/graphql", query).then(
     (data: { page: WPPage }) => {
       return data.page;
-    }
+    },
   );
 };
 

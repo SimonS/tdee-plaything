@@ -34,7 +34,7 @@ test("adds a rule to run lambda on cronjob", () => {
   const stack = new BdtCdk.BdtCdkStack(app, "TestStack");
 
   const lambdaId = stack.getLogicalId(
-    stack.node.findChild("OvercastLambda").node.defaultChild as cdk.CfnElement
+    stack.node.findChild("OvercastLambda").node.defaultChild as cdk.CfnElement,
   );
 
   const template = Template.fromStack(stack);

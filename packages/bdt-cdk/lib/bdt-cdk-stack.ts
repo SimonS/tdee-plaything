@@ -8,7 +8,7 @@ import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { Queue } from "aws-cdk-lib/aws-sqs";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import path = require("path");
+import * as path from "path";
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -52,14 +52,14 @@ export class BdtCdkStack extends Stack {
           QUEUE_URL: webhookQueue.queueUrl,
           STRAVA_VERIFY_TOKEN: "averysecuretokenwithnospaces",
         },
-      }
+      },
     );
 
     webhookQueue.grantSendMessages(receiverLambda);
 
     const stravaWebhookIntegration = new HttpLambdaIntegration(
       "StravaWebhookIntegration",
-      receiverLambda
+      receiverLambda,
     );
 
     httpApi.addRoutes({
@@ -81,7 +81,7 @@ export class BdtCdkStack extends Stack {
           STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
           STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
         },
-      }
+      },
     );
 
     processorLambda.addEventSource(new SqsEventSource(webhookQueue));
@@ -104,7 +104,7 @@ export class BdtCdkStack extends Stack {
           clientSecretParamArn,
           refreshTokenParamArn,
         ],
-      })
+      }),
     );
 
     processorLambda.addToRolePolicy(
@@ -113,7 +113,7 @@ export class BdtCdkStack extends Stack {
         effect: Effect.ALLOW,
         actions: ["kms:Decrypt"],
         resources: ["*"],
-      })
+      }),
     );
   }
 }

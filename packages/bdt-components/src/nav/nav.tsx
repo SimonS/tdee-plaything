@@ -3,14 +3,16 @@ import { mainMenu, current } from "./nav.module.css";
 
 export const Nav = ({ url = "" }: { url?: string }): JSX.Element => {
   const makeLink = (href: string, text: string, i: number) => {
-    return (<li key={`nav-${i + 1}`}>
-      <a
-        className={new RegExp(`^.*\/${href}`).test(url) ? current : ""}
-        href={`/${href}`}
-      >
-        {text}
-      </a>
-    </li>);
+    return (
+      <li key={`nav-${i + 1}`}>
+        <a
+          className={new RegExp(`^.*\/${href}`).test(url) ? current : ""}
+          href={`/${href}`}
+        >
+          {text}
+        </a>
+      </li>
+    );
   };
   return (
     <nav className={mainMenu}>

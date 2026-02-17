@@ -7,7 +7,7 @@ test("We can render the sidebar component", () => {
     <Sidebar>
       <div>Hello</div>
       <div>Sausage</div>
-    </Sidebar>
+    </Sidebar>,
   );
   const text = screen.getByText("Hello");
   expect(text).toBeInTheDocument();
@@ -20,7 +20,7 @@ test("Set width on first element appropriately", () => {
     <Sidebar side="left" sideWidth="100px">
       <div>Hello</div>
       <div>Sausage</div>
-    </Sidebar>
+    </Sidebar>,
   );
 
   const text = screen.getByText("Hello");
@@ -33,7 +33,7 @@ test("Set width on second element when aligned right", () => {
     <Sidebar side="right" sideWidth="100px">
       <div>Hello</div>
       <div>Sausage</div>
-    </Sidebar>
+    </Sidebar>,
   );
 
   const text = screen.getByText("Sausage");

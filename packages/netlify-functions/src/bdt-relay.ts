@@ -6,7 +6,7 @@ import generateRequest from "./lib/generateRequest";
 import postToBDT from "./lib/postToBDT";
 
 exports.handler = async (
-  event: APIGatewayEvent
+  event: APIGatewayEvent,
 ): Promise<{ statusCode: number; body: string }> => {
   if (!event.body || event.httpMethod !== "POST") {
     return {
@@ -20,7 +20,7 @@ exports.handler = async (
     endpoint,
     body,
   }: { authToken: string; endpoint: string; body: string } = generateRequest(
-    JSON.parse(event.body) as BDTRequest
+    JSON.parse(event.body) as BDTRequest,
   );
 
   const response = await postToBDT(body, endpoint, authToken);

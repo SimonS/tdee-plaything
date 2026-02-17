@@ -2,7 +2,7 @@ import { request, gql } from "graphql-request";
 import { PageInfo, Film, Podcast, Weighin } from "@tdee/types/src/bdt";
 
 export const getAllPages = async (
-  pageSize: number
+  pageSize: number,
 ): Promise<(Film | Podcast | Weighin)[]> => {
   const query = gql`
     query nextPage($first: Int, $after: String) {
@@ -66,7 +66,7 @@ export const getAllPages = async (
           data: data.contentNodes?.nodes,
           meta: data.contentNodes?.pageInfo,
         };
-      }
+      },
     );
 
   let { data, meta } = await getNextPage();
