@@ -10,11 +10,11 @@
   },
   "devDependencies": {
     "@astrojs/react": "^4.2.7",
-    "astro": "^5.6.2",
-    "graphql-request": "^7.1.2",
+    "astro": "^5.17.2",
+    "graphql-request": "^7.4.0",
     "sass": "^1.97.3"
   },
   "dependencies": {
-    "@astrojs/react": "^3.0.10"
+    "@astrojs/react": "^3.6.3"
   }
 }

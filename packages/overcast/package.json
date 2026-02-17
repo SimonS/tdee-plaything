@@ -10,14 +10,14 @@
     "prepack": "pnpm compile"
   },
   "dependencies": {
-    "axios": "^1.8.4",
+    "axios": "^1.13.5",
     "axios-cookiejar-support": "^5.0.5",
-    "cheerio": "^1.0.0",
-    "mock-fs": "^5.1.2",
+    "cheerio": "^1.2.0",
+    "mock-fs": "^5.5.0",
     "tough-cookie": "^5.1.2"
   },
   "devDependencies": {
-"@types/mock-fs": "^4.13.1",
+    "@types/mock-fs": "^4.13.4",
     "@types/tough-cookie": "^4.0.5",
     "typescript": "5.8.2"
   }
