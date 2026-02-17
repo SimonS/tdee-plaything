@@ -388,8 +388,8 @@ importers:
         specifier: ^1.13.5
         version: 1.13.5
       axios-cookiejar-support:
-        specifier: ^5.0.5
-        version: 5.0.5(axios@1.13.5)(tough-cookie@5.1.2)
+        specifier: ^6.0.5
+        version: 6.0.5(axios@1.13.5)(tough-cookie@5.1.2)(undici@7.22.0)
       cheerio:
         specifier: ^1.2.0
         version: 1.2.0
@@ -3424,9 +3424,9 @@ packages:
     resolution: {integrity: sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==}
     engines: {node: '>=4'}
 
-  axios-cookiejar-support@5.0.5:
-    resolution: {integrity: sha512-jJG+p7JnOYxkVrYkCDKBrLqUmcpwHZTNQrEcIEKr5qe7YVTyPAD9nCsi1cO5LDmQpQApfS430czO+oceI3g/3g==}
-    engines: {node: '>=18.0.0'}
+  axios-cookiejar-support@6.0.5:
+    resolution: {integrity: sha512-ldPOQCJWB0ipugkTNVB8QRl/5L2UgfmVNVQtS9en1JQJ1wW588PqAmymnwmmgc12HLDzDtsJ28xE2ppj4rD4ng==}
+    engines: {node: '>=20.0.0'}
     peerDependencies:
       axios: '>=0.20.0'
       tough-cookie: '>=4.0.0'
@@ -4749,12 +4749,12 @@ packages:
   http-cache-semantics@4.2.0:
     resolution: {integrity: sha512-dTxcvPXqPvXBQpq5dUr6mEMJX4oIEFv6bwom3FDwKRDsuIjjJGANqhBuoAn9c1RQJIdAKav33ED65E2ys+87QQ==}
 
-  http-cookie-agent@6.0.8:
-    resolution: {integrity: sha512-qnYh3yLSr2jBsTYkw11elq+T361uKAJaZ2dR4cfYZChw1dt9uL5t3zSUwehoqqVb4oldk1BpkXKm2oat8zV+oA==}
-    engines: {node: '>=18.0.0'}
+  http-cookie-agent@7.0.3:
+    resolution: {integrity: sha512-EeZo7CGhfqPW6R006rJa4QtZZUpBygDa2HZH3DJqsTzTjyRE6foDBVQIv/pjVsxHC8z2GIdbB1Hvn9SRorP3WQ==}
+    engines: {node: '>=20.0.0'}
     peerDependencies:
-      tough-cookie: ^4.0.0 || ^5.0.0
-      undici: ^5.11.0 || ^6.0.0
+      tough-cookie: ^4.0.0 || ^5.0.0 || ^6.0.0
+      undici: ^7.0.0
     peerDependenciesMeta:
       undici:
         optional: true
@@ -10795,10 +10795,10 @@ snapshots:
 
   axe-core@4.11.1: {}
 
-  axios-cookiejar-support@5.0.5(axios@1.13.5)(tough-cookie@5.1.2):
+  axios-cookiejar-support@6.0.5(axios@1.13.5)(tough-cookie@5.1.2)(undici@7.22.0):
     dependencies:
       axios: 1.13.5
-      http-cookie-agent: 6.0.8(tough-cookie@5.1.2)
+      http-cookie-agent: 7.0.3(tough-cookie@5.1.2)(undici@7.22.0)
       tough-cookie: 5.1.2
     transitivePeerDependencies:
       - undici
@@ -12406,10 +12406,12 @@ snapshots:
 
   http-cache-semantics@4.2.0: {}
 
-  http-cookie-agent@6.0.8(tough-cookie@5.1.2):
+  http-cookie-agent@7.0.3(tough-cookie@5.1.2)(undici@7.22.0):
     dependencies:
       agent-base: 7.1.4
       tough-cookie: 5.1.2
+    optionalDependencies:
+      undici: 7.22.0
 
   http-proxy-agent@5.0.0:
     dependencies:
