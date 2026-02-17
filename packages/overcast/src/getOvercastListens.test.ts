@@ -17,7 +17,7 @@ const setupLogin = async () => {
 
 const setupOPML = (fixture: string) => {
   const latestOPML = readFileSync(
-    path.join(__dirname, `../__FIXTURES__/${fixture}.xml`)
+    path.join(__dirname, `../__FIXTURES__/${fixture}.xml`),
   );
 
   nock(rootUrl).get("/account/export_opml/extended").reply(200, latestOPML);

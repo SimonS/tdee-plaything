@@ -3,7 +3,7 @@ import fetch, { Response } from "cross-fetch";
 const postToBDT = async (
   body: string,
   endpoint: string,
-  accessToken: string
+  accessToken: string,
 ): Promise<Response> =>
   fetch(endpoint, {
     method: "POST",

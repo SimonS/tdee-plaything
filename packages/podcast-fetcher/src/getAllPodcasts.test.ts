@@ -28,7 +28,7 @@ const generatePodcastCollection = (num: number, reverse = false): Podcast[] =>
 const buildPodcastsResponse = (
   num: number,
   hasNextPage = false,
-  reverse = false
+  reverse = false,
 ) => ({
   data: {
     podcasts: {

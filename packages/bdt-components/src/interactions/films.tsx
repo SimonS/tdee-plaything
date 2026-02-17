@@ -11,7 +11,7 @@ const FilmCalendar = ({
 }: {
   aggregated: CalendarDatum[];
   grouped: GroupedFilms;
-  responsive?: Boolean;
+  responsive?: boolean;
 }) => (
   <Calendar
     data={aggregated}

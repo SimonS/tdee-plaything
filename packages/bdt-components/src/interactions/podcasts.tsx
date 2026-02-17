@@ -11,7 +11,7 @@ const PodcastCalendar = ({
 }: {
   aggregated: CalendarDatum[];
   grouped: GroupedPodcasts;
-  responsive?: Boolean;
+  responsive?: boolean;
 }) => (
   <Calendar
     data={aggregated}

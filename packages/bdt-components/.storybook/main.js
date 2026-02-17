@@ -2,7 +2,7 @@ import { dirname, join } from "path";
 // import type { StorybookConfig } from "@storybook/react-webpack5";
 
 const getAbsolutePath = (packageName) =>
-  dirname(require.resolve(join(packageName, 'package.json')));
+  dirname(require.resolve(join(packageName, "package.json")));
 
 module.exports = {
   framework: {
@@ -16,12 +16,12 @@ module.exports = {
     getAbsolutePath("@storybook/addon-actions"),
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-controls"),
-    getAbsolutePath("@storybook/addon-webpack5-compiler-babel")
+    getAbsolutePath("@storybook/addon-webpack5-compiler-babel"),
   ],
 
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config) => {
     const ruleCssIndex = config.module.rules.findIndex(
-      (rule) => rule.test.toString() === "/\\.css$/"
+      (rule) => rule.test.toString() === "/\\.css$/",
     );
 
     config.module.rules[ruleCssIndex].use = [
@@ -56,6 +56,6 @@ module.exports = {
   docs: {},
 
   typescript: {
-    reactDocgen: "react-docgen-typescript"
-  }
+    reactDocgen: "react-docgen-typescript",
+  },
 };

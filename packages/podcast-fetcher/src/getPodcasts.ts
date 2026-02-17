@@ -5,7 +5,7 @@ export const whereClause = "{ orderby: { field: LISTEN_DATE, order: DESC } }";
 
 const getPodcasts = async (
   after?: string,
-  first?: string
+  first?: string,
 ): Promise<{ podcasts: Podcast[]; meta: PageInfo }> => {
   const nodeName = "podcasts";
   const fields = [
@@ -24,7 +24,7 @@ const getPodcasts = async (
     fields,
     after,
     whereClause,
-    first ?? "10"
+    first ?? "10",
   );
 
   return {

@@ -32,7 +32,7 @@ describe("Podcasts", () => {
   it("shows instructional text before selection", () => {
     const { container } = render(<Podcasts />);
     expect(container).toHaveTextContent(
-      "Click a date to show listened podcasts for that day"
+      "Click a date to show listened podcasts for that day",
     );
   });
 
@@ -43,10 +43,10 @@ describe("Podcasts", () => {
         ...podcastsStore,
         podcasts: pods,
         selected: "2022-01-01",
-      })
+      }),
     );
     expect(container).not.toHaveTextContent(
-      "Click a date to show listened podcasts for that day"
+      "Click a date to show listened podcasts for that day",
     );
   });
 
@@ -57,7 +57,7 @@ describe("Podcasts", () => {
         ...podcastsStore.get(),
         podcasts: pods,
         selected: "2022-01-01",
-      })
+      }),
     );
     expect(container).toHaveTextContent("Podcast #1");
     expect(container).toHaveTextContent("Podcast #2");
@@ -70,7 +70,7 @@ describe("Podcasts", () => {
         ...podcastsStore.get(),
         podcasts: [],
         selected: "2022-01-01",
-      })
+      }),
     );
     expect(container).toHaveTextContent("No listens recorded");
   });
@@ -78,7 +78,7 @@ describe("Podcasts", () => {
   it("displays current date", () => {
     const { container } = render(<Podcasts />);
     act(() =>
-      podcastsStore.set({ ...podcastsStore.get(), selected: "2022-01-01" })
+      podcastsStore.set({ ...podcastsStore.get(), selected: "2022-01-01" }),
     );
     expect(container).toHaveTextContent("Date: Sat Jan 01 2022");
   });

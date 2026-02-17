@@ -18,10 +18,10 @@ const Calendar = ({
   data: CalendarDatum[];
   from: Date | string;
   to: Date | string;
-  responsive?: Boolean;
+  responsive?: boolean;
   onClick?: (
     datum: Datum,
-    e: React.MouseEvent<SVGRectElement, MouseEvent>
+    e: React.MouseEvent<SVGRectElement, MouseEvent>,
   ) => void;
 }) => {
   const fromYear = new Date(from).getFullYear();

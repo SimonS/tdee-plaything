@@ -1,5 +1,5 @@
 import * as overcast from "@tdee/overcast-functions/src/getOvercastListens";
-import { expect, jest, test, afterEach } from '@jest/globals';
+import { expect, jest, test, afterEach } from "@jest/globals";
 
 import { handler } from "../lambda/overcast";
 import axios from "axios";
@@ -53,7 +53,7 @@ test("login successful", async () => {
 test("login uses credentials from environment variables when credentials not passed", async () => {
   const loginSpy = jest
     .spyOn(overcast, "loginToOvercast")
-    .mockImplementation(async (email?: string, password?: string) => false);
+    .mockImplementation(async (_email?: string, _password?: string) => false);
 
   mockAxios();
 
@@ -146,7 +146,7 @@ test("posts listens to wordpress", async () => {
         "Content-Type": "application/json",
         Authorization: "Bearer token",
       },
-    }
+    },
   );
 });
 
@@ -220,7 +220,7 @@ test("returns a 500 with the logs if any posts to BDT fail", async () => {
   jest
     .spyOn(axios, "post")
     .mockImplementation(async () =>
-      Promise.reject(new Error("Connection refused"))
+      Promise.reject(new Error("Connection refused")),
     );
 
   const result = await handler({

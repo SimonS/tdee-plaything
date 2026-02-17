@@ -7,7 +7,7 @@ import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 const sqsClient = new SQSClient({});
 
 export const handler = async (
-  event: APIGatewayProxyEventV2
+  event: APIGatewayProxyEventV2,
 ): Promise<APIGatewayProxyStructuredResultV2> => {
   console.log("Strava Receiver Lambda invoked");
 
@@ -29,7 +29,7 @@ const respondWith = (statusCode: number, body: string) => {
 
 const verifySubscription = (event: APIGatewayProxyEventV2) => {
   console.log(
-    "Strava webhook verification successful. Responding with challenge."
+    "Strava webhook verification successful. Responding with challenge.",
   );
 
   const queryParams = event.queryStringParameters || {};
@@ -51,7 +51,7 @@ const receiveEvent = async (event: APIGatewayProxyEventV2) => {
 
   if (!queueUrl) {
     console.error(
-      "Configuration Error: QUEUE_URL environment variable not set."
+      "Configuration Error: QUEUE_URL environment variable not set.",
     );
     return respondWith(500, "Internal configuration error");
   }
@@ -67,10 +67,11 @@ const receiveEvent = async (event: APIGatewayProxyEventV2) => {
 
   const { object_type, object_id, aspect_type, owner_id } = parsedBody || {};
 
-  if ((aspect_type !== "create" && aspect_type !== "update") || object_type !== "activity") {
-    console.log(
-      `Ignoring event: ${object_type} / ${aspect_type}`
-    );
+  if (
+    (aspect_type !== "create" && aspect_type !== "update") ||
+    object_type !== "activity"
+  ) {
+    console.log(`Ignoring event: ${object_type} / ${aspect_type}`);
     return respondWith(200, "Event received but not processed (delete/other).");
   }
 

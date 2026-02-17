@@ -1,10 +1,4 @@
-import {
-  jest,
-  test,
-  afterEach,
-  afterAll,
-  beforeEach,
-} from "@jest/globals";
+import { jest, test, afterEach, afterAll, beforeEach } from "@jest/globals";
 
 import { handler } from "../lambda/strava-receiver/index";
 import { APIGatewayProxyEventV2 } from "aws-lambda";
@@ -17,10 +11,10 @@ const originalQueueUrl = process.env.QUEUE_URL;
 const testQueueUrl =
   "https://sqs.eu-west-2.amazonaws.com/123456789012/strava-webhook-queue-test";
 
-const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => { });
+const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 const consoleErrorSpy = jest
   .spyOn(console, "error")
-  .mockImplementation(() => { });
+  .mockImplementation(() => {});
 
 afterAll(() => {
   consoleLogSpy.mockRestore();
@@ -172,7 +166,7 @@ test("should return 400 Bad Request if POST body is not valid JSON", async () =>
 
 function createMockApiGatewayEvent(
   eventBody: any,
-  method: string = "POST"
+  method: string = "POST",
 ): Partial<APIGatewayProxyEventV2> {
   return {
     requestContext: {
@@ -185,7 +179,10 @@ function createMockApiGatewayEvent(
   };
 }
 
-function makeStravaEvent(aspect_type: string = "update", object_type: string = "activity") {
+function makeStravaEvent(
+  aspect_type: string = "update",
+  object_type: string = "activity",
+) {
   return {
     aspect_type,
     event_time: Date.now() / 1000,

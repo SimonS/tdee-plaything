@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import "aws-sdk-client-mock-jest";
-import { jest } from "@jest/globals";
 
 const { TextDecoder, TextEncoder, ReadableStream } = require("node:util");
 

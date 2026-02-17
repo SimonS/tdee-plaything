@@ -13,7 +13,7 @@ const http = wrapper(
     baseURL: urlBase,
     withCredentials: true,
     jar: cookieJar,
-  })
+  }),
 );
 
 export interface OvercastListen {
@@ -41,7 +41,7 @@ export const loginToOvercast = async (email: string, password: string) => {
 };
 
 export const getOvercastListens = async (
-  since?: Date
+  since?: Date,
 ): Promise<OvercastListen[]> => {
   const opmlURL = `/account/export_opml/extended`;
   const opmlFile = await (await http.get(`${urlBase}${opmlURL}`)).data;

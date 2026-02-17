@@ -6,7 +6,7 @@ test("We can render the centered component", () => {
   render(
     <Centered>
       <div>Hello</div>
-    </Centered>
+    </Centered>,
   );
   const text = screen.getByText("Hello");
   expect(text).toBeInTheDocument();

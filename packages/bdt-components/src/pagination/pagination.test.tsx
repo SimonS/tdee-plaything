@@ -9,7 +9,7 @@ describe("Pagination links", () => {
         tag={`a`}
         pageInfo={{ hasNextPage: true }}
         urlRoot="/foo/page"
-      />
+      />,
     );
     expect(getByText(/Next/)).toBeVisible();
   });
@@ -20,7 +20,7 @@ describe("Pagination links", () => {
         tag={`a`}
         pageInfo={{ hasNextPage: false }}
         urlRoot="/foo/page"
-      />
+      />,
     );
     expect(queryByText(/Next/)).toBeNull();
   });
@@ -31,18 +31,18 @@ describe("Pagination links", () => {
         tag={`a`}
         pageInfo={{ hasPreviousPage: true }}
         urlRoot="/foo/page"
-      />
+      />,
     );
     expect(getByText(/Previous/)).toBeVisible();
   });
 
-  it("omits a next link when not required", () => {
+  it("omits a previous link when not required", () => {
     const { queryByText } = render(
       <Pagination
         tag={`a`}
         pageInfo={{ hasPreviousPage: false }}
         urlRoot="/foo/page"
-      />
+      />,
     );
     expect(queryByText(/Previous/)).toBeNull();
   });
@@ -54,7 +54,7 @@ describe("Pagination links", () => {
         pageInfo={{ hasNextPage: true }}
         urlRoot="/foo/page"
         pageNumber={1}
-      />
+      />,
     );
     expect(getByText(/Next/)).toHaveAttribute("href", "/foo/page/2");
   });
@@ -66,27 +66,29 @@ describe("Pagination links", () => {
         pageInfo={{ hasPreviousPage: true }}
         urlRoot="/foo/page"
         pageNumber={2}
-      />
+      />,
     );
     expect(getByText(/Previous/)).toHaveAttribute("href", "/foo/page/1");
   });
 });
 
 describe("Pagination buttons", () => {
-  const previousPageEvent = jest.fn();
-  const nextPageEvent = jest.fn();
-  const { getAllByRole } = render(
-    <Pagination
-      pageInfo={{ hasPreviousPage: true, hasNextPage: true }}
-      tag={`button`}
-      previousPageEvent={previousPageEvent}
-      nextPageEvent={nextPageEvent}
-    />
-  );
-  expect(getAllByRole("button")).toHaveLength(2);
-  fireEvent.click(getAllByRole("button")[0]);
-  fireEvent.click(getAllByRole("button")[1]);
+  it("renders buttons and fires click events", () => {
+    const previousPageEvent = jest.fn();
+    const nextPageEvent = jest.fn();
+    const { getAllByRole } = render(
+      <Pagination
+        pageInfo={{ hasPreviousPage: true, hasNextPage: true }}
+        tag={`button`}
+        previousPageEvent={previousPageEvent}
+        nextPageEvent={nextPageEvent}
+      />,
+    );
+    expect(getAllByRole("button")).toHaveLength(2);
+    fireEvent.click(getAllByRole("button")[0]);
+    fireEvent.click(getAllByRole("button")[1]);
 
-  expect(previousPageEvent).toHaveBeenCalled();
-  expect(nextPageEvent).toHaveBeenCalled();
+    expect(previousPageEvent).toHaveBeenCalled();
+    expect(nextPageEvent).toHaveBeenCalled();
+  });
 });

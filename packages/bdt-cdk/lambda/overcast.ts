@@ -76,9 +76,9 @@ export const handler = async function (event: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${process.env.BDT_AUTH_TOKEN}`,
             },
-          }
-        )
-    )
+          },
+        ),
+    ),
   );
 
   const statuses = results.map((result) => {

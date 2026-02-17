@@ -6,7 +6,7 @@ const getData = async <T>(
   fields: string[],
   after?: string,
   whereClause?: string,
-  first?: string
+  first?: string,
 ): Promise<{ data: T[]; meta: PageInfo }> => {
   const where = whereClause ? `where: ${whereClause},` : "";
 
@@ -30,7 +30,7 @@ const getData = async <T>(
 
   const { data, meta } = await request(
     "https://breakfastdinnertea.co.uk/graphql",
-    query
+    query,
   ).then((data: { [nodeName: string]: { nodes: T[]; pageInfo: PageInfo } }) => {
     return { data: data[nodeName].nodes, meta: data[nodeName].pageInfo };
   });

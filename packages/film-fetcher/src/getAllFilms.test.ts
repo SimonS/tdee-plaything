@@ -30,7 +30,7 @@ const generateFilmCollection = (num: number, reverse = false) =>
 const buildFilmsResponse = (
   num: number,
   hasNextPage = false,
-  reverse = false
+  reverse = false,
 ) => ({
   data: {
     films: {

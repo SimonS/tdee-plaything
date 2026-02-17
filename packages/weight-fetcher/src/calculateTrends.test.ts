@@ -8,7 +8,7 @@ test("given a one item array, returns only the extra field", () => {
         weighinTime: "2021-12-22T08:02:00+0000",
         bodyFatPercentage: 20,
       },
-    ])[0]
+    ])[0],
   ).toMatchObject({
     weight: 170,
     weighinTime: "2021-12-22T08:02:00+0000",
@@ -45,7 +45,7 @@ test("calculates the trend line based on basic source data", () => {
         weighinTime: "2021-12-25T08:02:00+0000",
         bodyFatPercentage: 20,
       },
-    ]).map((weight) => weight.weightTrend)
+    ]).map((weight) => weight.weightTrend),
   ).toEqual([173.6, 173.1, 172.5, 172.4, 172.2]);
 });
 
@@ -82,6 +82,6 @@ test("trend line ignores values more than a week ago", () => {
         weighinTime: "2021-12-25T08:02:00+0000",
         bodyFatPercentage: 20,
       },
-    ]).map((weight) => weight.weightTrend)
+    ]).map((weight) => weight.weightTrend),
   ).toEqual([190.6, 173.6, 173.1, 172.5, 172.4, 172.2]);
 });

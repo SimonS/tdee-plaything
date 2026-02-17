@@ -42,7 +42,7 @@ test("getAllWeighins works with a single page", async () => {
           weighinTime: "2022-01-15T08:33:00+0000",
           weight: 75.48,
         },
-      ])
+      ]),
     );
 
   const weighins = await getAllWeighins();
@@ -70,7 +70,7 @@ test("getAllWeighins sorts the results", async () => {
           weighinTime: "2022-01-15T08:33:00+0000",
           weight: 75.48,
         },
-      ])
+      ]),
     );
 
   const weighins = await getAllWeighins();
@@ -91,8 +91,8 @@ test("getAllWeighins returns aggregate of many pages", async () => {
             weight: 76.642,
           },
         ],
-        true
-      )
+        true,
+      ),
     )
     .post("/graphql")
     .reply(
@@ -103,7 +103,7 @@ test("getAllWeighins returns aggregate of many pages", async () => {
           weighinTime: "2022-01-19T07:38:00+0000",
           weight: 77.642,
         },
-      ])
+      ]),
     );
 
   const weighins = await getAllWeighins();
@@ -128,7 +128,7 @@ test("getAllWeighins paginates by 100", async () => {
             weight: 76.642,
           },
         ],
-        false
+        false,
       );
     });
 
@@ -148,7 +148,7 @@ test("optionally calculate trends", async () => {
           weighinTime: "2022-01-18T07:38:00+0000",
           weight: 76.642,
         },
-      ])
+      ]),
     );
 
   const weighins = await getAllWeighins(true);

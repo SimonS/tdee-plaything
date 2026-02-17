@@ -7,7 +7,7 @@ jest.mock("recharts", () => {
   const OriginalModule = jest.requireActual("recharts");
   return {
     ...OriginalModule,
-    ResponsiveContainer: ({ children }: any) => (
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
       <OriginalModule.ResponsiveContainer width={400} aspect={1}>
         {children}
       </OriginalModule.ResponsiveContainer>
@@ -62,7 +62,7 @@ describe("basic weight graph rendering", () => {
     const { container } = renderThreeDays();
 
     expect(
-      container.getElementsByClassName("recharts-surface").length
+      container.getElementsByClassName("recharts-surface").length,
     ).toBeGreaterThan(0);
   });
 
@@ -83,7 +83,7 @@ describe("basic weight graph rendering", () => {
     const weighins = generateWeighins(32);
 
     const { container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     const dots = getDots(container);
@@ -100,7 +100,7 @@ describe("basic weight graph rendering", () => {
         filter={{
           from: "2020-01-02",
         }}
-      />
+      />,
     );
 
     expect(getDots(container)).toHaveLength(2);
@@ -116,7 +116,7 @@ describe("basic weight graph rendering", () => {
         filter={{
           to: "2020-01-02",
         }}
-      />
+      />,
     );
 
     expect(getDots(container)).toHaveLength(2);
@@ -126,7 +126,7 @@ describe("basic weight graph rendering", () => {
     const weighins: Weighin[] = [];
 
     const { getByText } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     expect(getByText("No data to display")).toBeTruthy();
@@ -142,7 +142,7 @@ describe("basic weight graph rendering", () => {
         filter={{
           from: "2020-01-13T00:00:00.000Z",
         }}
-      />
+      />,
     );
 
     expect(getAllByText("weight").length).toBeGreaterThan(0);
@@ -173,7 +173,7 @@ describe("trend lines", () => {
     ];
 
     const { container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     const dots = getDots(container);
@@ -203,7 +203,7 @@ describe("trend lines", () => {
     ];
 
     const { getAllByText } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     expect(getAllByText("110.1").length).toBeGreaterThan(0);
@@ -234,12 +234,12 @@ describe("trend lines", () => {
     ];
 
     const { container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     const paths = getPaths(container);
     expect(
-      paths.filter((path) => path.getAttribute("stroke-dasharray"))
+      paths.filter((path) => path.getAttribute("stroke-dasharray")),
     ).toHaveLength(1);
   });
 });
@@ -249,7 +249,7 @@ describe("date selector", () => {
     const weighins = generateWeighins(10);
 
     const { getByLabelText } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     expect(getByLabelText("From")).toBeVisible();
@@ -267,7 +267,7 @@ describe("date selector", () => {
           from: "2020-01-02",
           to: "2020-01-05",
         }}
-      />
+      />,
     );
 
     expect(getByLabelText("From")).toHaveValue("02/01/2020");
@@ -285,7 +285,7 @@ describe("date selector", () => {
           from: "2020-01-02",
           to: "2020-01-05",
         }}
-      />
+      />,
     );
 
     fireEvent.click(getByText("Change dates"));
@@ -304,7 +304,7 @@ describe("date selector", () => {
           from: "2020-01-02",
           to: "2020-01-05",
         }}
-      />
+      />,
     );
 
     fireEvent.click(getByText("Change dates"));
@@ -327,7 +327,7 @@ describe("date selector", () => {
           from: "2020-01-02",
           to: "2020-01-05",
         }}
-      />
+      />,
     );
 
     expect(queryAllByText("January 2020")).toHaveLength(0);
@@ -344,7 +344,7 @@ describe("date selector", () => {
           from: "2020-01-02",
           to: "2020-01-05",
         }}
-      />
+      />,
     );
 
     fireEvent.click(getByText("Change dates"));
@@ -358,7 +358,7 @@ describe("line picker", () => {
     const weighins = generateWeighins(10);
 
     const { getByLabelText } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     expect(getByLabelText("Weight")).toBeVisible();
@@ -368,14 +368,14 @@ describe("line picker", () => {
 
   const hasLegendText = (container: HTMLElement, text: string) =>
     [...container.querySelectorAll(".recharts-legend-item-text")].filter(
-      (i) => i.textContent === text
+      (i) => i.textContent === text,
     ).length > 0;
 
   it("sets expected initial state", () => {
     const weighins = generateWeighins(10);
 
     const { getByLabelText, container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     expect(getByLabelText("Weight")).toBeChecked();
@@ -383,7 +383,7 @@ describe("line picker", () => {
     expect(getByLabelText("Bodyfat")).not.toBeChecked();
 
     expect(
-      container.querySelectorAll(".recharts-line path.recharts-line-curve")
+      container.querySelectorAll(".recharts-line path.recharts-line-curve"),
     ).toHaveLength(2);
 
     expect(hasLegendText(container, "weight")).toBeTruthy();
@@ -395,13 +395,13 @@ describe("line picker", () => {
     const weighins = generateWeighins(10);
 
     const { getByLabelText, container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     fireEvent.click(getByLabelText("Bodyfat"));
 
     expect(
-      container.querySelectorAll(".recharts-line path.recharts-line-curve")
+      container.querySelectorAll(".recharts-line path.recharts-line-curve"),
     ).toHaveLength(3);
 
     expect(hasLegendText(container, "bodyFatPercentage")).toBeTruthy();
@@ -411,14 +411,14 @@ describe("line picker", () => {
     const weighins = generateWeighins(10);
 
     const { getByLabelText, container } = render(
-      <WeightGraph weighins={weighins} responsive={false} />
+      <WeightGraph weighins={weighins} responsive={false} />,
     );
 
     fireEvent.click(getByLabelText("Weight"));
     fireEvent.click(getByLabelText("Weight Trend"));
 
     expect(
-      container.querySelectorAll(".recharts-line path.recharts-line-curve")
+      container.querySelectorAll(".recharts-line path.recharts-line-curve"),
     ).toHaveLength(0);
 
     expect(hasLegendText(container, "weight")).toBeFalsy();

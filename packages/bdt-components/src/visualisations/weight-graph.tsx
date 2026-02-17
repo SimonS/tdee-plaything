@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-export default ({
+const WeightGraph = ({
   weighins,
   responsive = true,
   filter,
@@ -26,7 +26,7 @@ export default ({
   if (weighins.length === 0) return <div>No data to display</div>;
 
   weighins.sort((a, b) =>
-    new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1
+    new Date(a.weighinTime) < new Date(b.weighinTime) ? -1 : 1,
   );
 
   const defaultSelected: DateRange = {
@@ -41,7 +41,7 @@ export default ({
   };
 
   const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
-  const [showDatePicker, setShowDatePicker] = useState<Boolean>(false);
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [filters, setFilters] = useState<Filters>({
     weight: true,
     weightTrend: true,
@@ -49,7 +49,7 @@ export default ({
   });
 
   const filterDates = (
-    weighins: Weighin[] | CalculatedWeighin[]
+    weighins: Weighin[] | CalculatedWeighin[],
   ): Weighin[] | CalculatedWeighin[] =>
     weighins
       .filter((weighin) => {
@@ -247,3 +247,5 @@ export default ({
     </div>
   );
 };
+
+export default WeightGraph;

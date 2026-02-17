@@ -1,4 +1,3 @@
-import React from "react";
 import { action } from "@storybook/addon-actions";
 import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
 import "!style-loader!css-loader!sass-loader!../../bdt-astro/public/style/global.scss";

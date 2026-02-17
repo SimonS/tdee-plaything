@@ -5,7 +5,7 @@ export const whereClause = "{orderby: {field: DATE_WATCHED, order: DESC}}";
 
 const getFilms = async (
   after?: string,
-  first?: string
+  first?: string,
 ): Promise<{ films: Film[]; meta: PageInfo }> => {
   const nodeName = "films";
   const fields = [
@@ -23,7 +23,7 @@ const getFilms = async (
     fields,
     after,
     whereClause,
-    first ?? "10"
+    first ?? "10",
   );
 
   return {

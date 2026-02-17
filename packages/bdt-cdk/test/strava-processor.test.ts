@@ -1,4 +1,11 @@
-import { expect, test, afterEach, jest, afterAll, beforeEach } from "@jest/globals";
+import {
+  expect,
+  test,
+  afterEach,
+  jest,
+  afterAll,
+  beforeEach,
+} from "@jest/globals";
 
 import { handler } from "../lambda/strava-processor/index";
 import { SQSEvent, SQSRecord } from "aws-lambda";
@@ -88,7 +95,7 @@ const consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
 const createPartialMockSqsRecord = (
   body: string,
-  messageId: string = `test-partial-msg-${Math.random().toString(36).substring(7)}`
+  messageId: string = `test-partial-msg-${Math.random().toString(36).substring(7)}`,
 ): Partial<SQSRecord> => {
   return {
     messageId: messageId,
@@ -97,7 +104,7 @@ const createPartialMockSqsRecord = (
 };
 
 const createPartialSqsEventWithBodies = (
-  bodies: string[]
+  bodies: string[],
 ): Partial<SQSEvent> => {
   const records = bodies.map((body) => createPartialMockSqsRecord(body));
   return { Records: records as SQSRecord[] };
@@ -123,7 +130,7 @@ test("log the body of each received SQS message", async () => {
 
   expect(consoleLogSpy).toHaveBeenCalledWith(
     "Processing SQS message:",
-    expect.any(String)
+    expect.any(String),
   );
   expect(consoleLogSpy).toHaveBeenCalledWith("Processing complete.");
 });
@@ -147,7 +154,7 @@ test("Processor Lambda attempts Strava token refresh using credentials from SSM"
     expectedFormData,
     expect.objectContaining({
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    })
+    }),
   );
 });
 
@@ -162,7 +169,7 @@ test("fetches activity details from Strava API", async () => {
     start_date_local: new Date().toISOString(),
   };
 
-  mockedAxiosGet.mockImplementation(async (url, config) => {
+  mockedAxiosGet.mockImplementation(async (url, _config) => {
     console.log(`--- MOCK GET returning data for ${url} ---`);
     return Promise.resolve({
       data: dummyActivityData,
@@ -177,14 +184,16 @@ test("fetches activity details from Strava API", async () => {
     object_type: "activity",
     object_id: activityId,
     aspect_type: "update",
-    owner_id: 12345
+    owner_id: 12345,
   });
   const mockEvent = createPartialSqsEventWithBodies([sqsMessageBody]);
 
   await handler(mockEvent as SQSEvent);
 
-  expect(consoleLogSpy).toHaveBeenCalledWith("Fetched Strava activity data:", dummyActivityData);
+  expect(consoleLogSpy).toHaveBeenCalledWith(
+    "Fetched Strava activity data:",
+    dummyActivityData,
+  );
 
   expect(consoleLogSpy).toHaveBeenCalledWith("Processing complete.");
-
 });

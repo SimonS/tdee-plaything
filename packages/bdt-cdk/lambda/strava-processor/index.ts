@@ -1,4 +1,4 @@
-import { SQSEvent, SQSRecord } from "aws-lambda";
+import { SQSEvent } from "aws-lambda";
 import { SSMClient, GetParametersCommand } from "@aws-sdk/client-ssm";
 
 import axios from "axios";
@@ -41,7 +41,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
         console.log("Fetched Strava activity data:", data);
       } else {
         console.log(
-          `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`
+          `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`,
         );
       }
     } catch (error) {
@@ -75,10 +75,11 @@ async function getStravaAccessToken(): Promise<string> {
     } else {
       throw new Error("Access token not found in Strava response.");
     }
-  } catch (error: any) {
+  } catch (error) {
+    const e = error as { response?: { data?: unknown }; message?: string };
     console.error(
       "Error refreshing Strava token:",
-      error.response?.data || error.message
+      e.response?.data || e.message,
     );
     throw new Error("Failed to refresh Strava access token.");
   }
@@ -91,7 +92,7 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
 
   if (!clientIdParam || !clientSecretParam || !refreshTokenParam) {
     console.error(
-      "FATAL: Missing required SSM parameter name environment variables (STRAVA_CLIENT_ID_PARAM_NAME, STRAVA_SECRET_PARAM_NAME, STRAVA_REFRESH_TOKEN_PARAM_NAME)."
+      "FATAL: Missing required SSM parameter name environment variables (STRAVA_CLIENT_ID_PARAM_NAME, STRAVA_SECRET_PARAM_NAME, STRAVA_REFRESH_TOKEN_PARAM_NAME).",
     );
     throw new Error("Missing Strava credential configuration.");
   }
@@ -115,9 +116,9 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
     throw new Error("Failed to retrieve all params.");
   }
   const credentials = {
-    clientId: params.find((p) => p.Name === clientIdParam)?.Value!,
-    clientSecret: params.find((p) => p.Name === clientSecretParam)?.Value!,
-    refreshToken: params.find((p) => p.Name === refreshTokenParam)?.Value!,
+    clientId: params.find((p) => p.Name === clientIdParam)?.Value ?? "",
+    clientSecret: params.find((p) => p.Name === clientSecretParam)?.Value ?? "",
+    refreshToken: params.find((p) => p.Name === refreshTokenParam)?.Value ?? "",
   };
   if (
     !credentials.clientId ||
@@ -132,8 +133,8 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
 
 async function getStravaActivity(
   accessToken: string,
-  activityId: string
-): Promise<any> {
+  activityId: string,
+): Promise<unknown> {
   const activityUrl = `https://www.strava.com/api/v3/activities/${activityId}`;
   try {
     const response = await axios.get(activityUrl, {
@@ -141,10 +142,11 @@ async function getStravaActivity(
     });
     console.log("Fetched Strava activity data:", response.data);
     return response.data;
-  } catch (apiError: any) {
+  } catch (apiError) {
+    const e = apiError as { response?: { data?: unknown }; message?: string };
     console.error(
       `Error fetching activity ${activityId} from Strava:`,
-      apiError.response?.data || apiError.message
+      e.response?.data || e.message,
     );
     throw apiError;
   }

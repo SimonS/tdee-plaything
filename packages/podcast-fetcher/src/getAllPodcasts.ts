@@ -7,7 +7,7 @@ interface GraphQLMeta {
   endCursor: string;
 }
 
-export const getAllPodcasts = async (byDate = false) => {
+export const getAllPodcasts = async (_byDate = false) => {
   let morePages = true;
   let allPodcasts: Podcast[] = [];
   let next;
@@ -44,7 +44,7 @@ const groupPodcastsByDate = (podcasts: Podcast[]) =>
       ...pod,
       listenDate: pod.listenDate.split("T")[0],
     })),
-    "listenDate"
+    "listenDate",
   );
 
 const aggregateData = <T>(data: { [key: string]: T[] }) =>

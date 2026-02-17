@@ -39,7 +39,7 @@ describe("Films content", () => {
   it("shows instructional text before selection", () => {
     const { container } = render(<Films />);
     expect(container).toHaveTextContent(
-      "Click a date to show films watched that day"
+      "Click a date to show films watched that day",
     );
   });
 
@@ -50,10 +50,10 @@ describe("Films content", () => {
         ...filmsStore,
         films: [],
         selected: "2022-01-01",
-      })
+      }),
     );
     expect(container).not.toHaveTextContent(
-      "Click a date to show films watched that day"
+      "Click a date to show films watched that day",
     );
   });
 
@@ -64,7 +64,7 @@ describe("Films content", () => {
         ...filmsStore.get(),
         films: mockFilms,
         selected: "2022-01-01",
-      })
+      }),
     );
     expect(container).toHaveTextContent("Film #1");
     expect(container).toHaveTextContent("Film #2");
@@ -77,7 +77,7 @@ describe("Films content", () => {
         ...filmsStore.get(),
         films: [],
         selected: "2022-01-01",
-      })
+      }),
     );
     expect(container).toHaveTextContent("No films watched");
   });
