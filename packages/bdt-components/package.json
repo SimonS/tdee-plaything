@@ -73,6 +73,6 @@
     "jest-environment-jsdom": "^29.6.4",
     "nanostores": "^0.11.4",
     "react-day-picker": "^9.13.2",
-    "recharts": "^2.8.0"
+    "recharts": "^2.15.4"
   }
 }
