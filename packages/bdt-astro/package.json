@@ -9,7 +9,7 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "@astrojs/react": "^4.2.7",
+    "@astrojs/react": "^4.4.2",
     "astro": "^5.17.2",
     "graphql-request": "^7.4.0",
     "sass": "^1.97.3"
