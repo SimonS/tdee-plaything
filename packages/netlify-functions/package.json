@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.13",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   },
   "dependencies": {
     "cross-fetch": "^4.1.0"
