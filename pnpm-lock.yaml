@@ -389,7 +389,7 @@ importers:
         version: 1.13.5
       axios-cookiejar-support:
         specifier: ^5.0.5
-        version: 5.0.5(axios@1.13.5)(tough-cookie@5.1.2)
+        version: 5.0.5(axios@1.13.5)(tough-cookie@6.0.0)
       cheerio:
         specifier: ^1.2.0
         version: 1.2.0
@@ -397,8 +397,8 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0
       tough-cookie:
-        specifier: ^5.1.2
-        version: 5.1.2
+        specifier: ^6.0.0
+        version: 6.0.0
     devDependencies:
       '@types/mock-fs':
         specifier: ^4.13.4
@@ -6504,11 +6504,11 @@ packages:
     resolution: {integrity: sha512-PSkbLUoxOFRzJYjjxHJt9xro7D+iilgMX/C9lawzVuYiIdcihh9DXmVibBe8lmcFrRi/VzlPjBxbN7rH24q8/Q==}
     engines: {node: '>=14.0.0'}
 
-  tldts-core@6.1.86:
-    resolution: {integrity: sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA==}
+  tldts-core@7.0.23:
+    resolution: {integrity: sha512-0g9vrtDQLrNIiCj22HSe9d4mLVG3g5ph5DZ8zCKBr4OtrspmNB6ss7hVyzArAeE88ceZocIEGkyW1Ime7fxPtQ==}
 
-  tldts@6.1.86:
-    resolution: {integrity: sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==}
+  tldts@7.0.23:
+    resolution: {integrity: sha512-ASdhgQIBSay0R/eXggAkQ53G4nTJqTXqC2kbaBbdDwM7SkjyZyO0OaaN1/FH7U/yCeqOHDwFO5j8+Os/IS1dXw==}
     hasBin: true
 
   tmpl@1.0.5:
@@ -6522,8 +6522,8 @@ packages:
     resolution: {integrity: sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==}
     engines: {node: '>=6'}
 
-  tough-cookie@5.1.2:
-    resolution: {integrity: sha512-FVDYdxtnj0G6Qm/DhNPSb8Ju59ULcup3tuJxkFb5K8Bv2pUXILbf0xZWU8PX8Ov19OXljbUyveOFwRMwkXzO+A==}
+  tough-cookie@6.0.0:
+    resolution: {integrity: sha512-kXuRi1mtaKMrsLUxz3sQYvVl37B0Ns6MzfrtV5DvJceE9bPyspOqk9xxv7XbZWcfLWbFmm997vl83qUWVJA64w==}
     engines: {node: '>=16'}
 
   tr46@0.0.3:
@@ -10795,11 +10795,11 @@ snapshots:
 
   axe-core@4.11.1: {}
 
-  axios-cookiejar-support@5.0.5(axios@1.13.5)(tough-cookie@5.1.2):
+  axios-cookiejar-support@5.0.5(axios@1.13.5)(tough-cookie@6.0.0):
     dependencies:
       axios: 1.13.5
-      http-cookie-agent: 6.0.8(tough-cookie@5.1.2)
-      tough-cookie: 5.1.2
+      http-cookie-agent: 6.0.8(tough-cookie@6.0.0)
+      tough-cookie: 6.0.0
     transitivePeerDependencies:
       - undici
 
@@ -12406,10 +12406,10 @@ snapshots:
 
   http-cache-semantics@4.2.0: {}
 
-  http-cookie-agent@6.0.8(tough-cookie@5.1.2):
+  http-cookie-agent@6.0.8(tough-cookie@6.0.0):
     dependencies:
       agent-base: 7.1.4
-      tough-cookie: 5.1.2
+      tough-cookie: 6.0.0
 
   http-proxy-agent@5.0.0:
     dependencies:
@@ -14710,11 +14710,11 @@ snapshots:
 
   tinyrainbow@3.0.3: {}
 
-  tldts-core@6.1.86: {}
+  tldts-core@7.0.23: {}
 
-  tldts@6.1.86:
+  tldts@7.0.23:
     dependencies:
-      tldts-core: 6.1.86
+      tldts-core: 7.0.23
 
   tmpl@1.0.5: {}
 
@@ -14729,9 +14729,9 @@ snapshots:
       universalify: 0.2.0
       url-parse: 1.5.10
 
-  tough-cookie@5.1.2:
+  tough-cookie@6.0.0:
     dependencies:
-      tldts: 6.1.86
+      tldts: 7.0.23
 
   tr46@0.0.3: {}
 
