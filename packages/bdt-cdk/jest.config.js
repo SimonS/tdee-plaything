@@ -9,7 +9,8 @@ module.exports = {
     '^.+\\.jsx?$': 'babel-jest',
   },
   "transformIgnorePatterns": [
-    ".*node_modules/(?!axios|deasync|http-cookie-agent).*/"
+    "/node_modules/\\.pnpm/(?!(axios-cookiejar-support|http-cookie-agent|tough-cookie|axios|deasync)@)[^/]+/node_modules/",
+    "/node_modules/(?!axios-cookiejar-support|http-cookie-agent|tough-cookie|axios|deasync)/",
   ],
   setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
   extensionsToTreatAsEsm: ['.ts'],
