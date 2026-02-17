@@ -163,7 +163,7 @@ importers:
     dependencies:
       '@nanostores/react':
         specifier: ^0.8.4
-        version: 0.8.4(nanostores@0.11.4)(react@19.2.4)
+        version: 0.8.4(nanostores@1.1.0)(react@19.2.4)
       '@nivo/calendar':
         specifier: ^0.99.0
         version: 0.99.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -180,8 +180,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       nanostores:
-        specifier: ^0.11.4
-        version: 0.11.4
+        specifier: ^1.1.0
+        version: 1.1.0
       react-day-picker:
         specifier: ^9.13.2
         version: 9.13.2(react@19.2.4)
@@ -5549,9 +5549,9 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanostores@0.11.4:
-    resolution: {integrity: sha512-k1oiVNN4hDK8NcNERSZLQiMfRzEGtfnvZvdBvey3SQbgn8Dcrk0h1I6vpxApjb10PFUflZrgJ2WEZyJQ+5v7YQ==}
-    engines: {node: ^18.0.0 || >=20.0.0}
+  nanostores@1.1.0:
+    resolution: {integrity: sha512-yJBmDJr18xy47dbNVlHcgdPrulSn1nhSE6Ns9vTG+Nx9VPT6iV1MD6aQFp/t52zpf82FhLLTXAXr30NuCnxvwA==}
+    engines: {node: ^20.0.0 || >=22.0.0}
 
   napi-postinstall@0.3.4:
     resolution: {integrity: sha512-PHI5f1O0EP5xJ9gQmFGMS6IZcrVvTjpXjz7Na41gTE7eE2hK11lg04CECCYEEjdc17EV4DO+fkGEtt7TpTaTiQ==}
@@ -9127,9 +9127,9 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@nanostores/react@0.8.4(nanostores@0.11.4)(react@19.2.4)':
+  '@nanostores/react@0.8.4(nanostores@1.1.0)(react@19.2.4)':
     dependencies:
-      nanostores: 0.11.4
+      nanostores: 1.1.0
       react: 19.2.4
 
   '@napi-rs/wasm-runtime@0.2.12':
@@ -13588,7 +13588,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanostores@0.11.4: {}
+  nanostores@1.1.0: {}
 
   napi-postinstall@0.3.4: {}
 
