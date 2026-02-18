@@ -238,7 +238,6 @@ const WeightGraph = ({
                 dot={formatted.length <= 31}
                 isAnimationActive={responsive}
                 yAxisId="bfp"
-                data-testId="bfp-line"
               />
             )}
           </LineChart>
