@@ -45,5 +45,10 @@
   },
   "dependencies": {
     "webpack": "^5.105.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser": "5.3.6"
+    }
   }
 }
