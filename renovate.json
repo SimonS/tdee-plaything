@@ -43,6 +43,7 @@
             "matchPackagePatterns": [
                 "^jest",
                 "ts-jest",
+                "babel-jest",
                 "@types/jest"
             ],
             "groupName": "testing"
