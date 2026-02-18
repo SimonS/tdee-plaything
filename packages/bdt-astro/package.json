@@ -15,6 +15,6 @@
     "sass": "^1.97.3"
   },
   "dependencies": {
-    "@astrojs/react": "^3.6.3"
+    "@astrojs/react": "^4.4.2"
   }
 }
