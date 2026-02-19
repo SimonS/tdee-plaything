@@ -31,3 +31,43 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+  php-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root --password=root"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer
+          extensions: mysqli
+
+      - name: Install Composer dependencies
+        working-directory: packages/bdt-customisations
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install WordPress test suite
+        working-directory: packages/bdt-customisations
+        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 latest
+
+      - name: Run PHP tests
+        working-directory: packages/bdt-customisations
+        run: ./vendor/bin/phpunit
