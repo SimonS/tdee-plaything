@@ -3,7 +3,7 @@
   "description": "BDT WordPress customisations",
   "require-dev": {
     "phpunit/phpunit": "^9.6",
-    "yoast/phpunit-polyfills": "^1.0",
+    "yoast/phpunit-polyfills": "^4.0.0",
     "wp-graphql/wp-graphql": "^1.32.1",
     "dms/phpunit-arraysubset-asserts": "^0.5.0"
   }
