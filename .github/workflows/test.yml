@@ -59,9 +59,29 @@ jobs:
           tools: composer
           extensions: mysqli
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: packages/bdt-customisations/vendor
+          key: composer-${{ hashFiles('packages/bdt-customisations/composer.json') }}
+          restore-keys: composer-
+
       - name: Install Composer dependencies
         working-directory: packages/bdt-customisations
         run: composer install --no-interaction --prefer-dist
+
+      - name: Get cache week key
+        id: cache-date
+        run: echo "week=$(date +'%Y-%U')" >> $GITHUB_OUTPUT
+
+      - name: Cache WordPress test artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            /tmp/wordpress
+            /tmp/wordpress-tests-lib
+          key: wp-test-suite-${{ steps.cache-date.outputs.week }}-latest
+          restore-keys: wp-test-suite-
 
       - name: Install SVN
         run: sudo apt-get install -y subversion
