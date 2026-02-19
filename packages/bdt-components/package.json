@@ -47,11 +47,6 @@
     "typescript": "^5.9.3",
     "webpack": "^5.105.2"
   },
-  "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "webpack": "*"
-  },
   "jest": {
     "testEnvironment": "jsdom",
     "setupFilesAfterEnv": [
