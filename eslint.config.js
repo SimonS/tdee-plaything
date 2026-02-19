@@ -75,8 +75,7 @@ module.exports = [
       "eslint.config.js",
       "*.config.js",
       "*.config.cjs",
-      "**/.storybook/*.js",
-      "**/jest-setup.ts",
+"**/jest-setup.ts",
       "**/jest-setup.js",
     ],
     rules: {
