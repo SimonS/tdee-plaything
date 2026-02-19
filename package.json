@@ -13,7 +13,7 @@
     "test": "jest && pnpm --filter @tdee/bdt-components test && pnpm --filter @tdee/bdt-cdk test",
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
-    "deploy-all": "pnpm --filter @tdee/bdt-astro build && pnpm --filter @tdee/bdt-components run build-storybook",
+    "deploy-all": "pnpm --filter @tdee/bdt-astro build",
     "compile": "tsc",
     "build:lambda": "netlify-lambda build packages/netlify-functions"
   },

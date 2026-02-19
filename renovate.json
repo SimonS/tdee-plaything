@@ -26,13 +26,7 @@
             ],
             "groupName": "aws-sdk"
         },
-        {
-            "matchPackagePatterns": [
-                "^@storybook/"
-            ],
-            "groupName": "storybook"
-        },
-        {
+{
             "matchPackagePatterns": [
                 "^eslint",
                 "prettier"
