@@ -5,13 +5,36 @@ on:
     branches: [ main, master ]
 
 jobs:
-  test:
+  changes:
     runs-on: ubuntu-latest
-    
+    outputs:
+      js: ${{ steps.filter.outputs.js }}
+      php: ${{ steps.filter.outputs.php }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+
+      - name: Detect changed paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            php:
+              - 'packages/bdt-customisations/**'
+              - '.github/workflows/test.yml'
+            js:
+              - '**'
+              - '!packages/bdt-customisations/**'
+
+  test:
+    needs: changes
+    if: needs.changes.outputs.js == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -25,7 +48,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Run lint
         run: pnpm lint
 
@@ -33,6 +56,8 @@ jobs:
         run: pnpm test
 
   php-test:
+    needs: changes
+    if: needs.changes.outputs.php == 'true'
     runs-on: ubuntu-latest
 
     services:
