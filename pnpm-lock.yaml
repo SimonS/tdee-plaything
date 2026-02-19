@@ -106,11 +106,11 @@ importers:
   packages/bdt-cdk:
     dependencies:
       '@aws-sdk/client-sqs':
-        specifier: ^3.993.0
-        version: 3.993.0
+        specifier: ^3.994.0
+        version: 3.994.0
       '@aws-sdk/client-ssm':
-        specifier: ^3.993.0
-        version: 3.993.0
+        specifier: ^3.994.0
+        version: 3.994.0
       '@tdee/overcast-functions':
         specifier: workspace:*
         version: link:../overcast
@@ -514,12 +514,12 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-sqs@3.993.0':
-    resolution: {integrity: sha512-DKtONDUt568hbs4VrnBoK2VJGPXMvkm3Plef/gdsyRjWUMXcCuiLeWi9ru10YN2wAJeGxKMSBoedcuQS9wt2Pg==}
+  '@aws-sdk/client-sqs@3.994.0':
+    resolution: {integrity: sha512-TxoW6/qpXewOAp9c45Rvw3m0IrfAkvzPIqPlGiooDLV0TCGUcSRKX1D73d70JgaqP9MpA+2bYkTyaa5EraJqIg==}
     engines: {node: '>=20.0.0'}
 
-  '@aws-sdk/client-ssm@3.993.0':
-    resolution: {integrity: sha512-BlFRC/b2Gu9ehBa/14Y+X7WRQAox4byIMFLW7vW9yrm2l542cWOE0Lg2sTcfT1A45N3Ldq/S+O9PoKnhAVxvqg==}
+  '@aws-sdk/client-ssm@3.994.0':
+    resolution: {integrity: sha512-ntz1woCUokHyimLKvUnzX8vkBjnorPIrT8qqBxdn5K1rj8kGwjgbD1h/dq05P7Ybpn6QzsMJuuDdqtlBdwhVhQ==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/client-sso@3.993.0':
@@ -600,6 +600,10 @@ packages:
 
   '@aws-sdk/util-endpoints@3.993.0':
     resolution: {integrity: sha512-j6vioBeRZ4eHX4SWGvGPpwGg/xSOcK7f1GL0VM+rdf3ZFTIsUEhCFmD78B+5r2PgztcECSzEfvHQX01k8dPQPw==}
+    engines: {node: '>=20.0.0'}
+
+  '@aws-sdk/util-endpoints@3.994.0':
+    resolution: {integrity: sha512-L2obUBw4ACMMd1F/SG5LdfPyZ0xJNs9Maifwr3w0uWO+4YvHmk9FfRskfSfE/SLZ9S387oSZ+1xiP7BfVCP/Og==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/util-locate-window@3.965.4':
@@ -6574,7 +6578,7 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
-  '@aws-sdk/client-sqs@3.993.0':
+  '@aws-sdk/client-sqs@3.994.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
@@ -6587,7 +6591,7 @@ snapshots:
       '@aws-sdk/middleware-user-agent': 3.972.11
       '@aws-sdk/region-config-resolver': 3.972.3
       '@aws-sdk/types': 3.973.1
-      '@aws-sdk/util-endpoints': 3.993.0
+      '@aws-sdk/util-endpoints': 3.994.0
       '@aws-sdk/util-user-agent-browser': 3.972.3
       '@aws-sdk/util-user-agent-node': 3.972.9
       '@smithy/config-resolver': 4.4.6
@@ -6620,7 +6624,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/client-ssm@3.993.0':
+  '@aws-sdk/client-ssm@3.994.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
@@ -6632,7 +6636,7 @@ snapshots:
       '@aws-sdk/middleware-user-agent': 3.972.11
       '@aws-sdk/region-config-resolver': 3.972.3
       '@aws-sdk/types': 3.973.1
-      '@aws-sdk/util-endpoints': 3.993.0
+      '@aws-sdk/util-endpoints': 3.994.0
       '@aws-sdk/util-user-agent-browser': 3.972.3
       '@aws-sdk/util-user-agent-node': 3.972.9
       '@smithy/config-resolver': 4.4.6
@@ -6937,6 +6941,14 @@ snapshots:
       tslib: 2.8.1
 
   '@aws-sdk/util-endpoints@3.993.0':
+    dependencies:
+      '@aws-sdk/types': 3.973.1
+      '@smithy/types': 4.12.0
+      '@smithy/url-parser': 4.2.8
+      '@smithy/util-endpoints': 3.2.8
+      tslib: 2.8.1
+
+  '@aws-sdk/util-endpoints@3.994.0':
     dependencies:
       '@aws-sdk/types': 3.973.1
       '@smithy/types': 4.12.0
