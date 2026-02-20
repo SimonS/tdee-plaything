@@ -62,7 +62,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.4
+        image: mysql:9.6
         env:
           MYSQL_ROOT_PASSWORD: root
         options: >-
