@@ -85,7 +85,7 @@ jobs:
           extensions: mysqli
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: packages/bdt-customisations/vendor
           key: composer-${{ hashFiles('packages/bdt-customisations/composer.json') }}
@@ -100,7 +100,7 @@ jobs:
         run: echo "week=$(date +'%Y-%U')" >> $GITHUB_OUTPUT
 
       - name: Cache WordPress test artifacts
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             /tmp/wordpress
