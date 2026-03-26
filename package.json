@@ -7,7 +7,7 @@
   "author": "Simon Scarfe",
   "license": "MIT",
   "private": true,
-  "packageManager": "pnpm@10.30.0",
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "lint": "eslint .",
     "test": "jest && pnpm --filter @tdee/bdt-components test && pnpm --filter @tdee/bdt-cdk test",
