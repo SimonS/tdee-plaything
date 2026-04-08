@@ -10,7 +10,7 @@
     "prepack": "pnpm compile"
   },
   "dependencies": {
-    "axios": "^1.13.5",
+    "axios": "^1.13.6",
     "axios-cookiejar-support": "^6.0.5",
     "cheerio": "^1.2.0",
     "mock-fs": "^5.5.0",

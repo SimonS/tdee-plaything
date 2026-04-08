@@ -14,7 +14,7 @@
     "@aws-sdk/client-sqs": "^3.1017.0",
     "@aws-sdk/client-ssm": "^3.1017.0",
     "@tdee/overcast-functions": "workspace:*",
-    "axios": "^1.13.5"
+    "axios": "^1.13.6"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.29.2",
