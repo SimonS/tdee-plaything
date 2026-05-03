@@ -80,6 +80,9 @@ export class BdtCdkStack extends Stack {
           STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
           STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
           STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
+          BDT_AUTH_TOKEN: "",
+          WORDPRESS_API_BASE_URL:
+            "https://breakfastdinnertea.co.uk/wp-json/wp/v2",
         },
       },
     );

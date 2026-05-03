@@ -200,3 +200,15 @@ test("Processor Lambda use environment variables for SSM parameter names", () =>
     }),
   });
 });
+
+test("Processor Lambda has WordPress env vars configured", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaEventProcessorLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        WORDPRESS_API_BASE_URL:
+          "https://breakfastdinnertea.co.uk/wp-json/wp/v2",
+      }),
+    }),
+  });
+});

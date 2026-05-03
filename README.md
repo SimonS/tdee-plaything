@@ -9,5 +9,5 @@ I try to build using decent (not best) practices - testing, not storing credenti
 * TypeScript - the predominant language I use.
 * Wordpress - the main intermediary store for most of this data. [bdt-customisations](https://github.com/SimonS/tdee-plaything/tree/master/packages/bdt-customisations) is where the tweaks I've made live.
 * GraphQL - the main method of exposing wordpress data to the outside world.
-* AWS CDK - for orchestrating quick/dirty serverless functions.
+* AWS CDK - for orchestrating quick/dirty serverless functions. The CDK CLI is a devDependency of `bdt-cdk`; run it via `pnpm --filter @tdee/bdt-cdk exec cdk <command>` (e.g. `synth`, `deploy`).
 * AstroJS - powerful little static site generator to publish the main website.

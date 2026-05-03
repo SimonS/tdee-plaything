@@ -11,6 +11,80 @@ interface StravaCredentials {
   refreshToken: string;
 }
 
+export interface StravaActivity {
+  id: number;
+  name: string;
+  description?: string;
+  distance: number;
+  moving_time: number;
+  elapsed_time: number;
+  total_elevation_gain: number;
+  type: string;
+  sport_type?: string;
+  start_date: string;
+  start_date_local: string;
+  map?: { summary_polyline?: string };
+}
+
+interface WordPressExerciseMeta {
+  source_platform: string;
+  source_id: string;
+  activity_type: string;
+  distance_meters: number;
+  moving_time_seconds: number;
+  elapsed_time_seconds: number;
+  total_elevation_gain_meters: number;
+  start_date_local_iso: string;
+  map_summary_polyline: string;
+  _raw_data_json: string;
+}
+
+export interface WordPressExercisePayload {
+  title: string;
+  content: string;
+  status: "publish";
+  meta: WordPressExerciseMeta;
+}
+
+export function stravaToWordpress(
+  activity: StravaActivity,
+): WordPressExercisePayload {
+  return {
+    title: activity.name || `Strava Activity ${activity.id}`,
+    content: activity.description ?? "",
+    status: "publish",
+    meta: {
+      source_platform: "strava",
+      source_id: String(activity.id),
+      activity_type: activity.type,
+      distance_meters: activity.distance,
+      moving_time_seconds: activity.moving_time,
+      elapsed_time_seconds: activity.elapsed_time,
+      total_elevation_gain_meters: activity.total_elevation_gain,
+      start_date_local_iso: activity.start_date_local,
+      map_summary_polyline: activity.map?.summary_polyline ?? "",
+      _raw_data_json: JSON.stringify(activity),
+    },
+  };
+}
+
+export async function postExerciseToWordpress(
+  payload: WordPressExercisePayload,
+): Promise<void> {
+  const authToken = process.env.BDT_AUTH_TOKEN;
+  const apiBaseUrl = process.env.WORDPRESS_API_BASE_URL;
+  if (!authToken || !apiBaseUrl) {
+    throw new Error("Missing WordPress configuration.");
+  }
+  await axios.post(`${apiBaseUrl}/bdt_exercises`, payload, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  console.log("Exercise posted to WordPress successfully.");
+}
+
 export const handler = async (event: SQSEvent): Promise<void> => {
   console.log(`Processor Lambda invoked with ${event.Records.length} record.`);
 
@@ -38,7 +112,8 @@ export const handler = async (event: SQSEvent): Promise<void> => {
         console.log(`Processing activity ${object_id} (${aspect_type})`);
 
         const data = await getStravaActivity(accessToken, object_id);
-        console.log("Fetched Strava activity data:", data);
+        const wpPayload = stravaToWordpress(data);
+        await postExerciseToWordpress(wpPayload);
       } else {
         console.log(
           `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`,
@@ -134,10 +209,10 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
 async function getStravaActivity(
   accessToken: string,
   activityId: string,
-): Promise<unknown> {
+): Promise<StravaActivity> {
   const activityUrl = `https://www.strava.com/api/v3/activities/${activityId}`;
   try {
-    const response = await axios.get(activityUrl, {
+    const response = await axios.get<StravaActivity>(activityUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     console.log("Fetched Strava activity data:", response.data);

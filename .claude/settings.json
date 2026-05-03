@@ -10,7 +10,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/lint-on-edit.sh"
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/lint-on-edit.sh"
           }
         ]
       },
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/mutation-reminder.sh"
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && .claude/hooks/mutation-reminder.sh"
           }
         ]
       }
