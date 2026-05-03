@@ -71,6 +71,33 @@ test("returns 500 when SSM param name env vars are missing", async () => {
   expect(result.statusCode).toEqual(500);
 });
 
+test("returns 500 when SSM returns an empty value for one secret", async () => {
+  process.env.OVERCAST_EMAIL_PARAM_NAME = "/overcast/email";
+  process.env.OVERCAST_PASSWORD_PARAM_NAME = "/overcast/password";
+  process.env.BDT_AUTH_TOKEN_PARAM_NAME = "/bdt/auth_token";
+
+  const ssmMock = mockClient(SSMClient);
+  ssmMock.on(GetParametersCommand).resolves({
+    Parameters: [
+      { Name: "/overcast/email", Value: "", Type: "String" },
+      {
+        Name: "/overcast/password",
+        Value: "testpassword",
+        Type: "SecureString",
+      },
+      {
+        Name: "/bdt/auth_token",
+        Value: "test-bdt-token",
+        Type: "SecureString",
+      },
+    ] as Parameter[],
+    InvalidParameters: [],
+  });
+
+  const result = await handler({});
+  expect(result.statusCode).toEqual(500);
+});
+
 test("login failed", async () => {
   mockSSM();
   mockLogin(false);
