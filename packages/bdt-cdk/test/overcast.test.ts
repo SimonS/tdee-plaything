@@ -1,5 +1,5 @@
 import * as overcast from "@tdee/overcast-functions/src/getOvercastListens";
-import { expect, jest, test, afterEach, beforeEach } from "@jest/globals";
+import { expect, jest, test, afterEach } from "@jest/globals";
 
 import { handler } from "../lambda/overcast";
 import axios from "axios";
