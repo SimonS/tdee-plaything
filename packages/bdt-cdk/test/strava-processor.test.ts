@@ -18,6 +18,7 @@ import { SQSEvent, SQSRecord } from "aws-lambda";
 import {
   SSMClient,
   GetParametersCommand,
+  GetParameterCommand,
   Parameter,
 } from "@aws-sdk/client-ssm";
 
@@ -54,11 +55,13 @@ const mockStravaAuth = () => {
     clientId: "/strava/client_id",
     clientSecret: "/strava/client_secret",
     refreshToken: "/strava/refresh_token",
+    bdtAuthToken: "/bdt/auth_token",
   };
 
   process.env.STRAVA_CLIENT_ID_PARAM_NAME = paramNames.clientId;
   process.env.STRAVA_SECRET_PARAM_NAME = paramNames.clientSecret;
   process.env.STRAVA_REFRESH_TOKEN_PARAM_NAME = paramNames.refreshToken;
+  process.env.BDT_AUTH_TOKEN_PARAM_NAME = paramNames.bdtAuthToken;
 
   const dummyAccessToken = "DUMMY_ACCESS_TOKEN_456";
 
@@ -92,6 +95,13 @@ const mockStravaAuth = () => {
       },
     ] as Parameter[],
     InvalidParameters: [],
+  });
+  ssmMock.on(GetParameterCommand).resolves({
+    Parameter: {
+      Name: paramNames.bdtAuthToken,
+      Value: "dummy-bdt-token",
+      Type: "SecureString",
+    } as Parameter,
   });
 };
 
@@ -199,18 +209,16 @@ describe("postExerciseToWordpress", () => {
   };
 
   beforeEach(() => {
-    process.env.BDT_AUTH_TOKEN = "test-wp-token";
     process.env.WORDPRESS_API_BASE_URL = "https://example.com/wp-json/wp/v2";
   });
 
   afterEach(() => {
-    delete process.env.BDT_AUTH_TOKEN;
     delete process.env.WORDPRESS_API_BASE_URL;
   });
 
   test("POSTs the exercise payload to WordPress with Bearer auth", async () => {
     mockedAxiosPost.mockResolvedValueOnce({ data: { id: 999 }, status: 201 });
-    await postExerciseToWordpress(wpPayload);
+    await postExerciseToWordpress(wpPayload, "test-wp-token");
     expect(mockedAxiosPost).toHaveBeenCalledWith(
       "https://example.com/wp-json/wp/v2/bdt_exercises",
       wpPayload,
@@ -223,18 +231,11 @@ describe("postExerciseToWordpress", () => {
     );
   });
 
-  test("throws if BDT_AUTH_TOKEN env var is missing", async () => {
-    delete process.env.BDT_AUTH_TOKEN;
-    await expect(postExerciseToWordpress(wpPayload)).rejects.toThrow(
-      "Missing WordPress configuration.",
-    );
-  });
-
   test("throws if WORDPRESS_API_BASE_URL env var is missing", async () => {
     delete process.env.WORDPRESS_API_BASE_URL;
-    await expect(postExerciseToWordpress(wpPayload)).rejects.toThrow(
-      "Missing WordPress configuration.",
-    );
+    await expect(
+      postExerciseToWordpress(wpPayload, "test-wp-token"),
+    ).rejects.toThrow("Missing WordPress configuration.");
   });
 });
 
@@ -319,7 +320,6 @@ test("fetches activity details from Strava API", async () => {
 });
 
 test("handler fetches Strava activity and posts it to WordPress", async () => {
-  process.env.BDT_AUTH_TOKEN = "test-wp-token";
   process.env.WORDPRESS_API_BASE_URL = "https://example.com/wp-json/wp/v2";
 
   mockedAxiosPost.mockResolvedValueOnce({
@@ -357,11 +357,10 @@ test("handler fetches Strava activity and posts it to WordPress", async () => {
     }),
     expect.objectContaining({
       headers: expect.objectContaining({
-        Authorization: "Bearer test-wp-token",
+        Authorization: "Bearer dummy-bdt-token",
       }),
     }),
   );
 
-  delete process.env.BDT_AUTH_TOKEN;
   delete process.env.WORDPRESS_API_BASE_URL;
 });
