@@ -1,12 +1,51 @@
 import * as overcast from "@tdee/overcast-functions/src/getOvercastListens";
-import { expect, jest, test, afterEach } from "@jest/globals";
+import { expect, jest, test, afterEach, beforeEach } from "@jest/globals";
 
 import { handler } from "../lambda/overcast";
 import axios from "axios";
+import {
+  SSMClient,
+  GetParametersCommand,
+  Parameter,
+} from "@aws-sdk/client-ssm";
+import { mockClient } from "aws-sdk-client-mock";
+import "aws-sdk-client-mock-jest";
 
 afterEach(() => {
   jest.restoreAllMocks();
+  delete process.env.OVERCAST_EMAIL_PARAM_NAME;
+  delete process.env.OVERCAST_PASSWORD_PARAM_NAME;
+  delete process.env.BDT_AUTH_TOKEN_PARAM_NAME;
 });
+
+const mockSSM = () => {
+  process.env.OVERCAST_EMAIL_PARAM_NAME = "/overcast/email";
+  process.env.OVERCAST_PASSWORD_PARAM_NAME = "/overcast/password";
+  process.env.BDT_AUTH_TOKEN_PARAM_NAME = "/bdt/auth_token";
+
+  const ssmMock = mockClient(SSMClient);
+  ssmMock.on(GetParametersCommand).resolves({
+    Parameters: [
+      {
+        Name: "/overcast/email",
+        Value: "test@example.com",
+        Type: "String",
+      },
+      {
+        Name: "/overcast/password",
+        Value: "testpassword",
+        Type: "SecureString",
+      },
+      {
+        Name: "/bdt/auth_token",
+        Value: "test-bdt-token",
+        Type: "SecureString",
+      },
+    ] as Parameter[],
+    InvalidParameters: [],
+  });
+  return ssmMock;
+};
 
 const mockLogin = (successful: boolean) =>
   jest
@@ -26,49 +65,47 @@ const mockAxios = () =>
     };
   });
 
+test("returns 500 when SSM param name env vars are missing", async () => {
+  // Do not call mockSSM — env vars are absent
+  const result = await handler({});
+  expect(result.statusCode).toEqual(500);
+});
+
 test("login failed", async () => {
+  mockSSM();
   mockLogin(false);
 
-  const result = await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-  });
+  const result = await handler({});
 
   expect(result.statusCode).toEqual(401);
 });
 
 test("login successful", async () => {
+  mockSSM();
   mockLogin(true);
   mockListens([]);
   mockAxios();
 
-  const result = await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-  });
+  const result = await handler({});
 
   expect(result.statusCode).toEqual(200);
 });
 
-test("login uses credentials from environment variables when credentials not passed", async () => {
+test("login uses credentials fetched from SSM", async () => {
+  mockSSM();
   const loginSpy = jest
     .spyOn(overcast, "loginToOvercast")
-    .mockImplementation(async (_email?: string, _password?: string) => false);
+    .mockImplementation(async () => false);
 
   mockAxios();
 
-  const email = "email@email.com";
-  const pw = "password";
-
-  process.env.OVERCAST_EMAIL = email;
-  process.env.OVERCAST_PASSWORD = pw;
-
   await handler({});
 
-  expect(loginSpy).toHaveBeenCalledWith(email, pw);
+  expect(loginSpy).toHaveBeenCalledWith("test@example.com", "testpassword");
 });
 
 test("calls listen getter with yesterday's date", async () => {
+  mockSSM();
   const mockDate = new Date("2020-01-02");
   jest
     .spyOn(global, "Date")
@@ -78,29 +115,24 @@ test("calls listen getter with yesterday's date", async () => {
   mockAxios();
   const listenSpy = mockListens([]);
 
-  await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-  });
+  await handler({});
 
   expect(listenSpy).toHaveBeenCalledWith(new Date("2020-01-01"));
 });
 
 test("calls listen getter with custom date", async () => {
+  mockSSM();
   mockLogin(true);
   mockAxios();
   const listenSpy = mockListens([]);
 
-  await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-    since: "2019-01-01",
-  });
+  await handler({ since: "2019-01-01" });
 
   expect(listenSpy).toHaveBeenCalledWith(new Date("2019-01-01"));
 });
 
-test("posts listens to wordpress", async () => {
+test("posts listens to wordpress with BDT auth token from SSM", async () => {
+  mockSSM();
   mockLogin(true);
 
   const listens = [
@@ -117,14 +149,10 @@ test("posts listens to wordpress", async () => {
   ];
 
   mockListens(listens);
-  process.env.BDT_AUTH_TOKEN = "token";
 
   const axiosSpy = mockAxios();
 
-  await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-  });
+  await handler({});
 
   expect(axiosSpy).toHaveBeenCalledWith(
     "https://breakfastdinnertea.co.uk/wp-json/wp/v2/bdt_podcast_listen",
@@ -144,62 +172,38 @@ test("posts listens to wordpress", async () => {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer token",
+        Authorization: "Bearer test-bdt-token",
       },
     },
   );
 });
 
 test("posts all listens to wordpress", async () => {
+  mockSSM();
   mockLogin(true);
 
-  const listens = [
-    {
-      pubDate: new Date("2021-02-18T07:00:00-05:00"),
-      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
-      url: "https://url",
-      overcastUrl: "https://overcast.fm/+b1V0WLux0",
-      sourceUrl:
-        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
-      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
-      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
-    },
-    {
-      pubDate: new Date("2021-02-18T07:00:00-05:00"),
-      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
-      url: "https://url",
-      overcastUrl: "https://overcast.fm/+b1V0WLux0",
-      sourceUrl:
-        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
-      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
-      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
-    },
-    {
-      pubDate: new Date("2021-02-18T07:00:00-05:00"),
-      title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
-      url: "https://url",
-      overcastUrl: "https://overcast.fm/+b1V0WLux0",
-      sourceUrl:
-        "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
-      userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
-      feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
-    },
-  ];
+  const listen = {
+    pubDate: new Date("2021-02-18T07:00:00-05:00"),
+    title: "Ep. 72: Habit Tune-Up: Excessive Planning Syndrome",
+    url: "https://url",
+    overcastUrl: "https://overcast.fm/+b1V0WLux0",
+    sourceUrl:
+      "https://www.buzzsprout.com/1121972/7901239-ep-72-habit-tune-up-excessive-planning-syndrome.mp3",
+    userUpdatedDate: new Date("2021-09-05T09:51:05-04:00"),
+    feedUrl: "https://feeds.buzzsprout.com/1121972.rss",
+  };
 
-  mockListens(listens);
-  process.env.BDT_AUTH_TOKEN = "token";
+  mockListens([listen, listen, listen]);
 
   const axiosSpy = mockAxios();
 
-  await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-  });
+  await handler({});
 
   expect(axiosSpy).toHaveBeenCalledTimes(3);
 });
 
 test("returns a 500 with the logs if any posts to BDT fail", async () => {
+  mockSSM();
   mockLogin(true);
 
   const listens = [
@@ -223,10 +227,7 @@ test("returns a 500 with the logs if any posts to BDT fail", async () => {
       Promise.reject(new Error("Connection refused")),
     );
 
-  const result = await handler({
-    email: "someemail@gmail.com",
-    password: "mypassword",
-  });
+  const result = await handler({});
 
   expect(result.statusCode).toEqual(500);
 });
