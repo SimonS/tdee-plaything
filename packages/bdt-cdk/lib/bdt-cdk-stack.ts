@@ -37,9 +37,13 @@ export class BdtCdkStack extends Stack {
 
     eventRule.addTarget(new LambdaFunction(overcastLambda));
 
-    const overcastEmailParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter/overcast/email`;
-    const overcastPasswordParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter/overcast/password`;
-    const overcastBdtAuthTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter/bdt/auth_token`;
+    const overcastEmailParamName = "/overcast/email";
+    const overcastPasswordParamName = "/overcast/password";
+    const overcastBdtAuthTokenParamName = "/bdt/auth_token";
+
+    const overcastEmailParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${overcastEmailParamName}`;
+    const overcastPasswordParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${overcastPasswordParamName}`;
+    const overcastBdtAuthTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${overcastBdtAuthTokenParamName}`;
 
     overcastLambda.addToRolePolicy(
       new PolicyStatement({

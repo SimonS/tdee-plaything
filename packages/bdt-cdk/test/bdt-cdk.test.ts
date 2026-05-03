@@ -39,6 +39,21 @@ test("Overcast Lambda uses param name env vars for SSM credentials", () => {
 });
 
 test("Overcast Lambda Role has permission to read secrets from SSM", () => {
+  const makeParamArn = (paramPath: string) => ({
+    "Fn::Join": [
+      "",
+      [
+        "arn:",
+        { Ref: "AWS::Partition" },
+        ":ssm:",
+        { Ref: "AWS::Region" },
+        ":",
+        { Ref: "AWS::AccountId" },
+        `:parameter${paramPath}`,
+      ],
+    ],
+  });
+
   template.hasResourceProperties("AWS::IAM::Policy", {
     Roles: Match.arrayWith([
       { Ref: Match.stringLikeRegexp("OvercastLambdaServiceRole*") },
@@ -48,6 +63,11 @@ test("Overcast Lambda Role has permission to read secrets from SSM", () => {
         Match.objectLike({
           Effect: "Allow",
           Action: Match.arrayWith(["ssm:GetParameter", "ssm:GetParameters"]),
+          Resource: Match.arrayWith([
+            makeParamArn("/overcast/email"),
+            makeParamArn("/overcast/password"),
+            makeParamArn("/bdt/auth_token"),
+          ]),
         }),
         Match.objectLike({
           Effect: "Allow",
