@@ -101,7 +101,7 @@ export class BdtCdkStack extends Stack {
 
     processorLambda.addToRolePolicy(
       new PolicyStatement({
-        sid: "ReadStravaSSMParams",
+        sid: "ReadProcessorSSMParams",
         effect: Effect.ALLOW,
         actions: ["ssm:GetParameter", "ssm:GetParameters"],
         resources: [

@@ -167,7 +167,7 @@ test("Receiver Lambda Role should have SendMessage permission for Webhook Queue"
   });
 });
 
-test("Processor Lambda Role should have permissions to read Strava creds from SSM", () => {
+test("Processor Lambda Role should have permissions to read SSM params", () => {
   template.hasResourceProperties("AWS::IAM::Policy", {
     Roles: Match.arrayWith([
       { Ref: Match.stringLikeRegexp("StravaEventProcessorLambdaServiceRole*") },
