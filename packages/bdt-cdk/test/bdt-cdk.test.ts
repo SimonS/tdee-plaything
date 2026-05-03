@@ -21,7 +21,41 @@ test("creates and wires up an overcast lambda", () => {
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "overcastLambda",
     MemorySize: 512,
-    Runtime: "nodejs18.x",
+    Runtime: Runtime.NODEJS_22_X.name,
+  });
+});
+
+test("Overcast Lambda uses param name env vars for SSM credentials", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "overcastLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        OVERCAST_EMAIL_PARAM_NAME: "/overcast/email",
+        OVERCAST_PASSWORD_PARAM_NAME: "/overcast/password",
+        BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
+      }),
+    }),
+  });
+});
+
+test("Overcast Lambda Role has permission to read secrets from SSM", () => {
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    Roles: Match.arrayWith([
+      { Ref: Match.stringLikeRegexp("OvercastLambdaServiceRole*") },
+    ]),
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: "Allow",
+          Action: Match.arrayWith(["ssm:GetParameter", "ssm:GetParameters"]),
+        }),
+        Match.objectLike({
+          Effect: "Allow",
+          Action: "kms:Decrypt",
+          Resource: "*",
+        }),
+      ]),
+    },
   });
 });
 

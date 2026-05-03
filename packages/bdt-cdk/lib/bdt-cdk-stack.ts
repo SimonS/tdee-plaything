@@ -19,10 +19,15 @@ export class BdtCdkStack extends Stack {
       functionName: "overcastLambda",
       handler: "handler",
       memorySize: 512,
-      runtime: Runtime.NODEJS_18_X,
+      runtime: Runtime.NODEJS_22_X,
       timeout: Duration.seconds(60),
       bundling: {
         externalModules: ["deasync"],
+      },
+      environment: {
+        OVERCAST_EMAIL_PARAM_NAME: "/overcast/email",
+        OVERCAST_PASSWORD_PARAM_NAME: "/overcast/password",
+        BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
       },
     });
 
@@ -31,6 +36,32 @@ export class BdtCdkStack extends Stack {
     });
 
     eventRule.addTarget(new LambdaFunction(overcastLambda));
+
+    const overcastEmailParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter/overcast/email`;
+    const overcastPasswordParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter/overcast/password`;
+    const overcastBdtAuthTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter/bdt/auth_token`;
+
+    overcastLambda.addToRolePolicy(
+      new PolicyStatement({
+        sid: "ReadOvercastSSMParams",
+        effect: Effect.ALLOW,
+        actions: ["ssm:GetParameter", "ssm:GetParameters"],
+        resources: [
+          overcastEmailParamArn,
+          overcastPasswordParamArn,
+          overcastBdtAuthTokenParamArn,
+        ],
+      }),
+    );
+
+    overcastLambda.addToRolePolicy(
+      new PolicyStatement({
+        sid: "DecryptOvercastSecureParams",
+        effect: Effect.ALLOW,
+        actions: ["kms:Decrypt"],
+        resources: ["*"],
+      }),
+    );
 
     const httpApi = new HttpApi(this, "StravaWebhookApi", {
       apiName: "StravaWebhookApi",
