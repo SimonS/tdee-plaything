@@ -99,7 +99,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
       getStravaAccessToken(),
       getBdtAuthToken(),
     ]);
-    console.log("Access token refreshed.");
+    console.log("Strava and BDT credentials fetched.");
   } catch (error) {
     console.error("Error fetching credentials:", error);
     throw error;

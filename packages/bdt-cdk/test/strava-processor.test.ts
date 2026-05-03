@@ -1,6 +1,7 @@
 import {
   expect,
   test,
+  describe,
   afterEach,
   jest,
   afterAll,
@@ -363,4 +364,33 @@ test("handler fetches Strava activity and posts it to WordPress", async () => {
   );
 
   delete process.env.WORDPRESS_API_BASE_URL;
+});
+
+describe("getBdtAuthToken error paths (via handler)", () => {
+  const minimalEvent = createPartialSqsEventWithBodies([
+    '{"message":"trigger auth"}',
+  ]);
+
+  test("handler throws when BDT_AUTH_TOKEN_PARAM_NAME env var is absent", async () => {
+    const original = process.env.BDT_AUTH_TOKEN_PARAM_NAME;
+    delete process.env.BDT_AUTH_TOKEN_PARAM_NAME;
+
+    await expect(handler(minimalEvent as SQSEvent)).rejects.toThrow(
+      "Missing BDT_AUTH_TOKEN_PARAM_NAME environment variable.",
+    );
+
+    process.env.BDT_AUTH_TOKEN_PARAM_NAME = original;
+  });
+
+  test("handler throws when SSM returns no value for BDT auth token param", async () => {
+    const ssmMock = mockClient(SSMClient);
+    ssmMock.on(GetParameterCommand).resolves({ Parameter: undefined });
+
+    await expect(handler(minimalEvent as SQSEvent)).rejects.toThrow(
+      "Failed to retrieve BDT auth token from SSM.",
+    );
+
+    ssmMock.reset();
+    mockStravaAuth();
+  });
 });
