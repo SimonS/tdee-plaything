@@ -80,7 +80,7 @@ export class BdtCdkStack extends Stack {
           STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
           STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
           STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
-          BDT_AUTH_TOKEN: "",
+          BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
           WORDPRESS_API_BASE_URL:
             "https://breakfastdinnertea.co.uk/wp-json/wp/v2",
         },
@@ -92,10 +92,12 @@ export class BdtCdkStack extends Stack {
     const clientIdParamName = "/strava/client_id";
     const clientSecretParamName = "/strava/client_secret";
     const refreshTokenParamName = "/strava/refresh_token";
+    const bdtAuthTokenParamName = "/bdt/auth_token";
 
     const clientIdParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${clientIdParamName}`;
     const clientSecretParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${clientSecretParamName}`;
     const refreshTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${refreshTokenParamName}`;
+    const bdtAuthTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${bdtAuthTokenParamName}`;
 
     processorLambda.addToRolePolicy(
       new PolicyStatement({
@@ -106,6 +108,7 @@ export class BdtCdkStack extends Stack {
           clientIdParamArn,
           clientSecretParamArn,
           refreshTokenParamArn,
+          bdtAuthTokenParamArn,
         ],
       }),
     );

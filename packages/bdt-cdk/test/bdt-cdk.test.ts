@@ -212,3 +212,46 @@ test("Processor Lambda has WordPress env vars configured", () => {
     }),
   });
 });
+
+test("Processor Lambda uses BDT_AUTH_TOKEN_PARAM_NAME env var (not plaintext token)", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaEventProcessorLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
+      }),
+    }),
+  });
+});
+
+test("Processor Lambda Role has permission to read BDT auth token from SSM", () => {
+  const bdtAuthTokenParamArn = {
+    "Fn::Join": [
+      "",
+      [
+        "arn:",
+        { Ref: "AWS::Partition" },
+        ":ssm:",
+        { Ref: "AWS::Region" },
+        ":",
+        { Ref: "AWS::AccountId" },
+        ":parameter/bdt/auth_token",
+      ],
+    ],
+  };
+
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    Roles: Match.arrayWith([
+      { Ref: Match.stringLikeRegexp("StravaEventProcessorLambdaServiceRole*") },
+    ]),
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: "Allow",
+          Action: Match.arrayWith(["ssm:GetParameter", "ssm:GetParameters"]),
+          Resource: Match.arrayWith([bdtAuthTokenParamArn]),
+        }),
+      ]),
+    },
+  });
+});
