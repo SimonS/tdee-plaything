@@ -1,5 +1,9 @@
 import { SQSEvent } from "aws-lambda";
-import { SSMClient, GetParametersCommand } from "@aws-sdk/client-ssm";
+import {
+  SSMClient,
+  GetParametersCommand,
+  GetParameterCommand,
+} from "@aws-sdk/client-ssm";
 
 import axios from "axios";
 
@@ -70,8 +74,8 @@ export function stravaToWordpress(
 
 export async function postExerciseToWordpress(
   payload: WordPressExercisePayload,
+  authToken: string,
 ): Promise<void> {
-  const authToken = process.env.BDT_AUTH_TOKEN;
   const apiBaseUrl = process.env.WORDPRESS_API_BASE_URL;
   if (!authToken || !apiBaseUrl) {
     throw new Error("Missing WordPress configuration.");
@@ -89,11 +93,15 @@ export const handler = async (event: SQSEvent): Promise<void> => {
   console.log(`Processor Lambda invoked with ${event.Records.length} record.`);
 
   let accessToken: string;
+  let bdtAuthToken: string;
   try {
-    accessToken = await getStravaAccessToken();
-    console.log("Access token refreshed.");
+    [accessToken, bdtAuthToken] = await Promise.all([
+      getStravaAccessToken(),
+      getBdtAuthToken(),
+    ]);
+    console.log("Strava and BDT credentials fetched.");
   } catch (error) {
-    console.error("Error refreshing access token:", error);
+    console.error("Error fetching credentials:", error);
     throw error;
   }
 
@@ -113,7 +121,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 
         const data = await getStravaActivity(accessToken, object_id);
         const wpPayload = stravaToWordpress(data);
-        await postExerciseToWordpress(wpPayload);
+        await postExerciseToWordpress(wpPayload, bdtAuthToken);
       } else {
         console.log(
           `Ignoring message for object_type ${object_type}, aspect_type ${aspect_type}`,
@@ -204,6 +212,23 @@ async function getStravaCredentials(): Promise<StravaCredentials> {
   }
   console.log("Successfully fetched Strava credentials from SSM.");
   return credentials;
+}
+
+async function getBdtAuthToken(): Promise<string> {
+  const paramName = process.env.BDT_AUTH_TOKEN_PARAM_NAME;
+  if (!paramName) {
+    throw new Error("Missing BDT_AUTH_TOKEN_PARAM_NAME environment variable.");
+  }
+  const command = new GetParameterCommand({
+    Name: paramName,
+    WithDecryption: true,
+  });
+  const { Parameter: param } = await ssmClient.send(command);
+  if (!param?.Value) {
+    throw new Error("Failed to retrieve BDT auth token from SSM.");
+  }
+  console.log("Successfully fetched BDT auth token from SSM.");
+  return param.Value;
 }
 
 async function getStravaActivity(

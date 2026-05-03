@@ -21,7 +21,61 @@ test("creates and wires up an overcast lambda", () => {
   template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: "overcastLambda",
     MemorySize: 512,
-    Runtime: "nodejs18.x",
+    Runtime: Runtime.NODEJS_22_X.name,
+  });
+});
+
+test("Overcast Lambda uses param name env vars for SSM credentials", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "overcastLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        OVERCAST_EMAIL_PARAM_NAME: "/overcast/email",
+        OVERCAST_PASSWORD_PARAM_NAME: "/overcast/password",
+        BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
+      }),
+    }),
+  });
+});
+
+test("Overcast Lambda Role has permission to read secrets from SSM", () => {
+  const makeParamArn = (paramPath: string) => ({
+    "Fn::Join": [
+      "",
+      [
+        "arn:",
+        { Ref: "AWS::Partition" },
+        ":ssm:",
+        { Ref: "AWS::Region" },
+        ":",
+        { Ref: "AWS::AccountId" },
+        `:parameter${paramPath}`,
+      ],
+    ],
+  });
+
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    Roles: Match.arrayWith([
+      { Ref: Match.stringLikeRegexp("OvercastLambdaServiceRole*") },
+    ]),
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: "Allow",
+          Action: Match.arrayWith(["ssm:GetParameter", "ssm:GetParameters"]),
+          Resource: Match.arrayWith([
+            makeParamArn("/overcast/email"),
+            makeParamArn("/overcast/password"),
+            makeParamArn("/bdt/auth_token"),
+          ]),
+        }),
+        Match.objectLike({
+          Effect: "Allow",
+          Action: "kms:Decrypt",
+          Resource: "*",
+        }),
+      ]),
+    },
   });
 });
 
@@ -167,7 +221,7 @@ test("Receiver Lambda Role should have SendMessage permission for Webhook Queue"
   });
 });
 
-test("Processor Lambda Role should have permissions to read Strava creds from SSM", () => {
+test("Processor Lambda Role should have permissions to read SSM params", () => {
   template.hasResourceProperties("AWS::IAM::Policy", {
     Roles: Match.arrayWith([
       { Ref: Match.stringLikeRegexp("StravaEventProcessorLambdaServiceRole*") },
@@ -210,5 +264,48 @@ test("Processor Lambda has WordPress env vars configured", () => {
           "https://breakfastdinnertea.co.uk/wp-json/wp/v2",
       }),
     }),
+  });
+});
+
+test("Processor Lambda uses BDT_AUTH_TOKEN_PARAM_NAME env var (not plaintext token)", () => {
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: "stravaEventProcessorLambda",
+    Environment: Match.objectLike({
+      Variables: Match.objectLike({
+        BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
+      }),
+    }),
+  });
+});
+
+test("Processor Lambda Role has permission to read BDT auth token from SSM", () => {
+  const bdtAuthTokenParamArn = {
+    "Fn::Join": [
+      "",
+      [
+        "arn:",
+        { Ref: "AWS::Partition" },
+        ":ssm:",
+        { Ref: "AWS::Region" },
+        ":",
+        { Ref: "AWS::AccountId" },
+        ":parameter/bdt/auth_token",
+      ],
+    ],
+  };
+
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    Roles: Match.arrayWith([
+      { Ref: Match.stringLikeRegexp("StravaEventProcessorLambdaServiceRole*") },
+    ]),
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: "Allow",
+          Action: Match.arrayWith(["ssm:GetParameter", "ssm:GetParameters"]),
+          Resource: Match.arrayWith([bdtAuthTokenParamArn]),
+        }),
+      ]),
+    },
   });
 });

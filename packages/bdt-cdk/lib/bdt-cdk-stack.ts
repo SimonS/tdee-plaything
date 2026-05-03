@@ -19,10 +19,15 @@ export class BdtCdkStack extends Stack {
       functionName: "overcastLambda",
       handler: "handler",
       memorySize: 512,
-      runtime: Runtime.NODEJS_18_X,
+      runtime: Runtime.NODEJS_22_X,
       timeout: Duration.seconds(60),
       bundling: {
         externalModules: ["deasync"],
+      },
+      environment: {
+        OVERCAST_EMAIL_PARAM_NAME: "/overcast/email",
+        OVERCAST_PASSWORD_PARAM_NAME: "/overcast/password",
+        BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
       },
     });
 
@@ -31,6 +36,36 @@ export class BdtCdkStack extends Stack {
     });
 
     eventRule.addTarget(new LambdaFunction(overcastLambda));
+
+    const overcastEmailParamName = "/overcast/email";
+    const overcastPasswordParamName = "/overcast/password";
+    const overcastBdtAuthTokenParamName = "/bdt/auth_token";
+
+    const overcastEmailParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${overcastEmailParamName}`;
+    const overcastPasswordParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${overcastPasswordParamName}`;
+    const overcastBdtAuthTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${overcastBdtAuthTokenParamName}`;
+
+    overcastLambda.addToRolePolicy(
+      new PolicyStatement({
+        sid: "ReadOvercastSSMParams",
+        effect: Effect.ALLOW,
+        actions: ["ssm:GetParameter", "ssm:GetParameters"],
+        resources: [
+          overcastEmailParamArn,
+          overcastPasswordParamArn,
+          overcastBdtAuthTokenParamArn,
+        ],
+      }),
+    );
+
+    overcastLambda.addToRolePolicy(
+      new PolicyStatement({
+        sid: "DecryptOvercastSecureParams",
+        effect: Effect.ALLOW,
+        actions: ["kms:Decrypt"],
+        resources: ["*"],
+      }),
+    );
 
     const httpApi = new HttpApi(this, "StravaWebhookApi", {
       apiName: "StravaWebhookApi",
@@ -80,7 +115,7 @@ export class BdtCdkStack extends Stack {
           STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
           STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
           STRAVA_REFRESH_TOKEN_PARAM_NAME: "/strava/refresh_token",
-          BDT_AUTH_TOKEN: "",
+          BDT_AUTH_TOKEN_PARAM_NAME: "/bdt/auth_token",
           WORDPRESS_API_BASE_URL:
             "https://breakfastdinnertea.co.uk/wp-json/wp/v2",
         },
@@ -92,20 +127,23 @@ export class BdtCdkStack extends Stack {
     const clientIdParamName = "/strava/client_id";
     const clientSecretParamName = "/strava/client_secret";
     const refreshTokenParamName = "/strava/refresh_token";
+    const bdtAuthTokenParamName = "/bdt/auth_token";
 
     const clientIdParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${clientIdParamName}`;
     const clientSecretParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${clientSecretParamName}`;
     const refreshTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${refreshTokenParamName}`;
+    const bdtAuthTokenParamArn = `arn:${this.partition}:ssm:${this.region}:${this.account}:parameter${bdtAuthTokenParamName}`;
 
     processorLambda.addToRolePolicy(
       new PolicyStatement({
-        sid: "ReadStravaSSMParams",
+        sid: "ReadProcessorSSMParams",
         effect: Effect.ALLOW,
         actions: ["ssm:GetParameter", "ssm:GetParameters"],
         resources: [
           clientIdParamArn,
           clientSecretParamArn,
           refreshTokenParamArn,
+          bdtAuthTokenParamArn,
         ],
       }),
     );
