@@ -133,6 +133,9 @@ importers:
       '@types/node':
         specifier: ^24.10.15
         version: 24.12.0
+      aws-cdk:
+        specifier: ^2.1118.0
+        version: 2.1118.0
       aws-cdk-lib:
         specifier: ^2.244.0
         version: 2.244.0(constructs@10.5.1)
@@ -3170,6 +3173,11 @@ packages:
       - table
       - yaml
       - mime-types
+
+  aws-cdk@2.1118.0:
+    resolution: {integrity: sha512-Tfd865GRewDTXIbTVtix/l+v8t3rZENvdHcQQZS2wXYVXfHzljULFXe9JKkgZUNDPB1zo9tSBUu8jjiHRm7nWg==}
+    engines: {node: '>= 18.0.0'}
+    hasBin: true
 
   aws-sdk-client-mock-jest@4.1.0:
     resolution: {integrity: sha512-+g4a5Hp+MmPqqNnvwfLitByggrqf+xSbk1pm6fBYHNcon6+aQjL5iB+3YB6HuGPemY+/mUKN34iP62S14R61bA==}
@@ -9840,6 +9848,8 @@ snapshots:
       '@aws-cdk/asset-node-proxy-agent-v6': 2.1.1
       '@aws-cdk/cloud-assembly-schema': 52.2.0
       constructs: 10.5.1
+
+  aws-cdk@2.1118.0: {}
 
   aws-sdk-client-mock-jest@4.1.0(aws-sdk-client-mock@4.1.0):
     dependencies:

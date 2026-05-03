@@ -7,7 +7,13 @@ import {
   beforeEach,
 } from "@jest/globals";
 
-import { handler } from "../lambda/strava-processor/index";
+import {
+  handler,
+  stravaToWordpress,
+  postExerciseToWordpress,
+  StravaActivity,
+  WordPressExercisePayload,
+} from "../lambda/strava-processor/index";
 import { SQSEvent, SQSRecord } from "aws-lambda";
 import {
   SSMClient,
@@ -30,8 +36,8 @@ jest.mock("axios", () => {
     get: mockGet,
   };
 });
-const mockedAxiosPost = axios.post as jest.Mock;
-const mockedAxiosGet = axios.get as jest.Mock;
+const mockedAxiosPost = axios.post as jest.Mock<any>;
+const mockedAxiosGet = axios.get as jest.Mock<any>;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -118,6 +124,120 @@ afterAll(() => {
   consoleLogSpy.mockRestore();
 });
 
+const exampleStravaActivity: StravaActivity = {
+  id: 17954327092,
+  name: "Evening Run",
+  description: "",
+  distance: 5040.2,
+  moving_time: 1956,
+  elapsed_time: 1956,
+  total_elevation_gain: 46,
+  type: "Run",
+  sport_type: "Run",
+  start_date: "2026-04-02T19:30:39Z",
+  start_date_local: "2026-04-02T20:30:39Z",
+  map: { summary_polyline: "encodedPolyline123" },
+};
+
+test("stravaToWordpress maps Strava fields to WordPress exercise payload", () => {
+  const result = stravaToWordpress(exampleStravaActivity);
+  expect(result.title).toBe("Evening Run");
+  expect(result.status).toBe("publish");
+  expect(result.meta.source_platform).toBe("strava");
+  expect(result.meta.source_id).toBe("17954327092");
+  expect(result.meta.activity_type).toBe("Run");
+  expect(result.meta.distance_meters).toBe(5040.2);
+  expect(result.meta.moving_time_seconds).toBe(1956);
+  expect(result.meta.elapsed_time_seconds).toBe(1956);
+  expect(result.meta.total_elevation_gain_meters).toBe(46);
+  expect(result.meta.start_date_local_iso).toBe("2026-04-02T20:30:39Z");
+  expect(result.meta.map_summary_polyline).toBe("encodedPolyline123");
+  expect(result.meta._raw_data_json).toBe(
+    JSON.stringify(exampleStravaActivity),
+  );
+});
+
+test("stravaToWordpress uses activity id as fallback title when name is absent", () => {
+  const result = stravaToWordpress({ ...exampleStravaActivity, name: "" });
+  expect(result.title).toBe("Strava Activity 17954327092");
+});
+
+test("stravaToWordpress uses type (not sport_type) as activity_type", () => {
+  const result = stravaToWordpress({
+    ...exampleStravaActivity,
+    type: "Ride",
+    sport_type: "MountainBikeRide",
+  });
+  expect(result.meta.activity_type).toBe("Ride");
+});
+
+test("stravaToWordpress uses empty string for map_summary_polyline when map is absent", () => {
+  const result = stravaToWordpress({
+    ...exampleStravaActivity,
+    map: undefined,
+  });
+  expect(result.meta.map_summary_polyline).toBe("");
+});
+
+describe("postExerciseToWordpress", () => {
+  const wpPayload: WordPressExercisePayload = {
+    title: "Evening Run",
+    content: "",
+    status: "publish",
+    meta: {
+      source_platform: "strava",
+      source_id: "17954327092",
+      activity_type: "Run",
+      distance_meters: 5040.2,
+      moving_time_seconds: 1956,
+      elapsed_time_seconds: 1956,
+      total_elevation_gain_meters: 46,
+      start_date_local_iso: "2026-04-02T20:30:39Z",
+      map_summary_polyline: "encodedPolyline123",
+      _raw_data_json: "{}",
+    },
+  };
+
+  beforeEach(() => {
+    process.env.BDT_AUTH_TOKEN = "test-wp-token";
+    process.env.WORDPRESS_API_BASE_URL = "https://example.com/wp-json/wp/v2";
+  });
+
+  afterEach(() => {
+    delete process.env.BDT_AUTH_TOKEN;
+    delete process.env.WORDPRESS_API_BASE_URL;
+  });
+
+  test("POSTs the exercise payload to WordPress with Bearer auth", async () => {
+    mockedAxiosPost.mockResolvedValueOnce({ data: { id: 999 }, status: 201 });
+    await postExerciseToWordpress(wpPayload);
+    expect(mockedAxiosPost).toHaveBeenCalledWith(
+      "https://example.com/wp-json/wp/v2/bdt_exercises",
+      wpPayload,
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: "Bearer test-wp-token",
+          "Content-Type": "application/json",
+        }),
+      }),
+    );
+  });
+
+  test("throws if BDT_AUTH_TOKEN env var is missing", async () => {
+    delete process.env.BDT_AUTH_TOKEN;
+    await expect(postExerciseToWordpress(wpPayload)).rejects.toThrow(
+      "Missing WordPress configuration.",
+    );
+  });
+
+  test("throws if WORDPRESS_API_BASE_URL env var is missing", async () => {
+    delete process.env.WORDPRESS_API_BASE_URL;
+    await expect(postExerciseToWordpress(wpPayload)).rejects.toThrow(
+      "Missing WordPress configuration.",
+    );
+  });
+});
+
 test("log the body of each received SQS message", async () => {
   const testBody1 = JSON.stringify({ activityId: 123, detail: "message one" });
   const testBody2 = JSON.stringify({ activityId: 456, detail: "message two" });
@@ -169,7 +289,7 @@ test("fetches activity details from Strava API", async () => {
     start_date_local: new Date().toISOString(),
   };
 
-  mockedAxiosGet.mockImplementation(async (url, _config) => {
+  mockedAxiosGet.mockImplementation(async (url: string, _config: unknown) => {
     console.log(`--- MOCK GET returning data for ${url} ---`);
     return Promise.resolve({
       data: dummyActivityData,
@@ -196,4 +316,52 @@ test("fetches activity details from Strava API", async () => {
   );
 
   expect(consoleLogSpy).toHaveBeenCalledWith("Processing complete.");
+});
+
+test("handler fetches Strava activity and posts it to WordPress", async () => {
+  process.env.BDT_AUTH_TOKEN = "test-wp-token";
+  process.env.WORDPRESS_API_BASE_URL = "https://example.com/wp-json/wp/v2";
+
+  mockedAxiosPost.mockResolvedValueOnce({
+    data: { access_token: "DUMMY_ACCESS_TOKEN_456" },
+    status: 200,
+  });
+  mockedAxiosPost.mockResolvedValueOnce({ data: { id: 999 }, status: 201 });
+
+  mockedAxiosGet.mockResolvedValueOnce({
+    data: exampleStravaActivity,
+    status: 200,
+  });
+
+  const sqsMessageBody = JSON.stringify({
+    object_type: "activity",
+    object_id: exampleStravaActivity.id,
+    aspect_type: "create",
+    owner_id: 12345,
+  });
+  await handler(createPartialSqsEventWithBodies([sqsMessageBody]) as SQSEvent);
+
+  expect(mockedAxiosGet).toHaveBeenCalledWith(
+    `https://www.strava.com/api/v3/activities/${exampleStravaActivity.id}`,
+    expect.objectContaining({
+      headers: expect.objectContaining({
+        Authorization: expect.stringContaining("Bearer"),
+      }),
+    }),
+  );
+  expect(mockedAxiosPost).toHaveBeenCalledWith(
+    "https://example.com/wp-json/wp/v2/bdt_exercises",
+    expect.objectContaining({
+      title: "Evening Run",
+      meta: expect.objectContaining({ source_platform: "strava" }),
+    }),
+    expect.objectContaining({
+      headers: expect.objectContaining({
+        Authorization: "Bearer test-wp-token",
+      }),
+    }),
+  );
+
+  delete process.env.BDT_AUTH_TOKEN;
+  delete process.env.WORDPRESS_API_BASE_URL;
 });

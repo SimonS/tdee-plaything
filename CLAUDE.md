@@ -24,6 +24,10 @@ pnpm --filter @tdee/bdt-cdk test
 
 # Run a single test file with root Jest
 pnpm jest -- packages/film-fetcher/src/getFilms.test.ts
+
+# CDK (aws-cdk CLI is a devDependency of bdt-cdk, use pnpm exec to invoke it)
+pnpm --filter @tdee/bdt-cdk exec cdk synth
+pnpm --filter @tdee/bdt-cdk exec cdk deploy
 ```
 
 Note: the root Jest config excludes `bdt-components` and `bdt-cdk` (they have their own test setups), so `pnpm test` runs root Jest first, then those two packages separately.
