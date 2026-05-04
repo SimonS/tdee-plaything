@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import getAllActivities from "@activity-fetcher/getAllActivities.ts";
-import { ActivityEntry } from "../components/ActivityEntry";
+import { ActivityEntry } from "@components/media/activity-entry";
 
 const activities = await getAllActivities();
 const sorted = [...activities].reverse();

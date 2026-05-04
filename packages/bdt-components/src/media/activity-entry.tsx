@@ -1,4 +1,5 @@
-import { Activity } from "@bdt-types/bdt";
+import React from "react";
+import { Activity } from "@tdee/types/src/bdt";
 
 interface ActivityProps {
   activity: Activity;
