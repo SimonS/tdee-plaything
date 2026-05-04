@@ -1,5 +1,5 @@
 import getAllActivities from "./getAllActivities";
-import nock from "nock";
+import * as nock from "nock";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());

@@ -41,7 +41,9 @@ const formatDate = (iso: string): string =>
               {activity.activityType}
             </p>
             <h2>{activity.title}</h2>
-            <p>{formatDistance(activity.distanceMeters)} · {formatDuration(activity.movingTimeSeconds)}</p>
+            {activity.distanceMeters ? (
+              <p>{formatDistance(activity.distanceMeters)} · {formatDuration(activity.movingTimeSeconds!)}</p>
+            ) : null}
           </article>
         </li>
       ))}

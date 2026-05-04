@@ -66,7 +66,7 @@ export type CalculatedWeighin = Weighin & { weightTrend: number };
 export interface Activity {
   title: string;
   activityType: string;
-  distanceMeters: number;
-  movingTimeSeconds: number;
+  distanceMeters?: number;
+  movingTimeSeconds?: number;
   startDateLocalIso: string;
 }
