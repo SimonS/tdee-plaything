@@ -83,3 +83,87 @@ function bdt_register_exercise()
 }
 
 add_action('init', 'bdt_register_exercise');
+
+add_action('graphql_register_types', function () {
+    $post_types = WPGraphQL::get_allowed_post_types();
+    $type_name = get_post_type_object($post_types['bdt_exercise'])->graphql_single_name;
+
+    register_graphql_field($type_name, 'activity_type', [
+        'type' => 'String',
+        'description' => __('Type of activity (e.g. Run, Ride, Walk)'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'activity_type', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'distance_meters', [
+        'type' => 'Float',
+        'description' => __('Distance in metres'),
+        'resolve' => function ($post) {
+            return (float) get_post_meta($post->ID, 'distance_meters', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'moving_time_seconds', [
+        'type' => 'Int',
+        'description' => __('Moving time in seconds'),
+        'resolve' => function ($post) {
+            return (int) get_post_meta($post->ID, 'moving_time_seconds', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'elapsed_time_seconds', [
+        'type' => 'Int',
+        'description' => __('Elapsed time in seconds'),
+        'resolve' => function ($post) {
+            return (int) get_post_meta($post->ID, 'elapsed_time_seconds', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'total_elevation_gain_meters', [
+        'type' => 'Float',
+        'description' => __('Total elevation gain in metres'),
+        'resolve' => function ($post) {
+            return (float) get_post_meta($post->ID, 'total_elevation_gain_meters', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'start_date_local_iso', [
+        'type' => 'String',
+        'description' => __('Activity start date/time in local timezone (ISO 8601)'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'start_date_local_iso', true);
+        },
+    ]);
+
+    register_graphql_field($type_name, 'map_summary_polyline', [
+        'type' => 'String',
+        'description' => __('Encoded summary polyline'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'map_summary_polyline', true);
+        },
+    ]);
+
+    add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
+        $values['START_DATE_LOCAL_ISO'] = [
+            'value' => 'start_date_local_iso',
+            'description' => __('Order by activity start date', 'bdt'),
+        ];
+        return $values;
+    });
+});
+
+add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $input) {
+    if (isset($input['where']['orderby']) && is_array($input['where']['orderby'])) {
+        foreach ($input['where']['orderby'] as $orderby) {
+            if (!isset($orderby['field']) || 'start_date_local_iso' !== $orderby['field']) {
+                continue;
+            }
+            $query_args['meta_key'] = 'start_date_local_iso';
+            $query_args['meta_type'] = 'CHAR';
+            $query_args['orderby'] = 'meta_value';
+            $query_args['order'] = $orderby['order'];
+        }
+    }
+    return $query_args;
+}, 10, 3);

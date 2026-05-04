@@ -1,0 +1,19 @@
+{
+  "name": "@tdee/activity-fetcher",
+  "version": "0.0.1",
+  "description": "fetches and processes activity data for display",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "nock": "^14.0.11",
+    "ts-jest": "^29.4.6",
+    "typescript": "5.9.3"
+  }
+}

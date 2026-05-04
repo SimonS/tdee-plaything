@@ -18,4 +18,9 @@ describe("Nav component", () => {
     const { getByText } = render(<Nav url="/films/foo" />);
     expect(getByText(/Films/)).toHaveClass("current");
   });
+
+  it("highlights activities page", () => {
+    const { getByText } = render(<Nav url="/activities" />);
+    expect(getByText(/Activities/)).toHaveClass("current");
+  });
 });

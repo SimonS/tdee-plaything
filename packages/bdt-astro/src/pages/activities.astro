@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import getAllActivities from "@activity-fetcher/getAllActivities.ts";
+import { ActivityEntry } from "@components/media/activity-entry";
+
+const activities = await getAllActivities();
+const sorted = [...activities].reverse();
+---
+
+<BaseLayout title="Activities">
+  <div class="stack listing">
+    <h1>Activities</h1>
+    {sorted.map((activity) => <ActivityEntry activity={activity} />)}
+  </div>
+</BaseLayout>
