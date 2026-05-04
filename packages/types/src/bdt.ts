@@ -62,3 +62,11 @@ export interface Weighin {
 }
 
 export type CalculatedWeighin = Weighin & { weightTrend: number };
+
+export interface Activity {
+  title: string;
+  activityType: string;
+  distanceMeters: number;
+  movingTimeSeconds: number;
+  startDateLocalIso: string;
+}
