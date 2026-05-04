@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "noEmit": true
-  },
-  "files": ["jest-setup.ts"],
-  "exclude": ["node_modules", "packages/**/*"]
-}
