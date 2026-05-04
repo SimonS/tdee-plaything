@@ -1,52 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import getAllActivities from "@activity-fetcher/getAllActivities.ts";
-import type { Activity } from "@bdt-types/bdt";
+import { ActivityEntry } from "../components/ActivityEntry";
 
 const activities = await getAllActivities();
 const sorted = [...activities].reverse();
-
-const formatDistance = (metres: number): string =>
-  `${(metres / 1000).toFixed(2)} km`;
-
-const formatDuration = (seconds: number): string => {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  return h > 0
-    ? `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`
-    : `${m}:${String(s).padStart(2, "0")}`;
-};
-
-const formatDate = (iso: string): string =>
-  new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
 ---
 
 <BaseLayout title="Activities">
   <div class="stack listing">
     <h1>Activities</h1>
-    <ul class="stack">
-      {sorted.map((activity: Activity) => (
-        <li>
-          <article>
-            <p class="meta">
-              <time datetime={activity.startDateLocalIso}>
-                {formatDate(activity.startDateLocalIso)}
-              </time>
-              {" · "}
-              {activity.activityType}
-            </p>
-            <h2>{activity.title}</h2>
-            {activity.distanceMeters ? (
-              <p>{formatDistance(activity.distanceMeters)} · {formatDuration(activity.movingTimeSeconds!)}</p>
-            ) : null}
-          </article>
-        </li>
-      ))}
-    </ul>
+    {sorted.map((activity) => <ActivityEntry activity={activity} />)}
   </div>
 </BaseLayout>
