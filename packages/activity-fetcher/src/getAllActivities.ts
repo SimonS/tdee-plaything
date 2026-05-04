@@ -13,8 +13,10 @@ const getAllActivities = async (): Promise<Activity[]> => {
     next = meta.endCursor;
   }
 
-  allActivities.sort((a, b) =>
-    new Date(a.startDateLocalIso) < new Date(b.startDateLocalIso) ? -1 : 1,
+  allActivities.sort(
+    (a, b) =>
+      new Date(a.startDateLocalIso).getTime() -
+      new Date(b.startDateLocalIso).getTime(),
   );
 
   return allActivities;
