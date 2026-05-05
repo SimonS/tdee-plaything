@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { ActivityEntry } from "../../../components/media/activity-entry";
+import Pagination from "@components/pagination/pagination.tsx";
+import getAllActivities from "@activity-fetcher/getAllActivities.ts";
+
+export async function getStaticPaths({ paginate }) {
+  global.activities = global.activities ?? (await getAllActivities());
+  return paginate([...global.activities].reverse(), { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout>
+  <div class="stack listing">
+    <h1>Activities: Page {page.currentPage}</h1>
+
+    {page.data.map((activity) => <ActivityEntry activity={activity} />)}
+
+    <Pagination
+      tag={`a`}
+      pageNumber={parseInt(page.currentPage, 10)}
+      urlRoot={`/activities/page`}
+      pageInfo={{
+        hasNextPage: page.url.next ? true : false,
+        hasPreviousPage: page.url.prev ? true : false,
+      }}
+    />
+  </div>
+</BaseLayout>
