@@ -1,4 +1,5 @@
-import { Weighin } from "@bdt-types/bdt";
+import React from "react";
+import { Weighin } from "@tdee/types/src/bdt";
 
 interface WeighinProps {
   weighin: Weighin;
@@ -27,7 +28,7 @@ export const WeighinEntry = ({ weighin }: WeighinProps): JSX.Element => {
             </dl>
           </div>
         </div>
-        <div style={{ maxWidth: "154px" }}></div>
+        <div style={{ maxWidth: "154px" }} />
       </div>
     </article>
   );

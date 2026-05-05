@@ -7,32 +7,40 @@ interface FilmProps {
 
 export const FilmEntry = ({ film }: FilmProps): JSX.Element => {
   return (
-    <article className="sidebar left">
+    <article className="sidebar right">
       <div>
-        <div style={{ maxWidth: "154px" }}>
-          <img
-            src={
-              film.meta.image
-                ? film.meta.image
-                : `https://placekitten.com/154/154?pod=${film.filmTitle}`
-            }
-            alt={`poster for ${film.filmTitle}`}
-            className="poster-image"
-            width={154}
-            height={154}
-          />
-        </div>
         <div>
           <div className="h-entry stack compressed">
-            <p>
-              {film.filmTitle} ({film.year}) <br />
-              {film.rating && `Rated: ${film.rating}/5`}
-              <br />
-              {film.reviewLink && (
-                <a href={film.reviewLink}>reviewed on Letterboxd</a>
+            <header>
+              <h2>
+                {film.filmTitle} ({film.year})
+              </h2>
+            </header>
+            <dl>
+              <dt>Viewed</dt>
+              <dd>
+                <time className="dt-published" dateTime={film.watchedDate}>
+                  {new Date(film.watchedDate).toDateString()}
+                </time>
+              </dd>
+              {film.rating && (
+                <>
+                  <dt>Rated</dt>
+                  <dd>{film.rating}/5</dd>
+                </>
               )}
-            </p>
+            </dl>
+            {film.content && (
+              <a href={film.reviewLink}>I wrote some thoughts on Letterboxd</a>
+            )}
           </div>
+        </div>
+        <div style={{ maxWidth: "154px" }}>
+          <img
+            src={film.meta.image}
+            alt={`Poster for '${film.filmTitle}'`}
+            className="poster-image"
+          />
         </div>
       </div>
     </article>

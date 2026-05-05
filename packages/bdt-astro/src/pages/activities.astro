@@ -3,13 +3,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import getAllActivities from "@activity-fetcher/getAllActivities.ts";
 import { ActivityEntry } from "@components/media/activity-entry";
 
-const activities = await getAllActivities();
-const sorted = [...activities].reverse();
+global.activities = global.activities ?? (await getAllActivities());
+const recent = [...global.activities].reverse().slice(0, 10);
 ---
 
 <BaseLayout title="Activities">
   <div class="stack listing">
     <h1>Activities</h1>
-    {sorted.map((activity) => <ActivityEntry activity={activity} />)}
+    {recent.map((activity) => <ActivityEntry activity={activity} />)}
+    <p>
+      See my <a href="/activities/page/1">full activities stream</a> for the complete list.
+    </p>
   </div>
 </BaseLayout>

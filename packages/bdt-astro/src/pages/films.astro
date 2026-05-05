@@ -11,7 +11,7 @@ import getAllFilms, {
 
 global.films = global.films ?? (await getAllFilms());
 
-const allFilms = await getAllFilms();
+const allFilms = [...global.films];
 sortFilms(allFilms);
 const grouped = groupFilmsByDate(allFilms);
 const data = aggregateFilms(grouped);

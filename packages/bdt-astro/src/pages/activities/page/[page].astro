@@ -1,13 +1,12 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { FilmEntry } from "@components/media/film-entry";
+import { ActivityEntry } from "@components/media/activity-entry";
 import Pagination from "@components/pagination/pagination.tsx";
-import getAllFilms from "@film-fetcher/getAllFilms";
+import getAllActivities from "@activity-fetcher/getAllActivities.ts";
 
 export async function getStaticPaths({ paginate }) {
-  global.films = global.films ?? (await getAllFilms());
-
-  return paginate(global.films, { pageSize: 10 });
+  global.activities = global.activities ?? (await getAllActivities());
+  return paginate([...global.activities].reverse(), { pageSize: 10 });
 }
 
 const { page } = Astro.props;
@@ -15,14 +14,14 @@ const { page } = Astro.props;
 
 <BaseLayout>
   <div class="stack listing">
-    <h1>Films: Page {page.currentPage}</h1>
+    <h1>Activities: Page {page.currentPage}</h1>
 
-    {page.data.map((film) => <FilmEntry film={film} />)}
+    {page.data.map((activity) => <ActivityEntry activity={activity} />)}
 
     <Pagination
       tag={`a`}
       pageNumber={parseInt(page.currentPage, 10)}
-      urlRoot={`/films/page`}
+      urlRoot={`/activities/page`}
       pageInfo={{
         hasNextPage: page.url.next ? true : false,
         hasPreviousPage: page.url.prev ? true : false,
