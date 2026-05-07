@@ -64,7 +64,8 @@ test("requests all activity fields in GraphQL query", async () => {
         body.query.includes("activityType") &&
         body.query.includes("distanceMeters") &&
         body.query.includes("movingTimeSeconds") &&
-        body.query.includes("startDateLocalIso"),
+        body.query.includes("startDateLocalIso") &&
+        body.query.includes("mapSummaryPolyline"),
     )
     .reply(200, makeResponse([]));
 

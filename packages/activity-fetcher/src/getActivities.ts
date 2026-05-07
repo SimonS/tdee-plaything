@@ -15,6 +15,7 @@ const getActivities = async (
     "distanceMeters",
     "movingTimeSeconds",
     "startDateLocalIso",
+    "mapSummaryPolyline",
   ];
 
   const { data: activities, meta } = await getData<Activity>(
