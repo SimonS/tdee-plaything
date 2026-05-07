@@ -70,3 +70,47 @@ describe("ActivityEntry time display", () => {
     expect(container).not.toHaveTextContent("Time");
   });
 });
+
+describe("ActivityEntry route preview", () => {
+  it("renders an SVG when mapSummaryPolyline is provided", () => {
+    const { container } = render(
+      <ActivityEntry
+        activity={{
+          ...baseActivity,
+          mapSummaryPolyline: "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
+        }}
+      />,
+    );
+    expect(container.querySelector("svg")).not.toBeNull();
+  });
+
+  it("passes the encoded polyline to the SVG route preview", () => {
+    const { container } = render(
+      <ActivityEntry
+        activity={{
+          ...baseActivity,
+          mapSummaryPolyline: "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
+        }}
+      />,
+    );
+    const polylineEl = container.querySelector("svg polyline");
+    expect(polylineEl).not.toBeNull();
+    // The points attribute must contain multiple coordinate pairs derived from
+    // the decoded polyline — an empty or wrong string would produce "" or a
+    // single degenerate point instead of space-separated pairs.
+    const points = polylineEl?.getAttribute("points") ?? "";
+    expect(points.split(" ").length).toBeGreaterThan(1);
+  });
+
+  it("renders no SVG when mapSummaryPolyline is absent", () => {
+    const { container } = render(<ActivityEntry activity={baseActivity} />);
+    expect(container.querySelector("svg")).toBeNull();
+  });
+
+  it("renders no SVG when mapSummaryPolyline is an empty string", () => {
+    const { container } = render(
+      <ActivityEntry activity={{ ...baseActivity, mapSummaryPolyline: "" }} />,
+    );
+    expect(container.querySelector("svg")).toBeNull();
+  });
+});
