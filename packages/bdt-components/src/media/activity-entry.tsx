@@ -1,5 +1,6 @@
 import React from "react";
 import { Activity } from "@tdee/types/src/bdt";
+import { RoutePreview } from "./RoutePreview";
 
 interface ActivityProps {
   activity: Activity;
@@ -53,7 +54,11 @@ export const ActivityEntry = ({ activity }: ActivityProps): JSX.Element => {
             </dl>
           </div>
         </div>
-        <div style={{ maxWidth: "154px" }} />
+        <div style={{ maxWidth: "154px" }}>
+          {activity.mapSummaryPolyline ? (
+            <RoutePreview encodedPolyline={activity.mapSummaryPolyline} />
+          ) : null}
+        </div>
       </div>
     </article>
   );

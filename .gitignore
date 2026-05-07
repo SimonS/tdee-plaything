@@ -12,3 +12,6 @@ dist
 # Local Netlify folder
 .netlify
 yarn-error.log
+
+# Git worktrees
+.worktrees

@@ -15,5 +15,5 @@
 }
 
 .logo .highlighted {
-  color: #b81007;
+  color: var(--bdt-red, #b81007);
 }

@@ -1,0 +1,72 @@
+import React from "react";
+import { render } from "@testing-library/react";
+import { RoutePreview } from "./RoutePreview";
+
+// Google example: [[38.5,-120.2],[40.7,-120.95],[43.252,-126.453]]
+const EXAMPLE_POLYLINE = "_p~iF~ps|U_ulLnnqC_mqNvxq`@";
+
+describe("RoutePreview", () => {
+  it("renders an SVG element", () => {
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    expect(container.querySelector("svg")).not.toBeNull();
+  });
+
+  it("renders a polyline element inside the SVG", () => {
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    expect(container.querySelector("polyline")).not.toBeNull();
+  });
+
+  it("sets viewBox to '0 0 100 100'", () => {
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe(
+      "0 0 100 100",
+    );
+  });
+
+  it("preserves aspect ratio via preserveAspectRatio", () => {
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    expect(
+      container.querySelector("svg")?.getAttribute("preserveAspectRatio"),
+    ).toBe("xMidYMid meet");
+  });
+
+  it("uses BDT_RED as the stroke colour", () => {
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    expect(container.querySelector("polyline")?.getAttribute("stroke")).toBe(
+      "#b81007",
+    );
+  });
+
+  it("polyline points attribute is non-empty", () => {
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    const points = container.querySelector("polyline")?.getAttribute("points");
+    expect(points).toBeTruthy();
+    expect(points?.length).toBeGreaterThan(0);
+  });
+
+  it("passes the correct encoded polyline data through to the SVG points", () => {
+    // Decoded points: [[38.5,-120.2],[40.7,-120.95],[43.252,-126.453]]
+    // Route is lat-dominant → fills full height, y spans 5→95
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    const raw = container.querySelector("polyline")?.getAttribute("points");
+    const coords = raw!.split(" ").map((p) => p.split(",").map(Number));
+    expect(coords).toHaveLength(3);
+    // southernmost point is at bottom (y≈95), northernmost at top (y≈5)
+    expect(coords[0][1]).toBeCloseTo(95, 0);
+    expect(coords[2][1]).toBeCloseTo(5, 0);
+  });
+});

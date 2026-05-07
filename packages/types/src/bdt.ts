@@ -69,4 +69,5 @@ export interface Activity {
   distanceMeters?: number;
   movingTimeSeconds?: number;
   startDateLocalIso: string;
+  mapSummaryPolyline?: string;
 }
