@@ -5,8 +5,9 @@ import {
   Calendar as NivoCalendar,
   Datum,
 } from "@nivo/calendar";
+import { BDT_RED, BDT_YELLOW } from "../media/colours";
 
-const gradients = ["#dfcc4c", "#daa525", "#d27d01", "#c75100", "#b81007"];
+const gradients = [BDT_YELLOW, "#daa525", "#d27d01", "#c75100", BDT_RED];
 
 const Calendar = ({
   data,

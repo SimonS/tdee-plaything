@@ -13,6 +13,7 @@ import {
 import { format } from "date-fns";
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { BDT_RED, BDT_BLUE } from "../media/colours";
 
 const WeightGraph = ({
   weighins,
@@ -207,7 +208,7 @@ const WeightGraph = ({
               <Line
                 type="monotone"
                 dataKey="weight"
-                stroke="#b81007"
+                stroke={BDT_RED}
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
                 isAnimationActive={responsive}
@@ -219,7 +220,7 @@ const WeightGraph = ({
               <Line
                 type="monotone"
                 dataKey="weightTrend"
-                stroke="#345693"
+                stroke={BDT_BLUE}
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
                 strokeDasharray="12 4"

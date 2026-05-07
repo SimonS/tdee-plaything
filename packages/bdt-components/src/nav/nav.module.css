@@ -1,6 +1,6 @@
 .mainMenu a {
-  color: #345693;
-  text-decoration-color: #b81007;
+  color: var(--bdt-blue, #345693);
+  text-decoration-color: var(--bdt-red, #b81007);
   text-underline-offset: var(--s-4);
 }
 
