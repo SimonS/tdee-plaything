@@ -58,16 +58,28 @@ describe("RoutePreview", () => {
 
   it("passes the correct encoded polyline data through to the SVG points", () => {
     // Decoded points: [[38.5,-120.2],[40.7,-120.95],[43.252,-126.453]]
-    // Route is lat-dominant → fills full height, y spans 5→95
+    // RDP keeps all 3 (non-collinear). Chaikin(3 iters): 3 → 6 → 12 → 24 points.
+    // Endpoints are preserved by Chaikin, so first point is still southernmost (y≈95)
+    // and last point (index 23) is still northernmost (y≈5).
     const { container } = render(
       <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
     );
     const raw = container.querySelector("polyline")?.getAttribute("points");
     const coords = raw!.split(" ").map((p) => p.split(",").map(Number));
-    expect(coords).toHaveLength(3);
-    // southernmost point is at bottom (y≈95), northernmost at top (y≈5)
+    expect(coords).toHaveLength(24);
     expect(coords[0][1]).toBeCloseTo(95, 0);
-    expect(coords[2][1]).toBeCloseTo(5, 0);
+    expect(coords[23][1]).toBeCloseTo(5, 0);
+  });
+
+  it("applies Chaikin smoothing after RDP to produce more points than the simplified route", () => {
+    // EXAMPLE_POLYLINE decodes to 3 points; RDP keeps all 3; Chaikin(3) produces 24.
+    // Verifies Chaikin is wired in (output > RDP-only count of 3).
+    const { container } = render(
+      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
+    );
+    const raw = container.querySelector("polyline")?.getAttribute("points");
+    const coords = raw!.split(" ");
+    expect(coords.length).toBeGreaterThan(3);
   });
 
   it("simplifies collinear intermediate points before rendering", () => {
