@@ -71,6 +71,34 @@ describe("ActivityEntry time display", () => {
   });
 });
 
+describe("ActivityEntry Strava link", () => {
+  it("renders a link to the Strava activity page when sourceId is provided", () => {
+    const { container } = render(
+      <ActivityEntry activity={{ ...baseActivity, sourceId: "18456924412" }} />,
+    );
+    const link = container.querySelector(
+      'a[href="https://www.strava.com/activities/18456924412"]',
+    );
+    expect(link).not.toBeNull();
+  });
+
+  it("link text reads 'View on Strava'", () => {
+    const { getByRole } = render(
+      <ActivityEntry activity={{ ...baseActivity, sourceId: "18456924412" }} />,
+    );
+    const link = getByRole("link", { name: "View on Strava" });
+    expect(link).toBeTruthy();
+  });
+
+  it("does not render a Strava link when sourceId is absent", () => {
+    const { container } = render(<ActivityEntry activity={baseActivity} />);
+    const link = container.querySelector(
+      'a[href^="https://www.strava.com/activities/"]',
+    );
+    expect(link).toBeNull();
+  });
+});
+
 describe("ActivityEntry route preview", () => {
   it("renders an SVG when mapSummaryPolyline is provided", () => {
     const { container } = render(
