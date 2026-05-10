@@ -10,6 +10,7 @@ const getActivities = async (
 ): Promise<{ activities: Activity[]; meta: PageInfo }> => {
   const nodeName = "exercises";
   const fields = [
+    "sourceId",
     "title",
     "activityType",
     "distanceMeters",

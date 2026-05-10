@@ -52,6 +52,13 @@ export const ActivityEntry = ({ activity }: ActivityProps): JSX.Element => {
                 </>
               ) : null}
             </dl>
+            {activity.sourceId && (
+              <a
+                href={`https://www.strava.com/activities/${activity.sourceId}`}
+              >
+                View on Strava
+              </a>
+            )}
           </div>
         </div>
         <div style={{ maxWidth: "154px" }}>
