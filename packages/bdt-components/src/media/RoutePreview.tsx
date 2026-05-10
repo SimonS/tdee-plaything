@@ -1,4 +1,5 @@
 import React from "react";
+import { chaikinSmooth } from "./chaikin";
 import { decodePolyline } from "./decodePolyline";
 import { normalisePolyline } from "./normalisePolyline";
 import { ramerDouglasPeucker } from "./ramerDouglasPeucker";
@@ -10,13 +11,15 @@ interface RoutePreviewProps {
 
 const VIEWBOX_SIZE = 100;
 const EPSILON = 0.0001;
+const CHAIKIN_ITERATIONS = 3;
 
 export const RoutePreview = ({
   encodedPolyline,
 }: RoutePreviewProps): JSX.Element => {
   const decoded = decodePolyline(encodedPolyline);
-  const points = ramerDouglasPeucker(decoded, EPSILON);
-  const pointsAttr = normalisePolyline(points);
+  const simplified = ramerDouglasPeucker(decoded, EPSILON);
+  const smoothed = chaikinSmooth(simplified, CHAIKIN_ITERATIONS);
+  const pointsAttr = normalisePolyline(smoothed);
 
   return (
     <svg
