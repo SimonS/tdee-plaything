@@ -10,6 +10,11 @@ const recent = [...global.activities].reverse().slice(0, 10);
 <BaseLayout title="Activities">
   <div class="stack listing">
     <h1>Activities</h1>
+    <p>
+      These are activities I've completed recently, as logged in <a
+        href="https://www.strava.com/athletes/2764169">Strava</a
+      >.
+    </p>
     {recent.map((activity) => <ActivityEntry activity={activity} />)}
     <p>
       See my <a href="/activities/page/1">full activities stream</a> for the complete list.
