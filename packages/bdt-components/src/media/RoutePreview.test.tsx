@@ -69,4 +69,17 @@ describe("RoutePreview", () => {
     expect(coords[0][1]).toBeCloseTo(95, 0);
     expect(coords[2][1]).toBeCloseTo(5, 0);
   });
+
+  it("simplifies collinear intermediate points before rendering", () => {
+    // Encodes [[0,0],[0,0.5],[0,1]] — three points all at lat=0, i.e. collinear
+    // RDP (epsilon=0.0001°) removes [0,0.5] because its perpendicular distance
+    // from the line [0,0]→[0,1] is 0. The rendered polyline should have 2 pairs.
+    const collinearPolyline = "???_t`B?_t`B";
+    const { container } = render(
+      <RoutePreview encodedPolyline={collinearPolyline} />,
+    );
+    const raw = container.querySelector("polyline")?.getAttribute("points");
+    const coords = raw!.split(" ").map((p) => p.split(",").map(Number));
+    expect(coords).toHaveLength(2);
+  });
 });
