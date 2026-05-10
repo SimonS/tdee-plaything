@@ -1,4 +1,3 @@
-// Algorithm: https://graphics.cs.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm/Chaikins-Algorithm.html
 import { chaikinSmooth } from "./chaikin";
 import { LatLng } from "./decodePolyline";
 
