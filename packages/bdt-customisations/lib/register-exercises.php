@@ -144,6 +144,14 @@ add_action('graphql_register_types', function () {
         },
     ]);
 
+    register_graphql_field($type_name, 'sourceId', [
+        'type' => 'String',
+        'description' => __('The unique identifier from the source platform (e.g. Strava activity ID)'),
+        'resolve' => function ($post) {
+            return get_post_meta($post->ID, 'source_id', true);
+        },
+    ]);
+
     add_filter('graphql_PostObjectsConnectionOrderbyEnum_values', function ($values) {
         $values['START_DATE_LOCAL_ISO'] = [
             'value' => 'start_date_local_iso',
