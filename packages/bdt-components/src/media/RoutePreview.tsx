@@ -1,6 +1,7 @@
 import React from "react";
 import { decodePolyline } from "./decodePolyline";
 import { normalisePolyline } from "./normalisePolyline";
+import { ramerDouglasPeucker } from "./ramerDouglasPeucker";
 import { BDT_RED } from "./colours";
 
 interface RoutePreviewProps {
@@ -8,11 +9,13 @@ interface RoutePreviewProps {
 }
 
 const VIEWBOX_SIZE = 100;
+const EPSILON = 0.0001;
 
 export const RoutePreview = ({
   encodedPolyline,
 }: RoutePreviewProps): JSX.Element => {
-  const points = decodePolyline(encodedPolyline);
+  const decoded = decodePolyline(encodedPolyline);
+  const points = ramerDouglasPeucker(decoded, EPSILON);
   const pointsAttr = normalisePolyline(points);
 
   return (
