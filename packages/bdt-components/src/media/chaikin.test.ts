@@ -65,7 +65,7 @@ describe("chaikinSmooth", () => {
     expect(result[result.length - 1]).toEqual([50, 60]);
   });
 
-  it("doubles the point count each iteration (n≥3)", () => {
+  it("doubles the point count per iteration for a 3-point input", () => {
     const points: LatLng[] = [
       [0, 0],
       [1, 1],

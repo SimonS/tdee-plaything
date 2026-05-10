@@ -71,17 +71,6 @@ describe("RoutePreview", () => {
     expect(coords[23][1]).toBeCloseTo(5, 0);
   });
 
-  it("applies Chaikin smoothing after RDP to produce more points than the simplified route", () => {
-    // EXAMPLE_POLYLINE decodes to 3 points; RDP keeps all 3; Chaikin(3) produces 24.
-    // Verifies Chaikin is wired in (output > RDP-only count of 3).
-    const { container } = render(
-      <RoutePreview encodedPolyline={EXAMPLE_POLYLINE} />,
-    );
-    const raw = container.querySelector("polyline")?.getAttribute("points");
-    const coords = raw!.split(" ");
-    expect(coords.length).toBeGreaterThan(3);
-  });
-
   it("simplifies collinear intermediate points before rendering", () => {
     // Encodes [[0,0],[0,0.5],[0,1]] — three points all at lat=0, i.e. collinear
     // RDP (epsilon=0.0001°) removes [0,0.5] because its perpendicular distance
