@@ -8,6 +8,7 @@ dist
 .vscode
 .astro
 .agent
+docs/superpowers/plans
 
 # Local Netlify folder
 .netlify
