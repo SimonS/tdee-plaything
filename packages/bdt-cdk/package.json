@@ -21,7 +21,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@types/aws-lambda": "^8.10.161",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.15",
+    "@types/node": "^24.12.4",
     "aws-cdk": "^2.1118.0",
     "aws-cdk-lib": "^2.244.0",
     "aws-sdk-client-mock": "^4.1.0",
