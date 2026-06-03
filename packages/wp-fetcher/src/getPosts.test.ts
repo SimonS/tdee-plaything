@@ -12,6 +12,8 @@ const mockPost = {
   date: "2016-02-15T10:00:00",
   excerpt: "<p>A short excerpt.</p>",
   content: "<p>The full post content.</p>",
+  tags: { nodes: [{ name: "Netrunner", slug: "netrunner" }] },
+  categories: { nodes: [{ name: "Tech", slug: "tech" }] },
 };
 
 test("returns posts and meta with expected fields", async () => {
@@ -41,6 +43,8 @@ test("returns posts and meta with expected fields", async () => {
     date: mockPost.date,
     excerpt: mockPost.excerpt,
     content: mockPost.content,
+    tags: mockPost.tags,
+    categories: mockPost.categories,
   });
   expect(meta.hasNextPage).toBe(false);
   expect(meta.endCursor).toBe("cursor123");
@@ -49,9 +53,43 @@ test("returns posts and meta with expected fields", async () => {
 test("includes all required fields in the GraphQL query", async () => {
   nock("https://breakfastdinnertea.co.uk")
     .post("/graphql", (body) =>
-      ["id", "title", "slug", "date", "excerpt", "content"].every((f) =>
-        body.query.includes(f),
-      ),
+      [
+        "id",
+        "title",
+        "slug",
+        "date",
+        "excerpt",
+        "content",
+        "tags",
+        "categories",
+      ].every((f) => body.query.includes(f)),
+    )
+    .reply(200, {
+      data: {
+        posts: {
+          nodes: [],
+          pageInfo: {
+            endCursor: "cursor1",
+            startCursor: "cursor0",
+            hasNextPage: false,
+            hasPreviousPage: false,
+          },
+        },
+      },
+    });
+
+  await getPosts();
+
+  expect(nock.isDone()).toBe(true);
+});
+
+test("includes taxonomy sub-fields in the GraphQL query", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql", (body) =>
+      [
+        "tags { nodes { name slug } }",
+        "categories { nodes { name slug } }",
+      ].every((f) => body.query.includes(f)),
     )
     .reply(200, {
       data: {
