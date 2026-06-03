@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import getAllPosts from "@wp-fetcher/getAllPosts";
 import type { WPPost } from "@tdee/types/src/bdt";
 
@@ -30,12 +30,26 @@ function formatDate(dateStr: string): string {
 
 <BaseLayout title={post.title}>
   <style slot="head_after" lang="scss" is:global>
-    @use "../../../style/content.scss";
+    @use "../../../../style/content.scss";
   </style>
 
   <article>
     <h1>{post.title}</h1>
     <time datetime={post.date}>{formatDate(post.date)}</time>
+    {post.categories.nodes.length > 0 && (
+      <ul class="categories">
+        {post.categories.nodes.map((cat) => (
+          <li><a href={`/blog/category/${cat.slug}/`}>{cat.name}</a></li>
+        ))}
+      </ul>
+    )}
+    {post.tags.nodes.length > 0 && (
+      <ul class="tags">
+        {post.tags.nodes.map((tag) => (
+          <li><a href={`/blog/tag/${tag.slug}/`}>{tag.name}</a></li>
+        ))}
+      </ul>
+    )}
     <div class="content">
       <Fragment set:html={post.content} />
     </div>
