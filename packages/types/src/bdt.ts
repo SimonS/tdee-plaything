@@ -41,6 +41,15 @@ export interface WPPage {
   slug: string;
 }
 
+export interface WPPost {
+  id: string;
+  title: string;
+  slug: string;
+  date: string; // ISO string e.g. "2016-02-15T10:00:00"
+  excerpt: string;
+  content: string;
+}
+
 export interface Film {
   watchedDate: string;
   filmTitle: string;
