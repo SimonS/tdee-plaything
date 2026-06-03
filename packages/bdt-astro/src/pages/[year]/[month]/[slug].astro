@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import getAllPosts from "@wp-fetcher/getAllPosts";
+import type { WPPost } from "@tdee/types/src/bdt";
+
+export async function getStaticPaths() {
+  global.posts = global.posts ?? (await getAllPosts());
+
+  return (global.posts as WPPost[]).map((post) => {
+    const d = new Date(post.date);
+    const year = String(d.getFullYear());
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    return {
+      params: { year, month, slug: post.slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props as { post: WPPost };
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<BaseLayout title={post.title}>
+  <style slot="head_after" lang="scss" is:global>
+    @use "../../../style/content.scss";
+  </style>
+
+  <article>
+    <h1>{post.title}</h1>
+    <time datetime={post.date}>{formatDate(post.date)}</time>
+    <div class="content">
+      <Fragment set:html={post.content} />
+    </div>
+  </article>
+</BaseLayout>
