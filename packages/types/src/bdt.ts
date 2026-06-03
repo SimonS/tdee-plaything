@@ -15,6 +15,11 @@ export interface PageInfo {
   hasPreviousPage: boolean;
 }
 
+export interface WPTaxonomyTerm {
+  name: string;
+  slug: string;
+}
+
 export interface Podcast {
   listenDate: string;
   podcastTitle: string;
@@ -48,6 +53,8 @@ export interface WPPost {
   date: string; // ISO string e.g. "2016-02-15T10:00:00"
   excerpt: string;
   content: string;
+  tags: { nodes: WPTaxonomyTerm[] };
+  categories: { nodes: WPTaxonomyTerm[] };
 }
 
 export interface Film {
