@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { PostEntry } from "@components/media/post-entry";
+import Pagination from "@components/pagination/pagination.tsx";
+import getAllPosts from "@wp-fetcher/getAllPosts";
+
+global.posts = global.posts ?? (await getAllPosts());
+const data = global.posts.slice(0, 10);
+---
+
+<BaseLayout title="Blog">
+  <div class="stack listing">
+    <h1>Blog</h1>
+
+    {data.map((post) => <PostEntry post={post} />)}
+
+    <Pagination
+      tag="a"
+      pageNumber={1}
+      urlRoot="/blog/page"
+      pageInfo={{
+        hasNextPage: true,
+        hasPreviousPage: false,
+      }}
+    />
+  </div>
+</BaseLayout>
