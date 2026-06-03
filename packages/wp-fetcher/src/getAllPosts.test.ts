@@ -46,6 +46,19 @@ test("collects all posts across multiple pages", async () => {
   expect(posts[2].slug).toBe("post-three");
 });
 
+test("passes endCursor from each page to the next request", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql")
+    .reply(200, makePage([makePost("one")], "cursor-from-page-1", true))
+    .post("/graphql", (body) => body.query.includes("cursor-from-page-1"))
+    .reply(200, makePage([makePost("two")], "cursor-from-page-2", false));
+
+  const posts = await getAllPosts();
+
+  expect(posts).toHaveLength(2);
+  expect(nock.isDone()).toBe(true);
+});
+
 test("returns empty array when there are no posts", async () => {
   nock("https://breakfastdinnertea.co.uk")
     .post("/graphql")
