@@ -46,6 +46,54 @@ test("returns posts and meta with expected fields", async () => {
   expect(meta.endCursor).toBe("cursor123");
 });
 
+test("includes all required fields in the GraphQL query", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql", (body) =>
+      ["id", "title", "slug", "date", "excerpt", "content"].every((f) =>
+        body.query.includes(f),
+      ),
+    )
+    .reply(200, {
+      data: {
+        posts: {
+          nodes: [],
+          pageInfo: {
+            endCursor: "cursor1",
+            startCursor: "cursor0",
+            hasNextPage: false,
+            hasPreviousPage: false,
+          },
+        },
+      },
+    });
+
+  await getPosts();
+
+  expect(nock.isDone()).toBe(true);
+});
+
+test("includes ordering clause in the GraphQL query", async () => {
+  nock("https://breakfastdinnertea.co.uk")
+    .post("/graphql", (body) => body.query.includes("DATE"))
+    .reply(200, {
+      data: {
+        posts: {
+          nodes: [],
+          pageInfo: {
+            endCursor: "cursor1",
+            startCursor: "cursor0",
+            hasNextPage: false,
+            hasPreviousPage: false,
+          },
+        },
+      },
+    });
+
+  await getPosts();
+
+  expect(nock.isDone()).toBe(true);
+});
+
 test("passes 'after' cursor to GraphQL query", async () => {
   nock("https://breakfastdinnertea.co.uk")
     .post("/graphql", (body) => body.query.includes("cursor123"))
