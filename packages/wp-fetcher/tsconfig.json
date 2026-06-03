@@ -10,7 +10,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@bdt-types/*": ["../types/src/*"]
+      "@bdt-types/*": ["../types/src/*"],
+      "@tdee/*": ["../../*"]
     }
   }
 }
