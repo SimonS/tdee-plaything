@@ -1,17 +1,62 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GeneralCalendar from "@components/interactions/general.tsx";
+import Switcher from "@components/interactions/switcher.tsx";
+import { films as filmsStore } from "@components/stores/films.ts";
+import { podcasts as podcastsStore } from "@components/stores/podcasts.ts";
+import { allFormats } from "@components/stores/allFormats.ts";
+
+import getAllFilms, {
+  groupFilmsByDate,
+  aggregateFilms,
+} from "@film-fetcher/getAllFilms.ts";
+
+import getAllPodcasts, {
+  groupPodcastsByDate,
+  aggregatePodcasts,
+} from "@podcast-fetcher/getAllPodcasts.ts";
+
+const allFilms = await getAllFilms();
+const groupedFilms = groupFilmsByDate(allFilms);
+const filmData = aggregateFilms(groupedFilms);
+
+const allPodcasts = await getAllPodcasts();
+const groupedPodcasts = groupPodcastsByDate(allPodcasts);
+const podcastData = aggregatePodcasts(groupedPodcasts);
+
+const calendarData = [
+  {
+    dataName: "Podcasts",
+    grouped: groupedPodcasts,
+    aggregated: podcastData,
+    store: podcastsStore,
+  },
+  {
+    dataName: "Films",
+    grouped: groupedFilms,
+    aggregated: filmData,
+    store: filmsStore,
+  },
+];
+
+allFormats.set({
+  formatName: "Podcasts",
+  grouped: groupedPodcasts,
+  aggregated: podcastData,
+  store: podcastsStore,
+});
 ---
 
 <BaseLayout title="playground.bdt">
   <div class="stack">
     <h1>Playground</h1>
-    <div class="content">
-      <p>This mini project has evolved from a little spreadsheet/graph Gatsby experiment into a bit of an anything goes,
-        "let's have some fun and lob some code up over there".</p>
-      <p>I recently migrated it over to <a href="https://astro.build">Astro</a> in an effort to simplify things. I'm
-        hoping to bring more banality over here soon. For now, you can have a browse at what <a href="/films">films I've
-          watched recently</a> (via <a href="https://letterboxd.com/simonscarfe/">Letterboxd</a>), maybe the <a
-          href="/podcasts">podcasts that have been absorbing my time</a>.</p>
-    </div>
+    <Switcher client:load data={calendarData} />
+    <GeneralCalendar
+      client:load
+      formatName="Podcasts"
+      aggregated={podcastData}
+      grouped={groupedPodcasts}
+      store={podcastsStore}
+    />
   </div>
 </BaseLayout>
