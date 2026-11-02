@@ -1,5 +1,6 @@
 import { PageInfo, Film, Podcast, Weighin } from "@tdee/types/src/bdt";
 import { request, gql } from "graphql-request";
+import graphqlEndpoint from "@tdee/graphql-fetcher/src/endpoint";
 
 const getAll = async (
   after?: string,
@@ -50,10 +51,7 @@ const getAll = async (
     }
   `;
 
-  const { data, meta } = await request(
-    "https://breakfastdinnertea.co.uk/graphql",
-    query,
-  ).then(
+  const { data, meta } = await request(graphqlEndpoint, query).then(
     (data: {
       contentNodes: { nodes: (Film | Podcast | Weighin)[]; pageInfo: PageInfo };
     }) => {

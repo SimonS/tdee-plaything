@@ -17,12 +17,12 @@ function fetchMovieMetaData($title, $year=2012)
     $apiKey = TMDB_API_KEY;
     $searchResults = json_decode(wp_remote_get("https://api.themoviedb.org/3/search/movie?year=$year&query=$title&api_key=$apiKey")['body']);
 
-    if (count($searchResults->results) === 0) {
+    if (empty($searchResults->results)) {
         return array();
     }
 
     $id = $searchResults->results[0]->id;
-    $rawMovieMetadata = json_decode(wp_remote_get("https://api.themoviedb.org/3/movie/${id}?api_key=$apiKey")['body']);
+    $rawMovieMetadata = json_decode(wp_remote_get("https://api.themoviedb.org/3/movie/{$id}?api_key=$apiKey")['body']);
     
     $result = array(
         'runtime' => $rawMovieMetadata->runtime,

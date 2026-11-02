@@ -1,5 +1,6 @@
 import { request, gql } from "graphql-request";
 import { PageInfo } from "@tdee/types/src/bdt";
+import graphqlEndpoint from "./endpoint";
 
 const getData = async <T>(
   nodeName: string,
@@ -28,12 +29,11 @@ const getData = async <T>(
   }
 `;
 
-  const { data, meta } = await request(
-    "https://breakfastdinnertea.co.uk/graphql",
-    query,
-  ).then((data: { [nodeName: string]: { nodes: T[]; pageInfo: PageInfo } }) => {
-    return { data: data[nodeName].nodes, meta: data[nodeName].pageInfo };
-  });
+  const { data, meta } = await request(graphqlEndpoint, query).then(
+    (data: { [nodeName: string]: { nodes: T[]; pageInfo: PageInfo } }) => {
+      return { data: data[nodeName].nodes, meta: data[nodeName].pageInfo };
+    },
+  );
 
   return {
     data,

@@ -1,5 +1,6 @@
 import { request, gql } from "graphql-request";
 import { PageInfo, Film, Podcast, Weighin } from "@tdee/types/src/bdt";
+import graphqlEndpoint from "@tdee/graphql-fetcher/src/endpoint";
 
 export const getAllPages = async (
   pageSize: number,
@@ -52,7 +53,7 @@ export const getAllPages = async (
   `;
 
   const getNextPage = async (after?: string) =>
-    await request("https://breakfastdinnertea.co.uk/graphql", query, {
+    await request(graphqlEndpoint, query, {
       first: pageSize,
       after: after ? after : "",
     }).then(

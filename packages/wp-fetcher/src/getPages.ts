@@ -1,6 +1,7 @@
 import { request, gql } from "graphql-request";
 import { PageInfo, WPPage } from "@tdee/types/src/bdt";
 import getData from "@tdee/graphql-fetcher/src/getData";
+import graphqlEndpoint from "@tdee/graphql-fetcher/src/endpoint";
 
 const getPages = async (
   after?: string,
@@ -25,7 +26,7 @@ export const getPage = async (id: string): Promise<WPPage> => {
     slug
   }}`;
 
-  return await request("https://breakfastdinnertea.co.uk/graphql", query).then(
+  return await request(graphqlEndpoint, query).then(
     (data: { page: WPPage }) => {
       return data.page;
     },

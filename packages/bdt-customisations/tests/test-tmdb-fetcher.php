@@ -52,6 +52,16 @@ class TMDBFetcherTest extends \WP_UnitTestCase
         );
     }
 
+    public function test_deals_with_an_error_response()
+    {
+        $result = fetchMovieMetaData("invalid-api-key", 2020);
+
+        $this->assertEquals(
+            array(),
+            $result
+        );
+    }
+
     public function test_initially_reads_from_transient_api()
     {
         $bladeRunnerMeta = array(
