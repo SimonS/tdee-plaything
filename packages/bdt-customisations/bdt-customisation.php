@@ -25,13 +25,11 @@ add_action('graphql_register_types', function () {
 });
 
 add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $args, $context, $info) {
-    $playground = $args['where']['playground'] ?? null;
-
-    if (isset($playground)) {
+    if (isset($args['where']['playground'])) {
         $query_args['meta_query'] = [
             [
                 'key' => 'playground',
-                'value' => $playground,
+                'value' => $args['where']['playground'],
                 'compare' => '='
             ]
         ];

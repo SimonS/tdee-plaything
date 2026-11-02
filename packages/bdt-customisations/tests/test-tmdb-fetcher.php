@@ -54,7 +54,7 @@ class TMDBFetcherTest extends \WP_UnitTestCase
 
     public function test_deals_with_an_error_response()
     {
-        $result = fetchMovieMetaData("Alien", 1979);
+        $result = fetchMovieMetaData("invalid-api-key", 2020);
 
         $this->assertEquals(
             array(),
