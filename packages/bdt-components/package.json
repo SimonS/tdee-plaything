@@ -35,7 +35,7 @@
     "sass-loader": "^16.0.7",
     "style-loader": "^4.0.0",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.2"
+    "webpack": "^5.105.4"
   },
   "jest": {
     "testEnvironment": "jsdom",
