@@ -1,49 +1,46 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "config:recommended",
-        ":separateMajorReleases",
-        ":combinePatchMinorReleases",
-        ":ignoreUnstable",
-        ":prImmediately",
-        ":renovatePrefix",
-        "group:monorepos",
-        "group:recommended"
-    ],
+    "extends": ["config:recommended"],
+    "schedule": ["on monday"],
+    "timezone": "Europe/London",
+    "minimumReleaseAge": "3 days",
+    "prHourlyLimit": 0,
+    "rangeStrategy": "bump",
+    "lockFileMaintenance": {
+        "enabled": true,
+        "schedule": ["on monday"]
+    },
     "packageRules": [
         {
-            "matchPackageNames": [
-                "react",
-                "react-dom",
-                "@types/react",
-                "@types/react-dom"
+            "description": "Minor and patch updates arrive as one PR per place they ship. Majors keep a PR each. The Playground ships when Netlify deploys the merge.",
+            "matchFileNames": [
+                "packages/bdt-astro/**",
+                "packages/bdt-components/**",
+                "packages/*-fetcher/**",
+                "packages/types/**",
+                "packages/data-wranglers/**",
+                "packages/netlify-functions/**"
             ],
-            "groupName": "react"
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "groupName": "Playground"
         },
         {
-            "matchPackagePatterns": [
-                "^@aws-sdk/"
-            ],
-            "groupName": "aws-sdk"
-        },
-{
-            "matchPackagePatterns": [
-                "^eslint",
-                "prettier"
-            ],
-            "groupName": "linting"
+            "description": "The Writers' Lambdas ship with cdk deploy.",
+            "matchFileNames": ["packages/bdt-cdk/**", "packages/overcast/**"],
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "groupName": "Writers"
         },
         {
-            "matchPackagePatterns": [
-                "^jest",
-                "ts-jest",
-                "babel-jest",
-                "@types/jest"
-            ],
-            "groupName": "testing"
+            "description": "The WordPress plugin ships when a site pins the new commit.",
+            "matchFileNames": ["packages/bdt-customisations/**"],
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "groupName": "Plugin"
+        },
+        {
+            "description": "Build, lint, test and CI tooling.",
+            "matchFileNames": ["package.json", ".github/workflows/**", ".nvmrc"],
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "groupName": "Tooling"
         }
-    ],
-    "rangeStrategy": "bump",
-    "separateMinorPatch": true,
-    "dependencyDashboard": true
+    ]
 }
