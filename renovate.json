@@ -1,10 +1,12 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "description": "Minor and patch updates arrive as one PR per place they ship, so each PR has one deploy step. Majors keep a PR each.",
     "extends": ["config:recommended"],
     "schedule": ["on monday"],
     "timezone": "Europe/London",
     "minimumReleaseAge": "3 days",
     "prHourlyLimit": 0,
+    "prConcurrentLimit": 0,
     "rangeStrategy": "bump",
     "lockFileMaintenance": {
         "enabled": true,
@@ -12,7 +14,7 @@
     },
     "packageRules": [
         {
-            "description": "Minor and patch updates arrive as one PR per place they ship. Majors keep a PR each. The Playground ships when Netlify deploys the merge.",
+            "description": "The Playground ships when Netlify deploys the merge.",
             "matchFileNames": [
                 "packages/bdt-astro/**",
                 "packages/bdt-components/**",
@@ -37,7 +39,7 @@
             "groupName": "Plugin"
         },
         {
-            "description": "Build, lint, test and CI tooling.",
+            "description": "Build, lint, test and CI tooling runs only in CI, so green checks cover it.",
             "matchFileNames": ["package.json", ".github/workflows/**", ".nvmrc"],
             "matchUpdateTypes": ["minor", "patch", "digest"],
             "groupName": "Tooling"
