@@ -8,6 +8,9 @@
     "prHourlyLimit": 0,
     "prConcurrentLimit": 0,
     "rangeStrategy": "bump",
+    "vulnerabilityAlerts": {
+        "groupName": "Security"
+    },
     "lockFileMaintenance": {
         "enabled": true,
         "schedule": ["on monday"]
