@@ -56,6 +56,8 @@ Note: the root Jest config excludes `bdt-components` and `bdt-cdk` (they have th
 
 **TypeScript** — Strict mode enabled. Base config in `tsconfig.base.json` (target ES5, React JSX).
 
+**Issues and public text** — Work is planned in a private tracker, so this repo's issues are for Renovate's dashboard and outside reports. Commits and PRs say what changed and why in terms of the code; the live site's state, incidents and planning belong in the tracker.
+
 ## Claude Code Setup
 
 **Skills** — Project-level skills live in `.claude/skills/` and are auto-discovered. The `mutation-testing` skill (adapted from [Paul Hammond's dotfiles](https://github.com/citypaul/.dotfiles)) guides the mutation testing step of the TDD cycle.
