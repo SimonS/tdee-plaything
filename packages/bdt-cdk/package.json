@@ -14,7 +14,7 @@
     "@aws-sdk/client-sqs": "^3.1017.0",
     "@aws-sdk/client-ssm": "^3.1017.0",
     "@tdee/overcast-functions": "workspace:*",
-    "axios": "^1.13.5"
+    "axios": "^1.20.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.29.2",
@@ -22,12 +22,12 @@
     "@types/aws-lambda": "^8.10.161",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.15",
-    "aws-cdk": "^2.1118.0",
-    "aws-cdk-lib": "^2.244.0",
+    "aws-cdk": "^2.1148.1",
+    "aws-cdk-lib": "^2.260.0",
     "aws-sdk-client-mock": "^4.1.0",
     "aws-sdk-client-mock-jest": "^4.1.0",
     "constructs": "^10.5.1",
-    "esbuild": "^0.27.3",
+    "esbuild": "^0.28.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
