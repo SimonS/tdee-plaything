@@ -43,6 +43,13 @@
             "matchFileNames": ["package.json", ".github/workflows/**", ".nvmrc"],
             "matchUpdateTypes": ["minor", "patch", "digest"],
             "groupName": "Tooling"
+        },
+        {
+            "description": "GitHub Actions majors join Tooling too: they run only in CI, so a failing check is the whole risk.",
+            "matchManagers": ["github-actions"],
+            "matchDepTypes": ["action"],
+            "separateMajorMinor": false,
+            "groupName": "Tooling"
         }
     ]
 }
