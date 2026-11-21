@@ -10,6 +10,7 @@ jobs:
     outputs:
       js: ${{ steps.filter.outputs.js }}
       php: ${{ steps.filter.outputs.php }}
+      cdk: ${{ steps.filter.outputs.cdk }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -25,6 +26,13 @@ jobs:
             js:
               - '**'
               - '!packages/bdt-customisations/**'
+            cdk:
+              - 'packages/bdt-cdk/**'
+              - 'packages/overcast/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - '.github/workflows/test.yml'
 
   test:
     needs: changes
@@ -54,6 +62,32 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+  synth:
+    needs: changes
+    if: needs.changes.outputs.cdk == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.13.1'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Synthesise the CDK stack
+        run: pnpm --filter @tdee/bdt-cdk exec cdk synth --quiet
 
   php-test:
     needs: changes
