@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-BDT Playground — a personal monorepo for experimentation. AstroJS frontend, WordPress CMS (external, on Hetzner), GraphQL API, AWS CDK infrastructure, Netlify Lambda functions. Deployed at playground.breakfastdinnertea.co.uk.
+BDT Playground — a personal monorepo for experimentation. AstroJS frontend, WordPress CMS (external, on Hetzner), GraphQL API, AWS CDK infrastructure. Deployed at playground.breakfastdinnertea.co.uk.
 
 ## Commands
 
@@ -15,7 +15,6 @@ pnpm lint                 # ESLint across .js/.jsx/.ts/.tsx
 pnpm test:coverage        # Jest with coverage
 pnpm test:integration     # Integration tests only
 pnpm deploy-all           # Build Astro site
-pnpm build:lambda         # Build Netlify Lambda functions
 pnpm compile              # TypeScript compilation check
 
 # Run tests for a single package
@@ -46,7 +45,7 @@ Note: the root Jest config excludes `bdt-components` and `bdt-cdk` (they have th
 
 **Fetcher packages** (`*-fetcher`) — Each ingests data from an external source (Letterboxd, WordPress, podcasts, weight tracking, etc.) using GraphQL or HTTP.
 
-**Other:** `netlify-functions` (Lambda handlers), `overcast` (podcast utilities)
+**Other:** `overcast` (podcast utilities)
 
 ## Conventions
 

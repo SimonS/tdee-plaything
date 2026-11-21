@@ -14,15 +14,13 @@
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
     "deploy-all": "pnpm --filter @tdee/bdt-astro build",
-    "compile": "tsc",
-    "build:lambda": "netlify-lambda build packages/netlify-functions"
+    "compile": "tsc"
   },
   "devDependencies": {
     "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.29.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
-    "@types/aws-lambda": "^8.10.161",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.57.2",
     "@typescript-eslint/parser": "^8.57.2",

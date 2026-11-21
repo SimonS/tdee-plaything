@@ -23,8 +23,7 @@
                 "packages/bdt-components/**",
                 "packages/*-fetcher/**",
                 "packages/types/**",
-                "packages/data-wranglers/**",
-                "packages/netlify-functions/**"
+                "packages/data-wranglers/**"
             ],
             "matchUpdateTypes": ["minor", "patch", "digest"],
             "groupName": "Playground"

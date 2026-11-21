@@ -9,7 +9,6 @@ module.exports = [
   {
     ignores: [
       "dist/**",
-      "lambda/**",
       "**/*.d.ts",
       "packages/bdt-cdk/bin/*.js",
       "packages/bdt-cdk/lambda/**/*.js",
