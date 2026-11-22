@@ -8,7 +8,10 @@ const jestPlugin = require("eslint-plugin-jest");
 module.exports = [
   {
     ignores: [
-      "dist/**",
+      "**/dist/**",
+      "**/.astro/**",
+      "**/cdk.out/**",
+      "**/coverage/**",
       "**/*.d.ts",
       "packages/bdt-cdk/bin/*.js",
       "packages/bdt-cdk/lambda/**/*.js",
