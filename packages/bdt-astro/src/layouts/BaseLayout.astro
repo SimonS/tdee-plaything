@@ -1,7 +1,7 @@
 ---
 import Nav from "@components/nav/nav";
 import { AstroLogo } from "../components/AstroLogo";
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 
 const { title } = Astro.props;
 const path = new URL(Astro.url.pathname, Astro.site);
@@ -12,7 +12,7 @@ const path = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <ViewTransitions />
+    <ClientRouter />
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link
