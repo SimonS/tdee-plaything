@@ -33,10 +33,10 @@ Note: the root Jest config excludes `bdt-components` and `bdt-cdk` (they have th
 
 ## Architecture
 
-**Monorepo** managed with pnpm workspaces (`pnpm@10.27.0`, Node 22.14.0). Packages live in `packages/`.
+**Monorepo** managed with pnpm workspaces (`pnpm@10.27.0`, Node from `.nvmrc`). Packages live in `packages/`.
 
 **Core packages:**
-- `bdt-astro` — Main website (AstroJS 5, React 19, Nanostores)
+- `bdt-astro` — Main website (AstroJS, React 19, Nanostores)
 - `bdt-components` — Shared React component library (Nivo, Recharts)
 - `bdt-cdk` — AWS CDK infrastructure (Lambda, SQS, SSM)
 - `bdt-customisations` — WordPress PHP plugin

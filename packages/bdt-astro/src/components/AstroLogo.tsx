@@ -1,4 +1,4 @@
-import Logo, { LogoProps } from "@components/logo/logo";
+import Logo, { type LogoProps } from "@components/logo/logo";
 
 interface AstroLogoProps extends LogoProps {
   "client:load"?: boolean;
