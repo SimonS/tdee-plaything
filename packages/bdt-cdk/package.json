@@ -11,8 +11,8 @@
     "cdk": "cdk"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1173.0",
-    "@aws-sdk/client-ssm": "^3.1173.0",
+    "@aws-sdk/client-sqs": "^3.1175.0",
+    "@aws-sdk/client-ssm": "^3.1175.0",
     "@tdee/overcast-functions": "workspace:*",
     "axios": "^1.21.1"
   },
@@ -23,7 +23,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.19.2",
     "aws-cdk": "^2.1149.0",
-    "aws-cdk-lib": "^2.277.0",
+    "aws-cdk-lib": "^2.278.0",
     "aws-sdk-client-mock": "^4.1.0",
     "aws-sdk-client-mock-jest": "^4.1.0",
     "constructs": "^10.8.1",
