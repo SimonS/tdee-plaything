@@ -10,7 +10,7 @@
   "packageManager": "pnpm@10.34.9",
   "scripts": {
     "lint": "eslint .",
-    "test": "jest && pnpm --filter @tdee/bdt-components test && pnpm --filter @tdee/bdt-cdk test",
+    "test": "jest; r=$?; pnpm --filter @tdee/bdt-components test || r=1; pnpm --filter @tdee/bdt-cdk test || r=1; exit $r",
     "test:integration": "jest --testRegex=\"(/__tests__/.*|(\\.|/)(integration))\\.tsx?$\"",
     "test:coverage": "jest --coverage",
     "deploy-all": "pnpm --filter @tdee/bdt-astro build",

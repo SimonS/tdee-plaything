@@ -12,6 +12,7 @@ module.exports = [
       "**/.astro/**",
       "**/cdk.out/**",
       "**/coverage/**",
+      "**/vendor/**",
       "**/*.d.ts",
       "packages/bdt-cdk/bin/*.js",
       "packages/bdt-cdk/lambda/**/*.js",
