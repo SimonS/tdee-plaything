@@ -80,12 +80,22 @@ export async function postExerciseToWordpress(
   if (!authToken || !apiBaseUrl) {
     throw new Error("Missing WordPress configuration.");
   }
-  await axios.post(`${apiBaseUrl}/bdt_exercises`, payload, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
+  try {
+    await axios.post(`${apiBaseUrl}/bdt_exercises`, payload, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 409) {
+      console.log(
+        `Exercise ${payload.meta.source_id} is already in WordPress.`,
+      );
+      return;
+    }
+    throw error;
+  }
   console.log("Exercise posted to WordPress successfully.");
 }
 
@@ -113,10 +123,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
       const messageData = JSON.parse(record.body);
       const { object_type, object_id, aspect_type } = messageData;
 
-      if (
-        object_type === "activity" &&
-        (aspect_type === "create" || aspect_type === "update")
-      ) {
+      if (object_type === "activity" && aspect_type === "create") {
         console.log(`Processing activity ${object_id} (${aspect_type})`);
 
         const data = await getStravaActivity(accessToken, object_id);

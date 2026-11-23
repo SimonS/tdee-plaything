@@ -30,14 +30,27 @@ import "aws-sdk-client-mock-jest";
 jest.mock("axios", () => {
   const mockPost = jest.fn();
   const mockGet = jest.fn();
+  const { isAxiosError } = jest.requireActual<typeof import("axios")>("axios");
   return {
     __esModule: true,
 
-    default: { post: mockPost, get: mockGet },
+    default: { post: mockPost, get: mockGet, isAxiosError },
     post: mockPost,
     get: mockGet,
+    isAxiosError,
   };
 });
+
+const wordPressError = (status: number) => {
+  const { AxiosError } = jest.requireActual<typeof import("axios")>("axios");
+  return new AxiosError(
+    `Request failed with status code ${status}`,
+    "ERR_BAD_REQUEST",
+    undefined,
+    undefined,
+    { status, statusText: "", headers: {}, config: {} as any, data: {} },
+  );
+};
 type AxiosCallMock = jest.Mock<(...args: any[]) => Promise<any>>;
 const mockedAxiosPost = axios.post as AxiosCallMock;
 const mockedAxiosGet = axios.get as AxiosCallMock;
@@ -239,6 +252,20 @@ describe("postExerciseToWordpress", () => {
       postExerciseToWordpress(wpPayload, "test-wp-token"),
     ).rejects.toThrow("Missing WordPress configuration.");
   });
+
+  test("resolves when WordPress already has the Exercise (409)", async () => {
+    mockedAxiosPost.mockRejectedValueOnce(wordPressError(409));
+    await expect(
+      postExerciseToWordpress(wpPayload, "test-wp-token"),
+    ).resolves.toBeUndefined();
+  });
+
+  test("rejects when WordPress fails (500)", async () => {
+    mockedAxiosPost.mockRejectedValueOnce(wordPressError(500));
+    await expect(
+      postExerciseToWordpress(wpPayload, "test-wp-token"),
+    ).rejects.toThrow("Request failed with status code 500");
+  });
 });
 
 test("log the body of each received SQS message", async () => {
@@ -306,7 +333,7 @@ test("fetches activity details from Strava API", async () => {
   const sqsMessageBody = JSON.stringify({
     object_type: "activity",
     object_id: activityId,
-    aspect_type: "update",
+    aspect_type: "create",
     owner_id: 12345,
   });
   const mockEvent = createPartialSqsEventWithBodies([sqsMessageBody]);
@@ -365,6 +392,65 @@ test("handler fetches Strava activity and posts it to WordPress", async () => {
   );
 
   delete process.env.WORDPRESS_API_BASE_URL;
+});
+
+describe("handler: one Exercise per activity", () => {
+  const activityEvent = (aspect_type: string) =>
+    createPartialSqsEventWithBodies([
+      JSON.stringify({
+        object_type: "activity",
+        object_id: exampleStravaActivity.id,
+        aspect_type,
+        owner_id: 12345,
+      }),
+    ]) as SQSEvent;
+
+  beforeEach(() => {
+    process.env.WORDPRESS_API_BASE_URL = "https://example.com/wp-json/wp/v2";
+  });
+
+  afterEach(() => {
+    delete process.env.WORDPRESS_API_BASE_URL;
+  });
+
+  test.each(["update", "delete"])(
+    "skips a %s event: no Strava fetch and no WordPress post",
+    async (aspect_type) => {
+      await handler(activityEvent(aspect_type));
+
+      expect(mockedAxiosGet).not.toHaveBeenCalled();
+      expect(mockedAxiosPost).not.toHaveBeenCalledWith(
+        expect.stringContaining("/bdt_exercises"),
+        expect.anything(),
+        expect.anything(),
+      );
+    },
+  );
+
+  test("logs no error when WordPress already has the Exercise (409)", async () => {
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    mockedAxiosPost.mockResolvedValueOnce({
+      data: { access_token: "DUMMY_ACCESS_TOKEN_456" },
+      status: 200,
+    });
+    mockedAxiosPost.mockRejectedValueOnce(wordPressError(409));
+    mockedAxiosGet.mockResolvedValueOnce({
+      data: exampleStravaActivity,
+      status: 200,
+    });
+
+    await handler(activityEvent("create"));
+
+    expect(mockedAxiosPost).toHaveBeenCalledWith(
+      "https://example.com/wp-json/wp/v2/bdt_exercises",
+      expect.anything(),
+      expect.anything(),
+    );
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
+  });
 });
 
 describe("getBdtAuthToken error paths (via handler)", () => {
