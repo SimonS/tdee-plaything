@@ -3,6 +3,9 @@ namespace bdt;
 
 class Test_Exercise_Duplicates extends \WP_UnitTestCase
 {
+    const SOURCE_ID = '17954327092';
+    const OTHER_SOURCE_ID = '17954327093';
+
     /**
      * @var \WP_REST_Server
      */
@@ -52,21 +55,21 @@ class Test_Exercise_Duplicates extends \WP_UnitTestCase
 
     public function test_rejects_a_second_exercise_with_the_same_source_id()
     {
-        $this->assertEquals(201, $this->post_exercise('17954327092')->get_status());
+        $this->assertEquals(201, $this->post_exercise(self::SOURCE_ID)->get_status());
 
-        $second = $this->post_exercise('17954327092');
+        $second = $this->post_exercise(self::SOURCE_ID);
 
         $this->assertEquals(409, $second->get_status());
         $this->assertEquals('duplicate_exercise', $second->get_data()['code']);
-        $this->assertCount(1, $this->exercises_with_source_id('17954327092'));
+        $this->assertCount(1, $this->exercises_with_source_id(self::SOURCE_ID));
     }
 
     public function test_accepts_an_exercise_with_a_different_source_id()
     {
-        $this->post_exercise('17954327092');
+        $this->post_exercise(self::SOURCE_ID);
 
-        $this->assertEquals(201, $this->post_exercise('17954327093')->get_status());
-        $this->assertCount(1, $this->exercises_with_source_id('17954327093'));
+        $this->assertEquals(201, $this->post_exercise(self::OTHER_SOURCE_ID)->get_status());
+        $this->assertCount(1, $this->exercises_with_source_id(self::OTHER_SOURCE_ID));
     }
 
     public function test_accepts_exercises_without_a_source_id()
@@ -77,11 +80,11 @@ class Test_Exercise_Duplicates extends \WP_UnitTestCase
 
     public function test_updating_an_existing_exercise_is_not_rejected()
     {
-        $id = $this->post_exercise('17954327092')->get_data()['id'];
+        $id = $this->post_exercise(self::SOURCE_ID)->get_data()['id'];
 
-        $update = $this->post_exercise('17954327092', "/wp/v2/bdt_exercises/$id");
+        $update = $this->post_exercise(self::SOURCE_ID, "/wp/v2/bdt_exercises/$id");
 
         $this->assertEquals(200, $update->get_status());
-        $this->assertCount(1, $this->exercises_with_source_id('17954327092'));
+        $this->assertCount(1, $this->exercises_with_source_id(self::SOURCE_ID));
     }
 }
