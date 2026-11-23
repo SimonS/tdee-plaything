@@ -1,6 +1,6 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "description": "Minor and patch updates arrive as one PR per place they ship, so each PR has one deploy step. Majors keep a PR each. Renovate opens and updates PRs only on its Monday schedule (updateNotScheduled), so a rebase doesn't set off a Netlify build midweek.",
+    "description": "Minor and patch updates arrive as one PR per place they ship, so each PR has one deploy step. Majors keep a PR each. Apart from Security PRs, Renovate opens and updates PRs only on its Monday schedule (updateNotScheduled), so a rebase doesn't start a Netlify build midweek.",
     "extends": ["config:recommended"],
     "schedule": ["on monday"],
     "updateNotScheduled": false,
@@ -61,7 +61,7 @@
             "enabled": false
         },
         {
-            "description": "TypeScript stays on 5.x: TypeScript 7 is the native compiler, and ts-node (cdk synth) and ts-jest load the JavaScript compiler API it doesn't have.",
+            "description": "TypeScript stays on 5.x until the toolchain moves to TypeScript 7, the native compiler: ts-node (cdk synth) and ts-jest load the JavaScript compiler API it doesn't have.",
             "matchPackageNames": ["typescript"],
             "matchUpdateTypes": ["major"],
             "enabled": false
