@@ -12,6 +12,6 @@
     "@astrojs/react": "^7.1.9",
     "astro": "^7.4.13",
     "graphql-request": "^7.4.0",
-    "sass": "^1.97.3"
+    "sass": "^1.108.2"
   }
 }
