@@ -13,8 +13,8 @@ module.exports = {
     "^.+\\.jsx?$": "babel-jest",
   },
   transformIgnorePatterns: [
-    "/node_modules/\\.pnpm/(?!(axios-cookiejar-support|http-cookie-agent|tough-cookie|axios|deasync)@)[^/]+/node_modules/",
-    "/node_modules/(?!axios-cookiejar-support|http-cookie-agent|tough-cookie|axios|deasync)/",
+    "/node_modules/\\.pnpm/(?!(axios-cookiejar-support|http-cookie-agent|agent-base|tough-cookie|axios|deasync)@)[^/]+/node_modules/",
+    "/node_modules/(?!axios-cookiejar-support|http-cookie-agent|agent-base|tough-cookie|axios|deasync)/",
   ],
   setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
   extensionsToTreatAsEsm: [".ts"],
