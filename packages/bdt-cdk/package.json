@@ -17,7 +17,7 @@
     "axios": "^1.21.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.29.14",
+    "@babel/preset-env": "^8.0.7",
     "@testing-library/jest-dom": "^8.0.0",
     "@types/aws-lambda": "^8.10.164",
     "@types/jest": "^30.0.0",
