@@ -1,8 +1,9 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "description": "Minor and patch updates arrive as one PR per place they ship, so each PR has one deploy step. Majors keep a PR each.",
+    "description": "Minor and patch updates arrive as one PR per place they ship, so each PR has one deploy step. Majors keep a PR each. Apart from Security PRs, Renovate opens and updates PRs only on its Monday schedule (updateNotScheduled), so a rebase doesn't start a Netlify build midweek.",
     "extends": ["config:recommended"],
     "schedule": ["on monday"],
+    "updateNotScheduled": false,
     "timezone": "Europe/London",
     "minimumReleaseAge": "3 days",
     "prHourlyLimit": 0,
@@ -52,6 +53,18 @@
             "matchDepTypes": ["action"],
             "separateMajorMinor": false,
             "groupName": "Tooling"
+        },
+        {
+            "description": "bdt-customisations stays on PHPUnit 9: PHPUnit 13 needs PHP 8.4, yoast/phpunit-polyfills supports up to PHPUnit 12, and dms/phpunit-arraysubset-asserts up to 10.",
+            "matchPackageNames": ["phpunit/phpunit"],
+            "matchUpdateTypes": ["major"],
+            "enabled": false
+        },
+        {
+            "description": "TypeScript stays on 5.x until the toolchain moves to TypeScript 7, the native compiler: ts-node (cdk synth) and ts-jest load the JavaScript compiler API it doesn't have.",
+            "matchPackageNames": ["typescript"],
+            "matchUpdateTypes": ["major"],
+            "enabled": false
         }
     ]
 }
