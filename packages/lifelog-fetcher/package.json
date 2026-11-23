@@ -14,7 +14,7 @@
     "graphql": "^17.1.0",
     "graphql-request": "^7.4.0",
     "jest": "^30.5.2",
-    "nock": "^14.0.17",
+    "nock": "^15.0.6",
     "ts-jest": "^29.4.15",
     "typescript": "5.9.3"
   }
