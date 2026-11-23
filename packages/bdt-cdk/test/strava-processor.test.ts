@@ -38,8 +38,9 @@ jest.mock("axios", () => {
     get: mockGet,
   };
 });
-const mockedAxiosPost = axios.post as jest.Mock<any>;
-const mockedAxiosGet = axios.get as jest.Mock<any>;
+type AxiosCallMock = jest.Mock<(...args: any[]) => Promise<any>>;
+const mockedAxiosPost = axios.post as AxiosCallMock;
+const mockedAxiosGet = axios.get as AxiosCallMock;
 
 beforeEach(() => {
   jest.clearAllMocks();

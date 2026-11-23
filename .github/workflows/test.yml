@@ -13,10 +13,10 @@ jobs:
       cdk: ${{ steps.filter.outputs.cdk }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Detect changed paths
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -41,17 +41,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: '24.13.1'
+          node-version: '24.22.3'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -70,17 +70,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: '24.13.1'
+          node-version: '24.22.3'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -96,7 +96,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:9.6
+        image: mysql:26.10
         env:
           MYSQL_ROOT_PASSWORD: root
         options: >-
@@ -109,7 +109,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -119,7 +119,7 @@ jobs:
           extensions: mysqli
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: packages/bdt-customisations/vendor
           key: composer-${{ hashFiles('packages/bdt-customisations/composer.json') }}
@@ -134,7 +134,7 @@ jobs:
         run: echo "week=$(date +'%Y-%U')" >> $GITHUB_OUTPUT
 
       - name: Cache WordPress test artifacts
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             /tmp/wordpress
