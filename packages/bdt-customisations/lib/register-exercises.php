@@ -84,6 +84,31 @@ function bdt_register_exercise()
 
 add_action('init', 'bdt_register_exercise');
 
+function bdt_reject_duplicate_exercise($prepared_post, $request)
+{
+    if (!empty($prepared_post->ID)) {
+        return $prepared_post;
+    }
+
+    $meta_data = $request->get_param('meta');
+    $source_id = $meta_data['source_id'] ?? '';
+
+    if ($source_id !== '' && (new WP_Query([
+        'post_type' => 'bdt_exercise',
+        'post_status' => 'any',
+        'meta_key' => 'source_id',
+        'meta_value' => $source_id,
+        'fields' => 'ids',
+        'posts_per_page' => 1,
+    ]))->have_posts()) {
+        return new WP_Error('duplicate_exercise', 'Exercise already exists', array('status' => 409));
+    }
+
+    return $prepared_post;
+}
+
+add_filter('rest_pre_insert_bdt_exercise', 'bdt_reject_duplicate_exercise', 10, 2);
+
 add_action('graphql_register_types', function () {
     $post_types = WPGraphQL::get_allowed_post_types();
     $type_name = get_post_type_object($post_types['bdt_exercise'])->graphql_single_name;
