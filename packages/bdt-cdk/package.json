@@ -29,6 +29,7 @@
     "constructs": "^10.8.1",
     "esbuild": "^0.28.2",
     "jest": "^30.5.2",
+    "nock": "^14.0.17",
     "ts-jest": "^29.4.15",
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"

@@ -8,7 +8,19 @@ import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { Queue } from "aws-cdk-lib/aws-sqs";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { Topic } from "aws-cdk-lib/aws-sns";
+import {
+  Alarm,
+  ComparisonOperator,
+  IMetric,
+  TreatMissingData,
+} from "aws-cdk-lib/aws-cloudwatch";
+import { SnsAction } from "aws-cdk-lib/aws-cloudwatch-actions";
 import * as path from "path";
+import {
+  BATCH_SIZE,
+  PROCESSOR_TIMEOUT_MS,
+} from "../lambda/strava-processor/limits";
 
 export class BdtCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -71,8 +83,17 @@ export class BdtCdkStack extends Stack {
       apiName: "StravaWebhookApi",
     });
 
+    const processorTimeout = Duration.millis(PROCESSOR_TIMEOUT_MS);
+
+    const webhookDeadLetterQueue = new Queue(this, "StravaWebhookDLQ", {
+      queueName: "strava-webhook-dlq",
+      retentionPeriod: Duration.days(14),
+    });
+
     const webhookQueue = new Queue(this, "StravaWebhookQueue", {
       queueName: "strava-webhook-queue",
+      visibilityTimeout: Duration.seconds(processorTimeout.toSeconds() * 6),
+      deadLetterQueue: { queue: webhookDeadLetterQueue, maxReceiveCount: 5 },
     });
 
     const receiverLambda = new NodejsFunction(
@@ -111,6 +132,7 @@ export class BdtCdkStack extends Stack {
         functionName: "stravaEventProcessorLambda",
         runtime: Runtime.NODEJS_22_X,
         handler: "index.handler",
+        timeout: processorTimeout,
         environment: {
           STRAVA_CLIENT_ID_PARAM_NAME: "/strava/client_id",
           STRAVA_SECRET_PARAM_NAME: "/strava/client_secret",
@@ -122,7 +144,51 @@ export class BdtCdkStack extends Stack {
       },
     );
 
-    processorLambda.addEventSource(new SqsEventSource(webhookQueue));
+    processorLambda.addEventSource(
+      new SqsEventSource(webhookQueue, {
+        batchSize: BATCH_SIZE,
+        reportBatchItemFailures: true,
+      }),
+    );
+
+    const overcastErrorTopic = Topic.fromTopicArn(
+      this,
+      "OvercastErrorTopic",
+      `arn:${this.partition}:sns:eu-west-1:${this.account}:Overcast_Error`,
+    );
+    const errorAlarmAction = new SnsAction(overcastErrorTopic);
+
+    const alarmWhenAboveZero = (
+      id: string,
+      alarmDescription: string,
+      metric: IMetric,
+    ) =>
+      new Alarm(this, id, {
+        alarmDescription,
+        metric,
+        comparisonOperator: ComparisonOperator.GREATER_THAN_THRESHOLD,
+        threshold: 0,
+        evaluationPeriods: 1,
+        treatMissingData: TreatMissingData.NOT_BREACHING,
+      }).addAlarmAction(errorAlarmAction);
+
+    alarmWhenAboveZero(
+      "StravaWebhookDLQAlarm",
+      "A Strava event is waiting in strava-webhook-dlq.",
+      webhookDeadLetterQueue.metricApproximateNumberOfMessagesVisible({
+        period: Duration.minutes(5),
+        statistic: "Maximum",
+      }),
+    );
+
+    alarmWhenAboveZero(
+      "StravaEventProcessorErrorsAlarm",
+      "stravaEventProcessorLambda threw or timed out.",
+      processorLambda.metricErrors({
+        period: Duration.minutes(5),
+        statistic: "Sum",
+      }),
+    );
 
     const clientIdParamName = "/strava/client_id";
     const clientSecretParamName = "/strava/client_secret";
