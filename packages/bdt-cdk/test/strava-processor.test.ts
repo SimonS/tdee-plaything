@@ -304,6 +304,7 @@ test("Processor Lambda attempts Strava token refresh using credentials from SSM"
     expectedFormData,
     expect.objectContaining({
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      timeout: 10_000,
     }),
   );
 });
@@ -376,6 +377,7 @@ test("handler fetches Strava activity and posts it to WordPress", async () => {
       headers: expect.objectContaining({
         Authorization: expect.stringContaining("Bearer"),
       }),
+      timeout: 10_000,
     }),
   );
   expect(mockedAxiosPost).toHaveBeenCalledWith(
@@ -479,5 +481,78 @@ describe("getBdtAuthToken error paths (via handler)", () => {
 
     ssmMock.reset();
     mockStravaAuth();
+  });
+});
+
+describe("handler: failed records are reported for retry", () => {
+  const createRecord = (messageId: string, activityId: number) =>
+    createPartialMockSqsRecord(
+      JSON.stringify({
+        object_type: "activity",
+        object_id: activityId,
+        aspect_type: "create",
+        owner_id: 12345,
+      }),
+      messageId,
+    ) as SQSRecord;
+
+  let consoleErrorSpy: jest.SpiedFunction<typeof console.error>;
+
+  beforeEach(() => {
+    process.env.WORDPRESS_API_BASE_URL = "https://example.com/wp-json/wp/v2";
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    delete process.env.WORDPRESS_API_BASE_URL;
+    consoleErrorSpy.mockRestore();
+    mockStravaAuth();
+  });
+
+  test("returns only the failed record's message ID", async () => {
+    mockedAxiosGet.mockImplementation(async (url: string) => ({
+      data: { ...exampleStravaActivity, id: Number(url.split("/").pop()) },
+      status: 200,
+    }));
+    mockedAxiosPost.mockImplementation(async (url: string, body: any) => {
+      if (url.endsWith("/oauth/token")) {
+        return {
+          data: { access_token: "DUMMY_ACCESS_TOKEN_456" },
+          status: 200,
+        };
+      }
+      if (body.meta.source_id === "111") {
+        throw wordPressError(500);
+      }
+      return { data: { id: 999 }, status: 201 };
+    });
+
+    const result = await handler({
+      Records: [createRecord("msg-fails", 111), createRecord("msg-posts", 222)],
+    } as SQSEvent);
+
+    expect(result).toEqual({
+      batchItemFailures: [{ itemIdentifier: "msg-fails" }],
+    });
+    expect(mockedAxiosPost).toHaveBeenCalledWith(
+      "https://example.com/wp-json/wp/v2/bdt_exercises",
+      expect.objectContaining({
+        meta: expect.objectContaining({ source_id: "222" }),
+      }),
+      expect.anything(),
+    );
+  });
+
+  test("throws, so the whole batch is retried, when the Strava token refresh fails", async () => {
+    mockedAxiosPost.mockRejectedValueOnce(
+      new Error("timeout of 10000ms exceeded"),
+    );
+
+    await expect(
+      handler({
+        Records: [createRecord("msg-one", 111), createRecord("msg-two", 222)],
+      } as SQSEvent),
+    ).rejects.toThrow("Failed to refresh Strava access token.");
+    expect(mockedAxiosGet).not.toHaveBeenCalled();
   });
 });

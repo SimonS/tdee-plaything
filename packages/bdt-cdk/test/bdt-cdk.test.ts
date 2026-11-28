@@ -1,8 +1,12 @@
 import { Template, Match } from "aws-cdk-lib/assertions";
 import * as cdk from "aws-cdk-lib";
-import { test, beforeAll } from "@jest/globals";
+import { describe, expect, test, beforeAll } from "@jest/globals";
 import * as BdtCdk from "../lib/bdt-cdk-stack";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import {
+  REQUEST_TIMEOUT_MS,
+  REQUESTS_PER_BATCH,
+} from "../lambda/strava-processor/limits";
 
 let template: Template;
 let stack: BdtCdk.BdtCdkStack;
@@ -308,4 +312,126 @@ test("Processor Lambda Role has permission to read BDT auth token from SSM", () 
       ]),
     },
   });
+});
+
+test("the Strava Webhook Queue sends a message to a 14-day dead-letter queue after 5 receives", () => {
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: "strava-webhook-dlq",
+    MessageRetentionPeriod: 1_209_600,
+  });
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: "strava-webhook-queue",
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [Match.stringLikeRegexp("StravaWebhookDLQ*"), "Arn"],
+      },
+      maxReceiveCount: 5,
+    },
+  });
+});
+
+test("the Strava Webhook Queue's visibility timeout is at least 6 times the processor's 120-second timeout", () => {
+  const [processor] = Object.values(
+    template.findResources("AWS::Lambda::Function", {
+      Properties: { FunctionName: "stravaEventProcessorLambda" },
+    }),
+  );
+  const [queue] = Object.values(
+    template.findResources("AWS::SQS::Queue", {
+      Properties: { QueueName: "strava-webhook-queue" },
+    }),
+  );
+
+  expect(processor.Properties.Timeout).toBe(120);
+  expect(queue.Properties.VisibilityTimeout).toBeGreaterThanOrEqual(
+    6 * processor.Properties.Timeout,
+  );
+});
+
+test("the processor takes 5 messages at a time and reports which ones failed", () => {
+  template.hasResourceProperties("AWS::Lambda::EventSourceMapping", {
+    EventSourceArn: {
+      "Fn::GetAtt": [Match.stringLikeRegexp("StravaWebhookQueue*"), "Arn"],
+    },
+    BatchSize: 5,
+    FunctionResponseTypes: ["ReportBatchItemFailures"],
+  });
+});
+
+describe("Strava processor alarms notify the Overcast_Error topic", () => {
+  const overcastErrorTopicArn = [
+    {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          { Ref: "AWS::Partition" },
+          ":sns:eu-west-1:",
+          { Ref: "AWS::AccountId" },
+          ":Overcast_Error",
+        ],
+      ],
+    },
+  ];
+
+  test("when a message is in the dead-letter queue", () => {
+    template.hasResourceProperties("AWS::CloudWatch::Alarm", {
+      Namespace: "AWS/SQS",
+      MetricName: "ApproximateNumberOfMessagesVisible",
+      Dimensions: [
+        {
+          Name: "QueueName",
+          Value: {
+            "Fn::GetAtt": [
+              Match.stringLikeRegexp("StravaWebhookDLQ*"),
+              "QueueName",
+            ],
+          },
+        },
+      ],
+      Statistic: "Maximum",
+      Period: 300,
+      EvaluationPeriods: 1,
+      ComparisonOperator: "GreaterThanThreshold",
+      Threshold: 0,
+      TreatMissingData: "notBreaching",
+      AlarmActions: overcastErrorTopicArn,
+    });
+  });
+
+  test("when the processor errors", () => {
+    template.hasResourceProperties("AWS::CloudWatch::Alarm", {
+      Namespace: "AWS/Lambda",
+      MetricName: "Errors",
+      Dimensions: [
+        {
+          Name: "FunctionName",
+          Value: { Ref: Match.stringLikeRegexp("StravaEventProcessorLambda*") },
+        },
+      ],
+      Statistic: "Sum",
+      Period: 300,
+      EvaluationPeriods: 1,
+      ComparisonOperator: "GreaterThanThreshold",
+      Threshold: 0,
+      TreatMissingData: "notBreaching",
+      AlarmActions: overcastErrorTopicArn,
+    });
+  });
+
+  test("and the stack leaves the topic itself unmanaged", () => {
+    template.resourceCountIs("AWS::SNS::Topic", 0);
+  });
+});
+
+test("the processor's timeout outlasts a token refresh and a full batch whose every request hangs", () => {
+  const [processor] = Object.values(
+    template.findResources("AWS::Lambda::Function", {
+      Properties: { FunctionName: "stravaEventProcessorLambda" },
+    }),
+  );
+
+  expect(processor.Properties.Timeout * 1000).toBeGreaterThan(
+    REQUESTS_PER_BATCH * REQUEST_TIMEOUT_MS,
+  );
 });

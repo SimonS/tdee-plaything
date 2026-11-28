@@ -1,4 +1,4 @@
-import { SQSEvent } from "aws-lambda";
+import { SQSBatchItemFailure, SQSBatchResponse, SQSEvent } from "aws-lambda";
 import {
   SSMClient,
   GetParametersCommand,
@@ -6,6 +6,8 @@ import {
 } from "@aws-sdk/client-ssm";
 
 import axios from "axios";
+
+import { REQUEST_TIMEOUT_MS } from "./limits";
 
 const ssmClient = new SSMClient({});
 
@@ -86,6 +88,7 @@ export async function postExerciseToWordpress(
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
+      timeout: REQUEST_TIMEOUT_MS,
     });
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 409) {
@@ -99,7 +102,7 @@ export async function postExerciseToWordpress(
   console.log("Exercise posted to WordPress successfully.");
 }
 
-export const handler = async (event: SQSEvent): Promise<void> => {
+export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
   console.log(`Processor Lambda invoked with ${event.Records.length} record.`);
 
   let accessToken: string;
@@ -115,6 +118,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
     throw error;
   }
 
+  const batchItemFailures: SQSBatchItemFailure[] = [];
   for (const record of event.Records) {
     console.log("Processing SQS message:", record.messageId);
     console.log("Body:", record.body);
@@ -136,10 +140,12 @@ export const handler = async (event: SQSEvent): Promise<void> => {
       }
     } catch (error) {
       console.error(`Error processing SQS message ${record.messageId}:`, error);
+      batchItemFailures.push({ itemIdentifier: record.messageId });
     }
   }
 
   console.log("Processing complete.");
+  return { batchItemFailures };
 };
 
 async function getStravaAccessToken(): Promise<string> {
@@ -157,6 +163,7 @@ async function getStravaAccessToken(): Promise<string> {
 
     const response = await axios.post(tokenUrl, params, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      timeout: REQUEST_TIMEOUT_MS,
     });
 
     if (response.data?.access_token) {
@@ -246,6 +253,7 @@ async function getStravaActivity(
   try {
     const response = await axios.get<StravaActivity>(activityUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
+      timeout: REQUEST_TIMEOUT_MS,
     });
     console.log("Fetched Strava activity data:", response.data);
     return response.data;
